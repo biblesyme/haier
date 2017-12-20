@@ -23,9 +23,13 @@ export default class LoginForm extends React.Component {
     const Password = <Input type="password"  prefix={<Icon type="lock" />} placeholder="密码" />
     return {Password, Username}
   }
+  submit(e){
+    e.preventDefault()
+    this.props.submit(e);
+  }
   render(){
     return (
-      <Form onSubmit={this.props.submit} className={[styles.root , this.props.className].join(' ')}>
+      <Form onSubmit={this.submit.bind(this)} className={[styles.root , this.props.className].join(' ')}>
         <h3 className={styles.title}>登录</h3>
         <Form.Item hasFeedback style={{marginBottom: '20px'}}>{this.formItems().Username}</Form.Item>
         <Form.Item hasFeedback style={{marginBottom: '20px'}}>{this.formItems().Password}</Form.Item>

@@ -17,8 +17,16 @@ class Demo extends React.Component {
   constructor(props) {
     super(props);
   }
+  submit(){
+    this.props.dispatch({
+      type: '//setLogin',
+      payload: true
+    })
+  }
   render() { 
-    let output = <LoginForm></LoginForm>
+    let output = <LoginForm 
+                  submit={this.submit.bind(this)}
+                  ></LoginForm>
     if(this.props.reduxState.login){
       output = <MainPage>{renderRoutes(this.props.route.routes)}</MainPage>
     }
