@@ -1,0 +1,21 @@
+.root {
+  width: 320px;
+  background: rgba(#efefef, .9);
+  // box-shadow: $shadow-4dp;
+  padding: 20px;
+  text-align: left;
+}
+
+.login-button {
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
