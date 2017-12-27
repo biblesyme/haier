@@ -6,7 +6,7 @@ module.exports = [
 		component: require('./app'),
 		routes: [
 			require('./routes/Dashboard'),
-			require('./routes/Editor'),
+			require('./routes/AreaManage'),
 			require('./routes/MarkDown'),
 		]
 

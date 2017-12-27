@@ -309,7 +309,7 @@ class NavMenu extends React.Component {
         </section>
         <div style={{paddingBottom: '60px'}}></div>
 
-        <section className="page-section bottom-button">
+        <section className="page-section bottom-actions">
           <Button type="primary" icon="rollback">重置</Button>
           <Button type="primary" icon="eye" style={{float: 'right'}}>预览</Button>
         </section>

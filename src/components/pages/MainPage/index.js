@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
 import { Menu, Icon, Button } from 'antd';
 const SubMenu = Menu.SubMenu;
 
@@ -36,7 +38,7 @@ class MainPage extends React.Component {
               inlineCollapsed={this.state.collapsed}
             >
               <SubMenu key="sub0" title={<span><Icon type="mail" /><span>项目管理</span></span>}>
-                <Menu.Item key="1">新建应用</Menu.Item>
+                <Menu.Item key="1"><Link to="/">新建应用</Link></Menu.Item>
                 <Menu.Item key="2">我的应用</Menu.Item>
               </SubMenu>
               <SubMenu key="sub1" title={<span><Icon type="mail" /><span>资源管理</span></span>}>
@@ -53,6 +55,7 @@ class MainPage extends React.Component {
                   <Menu.Item key="12">Option 12</Menu.Item>
                 </SubMenu>
               </SubMenu>
+              <Menu.Item key="13"><Link to="/areamanage"><Icon type="inbox" /><span>领域管理</span></Link></Menu.Item>
             </Menu>
         </div>
         <div className="page-body">{this.props.children}</div>
