@@ -1,29 +1,34 @@
 @import './base/variables.scss'
-
-.page-navigation
-  position: fixed
-  top: 0
-  left: 0
-  padding-top: 50px
-  height: 100%
-  background-color: $primary
-  width: 150px;
-
-.page-header
-  position: fixed
-  top: 0
-  background-color: $primary
-  color: white
-  height: 50px
-  width: 100%
-  line-height: 50px
-  z-index: 1
-  text-align: right
-  padding: 0 20px
-.page-body
+.page-section
+  padding: 20px
+  background-color: white
+  margin-bottom: 20px
+.card-form
+  width: 220px
+  border: 1px solid $light-grey
   display: inline-block
-  width: 100%
-  height: 100%
-  padding-top: 50px
-  padding-left: 
-  overflow: scroll
+  margin: 0 20px
+  .card-header
+    background-color: lighten($primary, .9)
+    border-bottom: 1px solid $light-grey
+    color: white
+    padding: 5px
+    font: 1.5em
+    text-align: center
+  .card-body
+    padding: 10px
+    .ant-form-item-label
+      text-align: left
+    .ant-form-item-control-wrapper
+      text-align: right
+.width-260
+  width: 260px
+.bottom-button
+  position: fixed
+  bottom: 0
+  padding-top: 15px
+  padding-bottom: 15px
+  z-index: 2000
+  margin: 0
+  width: calc(100% - 150px)
+  box-shadow: 2px -1px 6px 1px $light-grey

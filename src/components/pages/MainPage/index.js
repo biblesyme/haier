@@ -35,9 +35,9 @@ class MainPage extends React.Component {
               theme="dark"
               inlineCollapsed={this.state.collapsed}
             >
-              <SubMenu key="sub0" title={<span><Icon type="mail" /><span>审批管理</span></span>}>
-                <Menu.Item key="1">资源审批</Menu.Item>
-                <Menu.Item key="2">权限审批</Menu.Item>
+              <SubMenu key="sub0" title={<span><Icon type="mail" /><span>项目管理</span></span>}>
+                <Menu.Item key="1">新建应用</Menu.Item>
+                <Menu.Item key="2">我的应用</Menu.Item>
               </SubMenu>
               <SubMenu key="sub1" title={<span><Icon type="mail" /><span>资源管理</span></span>}>
                 <Menu.Item key="5">Option 5</Menu.Item>

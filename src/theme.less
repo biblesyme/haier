@@ -10,7 +10,7 @@
 @primary-color          : #0075A8;
 @info-color             : #78C9CF;
 @success-color          : #27AA5E;
-// @processing-color       : @primary-color;
+@processing-color       : @primary-color;
 @error-color            : #F15354;
 // @highlight-color        : @red-6;
 @warning-color          : #F1C40F;
@@ -18,16 +18,16 @@
 
 // // Color used by default to control hover and active backgrounds and for
 // // alert info backgrounds.
-// @primary-1: color(~`colorPalette("@{primary-color}", 1)`);  // replace tint(@primary-color, 90%)
-// @primary-2: color(~`colorPalette("@{primary-color}", 2)`);  // replace tint(@primary-color, 80%)
-// @primary-3: color(~`colorPalette("@{primary-color}", 3)`);  // unused
-// @primary-4: color(~`colorPalette("@{primary-color}", 4)`);  // unused
-// @primary-5: color(~`colorPalette("@{primary-color}", 5)`);  // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
-// @primary-6: @primary-color;                                 // color used to control the text color of active buttons, don't use, use @primary-color
-// @primary-7: color(~`colorPalette("@{primary-color}", 7)`);  // replace shade(@primary-color, 5%)
-// @primary-8: color(~`colorPalette("@{primary-color}", 8)`);  // unused
-// @primary-9: color(~`colorPalette("@{primary-color}", 9)`);  // unused
-// @primary-10: color(~`colorPalette("@{primary-color}", 10)`);  // unused
+@primary-1: color(~`colorPalette("@{primary-color}", 1)`);  // replace tint(@primary-color, 90%)
+@primary-2: color(~`colorPalette("@{primary-color}", 2)`);  // replace tint(@primary-color, 80%)
+@primary-3: color(~`colorPalette("@{primary-color}", 3)`);  // unused
+@primary-4: color(~`colorPalette("@{primary-color}", 4)`);  // unused
+@primary-5: color(~`colorPalette("@{primary-color}", 5)`);  // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
+@primary-6: @primary-color;                                 // color used to control the text color of active buttons, don't use, use @primary-color
+@primary-7: color(~`colorPalette("@{primary-color}", 7)`);  // replace shade(@primary-color, 5%)
+@primary-8: color(~`colorPalette("@{primary-color}", 8)`);  // unused
+@primary-9: color(~`colorPalette("@{primary-color}", 9)`);  // unused
+@primary-10: color(~`colorPalette("@{primary-color}", 10)`);  // unused
 
 // // Base Scaffolding Variables
 // // ---
@@ -64,19 +64,19 @@
 
 // // The background colors for active and hover states for things like
 // // list items or table cells.
-// @item-active-bg         : @primary-1;
-// @item-hover-bg          : @primary-1;
+@item-active-bg         : @primary-1;
+@item-hover-bg          : @primary-1;
 
 // // ICONFONT
 // @iconfont-css-prefix    : anticon;
 // @icon-url               : "https://at.alicdn.com/t/font_148784_r2qo40wrmaolayvi";
 
 // // LINK
-// @link-color             : @primary-color;
-// @link-hover-color       : @primary-5;
-// @link-active-color      : @primary-7;
-// @link-decoration        : none;
-// @link-hover-decoration  : none;
+@link-color             : @primary-color;
+@link-hover-color       : @primary-5;
+@link-active-color      : @primary-7;
+@link-decoration        : none;
+@link-hover-decoration  : none;
 
 // // Animation
 // @ease-out            : cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -101,7 +101,7 @@
 // // Outline
 // @outline-blur-size      : 0;
 // @outline-width          : 2px;
-// @outline-color          : @primary-color;
+@outline-color          : @primary-color;
 
 // @background-color-light : hsv(0, 0, 98%);  // background of header and selected item
 // @background-color-base  : hsv(0, 0, 96%);  // Default grey background color
@@ -125,8 +125,8 @@
 // @btn-border-radius-base : @border-radius-base;
 // @btn-border-radius-sm   : @border-radius-base;
 
-// @btn-primary-color      : #fff;
-// @btn-primary-bg         : @primary-color;
+@btn-primary-color      : #fff;
+@btn-primary-bg         : @primary-color;
 
 // @btn-default-color      : @text-color;
 // @btn-default-bg         : #fff;
@@ -203,8 +203,8 @@
 // @grid-gutter-width      : 0;
 
 // // Layout
-@layout-body-background      : #0075a8;
-@layout-header-background    : #0075a8;
+@layout-body-background      : #005aab;
+@layout-header-background    : #005aab;
 // @layout-footer-background    : @layout-body-background;
 // @layout-header-height        : 64px;
 // @layout-header-padding       : 0 50px;
@@ -307,7 +307,7 @@
 // // Menu
 // // ---
 // @menu-dark-bg: @layout-header-background;
-@menu-dark-submenu-bg: #00558b;
+@menu-dark-submenu-bg: #005aab;
 // @menu-collapsed-width: 80px;
 
 // // Spin
