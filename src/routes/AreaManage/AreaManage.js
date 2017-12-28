@@ -106,7 +106,7 @@ class AreaManage extends React.Component {
         </section>
         <div style={{paddingBottom: '60px'}}></div>
         <section className="page-section bottom-actions text-center">
-            <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={this.onChange} />
+          <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={this.onChange} />
         </section>
         <Modal
           title="新增领域"

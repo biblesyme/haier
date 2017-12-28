@@ -1,5 +1,3 @@
-import React from 'react'
-
 module.exports = [
 	{
 		path: '/',
@@ -7,9 +5,9 @@ module.exports = [
 		routes: [
 			require('./routes/Dashboard'),
 			require('./routes/AreaManage'),
-			require('./routes/MarkDown'),
+			require('./routes/Application'),
+      require('./routes/ApplicationDetails'),
+      require('./routes/ResourcesRequest')
 		]
-
 	},
-
 ]

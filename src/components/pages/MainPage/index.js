@@ -39,7 +39,7 @@ class MainPage extends React.Component {
             >
               <SubMenu key="sub0" title={<span><Icon type="mail" /><span>项目管理</span></span>}>
                 <Menu.Item key="1"><Link to="/">新建应用</Link></Menu.Item>
-                <Menu.Item key="2">我的应用</Menu.Item>
+                <Menu.Item key="2"><Link to="/application">我的应用</Link></Menu.Item>
               </SubMenu>
               <SubMenu key="sub1" title={<span><Icon type="mail" /><span>资源管理</span></span>}>
                 <Menu.Item key="5">Option 5</Menu.Item>
