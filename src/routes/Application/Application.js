@@ -2,7 +2,7 @@ import { Table, Icon, Pagination } from 'antd';
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { connect } from 'utils/ecos'
+import { connect as modelConnect } from 'utils/ecos'
 
 const columns = [{
   title: '序号',
@@ -75,4 +75,4 @@ class Application extends React.Component {
       )
   }
 }
-export default connect(require('./model'))(Application)
+export default modelConnect(require('./model'))(Application)

@@ -1,5 +1,5 @@
 module.exports = {
-	path: 'markdown',
+	path: '/markdown',
 	name: 'MarkDown',
 	component: require('./MarkDown')
 }

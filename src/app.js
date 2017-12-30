@@ -1,6 +1,6 @@
-import renderRoutes from './utils/react-router-config/renderRoutes'
-import {Link} from 'react-router-dom'
 import React from 'react'
+import {renderRoutes} from 'react-router-config'
+import {Link} from 'react-router-dom'
 import { Tabs, Button,Menu } from 'antd';
 
 import styles from './app.sass'
@@ -18,8 +18,8 @@ class Demo extends React.Component {
     super(props);
   }
   submit(){
-    this.props.dispatch({
-      type: '//setLogin',
+    this.props.selfDispatch({
+      type: 'setLogin',
       payload: true
     })
   }
@@ -27,7 +27,7 @@ class Demo extends React.Component {
     let output = <LoginForm 
                   submit={this.submit.bind(this)}
                   ></LoginForm>
-    if(this.props.reduxState.login){
+    if(this.props.reduxState&&this.props.reduxState.login){
       output = <MainPage>{renderRoutes(this.props.route.routes)}</MainPage>
     }
     return (

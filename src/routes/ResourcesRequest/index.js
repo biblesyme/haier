@@ -1,5 +1,5 @@
 module.exports = {
-  path: 'resourcesRequest',
+  path: '/resourcesRequest',
   name: 'ResourcesRequest',
   component: require('./ResourcesRequest'),
   routes: [

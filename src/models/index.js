@@ -1,7 +1,7 @@
 import { delay } from 'redux-saga'
 export default {
 	state: {
-		login: true
+		login: false
 	},
 	reducers: {
 		setLogin(state,action){

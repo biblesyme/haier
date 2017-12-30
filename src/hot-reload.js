@@ -6,10 +6,12 @@ import { AppContainer } from 'react-hot-loader';
 
 import App from './main';
 
+import {createStoreProvider} from './main'
+const store = createStoreProvider()
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component/>
+      <Component store={store}/>
     </AppContainer>,
     document.getElementById('app')
   );
@@ -21,7 +23,7 @@ render(App);
 console.log(module.hot)
 if (module.hot) {
   module.hot.accept('./main', () => {
-  	console.log('arguments',arguments)
-    render(App)
+    var nextApp = require('./main').default
+    render(nextApp)
   });
 }

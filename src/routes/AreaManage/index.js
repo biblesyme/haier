@@ -1,5 +1,5 @@
 module.exports = {
-	path: 'areamanage',
+	path: '/areamanage',
 	name: 'AreaManage',
 	component: require('./AreaManage')
 }

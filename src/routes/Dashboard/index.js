@@ -1,5 +1,5 @@
 module.exports = {
-	path: '',
+	path: '/',
 	exact: true,
 	name: 'Dashboard',
 	component: require('./Dashboard')

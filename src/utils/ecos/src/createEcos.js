@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-
+// import createStoreProvider from './createStoreProvider'
+import initialModel from './model'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga/lib/internal/middleware';
 import * as sagaEffects from 'redux-saga/effects';
@@ -55,6 +56,7 @@ export default function createDva(createOpts) {
       model,
       router,
       start,
+      createStoreProvider: null,
     };
     return app;
 
@@ -169,19 +171,14 @@ export default function createDva(createOpts) {
           onError(err, app._store.dispatch);
         }
       };
-
+      // reset it before create
+      this._models = [];
       // internal model for destroy
-      model.call(this, {
-        namespace: '@@ecos',
-        state: 0,
-        reducers: {
-          UPDATE(state) { return state + 1; },
-        },
-      });
+      model.call(this, initialModel);
 
       // get reducers and sagas from model
       const sagas = [];
-      const reducers = { ...initialReducer };
+      let reducers = { ...initialReducer };
       for (const m of this._models) {
         reducers[m.namespace] = getReducer(m.reducers, m.state);
         if (m.effects) sagas.push(getSaga(m.effects, m, onErrorWrapper));
@@ -201,54 +198,68 @@ export default function createDva(createOpts) {
         'app.start: extraEnhancers should be array',
       );
 
-      // create store
       const extraMiddlewares = plugin.get('onAction');
       const reducerEnhancer = plugin.get('onReducer');
-      const sagaMiddleware = createSagaMiddleware();
-      let middlewares = [
-        sagaMiddleware,
-        ...flatten(extraMiddlewares),
-      ];
-      if (routerMiddleware) {
-        middlewares = [routerMiddleware(history), ...middlewares];
-      }
-      let devtools = () => noop => noop;
-      if (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION__) {
-        devtools = window.__REDUX_DEVTOOLS_EXTENSION__;
-      }
-      const enhancers = [
-        applyMiddleware(...middlewares),
-        devtools(),
-        ...extraEnhancers,
-      ];
-      const store = this._store = createStore(
-        createReducer(),
-        initialState,
-        compose(...enhancers),
-      );
-
-      function createReducer(asyncReducers) {
-        let allReducers = {
-          ...reducers,
-          ...extraReducers,
-          ...asyncReducers,
+      this.createStoreProvider = ()=>{
+        // create store
+        const sagaMiddleware = createSagaMiddleware();
+        let middlewares = [
+          sagaMiddleware,
+          ...flatten(extraMiddlewares),
+        ];
+        if (routerMiddleware) {
+          middlewares = [routerMiddleware(history), ...middlewares];
         }
-        console.log(allReducers)
-        return reducerEnhancer(combineReducers(allReducers));
+        let devtools = () => noop => noop;
+        if (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION__) {
+          devtools = window.__REDUX_DEVTOOLS_EXTENSION__;
+        }
+        const enhancers = [
+          applyMiddleware(...middlewares),
+          devtools(),
+          ...extraEnhancers,
+        ];
+        const store = this._store = 
+        // createStoreProvider(reducers,null,initialState)
+        createStore(
+          createReducer(reducers,extraReducers)(),
+          initialState,
+          compose(...enhancers),
+        );
+        // extend store
+        store.runSaga = sagaMiddleware.run;
+        store.asyncReducers = {};
+        // store change
+        const listeners = plugin.get('onStateChange');
+        for (const listener of listeners) {
+          store.subscribe(listener);
+        }
+
+        // start saga
+        sagas.forEach(sagaMiddleware.run);
+
+        if (module.hot) {
+          module.hot.accept('./model', () => {
+            let initialModel = require('./model');
+            let reducers = { ...initialReducer };
+            reducers[initialModel.namespace] = getReducer(initialModel.reducers, initialModel.state);
+            store.replaceReducer(createReducer(reducers,extraReducers)(store.asyncReducers));
+          });
+        }
+        return store
       }
 
-      // extend store
-      store.runSaga = sagaMiddleware.run;
-      store.asyncReducers = {};
-
-      // store change
-      const listeners = plugin.get('onStateChange');
-      for (const listener of listeners) {
-        store.subscribe(listener);
+      function createReducer(reducers,extraReducers) {
+        return (asyncReducers) => {
+          let allReducers = {
+            ...reducers,
+            ...extraReducers,
+            ...asyncReducers,
+          }
+          console.log(allReducers)
+          return reducerEnhancer(combineReducers(allReducers));
+        }
       }
-
-      // start saga
-      sagas.forEach(sagaMiddleware.run);
 
       // setup history
       if (setupHistory) setupHistory.call(this, history);
@@ -263,33 +274,32 @@ export default function createDva(createOpts) {
       }
 
       // inject model after start
-      this.model = injectModel.bind(this, createReducer, onErrorWrapper, unlisteners);
+      this.model = injectModel.bind(this, createReducer(reducers,extraReducers), onErrorWrapper, unlisteners);
 
-      this.unmodel = unmodel.bind(this, createReducer, reducers, unlisteners);
+      this.unmodel = unmodel.bind(this, createReducer(reducers,extraReducers), reducers, unlisteners);
 
       // If has container, render; else, return react component
       // if (container) {
-      //   render(container, store, this, this._router);
+      //   render(container, store, this, this._router, hotReloadPath);
       //   plugin.apply('onHmr')(render.bind(this, container, store, this));
       // } else {
       //   console.error('must have container provided to start')
       // }
-  
-      return getProvider(store, this, this._router)
+      return getProvider(this, this._router)
     }
 
     // //////////////////////////////////
     // Helpers
 
-    function getProvider(store, app, router) {
-      return extraProps => (
-        <Provider store={store}>
-          { router({ app, history: app._history, ...extraProps }) }
+    function getProvider(app, router) {
+      return props => (
+        <Provider store={props.store}>
+          { router({ app, history: app._history, ...props }) }
         </Provider>
       );
     }
 
-    function render(container, store, app, router) {
+    function render(container, store, app, router, hotReloadPath) {
       const ReactDOM = require('react-dom');
       if(process.env.NODE_ENV !== 'production'){
         const { AppContainer } = require('react-hot-loader') 
@@ -302,14 +312,15 @@ export default function createDva(createOpts) {
               container
             );
         };
-        const Provider = getProvider(store, app, router)
+        let Provider = getProvider(store, app, router)
         debugger
         renderHRM(<Provider></Provider>,container)
         if (module.hot) {
-           module.hot.accept('main',(l) => {
+           module.hot.accept(hotReloadPath,(l) => {
             console.log(l)
             debugger
             console.log('arguments',arguments)
+            Provider = getProvider(store, app, router)
             renderHRM(<Provider></Provider>,container)
           });
         }

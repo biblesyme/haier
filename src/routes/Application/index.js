@@ -1,5 +1,5 @@
 module.exports = {
-  path: 'application',
+  path: '/application',
   name: 'Application',
   component: require('./Application')
 }

@@ -1,4 +1,3 @@
-
 import React from 'react'
 
 import { Card, Pagination, Icon, Modal, Button, Form, Input, Table } from 'antd';
@@ -101,7 +100,7 @@ class AreaManage extends React.Component {
     return (
       <div>
         <section className="page-section">
-          <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域</Button></div>
+          <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域3</Button></div>
           {Cards}
         </section>
         <div style={{paddingBottom: '60px'}}></div>
@@ -225,5 +224,5 @@ class AreaManage extends React.Component {
 }
 
 AreaManage = Form.create()(AreaManage);
-
+Object.defineProperty(AreaManage, "name", { value: "AreaManage" });
 export default connect(require('./model'))(AreaManage)

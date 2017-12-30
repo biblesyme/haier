@@ -1,4 +1,5 @@
 var express = require("express");
+const path = require('path');
 var webpackDevMiddleware = require("webpack-dev-middleware");
 var webpack = require("webpack");
 var webpackConfig = require("./webpack/webpack.base.js");
@@ -34,7 +35,7 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.use('*', function (req, res, next) {
-  var filename = path.join(compiler.output.path,'index.html');
+  var filename = path.join(compiler.outputPath,'index.html');
   compiler.outputFileSystem.readFile(filename, function(err, result){
     if (err) {
       return next(err);

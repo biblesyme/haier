@@ -1,5 +1,5 @@
 module.exports = {
-  path: 'permissionsRequest',
+  path: '/permissionsRequest',
   name: 'RermissionsRequest',
   component: require('./PermissionsRequest'),
 }

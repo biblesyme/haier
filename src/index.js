@@ -1,6 +1,6 @@
 module.exports = [
 	{
-		path: '/',
+		path: '',
 		component: require('./app'),
 		routes: [
 			require('./routes/Dashboard'),
