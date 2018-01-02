@@ -104,7 +104,7 @@ class ApplicationForm extends React.Component {
             <Col span={24}>
               <FormItem
                 {...formItemLayout}
-                label="S码验证634"
+                label="S码验证"
                 hasFeedback
               >
                {getFieldDecorator('scode', {
@@ -193,9 +193,9 @@ class ApplicationForm extends React.Component {
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">应用资源配置：</label>
           <div style={{padding: '10px'}}></div>
-          <section className="card-form">
-            <div className="card-header">高配置资源</div>
-            <Form className="card-body">
+          <section className={styles["card-form"]}>
+            <div className={styles["card-header"]}>高配置资源</div>
+            <Form className={styles["card-body"]}>
               <FormItem
                 {...formItemLayout3}
                 label="CPU内核数"
@@ -220,9 +220,9 @@ class ApplicationForm extends React.Component {
             </Form>
           </section>
 
-          <section className="card-form">
-            <div className="card-header">其他资源</div>
-            <Form className="card-body">
+          <section className={styles["card-form"]}>
+            <div className={styles["card-header"]}>其他资源</div>
+            <Form className={styles["card-body"]}>
               <FormItem
                 {...formItemLayout3}
                 label="CPU内核数"
@@ -253,9 +253,9 @@ class ApplicationForm extends React.Component {
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>
           <div style={{padding: '10px'}}></div>
-          <section className="card-form width-260">
-            <div className="card-header">MYSQL</div>
-            <Form className="card-body">
+          <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
+            <div className={styles["card-header"]}>MYSQL</div>
+            <Form className={styles["card-body"]}>
               <FormItem
                 {...formItemLayout4}
                 label="地点"

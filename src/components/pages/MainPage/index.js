@@ -17,8 +17,8 @@ class MainPage extends React.Component {
   }
   render() {
     return (
-      <div className="page-wrap">
-        <div className="page-header">
+      <div className={styles["page-wrap"]}>
+        <div className={styles["page-header"]}>
           <div style={{float: "left"}}>
             海尔产品整合PORTAL
           </div>
@@ -26,7 +26,7 @@ class MainPage extends React.Component {
             当前登录： 张三 项目经理
           </div>
         </div>
-        <div className="page-navigation">
+        <div className={styles["page-navigation"]}>
             <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16,display:"none" }}>
               <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
@@ -58,7 +58,7 @@ class MainPage extends React.Component {
               <Menu.Item key="13"><Link to="/areamanage"><Icon type="inbox" /><span>领域管理</span></Link></Menu.Item>
             </Menu>
         </div>
-        <div className="page-body">{this.props.children}</div>
+        <div className={styles["page-body"]}>{this.props.children}</div>
       </div>
     );
   }

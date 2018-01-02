@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development node dev-server.js",
-    "build": "NODE_ENV=production webpack --config webpack/webpack.prod.js --context ./webpack/"
+    "build": "rm -rf ./dist/* && NODE_ENV=production webpack --config webpack/webpack.prod.js --context ./webpack/"
   },
   "author": "Aaron aaronwang@rancher.com",
   "license": "MIT",
@@ -48,6 +48,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "node-sass": "^4.5.2",
+    "postcss-loader": "^2.0.9",
     "react-hot-loader": "^3.1.3",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",

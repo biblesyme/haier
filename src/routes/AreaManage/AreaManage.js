@@ -5,7 +5,7 @@ const FormItem = Form.Item;
 
 import { connect } from 'utils/ecos'
 
-import "./style.sass"
+import styles from "./style.sass"
 function onSelect(suggestion) {
   console.log('onSelect', suggestion);
 }
@@ -85,7 +85,7 @@ class AreaManage extends React.Component {
     for (var i = 0; i < 10; i++) {
       Cards.push(
         <div key={i} className="inline-block mg-lr10 mg-b10">
-          <Card className="area-card" title="智能制造" extra={<Icon type="edit" onClick={this.showModal('visibleEdit')}/>} style={{ width: 300 }}>
+          <Card className={styles["area-card"]} title="智能制造" extra={<Icon type="edit" onClick={this.showModal('visibleEdit')}/>} style={{ width: 300 }}>
             <h4 className="pull-left">团队长：</h4>
             <div className="inline-block pd-l10">
               <p>张三 012349</p>
@@ -100,7 +100,7 @@ class AreaManage extends React.Component {
     return (
       <div>
         <section className="page-section">
-          <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域3</Button></div>
+          <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域</Button></div>
           {Cards}
         </section>
         <div style={{paddingBottom: '60px'}}></div>

@@ -3,10 +3,11 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var DashboardPlugin = require('webpack-dashboard/plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var projectRoot = path.resolve(__dirname, '../src')
+var projectRoot = path.resolve(__dirname, '../src');
 var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
-var nodeModules = path.resolve(__dirname,'../node_modules')
+var nodeModules = path.resolve(__dirname,'../node_modules');
 var subPublicPath = 'static';
+var extractPlugins = require('./extractStyleLoader');
 
 module.exports = {
   // click on the name of the option to get to the detailed documentation
@@ -18,7 +19,7 @@ module.exports = {
       hotMiddlewareScript,
       // activate HMR for React
       'webpack/hot/only-dev-server',
-      "../src/hot-reload.js"
+      "../src/client.js"
     ]
   }, // string | object | array
   // Here the application starts executing
@@ -66,56 +67,9 @@ module.exports = {
           }
         ],
       },
-      {
-        test: /\.css$/,
-        use: [{
-            loader: "style-loader?sourceMap" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader?modules", // translates CSS into CommonJS
-            options:{
-              localIdentName: '[path]_[name]_[local]_[hash:base64:5]',
-              "sourceMap": true
-            }
-        }]
-      },
-      {
-        test: /\.less$/,
-        use: [{
-            loader: "style-loader?" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader?modules", // translates CSS into CommonJS
-            options:{
-              localIdentName: '[path]_[name]_[local]_[hash:base64:5]',
-              importLoaders: 1
-              ,"sourceMap": true
-            }
-        }, {
-            loader: "less-loader", // compiles Sass to CSS
-            options: {
-              paths:[nodeModules,'./src/components']
-              ,"sourceMap": true
-            }
-        }]
-      },
-      {
-        test: /\.scss|.sass$/,
-        use: [{
-            loader: "style-loader" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader?modules", // translates CSS into CommonJS
-            options:{
-              localIdentName: '[path]_[name]_[local]_[hash:base64:5]',
-              importLoaders: 1,
-              sourceMap: true
-            }
-        }, {
-            loader: "sass-loader", // compiles Sass to CSS
-            options: {
-              includePaths:[nodeModules,'./src/components']
-              ,"sourceMap": true
-            }
-        }]
-      }
+      extractPlugins.extractCssLoader(),
+      extractPlugins.extractSassLoader(),
+      extractPlugins.extractAntDLoader(),
     ],
 
     /* Advanced module configuration (click to show) */
@@ -164,30 +118,9 @@ module.exports = {
   stats: "errors-only",
   // lets you precisely control what bundle information gets displayed
 
-  devServer: {
-    
-  },
-
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     // enable HMR globally
-
-    // new webpack.NamedModulesPlugin(),
-    // build optimization plugins
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   filename: 'vendor-[hash].min.js',
-    // }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false,
-    //     drop_console: false,
-    //   }
-    // }),
-    new ExtractTextPlugin({
-      filename: 'build.min.css',
-      allChunks: true,
-    }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // compile time plugins
     new webpack.DefinePlugin({

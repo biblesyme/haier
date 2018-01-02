@@ -13,7 +13,7 @@ import LoginForm from './components/pages/LoginForm'
 import MainPage from './components/pages/MainPage'
 
 const TabPane = Tabs.TabPane;
-class Demo extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -38,4 +38,4 @@ class Demo extends React.Component {
   }
 }
 
-export default connect(model)(Demo,true)
+export default connect(model)(App,true)
