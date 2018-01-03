@@ -1,5 +1,6 @@
 module.exports = {
   path: '/application',
   name: 'Application',
-  component: require('./Application')
+  component: require('./Application'),
+  role: ['developer', 'manager', 'admin', 'domainAdmin'],
 }

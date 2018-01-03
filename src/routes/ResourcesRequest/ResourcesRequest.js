@@ -4,7 +4,7 @@ const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
 import IndexPage from './routes/IndexPage/IndexPage'
-import renderRoutes from 'react-router-config/renderRoutes'
+import renderRoutes from 'utils/renderRoutes'
 
 class ResourcesRequest extends React.Component {
   state = {
@@ -18,8 +18,7 @@ class ResourcesRequest extends React.Component {
   render() {
     return (
       <div className="page-section">
-        
-        {renderRoutes(this.props.route.routes)}
+        {renderRoutes(this.props.route.routes, {app: this.props.app})}
       </div>
     );
   }

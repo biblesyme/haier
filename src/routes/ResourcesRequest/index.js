@@ -5,5 +5,6 @@ module.exports = {
   routes: [
     require('./routes/IndexPage'),
     require('./routes/PermissionsRequest')
-  ]
+  ],
+  role: ['admin','domainAdmin', 'manager']
 }

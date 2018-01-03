@@ -7,7 +7,8 @@ export default {
 	state: {
 		login: false,
 		loadSchemaStatus: LOAD_STATUS.INITIAL,
-		errorMessage: ''
+		errorMessage: '',
+		role: 'admin',
 	},
 	reducers: {
 		setState(state,{payload}){

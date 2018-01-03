@@ -1,5 +1,5 @@
 import React from 'react'
-import {renderRoutes} from 'react-router-config'
+import renderRoutes from 'utils/renderRoutes'
 import {Link} from 'react-router-dom'
 import { Tabs, Button,Menu } from 'antd';
 
@@ -35,12 +35,13 @@ class App extends React.Component {
       payload: {login: false}
     })
   }
-  render() { 
-    let output = <LoginForm 
+  render() {
+    // console.log(this.props, '=========')
+    let output = <LoginForm
                   submit={this.submit.bind(this)}
                   ></LoginForm>
     if(this.props.reduxState&&this.props.reduxState.login){
-      output = <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes)}</MainPage>
+      output = <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}</MainPage>
     }
     return (
       <div className="page-wrap">
