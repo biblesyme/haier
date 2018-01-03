@@ -11,6 +11,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import renderRoutes from 'react-router-config/renderRoutes'
 
 import convertRelativeRoute from './utils/convert-relative-route'
+
 const routes = require('./index')
 
 convertRelativeRoute(routes)
@@ -28,6 +29,7 @@ ecos.router(Routers)
 
 // 4. Start
 const Ecos = ecos.start('#app')
+
 if(process.env.NODE_ENV !== 'production'){
   window.ecos = ecos;
 }

@@ -4,18 +4,18 @@ import error from '../utils/error'
 const connect = require('react-redux').connect;
 
 
-export default (app) => (state, connectState = []) => (Component, isLongLife) => {
+export default (app) => (model, connectState = [], apiStoreMap) => (Component, isLongLife) => {
 	class WrapDispatch extends React.Component {
 		constructor(props) {
 			super(props);
 			this.selfDispatch = (action) => {
-				this.namespace = Component.name
-				if(!this.namespace){
+				let namespace = Component.name
+				if(!namespace){
 					error('Component passed to modelConnect should have a name!')
 				}
 				this.props.dispatch({
 					...action,
-					type: this.namespace + '/' + action.type
+					type: namespace + '/' + action.type
 				})
 			}
 		}
@@ -25,29 +25,35 @@ export default (app) => (state, connectState = []) => (Component, isLongLife) =>
 	}
 
 	return class Connected extends React.Component {
+		constructor(props) {
+			super(props)
+			this.state =  {
+				namespace : Component.name
+			}
+		}
 		componentWillMount() {
-			this.namespace = Component.name
-			if(!this.namespace){
+			let namespace = this.state.namespace
+			if(!namespace){
 				error('Component passed to modelConnect should have a name!')
 			}
 			if(
-				!Object.hasOwnProperty.call(app._store.getState(),this.namespace)
+				!Object.hasOwnProperty.call(app._store.getState(),namespace)
 				)
 			{
-				if(state){
+				if(model){
 					app.model({
-						namespace: this.namespace
-						, ...state
+						namespace
+						, ...model
 					})
 				}
 			}else{
 				if(process.env.NODE_ENV !== 'production'){
-					console.warn(`You used the same component ${this.namespace}, we will not register the model`);
+					console.warn(`You used the same component ${this.state.namespace}, we will not register the model`);
 				}
 			}
 
 			this.ConnectedComponent = connect((state)=>{ 
-				let connectedState = {reduxState: state[this.namespace]}
+				let connectedState = {reduxState: state[this.state.namespace]}
 				if(Array.isArray(connectState)){
 					for (var i = 0; i < connectState.length; i++) {
 						let item = connectState[i]
@@ -60,13 +66,24 @@ export default (app) => (state, connectState = []) => (Component, isLongLife) =>
 						let item = keys[i]
 						connectedState[item] = state[connectState[item]];
 					}
+				}else if(typeof connectState === 'function'){
+					connectedState = connectState(state)
+				}
+				if(apiStoreMap && (typeof apiStoreMap === 'function')){
+					connectedState = {
+						...connectedState,
+						...apiStoreMap(api)
+					}
 				}
 				return connectedState
 			})(WrapDispatch)
 		}
 		componentWillUnmount() {
-			if(!isLongLife){
-				app.unmodel(this.namespace)
+			let namespace = this.state.namespace
+			if(!isLongLife
+				&& Object.hasOwnProperty.call(app._store.getState(),namespace)
+				){
+				app.unmodel(namespace)
 			}
 		}
 		render() {

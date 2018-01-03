@@ -1,20 +1,23 @@
 import { delay } from 'redux-saga'
+import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
+import apiStore from 'utils/apiStore'
+
 export default {
 	state: {
-		login1: false
+		domainForm: {
+
+		},
+		saveStatus: LOAD_STATUS.INITIAL,
+		saveError: '',
 	},
 	reducers: {
-		setLogin1(state,action){
+		setStatus(state, {payload}){
 			return {
 				...state,
-				login: action.payload
+				...payload
 			}
 		}
 	}
 	,effects: {
-		*asyncLogin1({ payload },{ call,put }){
-			yield call(delay, 1000)
-			yield put({type:'setLogin',payload: true })
-		}
 	}
 }

@@ -1,5 +1,6 @@
 var express = require("express");
 const path = require('path');
+var httpProxy = require("http-proxy");
 var webpackDevMiddleware = require("webpack-dev-middleware");
 var webpack = require("webpack");
 var webpackConfig = require("./webpack/webpack.base.js");
@@ -16,6 +17,7 @@ compiler.plugin('compilation', function (compilation) {
   })
 })
 
+var apiProxy = httpProxy.createProxyServer();
 // enable hot-reload and state-preserving
 // compilation error display
 app.use(hotMiddleware)
@@ -33,7 +35,17 @@ app.use(webpackDevMiddleware(compiler, {
   },
   hot: true
 }));
-
+ // Proxy api requests
+app.use("/v1", function(req, res) {
+  req.url = req.originalUrl;
+  console.log('proxy: ',req.url);
+  apiProxy.proxyRequest(req, res, {
+    target: {
+      port: 60080,
+      host: '119.23.36.153'
+    }
+  });
+});
 app.use('*', function (req, res, next) {
   var filename = path.join(compiler.outputPath,'index.html');
   compiler.outputFileSystem.readFile(filename, function(err, result){

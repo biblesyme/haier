@@ -15,6 +15,9 @@ class MainPage extends React.Component {
       collapsed: !this.state.collapsed,
     });
   }
+  componentWillMount(){
+    this.props.init();
+  }
   render() {
     return (
       <div className={styles["page-wrap"]}>
@@ -24,6 +27,7 @@ class MainPage extends React.Component {
           </div>
           <div className="user-info">
             当前登录： 张三 项目经理
+            <span className="mg-l10" onClick={this.props.exit}><Icon type="logout"></Icon>&nbsp;退出</span>
           </div>
         </div>
         <div className={styles["page-navigation"]}>
