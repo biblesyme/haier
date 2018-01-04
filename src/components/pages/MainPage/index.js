@@ -40,7 +40,7 @@ class MainPage extends React.Component {
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub0']}
               mode="inline"
-              theme="dark"
+              theme="light"
               inlineCollapsed={this.state.collapsed}
             >
               {['admin', 'domainAdmin', 'manager'].includes(role) && (
