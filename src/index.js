@@ -7,7 +7,10 @@ module.exports = [
 			require('./routes/AreaManage'),
 			require('./routes/Application'),
       require('./routes/ApplicationDetails'),
-      require('./routes/ResourcesRequest')
+      require('./routes/ResourcesRequest'),
+			require('./routes/information'),
+			require('./routes/resource'),
+			require('./routes/user'),
 		]
 	},
 ]
