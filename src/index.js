@@ -8,9 +8,9 @@ module.exports = [
 			require('./routes/Application'),
       require('./routes/ApplicationDetails'),
       require('./routes/ResourcesRequest'),
-			require('./routes/information'),
-			require('./routes/resource'),
-			require('./routes/user'),
+			require('./routes/Information'),
+			require('./routes/Resource'),
+			require('./routes/User'),
 		]
 	},
 ]
