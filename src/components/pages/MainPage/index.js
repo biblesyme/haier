@@ -57,18 +57,18 @@ class MainPage extends React.Component {
               inlineCollapsed={this.state.collapsed}
             >
               {['admin', 'domainAdmin', 'manager'].includes(role) && (
-                <SubMenu key="sub0" title={<span><Icon type="mail" /><span>审批管理</span></span>}>
+                <Menu.ItemGroup title="审批管理">
                   {['admin', 'domainAdmin'].includes(role) && (
                     <Menu.Item key="1"><Link to="/resourcesRequest">资源审批</Link></Menu.Item>
                   )}
                   {['manager'].includes(role) && (
                     <Menu.Item key="2"><Link to="/resourcesRequest/permissionsRequest">我发起的审批</Link></Menu.Item>
                   )}
-                </SubMenu>
+                </Menu.ItemGroup>
               )}
 
               {['internal', 'manager', 'admin', 'domainAdmin', 'developer'].includes(role) && (
-                <SubMenu key="sub1" title={<span><Icon type="inbox" /><span>资源管理</span></span>}>
+                <Menu.ItemGroup title="资源管理">
                   {['internal', 'manager', 'admin', 'domainAdmin'].includes(role) && (
                     <Menu.Item key="5"><Link to="/">应用创建</Link></Menu.Item>
                   )}
@@ -81,14 +81,14 @@ class MainPage extends React.Component {
                   {['admin'].includes(role) && (
                     <Menu.Item key="8"><Link to="/resource">资源列表</Link></Menu.Item>
                   )}
-                </SubMenu>
+                </Menu.ItemGroup>
               )}
 
               {role === 'admin' && (
-                <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>权限管理</span></span>}>
+                <Menu.ItemGroup title="权限管理">
                   <Menu.Item key="9"><Link to="/user">用户管理</Link></Menu.Item>
                   <Menu.Item key="10"><Link to="/areamanage">领域管理</Link></Menu.Item>
-                </SubMenu>
+                </Menu.ItemGroup>
               )}
             </Menu>
         </div>
