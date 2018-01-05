@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 
-import { Menu, Icon, Button } from 'antd';
+import { Menu, Icon, Button, Select } from 'antd';
 const SubMenu = Menu.SubMenu;
+const {Option} = Select
 
 import styles from './style.sass'
 
@@ -20,7 +21,8 @@ class MainPage extends React.Component {
     this.props.init();
   }
   render() {
-    const role = this.props.reduxState.role
+    const role = this.props.App.role
+
     return (
       <div className={styles["page-wrap"]}>
         <div className={styles["page-header"]}>
@@ -28,7 +30,18 @@ class MainPage extends React.Component {
             海尔产品整合PORTAL
           </div>
           <div className="user-info">
-            当前登录： 张三 项目经理
+            当前登录： 张三
+            <Select defaultValue="管理员"
+                    value={role}
+                    onChange={role => this.props.dispatch({type:'App/setState',payload: {role}})}
+            >
+              <Option key="admin">管理员</Option>
+              <Option key="domainAdmin">团队长</Option>
+              <Option key="manager">项目经理</Option>
+              <Option key="developer">开发者</Option>
+              <Option key="internal">非A账号</Option>
+              <Option key="external">A账号</Option>
+            </Select>
             <span className="mg-l10" onClick={this.props.exit}><Icon type="logout"></Icon>&nbsp;退出</span>
           </div>
         </div>
@@ -84,4 +97,4 @@ class MainPage extends React.Component {
     );
   }
 }
-export default connect(require('../../../models'))(MainPage)
+export default connect(null,['App'])(MainPage)
