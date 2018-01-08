@@ -68,7 +68,6 @@ class C extends React.Component {
     return (
       <main className="page-section">
         <h3>用户列表</h3>
-        <br/>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
             <Button type="primary">
@@ -96,7 +95,7 @@ class C extends React.Component {
           />
         </Col>
       </Row>
-      </main>
+    </main>
     )
   }
 }

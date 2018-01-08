@@ -8,7 +8,10 @@
   padding-top: 50px
   height: 100%
   background-color: $menu-color
-  width: 150px
+  width: 200px
+  box-shadow: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12)
+  \:global .ant-menu-item-group-title
+    font-size: 10px
 
 .page-header
   position: fixed
@@ -21,6 +24,7 @@
   z-index: 1000
   text-align: right
   padding: 0 20px
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,.14), 0 3px 3px -2px rgba(0,0,0,.2), 0 1px 8px 0 rgba(0,0,0,0.3)
   \:global .ant-select-selection
     background-color: inherit
     border: none
@@ -34,5 +38,5 @@
   width: 100%
   height: 100%
   padding-top: 60px
-  padding-left: 180px
+  padding-left: 230px
   overflow: scroll

@@ -73,10 +73,26 @@ class MainPage extends React.Component {
                     <Menu.Item key="5"><Link to="/">应用创建</Link></Menu.Item>
                   )}
                   {['admin'].includes(role) && (
-                    <Menu.Item key="6"><Link to="/information">信息中心</Link></Menu.Item>
+                    <Menu.Item key="6">
+                      <Link to="/information">
+                        <span>
+                          <Icon type="mail" />
+                          <span>
+                            信息中心
+                          </span>
+                        </span>
+                      </Link>
+                    </Menu.Item>
                   )}
                   {['developer', 'manager', 'admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="7"><Link to="/application">应用列表</Link></Menu.Item>
+                    <Menu.Item key="7">
+                      <Link to="/application">
+                        <span>
+                          <Icon type="appstore" />
+                          <span>应用列表</span>
+                        </span>
+                      </Link>
+                    </Menu.Item>
                   )}
                   {['admin'].includes(role) && (
                     <Menu.Item key="8"><Link to="/resource">资源列表</Link></Menu.Item>
@@ -86,7 +102,16 @@ class MainPage extends React.Component {
 
               {role === 'admin' && (
                 <Menu.ItemGroup title="权限管理">
-                  <Menu.Item key="9"><Link to="/user">用户管理</Link></Menu.Item>
+                  <Menu.Item key="9">
+                    <Link to="/user">
+                      <span>
+                        <Icon type="user" />
+                        <span>
+                          用户管理
+                        </span>
+                      </span>
+                    </Link>
+                  </Menu.Item>
                   <Menu.Item key="10"><Link to="/areamanage">领域管理</Link></Menu.Item>
                 </Menu.ItemGroup>
               )}
