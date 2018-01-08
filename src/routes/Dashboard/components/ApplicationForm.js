@@ -169,8 +169,19 @@ class ApplicationForm extends React.Component {
                自开发
               </FormItem>
             </Col>
+            <Col span={col}>
+              <FormItem
+                {...formItemLayout}
+                label="应用领域"
+                hasFeedback
+              >
+               <Select defaultValue="supply" disabled>
+                 <Option key="supply">供应链</Option>
+               </Select>
+              </FormItem>
+            </Col>
             </Row>
-            <Row gutter={24}>
+            {/* <Row gutter={24}>
               <Col span={24} style={{textAlign: 'right'}}>
                 <FormItem
                   {...formItemLayout2}
@@ -179,7 +190,7 @@ class ApplicationForm extends React.Component {
                   <Button>修改</Button>
                 </FormItem>
               </Col>
-            </Row>
+            </Row> */}
           </Form>
         </section>
 
@@ -298,7 +309,7 @@ class ApplicationForm extends React.Component {
           </section>
         </section>
 
-        <section className="page-section">
+        {/* <section className="page-section">
           <h3>选择框架</h3>
           <CheckboxGroup options={plainOptions} />
         </section>
@@ -308,7 +319,7 @@ class ApplicationForm extends React.Component {
           >
             开启
           </Checkbox>
-        </section>
+        </section> */}
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
