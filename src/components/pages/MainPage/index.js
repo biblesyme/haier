@@ -55,13 +55,14 @@ class MainPage extends React.Component {
               mode="inline"
               theme="light"
               inlineCollapsed={this.state.collapsed}
+              style={{ marginTop: '10px' }}
             >
               {['admin', 'domainAdmin', 'manager'].includes(role) && (
                 <Menu.ItemGroup title="审批管理">
                   {['admin', 'domainAdmin'].includes(role) && (
                     <Menu.Item key="1"><Link to="/resourcesRequest">资源审批</Link></Menu.Item>
                   )}
-                  {['manager'].includes(role) && (
+                  {['admin', 'manager', 'domainAdmin'].includes(role) && (
                     <Menu.Item key="2"><Link to="/resourcesRequest/permissionsRequest">我发起的审批</Link></Menu.Item>
                   )}
                 </Menu.ItemGroup>

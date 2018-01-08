@@ -3,5 +3,5 @@ module.exports = {
 	exact: true,
 	name: 'Dashboard',
 	component: require('./Dashboard'),
-	role: ['admin', 'domainAdmin']
+	role: ['admin', 'domainAdmin', 'internal', 'manager']
 }

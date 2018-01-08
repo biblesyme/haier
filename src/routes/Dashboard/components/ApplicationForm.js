@@ -182,7 +182,7 @@ class ApplicationForm extends React.Component {
             </Row>
           </Form>
         </section>
-        
+
         <section className="page-section">
           <label htmlFor="">资源所在地：</label>
           <Radio.Group value={size2}>

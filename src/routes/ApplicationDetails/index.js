@@ -1,5 +1,6 @@
 module.exports = {
   path: '/applications/:id',
   name: 'ApplicationDetails',
-  component: require('./ApplicationDetails')
+  component: require('./ApplicationDetails'),
+  role: ['admin']
 }

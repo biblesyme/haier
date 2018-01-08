@@ -35,6 +35,7 @@ app.use(webpackDevMiddleware(compiler, {
   },
   hot: true
 }));
+
  // Proxy api requests
 app.use("/v1", function(req, res) {
   req.url = req.originalUrl;
@@ -42,7 +43,7 @@ app.use("/v1", function(req, res) {
   apiProxy.proxyRequest(req, res, {
     target: {
       port: 60080,
-      host: '119.23.36.153'
+      host: '120.79.157.233'
     }
   });
 });
