@@ -17,6 +17,7 @@
     "antd": "^3.0.2",
     "axios": "^0.16.1",
     "babel-preset-env": "^1.6.1",
+    "bizcharts": "^3.1.0",
     "install": "^0.10.2",
     "lodash": "^4.17.4",
     "npm": "^5.6.0",

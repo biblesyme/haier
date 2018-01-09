@@ -1,9 +1,11 @@
-import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input } from 'antd';
+import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress } from 'antd';
+import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 
 const FormItem = Form.Item
+const CardGrid = Card.Grid
 
 import styles from './style.sass'
 
@@ -111,6 +113,20 @@ class Application extends React.Component {
         marginBottom: '10px'
       }
     }
+    // 数据源
+    const data = [
+      { genre: 'Sports', sold: 275, income: 2300 },
+      { genre: 'Strategy', sold: 115, income: 667 },
+      { genre: 'Action', sold: 120, income: 982 },
+      { genre: 'Shooter', sold: 350, income: 5271 },
+      { genre: 'Other', sold: 150, income: 3710 }
+    ];
+
+    // 定义度量
+    const cols = {
+      sold: { alias: '销售量' },
+      genre: { alias: '游戏种类' }
+    };
     return (
     <div>
       <section className="page-section">
@@ -192,7 +208,7 @@ class Application extends React.Component {
       <section className="page-section">
         <label>资源所在地: 青岛</label>
         <div style={{padding: '10px'}}></div>
-        <label htmlFor="">应用资源配置：</label>
+        <label htmlFor="">应用资源：</label>
         <div style={{padding: '10px'}}></div>
         <section className={styles["card-form"]}>
           <div className={styles["card-header"]}>高配置资源</div>
@@ -223,73 +239,143 @@ class Application extends React.Component {
         <div className="text-right pd-tb10">
           <Button type="primary">前往容器云</Button>
         </div>
-        <label htmlFor="">推荐中间件：</label>
-        <div style={{padding: '10px'}}></div>
-        <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-          <div className={styles["card-header"]}>MYSQL</div>
-          <Form className={styles["card-body"]}>
-            <FormItem
-              {...formItemLayout4}
-              label="地点"
-              hasFeedback
-            >
-             青岛
-            </FormItem>
-            <FormItem
-              {...formItemLayout4}
-              label="资源"
-              hasFeedback
-            >
-              中
-            </FormItem>
-            <FormItem
-              {...formItemLayout4}
-              label="分片"
-              hasFeedback
-            >
-             1024G
-            </FormItem>
-            <FormItem
-              {...formItemLayout4}
-              label="备份"
-              hasFeedback
-            >
-              是
-            </FormItem>
-          </Form>
-        </section>
-        <br/>
-        <section className={`${styles["card-form"]} ${styles["width-260"]}`} style={{marginTop: '10px'}}>
-          <div className={styles["card-header"]}>Redis</div>
-          <Form className={styles["card-body"]}>
-            <FormItem
-              {...formItemLayout4}
-              label="地点"
-              hasFeedback
-            >
-             青岛
-            </FormItem>
-            <FormItem
-              {...formItemLayout4}
-              label="资源"
-              hasFeedback
-            >
-              共享资源
-            </FormItem>
-            <FormItem
-              {...formItemLayout4}
-              label="配置"
-              hasFeedback
-            >
-             单例
-            </FormItem>
-          </Form>
-        </section>
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往中间件平台</Button>
-        </div>
-      </section>
 
+        <Row>
+          <Col>
+            <label htmlFor="">中间件：</label>
+            <div style={{padding: '10px'}}></div>
+            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
+              <div className={styles["card-header"]}>MYSQL</div>
+              <Form className={styles["card-body"]}>
+                <FormItem
+                  {...formItemLayout4}
+                  label="地点"
+                  hasFeedback
+                >
+                 青岛
+                </FormItem>
+                <FormItem
+                  {...formItemLayout4}
+                  label="资源"
+                  hasFeedback
+                >
+                  中
+                </FormItem>
+                <FormItem
+                  {...formItemLayout4}
+                  label="分片"
+                  hasFeedback
+                >
+                 1024G
+                </FormItem>
+                <FormItem
+                  {...formItemLayout4}
+                  label="备份"
+                  hasFeedback
+                >
+                  是
+                </FormItem>
+              </Form>
+            </section>
+          </Col>
+
+          <Row gutter={8}  style={{marginTop: '10px'}} >
+            <Col span={4} style={{marginLeft: '20px'}}>
+              <Card title="Redis" style={{width: '220px', height: '275px'}}>
+                <Form>
+                  <FormItem
+                    {...formItemLayout4}
+                    label="地点"
+                    hasFeedback
+                  >
+                   青岛
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout4}
+                    label="资源"
+                    hasFeedback
+                  >
+                    共享资源
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout4}
+                    label="配置"
+                    hasFeedback
+                  >
+                   单例
+                  </FormItem>
+                </Form>
+              </Card>
+            </Col>
+            <Col span={19}>
+              <Card title="状态">
+                <CardGrid style={{width: '25%'}}>
+                  <Progress type="dashboard"
+                            percent={75}
+                            width={120}
+                            format={percent => `内存使用
+                              ${percent}%`}
+                  />
+                </CardGrid>
+                <CardGrid style={{width: '25%'}}>
+                  <Progress type="circle"
+                            percent={30}
+                            width={120}
+                            format={percent => `命中率
+                              ${percent}%`}
+                            style={{marginLeft: '20px'}}
+                  />
+                </CardGrid>
+                <CardGrid style={{width: '25%', height: '168px'}}>
+                  日慢查询数量
+                  <div style={{fontSize: '64px', textAlign: 'right'}}>
+                    2334
+                  </div>
+                </CardGrid>
+                <CardGrid style={{width: '25%', height: '168px'}}>
+                  当前连接数
+                  <div style={{fontSize: '64px', textAlign: 'right'}}>
+                    999
+                  </div>
+                </CardGrid>
+              </Card>
+            </Col>
+          </Row>
+
+          <Col span={24}>
+            <section className={`${styles["card-form"]} ${styles["width-260"]}`} style={{marginTop: '10px'}}>
+              <div className={styles["card-header"]}>Redis</div>
+              <Form className={styles["card-body"]}>
+                <FormItem
+                  {...formItemLayout4}
+                  label="地点"
+                  hasFeedback
+                >
+                 青岛
+                </FormItem>
+                <FormItem
+                  {...formItemLayout4}
+                  label="资源"
+                  hasFeedback
+                >
+                  共享资源
+                </FormItem>
+                <FormItem
+                  {...formItemLayout4}
+                  label="配置"
+                  hasFeedback
+                >
+                 单例
+                </FormItem>
+              </Form>
+            </section>
+            <div className="text-right pd-tb10">
+              <Button type="primary">前往中间件平台</Button>
+            </div>
+          </Col>
+        </Row>
+
+    </section>
       {/* <div className="page-section">
         <h3>已选框架</h3>
         <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
