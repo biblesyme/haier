@@ -17,20 +17,22 @@ const columns = [{
   defaultSortOrder: 'descend',
   sorter: (a, b) => a.manager.length - b.manager.length,
 }, {
-  title: '应用健康度',
+  title: '应用告警数',
   dataIndex: 'health',
 }, {
   title: '资源占用率',
   dataIndex: 'resourceUsage',
-}, {
-  title: '中间件健康度',
-  dataIndex: 'middleWareHealth',
-  render(text, record, index){
-    return (
-        <Icon type="database">{text}</Icon>
-      )
-  }
-}, {
+},
+// {
+//   title: '中间件健康度',
+//   dataIndex: 'middleWareHealth',
+//   render(text, record, index){
+//     return (
+//         <Icon type="database">{text}</Icon>
+//       )
+//   }
+// },
+{
   title: '状态',
   dataIndex: 'status',
 }, {

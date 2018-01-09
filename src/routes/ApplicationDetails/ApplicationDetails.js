@@ -258,12 +258,39 @@ class Application extends React.Component {
             </FormItem>
           </Form>
         </section>
+        <br/>
+        <section className={`${styles["card-form"]} ${styles["width-260"]}`} style={{marginTop: '10px'}}>
+          <div className={styles["card-header"]}>Redis</div>
+          <Form className={styles["card-body"]}>
+            <FormItem
+              {...formItemLayout4}
+              label="地点"
+              hasFeedback
+            >
+             青岛
+            </FormItem>
+            <FormItem
+              {...formItemLayout4}
+              label="资源"
+              hasFeedback
+            >
+              共享资源
+            </FormItem>
+            <FormItem
+              {...formItemLayout4}
+              label="配置"
+              hasFeedback
+            >
+             单例
+            </FormItem>
+          </Form>
+        </section>
         <div className="text-right pd-tb10">
           <Button type="primary">前往中间件平台</Button>
         </div>
       </section>
 
-      <div className="page-section">
+      {/* <div className="page-section">
         <h3>已选框架</h3>
         <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
       </div>
@@ -273,7 +300,7 @@ class Application extends React.Component {
         <div className="text-right pd-tb10">
           <Button type="primary">前往能力开放平台</Button>
         </div>
-      </div>
+      </div> */}
     </div>
       )
   }
