@@ -23,18 +23,6 @@ export default class C extends React.Component {
         marginBottom: '10px'
       }
     }
-    const formItemLayoutSecond = {
-      labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 },
-        pull: 0,
-      },
-      wrapperCol: {
-        xs: { span: 18 },
-        sm: { span: 18 },
-        push: 0
-      },
-    }
     return (
       <main>
         <Row gutter={8}  style={{marginTop: '10px'}} >

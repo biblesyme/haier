@@ -29,17 +29,19 @@ export default class LoginForm extends React.Component {
   }
   render(){
     return (
-      <Form onSubmit={this.submit.bind(this)} className={[styles.root , this.props.className].join(' ')}>
-        <h3 className={styles.title}>登录</h3>
-        <Form.Item hasFeedback style={{marginBottom: '20px'}}>{this.formItems().Username}</Form.Item>
-        <Form.Item hasFeedback style={{marginBottom: '20px'}}>{this.formItems().Password}</Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className={styles.loginButton}> 登录 </Button>
-        </Form.Item>
-        <div className={styles.footer}>
-          <a disabled onClick={this.forgotPassword}>忘记密码?</a>
-        </div>
-      </Form>
+      <div className={styles.wrapper}>
+        <Form onSubmit={this.submit.bind(this)} className={[styles.root , this.props.className].join(' ')}>
+          <h3 className={styles.title}>登录</h3>
+          <Form.Item hasFeedback style={{marginBottom: '20px'}}>{this.formItems().Username}</Form.Item>
+          <Form.Item hasFeedback style={{marginBottom: '20px'}}>{this.formItems().Password}</Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className={styles.loginButton}> 登录 </Button>
+          </Form.Item>
+          <div className={styles.footer}>
+            <a disabled onClick={this.forgotPassword}>忘记密码?</a>
+          </div>
+        </Form>
+      </div>
     )
   }
 }

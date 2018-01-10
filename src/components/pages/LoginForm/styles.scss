@@ -1,12 +1,28 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  z-index: 101;
+  background-color: white;
+  background-image: url("/static/bg.svg");
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .root {
   width: 320px;
   background: rgba(#efefef, .9);
-  // box-shadow: $shadow-4dp;
+  box-shadow: 0 0 2px #ccc;
   padding: 20px;
   text-align: left;
 }
 
-.login-button {
+.loginButton {
   width: 100%;
 }
 
