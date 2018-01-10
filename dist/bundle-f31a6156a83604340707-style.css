@@ -1,0 +1,191 @@
+.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow {
+  right: 10% !important; }
+
+.ant-menu-inline .ant-menu-submenu-title {
+  padding-right: 24px !important; }
+
+html, body {
+  background-color: #ecf0f1; }
+
+#app {
+  height: 100%;
+  width: 100%;
+  background-color: #ecf0f1; }
+
+.page-wrap {
+  min-height: 100%;
+  width: 100%; }
+
+.width-260 {
+  width: 260px; }
+
+.page-section {
+  padding: 20px;
+  background-color: white;
+  margin-bottom: 20px; }
+
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  z-index: 2000;
+  margin: 0;
+  width: calc(100% - 245px);
+  box-shadow: 2px -1px 6px 1px #ecf0f1; }
+
+.text-center {
+  text-align: center; }
+
+.text-right {
+  text-align: right; }
+
+.pull-left {
+  float: left; }
+
+.pull-right {
+  float: right; }
+
+.inline-block {
+  display: inline-block;
+  vertical-align: top; }
+
+.pd-l10 {
+  padding-left: 10px; }
+
+.pd-tb10 {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.mg-l10 {
+  margin-left: 10px; }
+
+.mg-lr10 {
+  margin-left: 10px;
+  margin-right: 10px; }
+
+.mg-b10 {
+  margin-bottom: 10px; }
+._-src-components-pages-LoginForm-_styles_root_2tW24 {
+  width: 320px;
+  background: rgba(239, 239, 239, 0.9);
+  padding: 20px;
+  text-align: left; }
+
+._-src-components-pages-LoginForm-_styles_login-button_2Sjwd {
+  width: 100%; }
+
+._-src-components-pages-LoginForm-_styles_title_2KIVk {
+  text-align: center;
+  margin-bottom: 20px; }
+
+._-src-components-pages-LoginForm-_styles_footer_1D6h- {
+  display: flex;
+  justify-content: flex-end; }
+.ant-menu-dark .ant-menu-inline.ant-menu-sub.ant-menu-sub {
+  box-shadow: none; }
+
+._-src-components-pages-MainPage-_style_page-navigation_j7Mtk {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 50px;
+  height: 100%;
+  background-color: #fff;
+  width: 200px;
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12); }
+  ._-src-components-pages-MainPage-_style_page-navigation_j7Mtk .ant-menu-item-group-title {
+    font-size: 10px; }
+
+._-src-components-pages-MainPage-_style_page-header_1ZyNN {
+  position: fixed;
+  top: 0;
+  background-color: #005aab;
+  color: white;
+  height: 50px;
+  width: 100%;
+  line-height: 50px;
+  z-index: 1000;
+  text-align: right;
+  padding: 0 20px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 1px 8px 0 rgba(0, 0, 0, 0.3); }
+  ._-src-components-pages-MainPage-_style_page-header_1ZyNN .ant-select-selection {
+    background-color: inherit;
+    border: none;
+    box-shadow: none; }
+    ._-src-components-pages-MainPage-_style_page-header_1ZyNN .ant-select-selection .ant-select-selection-selected-value {
+      color: white; }
+  ._-src-components-pages-MainPage-_style_page-header_1ZyNN .ant-select-arrow {
+    color: white; }
+
+._-src-components-pages-MainPage-_style_page-body_3IdeQ {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding-top: 60px;
+  padding-left: 230px;
+  overflow: scroll; }
+._-src-routes-Dashboard-components-_style_card-form_2M6ks {
+  width: 220px;
+  border: 1px solid #ecf0f1;
+  display: inline-block;
+  margin: 0 20px; }
+  ._-src-routes-Dashboard-components-_style_card-form_2M6ks ._-src-routes-Dashboard-components-_style_card-header_Kssju {
+    background-color: #005cb0;
+    border-bottom: 1px solid #ecf0f1;
+    color: white;
+    padding: 5px;
+    font: 1.5em;
+    text-align: center; }
+  ._-src-routes-Dashboard-components-_style_card-form_2M6ks ._-src-routes-Dashboard-components-_style_card-body_37hf7 {
+    padding: 10px; }
+    ._-src-routes-Dashboard-components-_style_card-form_2M6ks ._-src-routes-Dashboard-components-_style_card-body_37hf7 .ant-form-item-label {
+      text-align: left; }
+    ._-src-routes-Dashboard-components-_style_card-form_2M6ks ._-src-routes-Dashboard-components-_style_card-body_37hf7 .ant-form-item-control-wrapper {
+      text-align: right; }
+._-src-routes-AreaManage-_style_area-card_Yrqlj .ant-card-head {
+  background: #2c9bff;
+  color: white; }
+
+._-src-routes-AreaManage-_style_area-card_Yrqlj .ant-card-head-title {
+  text-align: center;
+  color: white; }
+._-src-routes-ApplicationDetails-_style_card-form_3JyqZ {
+  width: 220px;
+  border: 1px solid #ecf0f1;
+  display: inline-block;
+  margin: 0 20px; }
+  ._-src-routes-ApplicationDetails-_style_card-form_3JyqZ ._-src-routes-ApplicationDetails-_style_card-header_WkI-B {
+    background-color: #005cb0;
+    border-bottom: 1px solid #ecf0f1;
+    color: white;
+    padding: 5px;
+    font: 1.5em;
+    text-align: center; }
+  ._-src-routes-ApplicationDetails-_style_card-form_3JyqZ ._-src-routes-ApplicationDetails-_style_card-body_2PmWE {
+    padding: 10px; }
+    ._-src-routes-ApplicationDetails-_style_card-form_3JyqZ ._-src-routes-ApplicationDetails-_style_card-body_2PmWE .ant-form-item-label {
+      text-align: left; }
+    ._-src-routes-ApplicationDetails-_style_card-form_3JyqZ ._-src-routes-ApplicationDetails-_style_card-body_2PmWE .ant-form-item-control-wrapper {
+      text-align: right; }
+
+.ant-card-head {
+  background-color: #005cb0; }
+  .ant-card-head .ant-card-head-title {
+    color: white;
+    text-align: center; }
+
+.ant-card-body {
+  padding: 10px; }
+  .ant-card-body .ant-form-item-label {
+    text-align: left; }
+  .ant-card-body .ant-form-item-control-wrapper {
+    text-align: right; }
+._-src-components-ActionDropdown-_styles_action-item_xRvVh {
+  padding: 2px 0;
+  min-width: 120px;
+  display: flex;
+  justify-content: space-between; }
+._-src-routes-User-List-_styles_tableListForm_3ukec {
+  margin-bottom: 24px;
+  margin-top: 24px; }

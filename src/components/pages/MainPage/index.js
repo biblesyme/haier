@@ -60,10 +60,20 @@ class MainPage extends React.Component {
               {['admin', 'domainAdmin', 'manager'].includes(role) && (
                 <Menu.ItemGroup title="审批管理">
                   {['admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="1"><Link to="/resourcesRequest">资源审批</Link></Menu.Item>
+                    <Menu.Item key="1">
+                      <Link to="/resourcesRequest">
+                        <Icon type="approval1"></Icon>
+                        <span>资源审批</span>
+                      </Link>
+                    </Menu.Item>
                   )}
                   {['admin', 'manager', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="2"><Link to="/resourcesRequest/permissionsRequest">我发起的审批</Link></Menu.Item>
+                    <Menu.Item key="2">
+                      <Link to="/resourcesRequest/permissionsRequest">
+                        <Icon type="SubmitReview"></Icon>
+                        <span>我发起的审批</span>
+                      </Link>
+                    </Menu.Item>
                   )}
                 </Menu.ItemGroup>
               )}
@@ -71,7 +81,12 @@ class MainPage extends React.Component {
               {['internal', 'manager', 'admin', 'domainAdmin', 'developer'].includes(role) && (
                 <Menu.ItemGroup title="资源管理">
                   {['internal', 'manager', 'admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="5"><Link to="/">应用创建</Link></Menu.Item>
+                    <Menu.Item key="5">
+                      <Link to="/">
+                        <Icon type="app"></Icon>
+                        <span>应用创建</span>
+                      </Link>
+                    </Menu.Item>
                   )}
                   {['admin'].includes(role) && (
                     <Menu.Item key="6">
@@ -96,7 +111,12 @@ class MainPage extends React.Component {
                     </Menu.Item>
                   )}
                   {['admin'].includes(role) && (
-                    <Menu.Item key="8"><Link to="/resource">资源列表</Link></Menu.Item>
+                    <Menu.Item key="8">
+                      <Link to="/resource">
+                        <Icon type="resource"></Icon>
+                        <span>资源列表</span>
+                      </Link>
+                    </Menu.Item>
                   )}
                 </Menu.ItemGroup>
               )}
@@ -113,7 +133,12 @@ class MainPage extends React.Component {
                       </span>
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key="10"><Link to="/areamanage">领域管理</Link></Menu.Item>
+                  <Menu.Item key="10">
+                    <Link to="/areamanage">
+                      <Icon type="area"></Icon>
+                      <span>领域管理</span>
+                    </Link>
+                  </Menu.Item>
                 </Menu.ItemGroup>
               )}
             </Menu>
