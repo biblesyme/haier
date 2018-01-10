@@ -12,6 +12,7 @@
   "author": "Aaron aaronwang@rancher.com",
   "license": "MIT",
   "dependencies": {
+    "@antv/data-set": "^0.8.3",
     "@babel/core": "^7.0.0-beta.35",
     "@babel/preset-env": "^7.0.0-beta.35",
     "antd": "^3.0.2",
