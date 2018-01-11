@@ -105,6 +105,7 @@ class ApplicationForm extends React.Component {
     const defaultMiddlewareMapping = {
       ip: null,
       id: this.middlewareMappingId++,
+      type: this.state.middlewareSelect,
     }
     const {middlewareMappings} = this.state
     this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
