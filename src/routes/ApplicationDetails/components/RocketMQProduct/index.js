@@ -85,18 +85,18 @@ export default class C extends React.Component {
           </Col>
           <Col span={20}>
             <Card bordered={false} height={300}>
-              <CardGrid style={{width: '25%', height: '168px'}}>
-                消息总数
-                <div style={{fontSize: '64px', textAlign: 'right'}}>
-                  999
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '75%'}}>
+              <CardGrid style={{width: '80%'}}>
                 <Table
                   // dataSource={boxes}
                   columns={columns}
                   rowKey="id"
                 />
+              </CardGrid>
+              <CardGrid style={{width: '20%', height: '168px'}}>
+                消息总数
+                <div style={{fontSize: '64px', textAlign: 'right'}}>
+                  999
+                </div>
               </CardGrid>
             </Card>
           </Col>

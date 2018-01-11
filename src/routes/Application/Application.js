@@ -1,4 +1,4 @@
-import { Table, Icon, Pagination } from 'antd';
+import { Table, Icon, Pagination, Tag } from 'antd';
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -22,6 +22,19 @@ const columns = [{
 }, {
   title: '资源占用率',
   dataIndex: 'resourceUsage',
+}, {
+  title: '资源种类',
+  dataIndex: 'resourceUsage',
+  render() {
+    return (
+      <div>
+        <Tag>M</Tag>
+        <Tag>P</Tag>
+        <Tag>R</Tag>
+        <Tag>MQ</Tag>
+      </div>
+    )
+  }
 },
 // {
 //   title: '中间件健康度',

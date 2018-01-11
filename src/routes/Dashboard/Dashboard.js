@@ -74,7 +74,6 @@ const formItemLayout4 = {
   }
 }
 const col = 12
-const plainOptions = ['前端框架', '后台框架']
 
 class NewApplication extends React.Component {
   render() {
