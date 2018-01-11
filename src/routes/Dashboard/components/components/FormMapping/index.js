@@ -14,7 +14,9 @@ export default class C extends React.Component {
     size2: 'qd',
     checkedList: [],
   }
+
   render() {
+    const {onChange, item, onRemove} = this.props
     const { size, size2 } = this.state;
     const formItemLayout4 = {
       labelCol: {
@@ -31,6 +33,7 @@ export default class C extends React.Component {
         marginBottom: '10px'
       }
     }
+
     return (
       <div>
         <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
@@ -69,7 +72,7 @@ export default class C extends React.Component {
               label="备份"
               hasFeedback
             >
-              <Radio.Group value={size}>
+              <Radio.Group value={size} onChange={e => this.setState({size: e.target.value})}>
                 <Radio.Button value="haier">是</Radio.Button>
                 <Radio.Button value="nohaier">否</Radio.Button>
               </Radio.Group>
@@ -80,7 +83,7 @@ export default class C extends React.Component {
         <section className={`${styles["card-form"]} ${styles["width-260"]}`}
                  style={{marginTop: '2px', marginBottom: '20px'}}
         >
-          <Button style={{width: '100%'}}><Icon type="delete" /></Button>
+          <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
         </section>
       </div>
     )

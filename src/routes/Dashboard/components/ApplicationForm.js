@@ -1,7 +1,8 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
 import { connect } from 'utils/ecos'
-import FormMySQL from './components/FormMySQL'
+import FormMapping from './components/FormMapping'
+import replace from 'utils/replace'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -82,7 +83,13 @@ class ApplicationForm extends React.Component {
     size2: 'qd',
     checkedList: [],
     middlewareSelect: 'MySQL',
+    middlewareMappings: [],
   }
+
+  componentWillMount() {
+    this.addMiddlewareMapping()
+  }
+
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed,
@@ -91,6 +98,28 @@ class ApplicationForm extends React.Component {
 
   addMiddleware = () => {
     console.log(this.state.middlewareSelect)
+  }
+
+  middlewareMappingId = 0
+  addMiddlewareMapping = () => {
+    const defaultMiddlewareMapping = {
+      ip: null,
+      id: this.middlewareMappingId++,
+    }
+    const {middlewareMappings} = this.state
+    this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
+  }
+
+  removeMiddlewareMapping = (id) => {
+    const {middlewareMappings} = this.state
+    const filtered = middlewareMappings.filter(item => item.id !== id)
+    this.setState({middlewareMappings: filtered})
+  }
+
+  middlewareMappingChange = (newItem) => {
+    const {middlewareMappings} = this.state
+    const nextAry = replace(middlewareMappings, newItem)
+    this.setState({middlewareMappings: nextAry})
   }
 
   render() {
@@ -280,64 +309,21 @@ class ApplicationForm extends React.Component {
             <Option key="RocketMQ">RocketMQ</Option>
             <Option key="RabbitMQ">RabbitMQ</Option>
           </Select>
-          <Button onClick={this.addMiddleware}><Icon type="plus" /></Button>
+          <Button onClick={this.addMiddlewareMapping}><Icon type="plus" /></Button>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>
           <div style={{padding: '10px'}}></div>
 
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>MYSQL</div>
-              <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formItemLayout4}
-                  label="地点"
-                  hasFeedback
-                >
-                 <Radio.Group value={size}>
-                  <Radio.Button value="haier">青岛</Radio.Button>
-                  <Radio.Button value="nohaier">北京</Radio.Button>
-                </Radio.Group>
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="资源"
-                  hasFeedback
-                >
-                 <Radio.Group value={size}>
-                  <Radio.Button value="haier">高</Radio.Button>
-                  <Radio.Button value="nohaier">中</Radio.Button>
-                  <Radio.Button value="nohaier">低</Radio.Button>
-                </Radio.Group>
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="分片"
-                  hasFeedback
-                >
-                 1024G
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="备份"
-                  hasFeedback
-                >
-                  <Radio.Group value={size}>
-                    <Radio.Button value="haier">是</Radio.Button>
-                    <Radio.Button value="nohaier">否</Radio.Button>
-                  </Radio.Group>
-                </FormItem>
-              </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}}><Icon type="delete" /></Button>
-            </section>
-          </div>
-
-          <FormMySQL></FormMySQL>
+          {this.state.middlewareMappings.map(item => {
+            return (
+              <FormMapping
+                onChange={(item) => this.middlewareMappingChange(item)}
+                onRemove={() => this.removeMiddlewareMapping(item.id)}
+                key={item.id}
+                item={item}
+                />
+            )
+          })}
 
         </section>
 
