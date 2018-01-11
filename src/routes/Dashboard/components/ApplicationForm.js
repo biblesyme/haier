@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
 import { connect } from 'utils/ecos'
+import FormMySQL from './components/FormMySQL'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -79,13 +80,19 @@ class ApplicationForm extends React.Component {
   state = {
     size: 'haier',
     size2: 'qd',
-    checkedList: []
+    checkedList: [],
+    middlewareSelect: 'MySQL',
   }
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
   }
+
+  addMiddleware = () => {
+    console.log(this.state.middlewareSelect)
+  }
+
   render() {
     const { size, size2 } = this.state;
     const { getFieldDecorator } = this.props.form;
@@ -263,14 +270,17 @@ class ApplicationForm extends React.Component {
           <h3>中间件申请</h3>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">添加中间件：</label>
-          <Select style={{width: '120px'}} defaultValue="MySQL">
+          <Select style={{width: '120px'}}
+                  value={this.state.middlewareSelect}
+                  onChange={middlewareSelect => this.setState({middlewareSelect})}
+          >
             <Option key="MySQL">MySQL</Option>
             <Option key="Redis">Redis</Option>
             <Option key="PaaS">容器云PaaS</Option>
             <Option key="RocketMQ">RocketMQ</Option>
             <Option key="RabbitMQ">RabbitMQ</Option>
           </Select>
-          <Button><Icon type="plus"></Icon></Button>
+          <Button onClick={this.addMiddleware}><Icon type="plus" /></Button>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>
           <div style={{padding: '10px'}}></div>
@@ -321,11 +331,13 @@ class ApplicationForm extends React.Component {
             </section>
             <br/>
             <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px'}}
+                     style={{marginTop: '2px', marginBottom: '20px'}}
             >
               <Button style={{width: '100%'}}><Icon type="delete" /></Button>
             </section>
           </div>
+
+          <FormMySQL></FormMySQL>
 
         </section>
 
