@@ -300,15 +300,16 @@ class ApplicationForm extends React.Component {
           <h3>中间件申请</h3>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">添加中间件：</label>
-          <Select style={{width: '120px'}}
+          <Select style={{width: '170px', marginLeft: '20px'}}
                   value={this.state.middlewareSelect}
                   onChange={middlewareSelect => this.setState({middlewareSelect})}
           >
             <Option key="MySQL">MySQL</Option>
             <Option key="Redis">Redis</Option>
-            <Option key="PaaS">容器云PaaS</Option>
-            <Option key="RocketMQ">RocketMQ</Option>
-            <Option key="RabbitMQ">RabbitMQ</Option>
+            <Option key="RocketMQP">RocketMQ(生产者)</Option>
+            <Option key="RocketMQC">RocketMQ(消费者)</Option>
+            <Option key="RabbitMQP">RabbitMQ(生产者)</Option>
+            <Option key="RabbitMQC">RabbitMQ(消费者)</Option>
           </Select>
           <Button onClick={this.addMiddlewareMapping}><Icon type="plus" /></Button>
           <div style={{padding: '10px'}}></div>
