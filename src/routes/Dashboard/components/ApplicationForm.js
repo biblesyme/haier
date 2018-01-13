@@ -316,16 +316,19 @@ class ApplicationForm extends React.Component {
           <label htmlFor="">推荐中间件：</label>
           <div style={{padding: '10px'}}></div>
 
-          {this.state.middlewareMappings.map(item => {
-            return (
-              <FormMapping
-                onChange={(item) => this.middlewareMappingChange(item)}
-                onRemove={() => this.removeMiddlewareMapping(item.id)}
-                key={item.id}
-                item={item}
-                />
-            )
-          })}
+          <Row>
+            {this.state.middlewareMappings.map(item => {
+              return (
+                <FormMapping
+                  onChange={(item) => this.middlewareMappingChange(item)}
+                  onRemove={() => this.removeMiddlewareMapping(item.id)}
+                  key={item.id}
+                  item={item}
+                  />
+              )
+            })}
+          </Row>
+
 
         </section>
 

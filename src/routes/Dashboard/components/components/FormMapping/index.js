@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 const SubMenu = Menu.SubMenu;
@@ -48,9 +48,8 @@ export default class C extends React.Component {
     return (
       <main>
         {item.type === 'MySQL' && (
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>MYSQL</div>
+          <Col span={7} offset={1}>
+            <Card title="MySQL" style={{height: '240px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -108,20 +107,14 @@ export default class C extends React.Component {
                   </Radio.Group>
                 </FormItem>
               </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-            </section>
-          </div>
+            </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+          </Col>
         )}
 
         {item.type === 'Redis' && (
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>Redis</div>
+          <Col span={7} offset={1}>
+            <Card title="Redis" style={{height: '240px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -155,20 +148,14 @@ export default class C extends React.Component {
                  </Radio.Group>
                 </FormItem>
               </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-            </section>
-          </div>
+            </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+          </Col>
         )}
 
         {item.type === 'RocketMQP' && (
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>RocketMQ</div>
+          <Col span={7} offset={1}>
+            <Card title="RocketMQ" style={{height: '240px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -198,20 +185,14 @@ export default class C extends React.Component {
                  <Input placeholder="请输入队列名"></Input>
                 </FormItem>
               </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-            </section>
-          </div>
+            </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+          </Col>
         )}
 
         {item.type === 'RocketMQC' && (
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>RocketMQ</div>
+          <Col span={7} offset={1}>
+            <Card title="RocketMQ" style={{height: '240px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -238,20 +219,14 @@ export default class C extends React.Component {
                   </Radio.Group>
                 </FormItem>
               </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-            </section>
-          </div>
+            </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+          </Col>
         )}
 
         {item.type === 'RabbitMQP' && (
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>RabbitMQ</div>
+          <Col span={7} offset={1}>
+            <Card title="RabbitMQ" style={{height: '240px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -294,20 +269,14 @@ export default class C extends React.Component {
                    </Radio.Group>
                 </FormItem>
               </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-            </section>
-          </div>
+            </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+          </Col>
         )}
 
         {item.type === 'RabbitMQC' && (
-          <div>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}>
-              <div className={styles["card-header"]}>RabbitMQ</div>
+          <Col span={7} offset={1}>
+            <Card title="RabbitMQ" style={{height: '240px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
@@ -332,14 +301,9 @@ export default class C extends React.Component {
                  <Input placeholder="请填写队列名称" />
                 </FormItem>
               </Form>
-            </section>
-            <br/>
-            <section className={`${styles["card-form"]} ${styles["width-260"]}`}
-                     style={{marginTop: '2px', marginBottom: '20px'}}
-            >
-              <Button style={{width: '100%'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-            </section>
-          </div>
+            </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+          </Col>
         )}
       </main>
 
