@@ -19,6 +19,7 @@ class MainPage extends React.Component {
   }
   componentWillMount(){
     this.props.init();
+    this.props.dispatch({type: 'App/findDomain'})
   }
   render() {
     const role = this.props.App.role
