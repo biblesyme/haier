@@ -70,7 +70,7 @@ export default class C extends React.Component {
       <main>
         <Row gutter={8}  style={{marginTop: '10px'}} >
           <Col span={4}>
-            <Card title="容器云PaaS" style={{height: '350px'}}>
+            <Card title="容器云PaaS" style={{height: '250px'}}>
               <Form>
                 <FormItem
                   {...formItemLayout4}
@@ -103,9 +103,9 @@ export default class C extends React.Component {
 
           </Col>
           <Col span={20}>
-            <Card bordered={false}>
-              <CardGrid style={{width: '50%'}}>
-                <Chart height={chartHeight} data={resoucesDv} scale={resoucesScale} forceFit>
+            <Card bordered={false} style={{height: '250px'}}>
+              <CardGrid style={{width: '25%'}}>
+                {/* <Chart height={chartHeight} data={resoucesDv} scale={resoucesScale} forceFit>
                   <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                   <Axis name="percent" />
                   <Legend position='right' offsetY={-chartHeight / 2 + 120} offsetX={-100}/>
@@ -130,10 +130,20 @@ export default class C extends React.Component {
                     style={{lineWidth: 1,stroke: '#fff'}}
                     >
                   </Geom>
-                </Chart>
+                </Chart> */}
+                资源使用率
+                <div style={{textAlign: 'right'}}>
+                  <Progress type="dashboard"
+                            percent={30}
+                            width={120}
+                            format={percent => `
+                              ${percent}%`}
+                            style={{marginLeft: '20px'}}
+                  />
+                </div>
               </CardGrid>
-              <CardGrid style={{width: '50%'}}>
-                <Chart height={chartHeight} data={hostDv} scale={hostScale} forceFit>
+              <CardGrid style={{width: '25%'}}>
+                {/* <Chart height={chartHeight} data={hostDv} scale={hostScale} forceFit>
                   <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
                   <Axis name="percent" />
                   <Legend position='right' offsetY={-chartHeight / 2 + 120} offsetX={-100}/>
@@ -158,8 +168,19 @@ export default class C extends React.Component {
                     style={{lineWidth: 1,stroke: '#fff'}}
                     >
                   </Geom>
-                </Chart>
+                </Chart> */}
+                健康实例率
+                <div style={{textAlign: 'right'}}>
+                  <Progress type="circle"
+                            percent={30}
+                            width={120}
+                            format={percent => `
+                              ${percent}%`}
+                            style={{marginLeft: '20px'}}
+                  />
+                </div>
               </CardGrid>
+
             </Card>
           </Col>
         </Row>

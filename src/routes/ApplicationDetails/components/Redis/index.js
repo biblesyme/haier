@@ -55,22 +55,28 @@ export default class C extends React.Component {
           </Col>
           <Col span={20}>
             <Card bordered={false}>
-              <CardGrid style={{width: '25%'}}>
-                <Progress type="dashboard"
-                          percent={75}
-                          width={120}
-                          format={percent => `内存使用
-                            ${percent}%`}
-                />
+              <CardGrid style={{width: '25%', height: '168px'}}>
+                内存使用
+                <div style={{textAlign: 'right'}}>
+                  <Progress type="dashboard"
+                            percent={75}
+                            width={120}
+                            format={percent => `
+                              ${percent}%`}
+                  />
+                </div>
               </CardGrid>
-              <CardGrid style={{width: '25%'}}>
-                <Progress type="circle"
-                          percent={30}
-                          width={120}
-                          format={percent => `命中率
-                            ${percent}%`}
-                          style={{marginLeft: '20px'}}
-                />
+              <CardGrid style={{width: '25%', height: '168px'}}>
+                命中率
+                <div style={{textAlign: 'right'}}>
+                  <Progress type="circle"
+                            percent={30}
+                            width={120}
+                            format={percent => `
+                              ${percent}%`}
+                            style={{marginLeft: '20px'}}
+                  />
+                </div>
               </CardGrid>
               <CardGrid style={{width: '25%', height: '168px'}}>
                 日慢查询数量
