@@ -22,7 +22,8 @@ export default {
 		*findDomain({payload},{call, put}){
 			yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.START} })
 			try{
-				let schema = yield call([apiStore,apiStore.find], 'domain')
+				let domain = yield call([apiStore,apiStore.find], 'domain')
+				yield put({type:'setState',payload: {domians: domain.content}})
 				yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.SUCCESS} })
 			}
 			catch(e){
