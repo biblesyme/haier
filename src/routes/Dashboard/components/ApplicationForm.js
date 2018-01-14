@@ -87,7 +87,7 @@ class ApplicationForm extends React.Component {
   }
 
   componentWillMount() {
-    this.addMiddlewareMapping()
+    this.addMiddlewareMapping('MySQL')
   }
 
   toggleCollapsed = () => {
@@ -101,11 +101,11 @@ class ApplicationForm extends React.Component {
   }
 
   middlewareMappingId = 0
-  addMiddlewareMapping = () => {
+  addMiddlewareMapping = (value) => {
     const defaultMiddlewareMapping = {
       ip: null,
       id: this.middlewareMappingId++,
-      type: this.state.middlewareSelect,
+      type: value,
     }
     const {middlewareMappings} = this.state
     this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
@@ -121,6 +121,11 @@ class ApplicationForm extends React.Component {
     const {middlewareMappings} = this.state
     const nextAry = replace(middlewareMappings, newItem)
     this.setState({middlewareMappings: nextAry})
+  }
+
+  onMiddlewareSelect = (middlewareSelect) => {
+    this.setState({middlewareSelect})
+    this.addMiddlewareMapping(middlewareSelect)
   }
 
   render() {
@@ -302,7 +307,7 @@ class ApplicationForm extends React.Component {
           <label htmlFor="">添加中间件：</label>
           <Select style={{width: '170px', marginLeft: '20px'}}
                   value={this.state.middlewareSelect}
-                  onChange={middlewareSelect => this.setState({middlewareSelect})}
+                  onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
           >
             <Option key="MySQL">MySQL</Option>
             <Option key="Redis">Redis</Option>
@@ -311,7 +316,6 @@ class ApplicationForm extends React.Component {
             <Option key="RabbitMQP">RabbitMQ(生产者)</Option>
             <Option key="RabbitMQC">RabbitMQ(消费者)</Option>
           </Select>
-          <Button onClick={this.addMiddlewareMapping}><Icon type="plus" /></Button>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>
           <div style={{padding: '10px'}}></div>
