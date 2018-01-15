@@ -1,157 +1,84 @@
 import React from 'react'
-import { Menu, Icon, Button,Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
-const CheckboxGroup = Checkbox.Group;
+import {Table, Row, Col, Input, Button, Select} from 'antd'
 
-const SubMenu = Menu.SubMenu;
-const Option = Select.Option;
-const FormItem = Form.Item;
-const col = 12
+const {Search} = Input
+const {Option} = Select
 
+import styles from './styles.scss'
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
-  style: {
-    marginBottom: '10px'
-  }
-};
-
-const formItemLayout2 = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-  },
-  style: {
-    marginBottom: '0'
-  }
-}
-
-
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
-
-function handleBlur() {
-  console.log('blur');
-}
-
-function handleFocus() {
-  console.log('focus');
-}
-
-class IndexPage extends React.Component {
-  state = {
-    size: 'haier',
-    size2: 'qd',
-    checkedList: []
-  }
-  toggleCollapsed = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  }
+class C extends React.Component {
   render() {
-    const { size, size2 } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const columns = [{
+      title: '序号',
+      dataIndex: 'state',
+      key: 'state',
+      render: (state, record) => {
+        return (
+          <div>
+            <Tag {...getState(record.state)}>
+              {nameMap[state]}
+            </Tag>
+          </div>
+        )
+      }
+    }, {
+      title: '类型',
+      dataIndex: 'description',
+      key: 'description',
+    }, {
+      title: '申请人',
+      dataIndex: 'rule',
+      key: 'rule',
+    }, {
+      title: '申请时间',
+      dataIndex: 'endPoint',
+      key: 'endPoint',
+    }, {
+      title: '应用名称',
+      dataIndex: 'startsAt',
+      key: 'startsAt',
+      render: (startsAt, record) => {
+        return <span>{ (record.state === 'active' || record.state === 'suppressed') && startsAt}</span>
+      }
+    }, {
+      title: '状态',
+      dataIndex: 'endsAt',
+      key: 'endsAt',
+      render: (endsAt, record) => {
+        return <span>{ (record.state === 'active' || record.state === 'suppressed') && endsAt}</span>
+      }
+    }, {
+      title: '操作',
+      dataIndex: 'endsAt',
+      key: 'endsAt',
+      render: (endsAt, record) => {
+        return <span>{ (record.state === 'active' || record.state === 'suppressed') && endsAt}</span>
+      }
+    },];
     return (
-      <div className="page-wrap">
-         <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="选择项目"
-            optionFilterProp="children"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          >
-            <Option value="jack">大屏222112</Option>
-            <Option value="lucy">大大大大大屏22</Option>
-            <Option value="tom">大大大屏21232</Option>
-          </Select>
-        <section className="page-section">
-          <Form>
-            <Row gutter={24}>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="S码验证"
-                hasFeedback
-              >
-               12345646513547698
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="应用名称"
-                hasFeedback
-              >
-               海尔690大数据平台规划
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="申请日期"
-                hasFeedback
-              >
-               2017年11月5日
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="业务负责人"
-                hasFeedback
-              >
-               张三、王五
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="技术负责人"
-                hasFeedback
-              >
-               李四
-              </FormItem>
-            </Col>
-            <Col span={col}>
-
-              <FormItem
-                {...formItemLayout}
-                label="归属部门"
-                hasFeedback
-              >
-               大数据部
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="应用属性"
-                hasFeedback
-              >
-               自开发
-              </FormItem>
-            </Col>
-            </Row>
-          </Form>
-        </section>
-      </div>
-    );
+      <main className="page-section">
+        <Row type="flex" justify="space-between" className={styles.tableListForm}>
+          <Col>
+            <Select style={{width: '200px'}} defaultValue="1">
+              <Option key="1">待审批</Option>
+              <Option key="2">全部</Option>
+              <Option key="3">已审批</Option>
+              <Option key="4">已驳回</Option>
+            </Select>
+          </Col>
+        </Row>
+        <Row>
+        <Col>
+          <Table
+            // dataSource={boxes}
+            columns={columns}
+            rowKey="id"
+          />
+        </Col>
+      </Row>
+    </main>
+    )
   }
 }
-const WrappedApp = Form.create()(IndexPage);
-export default WrappedApp
+
+export default C

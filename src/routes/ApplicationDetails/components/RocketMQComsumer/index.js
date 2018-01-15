@@ -55,32 +55,38 @@ export default class C extends React.Component {
           </Col>
           <Col span={20}>
             <Card bordered={false} height={300}>
-              <CardGrid style={{width: '20%', height: '168px'}}>
-                消息总数
+              <CardGrid style={{width: '16%', height: '168px'}}>
+                生产者总数
+                <div style={{fontSize: '64px', textAlign: 'right'}}>
+                  999
+                </div>
+              </CardGrid>
+              <CardGrid style={{width: '16%', height: '168px'}}>
+                消费者应用总数
+                <div style={{fontSize: '64px', textAlign: 'right'}}>
+                  999
+                </div>
+              </CardGrid>
+              <CardGrid style={{width: '16%', height: '168px'}}>
+                消费者实例数
+                <div style={{fontSize: '64px', textAlign: 'right'}}>
+                  999
+                </div>
+              </CardGrid>
+              <CardGrid style={{width: '16%', height: '168px'}}>
+                生产者应用总数
+                <div style={{fontSize: '64px', textAlign: 'right'}}>
+                  999
+                </div>
+              </CardGrid>
+              <CardGrid style={{width: '16%', height: '168px'}}>
+                生产者实例数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
               <CardGrid style={{width: '20%', height: '168px'}}>
-                已消费消息数量
-                <div style={{fontSize: '64px', textAlign: 'right'}}>
-                  999
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '20%', height: '168px'}}>
-                消息堆积数
-                <div style={{fontSize: '64px', textAlign: 'right'}}>
-                  999
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '20%', height: '168px'}}>
-                平均延时时间
-                <div style={{fontSize: '64px', textAlign: 'right'}}>
-                  999
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '20%', height: '168px'}}>
-                死信数
+                一个小时内的消息总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>

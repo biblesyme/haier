@@ -1,11 +1,13 @@
 import React from 'react'
-
 import { Card, Pagination, Icon, Modal, Button, Form, Input, Table } from 'antd';
+import New from './New'
+
 const FormItem = Form.Item;
 
 import { connect } from 'utils/ecos'
 
 import styles from "./style.sass"
+
 function onSelect(suggestion) {
   console.log('onSelect', suggestion);
 }
@@ -54,6 +56,11 @@ const data = [{
 
 class AreaManage extends React.Component {
   state = { visibleAdd: false, visibleEdit: false, visibleDetail: false, }
+
+  componentWillMount() {
+    this.props.selfDispatch({type: 'findDomain'})
+  }
+
   showModal = (visible) => {
     return ()=>{this.setState({
       [visible]: true,
@@ -79,81 +86,45 @@ class AreaManage extends React.Component {
   onChange(pageNumber) {
     console.log('Page: ', pageNumber);
   }
-  render(){
-    var Cards=[]
-    const { getFieldDecorator } = this.props.form
-    for (var i = 0; i < 10; i++) {
-      Cards.push(
-        <div key={i} className="inline-block mg-lr10 mg-b10">
-          <Card className={styles["area-card"]} title="智能制造" extra={<Icon type="edit" onClick={this.showModal('visibleEdit')}/>} style={{ width: 300 }}>
-            <h4 className="pull-left">团队长：</h4>
-            <div className="inline-block pd-l10">
-              <p>张三 012349</p>
-              <p>张三 012349</p>
-              <p>张三 012349</p>
-            </div>
-            <div><Icon onClick={this.showModal('visibleDetail')} className="pull-right" type="ellipsis" /></div>
-          </Card>
-        </div>
-        )
+
+  saveAdd = (values) => {
+    let payload = {
+      ...values,
+      type: 'domains',
     }
+    this.props.selfDispatch({type: 'saveDomain', payload})
+    this.setState({
+      visibleAdd: false,
+    });
+  }
+  render(){
+    const { getFieldDecorator } = this.props.form
+    const {reduxState} = this.props
+
+    const domains = reduxState.domains.map(d => (
+      <div key={d.id} className="inline-block mg-lr10 mg-b10">
+        <Card className={styles["area-card"]} title={d.name} extra={<Icon type="edit" onClick={this.showModal('visibleEdit')}/>} style={{ width: 300 }}>
+          <h4 className="pull-left">团队长：</h4>
+          <div className="inline-block pd-l10">
+            <p>张三 012349</p>
+            <p>张三 012349</p>
+            <p>张三 012349</p>
+          </div>
+          <div><Icon onClick={this.showModal('visibleDetail')} className="pull-right" type="ellipsis" /></div>
+        </Card>
+      </div>
+    ))
     return (
       <div>
         <section className="page-section">
           <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域</Button></div>
-          {Cards}
+          {domains}
         </section>
         <div style={{paddingBottom: '60px'}}></div>
         <section className="page-section bottom-actions text-center">
           <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={this.onChange} />
         </section>
-        <Modal
-          title="新增领域"
-          visible={this.state.visibleAdd}
-          okText="添加"
-          cancelText="取消"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <Form onSubmit={this.handleSubmit}>
-            <FormItem
-              {...formItemLayout}
-              label="领域"
-            >
-              {getFieldDecorator('email', {
-                rules: [{
-                  required: true, message: 'Please input your E-mail!',
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="账号"
-            >
-              {getFieldDecorator('email', {
-                rules: [{
-                  required: true, message: 'Please input your E-mail!',
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="用户名"
-            >
-              {getFieldDecorator('email', {
-                rules: [{
-                  required: true, message: 'Please input your E-mail!',
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-          </Form>
-        </Modal>
+
         <Modal
           title="修改领域"
           visible={this.state.visibleEdit}
@@ -218,6 +189,11 @@ class AreaManage extends React.Component {
           <div className="mg-b10"></div>
           <div className="text-center"><Pagination showQuickJumper defaultCurrent={2} total={100} onChange={this.onChange} /></div>
         </Modal>
+        <New
+          visible={this.state.visibleAdd}
+          onOk={(newData) => {this.saveAdd(newData)}}
+          onCancel={this.handleCancel}
+          />
       </div>
       )
   }

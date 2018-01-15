@@ -19,21 +19,6 @@ export default {
 		}
 	},
 	effects: {
-		*findDomain({payload},{call, put}){
-			yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.START} })
-			try{
-				let domain = yield call([apiStore,apiStore.find], 'domain')
-				yield put({type:'setState',payload: {domians: domain.content}})
-				yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.SUCCESS} })
-			}
-			catch(e){
-				yield put({type:'setState',payload: {
-						loadSchemaStatus: LOAD_STATUS.FAIL,
-						errorMessage: e.message()
-					}
-				})
-			}
-		},
 		*loadSchema({payload},{call, put}){
 			yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.START} })
 			try{

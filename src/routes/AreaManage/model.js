@@ -1,15 +1,53 @@
 import { delay } from 'redux-saga'
+import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
+import apiStore from 'utils/apiStore'
+
 export default {
-	state: '',
+	state: {
+		findDomainStatus: LOAD_STATUS.INITIAL,
+		saveDomainStatus: LOAD_STATUS.INITIAL,
+		domains: [],
+	},
 	reducers: {
-		setText(state,action){
-			return action.payload
+		setState(state,{payload}){
+			return {
+				...state,
+				...payload,
+			}
 		}
 	}
 	,effects: {
-		*asyncsetText({ payload },{ call,put }){
-			yield call(delay, 1000)
-			yield put({type:'setText',payload: payload })
-		}
+		*findDomain({payload},{call, put}){
+			yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.START} })
+			try{
+				let domain = yield call([apiStore,apiStore.find], 'domain', null, {forceReload: true})
+				yield put({type:'setState',payload: {domains: domain.content}})
+				yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.SUCCESS} })
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findDomainStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+			}
+		},
+		*saveDomain({payload},{call, put}){
+			yield put({type:'setState',payload: {saveDomainStatus: LOAD_STATUS.START} })
+			try{
+				let resouce = yield call([apiStore,apiStore.createRecord], payload)
+				yield call([resouce,resouce.save])
+				yield put({type:'setState',payload: {saveDomainStatus: LOAD_STATUS.SUCCESS} })
+				let domain = yield call([apiStore,apiStore.find], 'domain', null, {forceReload: true})
+				yield put({type:'setState',payload: {domains: domain.content}})
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						saveDomainStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+			}
+		},
 	}
 }

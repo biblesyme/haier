@@ -5,7 +5,7 @@
     "stage-0",
     "react",
     // Transpile React components to JavaScript
-    
+
   ],
   "plugins": [
     "react-hot-loader/babel",
@@ -15,6 +15,7 @@
     ["transform-runtime", {
       "polyfill": false,
       "regenerator": true
-    }]
+    }],
+    "transform-decorators-legacy"
   ]
 }

@@ -257,7 +257,6 @@ class Application extends React.Component {
         <Redis></Redis>
         <MySQL></MySQL>
         <Paas></Paas>
-        <RocketMQProduct></RocketMQProduct>
         <RocketMQComsumer></RocketMQComsumer>
         <RabbitMQ></RabbitMQ>
         <br/>
