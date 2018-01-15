@@ -27,7 +27,7 @@ export default class C extends React.Component {
       <main>
         <Row gutter={8}  style={{marginTop: '10px'}} >
           <Col span={4}>
-            <Card title="RocketMQ" style={{ height: '200px'}}>
+            <Card title="RocketMQ" style={{ height: '380px'}}>
               <Form>
                 <FormItem
                   {...formItemLayout4}
@@ -55,37 +55,37 @@ export default class C extends React.Component {
           </Col>
           <Col span={20}>
             <Card bordered={false} height={300}>
-              <CardGrid style={{width: '16%', height: '168px'}}>
+              <CardGrid style={{width: '33%', height: '168px'}}>
                 生产者总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
-              <CardGrid style={{width: '16%', height: '168px'}}>
+              <CardGrid style={{width: '33%', height: '168px'}}>
                 消费者应用总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
-              <CardGrid style={{width: '16%', height: '168px'}}>
+              <CardGrid style={{width: '34%', height: '168px'}}>
                 消费者实例数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
-              <CardGrid style={{width: '16%', height: '168px'}}>
+              <CardGrid style={{width: '33%', height: '168px'}}>
                 生产者应用总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
-              <CardGrid style={{width: '16%', height: '168px'}}>
+              <CardGrid style={{width: '33%', height: '168px'}}>
                 生产者实例数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
-              <CardGrid style={{width: '20%', height: '168px'}}>
+              <CardGrid style={{width: '34%', height: '168px'}}>
                 一个小时内的消息总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999

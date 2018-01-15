@@ -1,4 +1,4 @@
-import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress } from 'antd';
+import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox } from 'antd';
 import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -12,6 +12,7 @@ import RabbitMQ from './components/RabbitMQ'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
+const CheckboxGroup = Checkbox.Group;
 
 import styles from './style.sass'
 
@@ -50,6 +51,8 @@ const data = [{
   status: '待部署',
   actions: '查看详情'
 }];
+
+const plainOptions = ['前端框架', '后台框架']
 
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
@@ -278,6 +281,23 @@ class Application extends React.Component {
           <Button type="primary">前往能力开放平台</Button>
         </div>
       </div> */}
+      <section className="page-section">
+        <h3>选择框架</h3>
+        <CheckboxGroup options={plainOptions} value="前端框架"/>
+      </section>
+      <section className="page-section">
+        <h3>监控功能</h3>
+        <Checkbox checked
+        >
+          开启
+        </Checkbox>
+      </section>
+      <div style={{paddingBottom: '60px'}}></div>
+
+      <section className="page-section bottom-actions">
+        <Button type="primary" icon="rollback">重置</Button>
+        <Button type="primary" icon="eye" style={{float: 'right'}}>预览</Button>
+      </section>
     </div>
       )
   }

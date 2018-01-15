@@ -336,7 +336,7 @@ class ApplicationForm extends React.Component {
 
         </section>
 
-        {/* <section className="page-section">
+        <section className="page-section">
           <h3>选择框架</h3>
           <CheckboxGroup options={plainOptions} />
         </section>
@@ -346,7 +346,7 @@ class ApplicationForm extends React.Component {
           >
             开启
           </Checkbox>
-        </section> */}
+        </section>
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
