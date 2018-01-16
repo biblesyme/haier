@@ -27,7 +27,7 @@ export default class C extends React.Component {
       <main>
         <Row gutter={8}  style={{marginTop: '10px'}} >
           <Col span={4}>
-            <Card title="Redis" style={{ height: '200px'}}>
+            <Card title="Redis" style={{ height: '380px'}}>
               <Form>
                 <FormItem
                   {...formItemLayout4}
@@ -55,36 +55,47 @@ export default class C extends React.Component {
           </Col>
           <Col span={20}>
             <Card bordered={false}>
-              <CardGrid style={{width: '25%', height: '168px'}}>
-                内存使用
-                <div style={{textAlign: 'right'}}>
-                  <Progress type="dashboard"
-                            percent={75}
-                            width={120}
-                            format={percent => `
-                              ${percent}%`}
-                  />
-                </div>
+              <CardGrid style={{width: '34%', height: '168px'}}>
+                内存使用率
+                <Row>
+                  <Col span={12} style={{fontSize: '12px'}}>
+                    <div style={{marginTop: '80px'}}>使用: 1024M</div>
+                    <div>总共: 10240M</div>
+                  </Col>
+                  <Col span={12}>
+                    <Progress type="dashboard"
+                              percent={75}
+                              width={120}
+                              format={percent => `
+                                ${percent}%`}
+                    />
+                  </Col>
+                </Row>
               </CardGrid>
-              <CardGrid style={{width: '25%', height: '168px'}}>
+              <CardGrid style={{width: '34%', height: '168px'}}>
                 命中率
-                <div style={{textAlign: 'right'}}>
-                  <Progress type="circle"
-                            percent={30}
-                            width={120}
-                            format={percent => `
-                              ${percent}%`}
-                            style={{marginLeft: '20px'}}
-                  />
-                </div>
+                <Row>
+                  <Col span={12} style={{fontSize: '12px'}}>
+                    <div style={{marginTop: '80px'}}>命中: 1024</div>
+                    <div>总共: 10240</div>
+                  </Col>
+                  <Col span={12}>
+                    <Progress type="circle"
+                              percent={30}
+                              width={120}
+                              format={percent => `
+                                ${percent}%`}
+                    />
+                  </Col>
+                </Row>
               </CardGrid>
-              <CardGrid style={{width: '25%', height: '168px'}}>
+              <CardGrid style={{width: '34%', height: '168px'}}>
                 日慢查询数量
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   2334
                 </div>
               </CardGrid>
-              <CardGrid style={{width: '25%', height: '168px'}}>
+              <CardGrid style={{width: '34%', height: '168px'}}>
                 当前连接数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999

@@ -260,8 +260,7 @@ class ApplicationForm extends React.Component {
           >
             <Option key="MySQL">MySQL</Option>
             <Option key="Redis">Redis</Option>
-            <Option key="RocketMQP">RocketMQ(生产者)</Option>
-            <Option key="RocketMQC">RocketMQ(消费者)</Option>
+            <Option key="RocketMQ">RocketMQ</Option>
             <Option key="RabbitMQP">RabbitMQ(生产者)</Option>
             <Option key="RabbitMQC">RabbitMQ(消费者)</Option>
           </Select>

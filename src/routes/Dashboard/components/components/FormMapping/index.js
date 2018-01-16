@@ -49,7 +49,7 @@ export default class C extends React.Component {
       <main>
         {item.type === 'MySQL' && (
           <Col span={7} offset={1}>
-            <Card title="MySQL" style={{height: '240px'}}>
+            <Card title="MySQL" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -67,7 +67,7 @@ export default class C extends React.Component {
                   hasFeedback
                 >
                  <Radio.Group value={this.state.mode} onChange={e => this.setState({mode: e.target.value})}>
-                    <Radio.Button value="one">单例</Radio.Button>
+                    <Radio.Button value="one">单机</Radio.Button>
                     <Radio.Button value="primary">主从</Radio.Button>
                     <Radio.Button value="cluster">集群</Radio.Button>
                   </Radio.Group>
@@ -87,13 +87,22 @@ export default class C extends React.Component {
                 )}
 
                 {this.state.mode === 'cluster' && (
-                  <FormItem
-                    {...formItemLayout4}
-                    label="集群"
-                    hasFeedback
-                  >
-                   <Input placeholder="请输入集群名"></Input>
-                  </FormItem>
+                  <div>
+                    <FormItem
+                      {...formInputLayout}
+                      label="管理节点数量"
+                      hasFeedback
+                    >
+                     <Input placeholder="请输入管理节点数量"></Input>
+                    </FormItem>
+                    <FormItem
+                      {...formInputLayout}
+                      label="数据节点数量"
+                      hasFeedback
+                    >
+                     <Input placeholder="请输入数据节点数量"></Input>
+                    </FormItem>
+                  </div>
                 )}
 
                 <FormItem
@@ -114,7 +123,7 @@ export default class C extends React.Component {
 
         {item.type === 'Redis' && (
           <Col span={7} offset={1}>
-            <Card title="Redis" style={{height: '240px'}}>
+            <Card title="Redis" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -153,9 +162,9 @@ export default class C extends React.Component {
           </Col>
         )}
 
-        {item.type === 'RocketMQP' && (
+        {item.type === 'RocketMQ' && (
           <Col span={7} offset={1}>
-            <Card title="RocketMQ" style={{height: '240px'}}>
+            <Card title="RocketMQ" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -169,54 +178,20 @@ export default class C extends React.Component {
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
-                  label="持久化策略"
-                  hasFeedback
-                >
-                 <Radio.Group value={this.state.strategy} onChange={e => this.setState({strategy: e.target.value})}>
-                  <Radio.Button value="synchronization">同步</Radio.Button>
-                  <Radio.Button value="asynchronous">异步</Radio.Button>
-                 </Radio.Group>
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="队列名"
-                  hasFeedback
-                >
-                 <Input placeholder="请输入队列名"></Input>
-                </FormItem>
-              </Form>
-            </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
-          </Col>
-        )}
-
-        {item.type === 'RocketMQC' && (
-          <Col span={7} offset={1}>
-            <Card title="RocketMQ" style={{height: '240px'}}>
-              <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formItemLayout4}
-                  label="应用"
-                  hasFeedback
-                >
-                 <Select placeholder="请选择应用"></Select>
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="队列"
-                  hasFeedback
-                >
-                 <Select placeholder="请选择队列"></Select>
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="消费模式"
+                  label="集群类型"
                   hasFeedback
                 >
                  <Radio.Group value={this.state.consumeMode} onChange={e => this.setState({consumeMode: e.target.value})}>
-                    <Radio.Button value="cluster">集群模式</Radio.Button>
-                    <Radio.Button value="broadcast">广播模式</Radio.Button>
+                    <Radio.Button value="standalone">单机</Radio.Button>
+                    <Radio.Button value="cluster">集群</Radio.Button>
                   </Radio.Group>
+                </FormItem>
+                <FormItem
+                  {...formInputLayout}
+                  label="主题名称"
+                  hasFeedback
+                >
+                 <Input placeholder="请输入主题名称"></Input>
                 </FormItem>
               </Form>
             </Card>
@@ -226,7 +201,7 @@ export default class C extends React.Component {
 
         {item.type === 'RabbitMQP' && (
           <Col span={7} offset={1}>
-            <Card title="RabbitMQ" style={{height: '240px'}}>
+            <Card title="RabbitMQ" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -266,6 +241,7 @@ export default class C extends React.Component {
                   <Radio.Group value={this.state.exchangeType} onChange={e => this.setState({exchangeType: e.target.value})}>
                      <Radio.Button value="fanout">广播</Radio.Button>
                      <Radio.Button value="topic">主题</Radio.Button>
+                     <Radio.Button value="direct">直连</Radio.Button>
                    </Radio.Group>
                 </FormItem>
               </Form>
@@ -276,7 +252,7 @@ export default class C extends React.Component {
 
         {item.type === 'RabbitMQC' && (
           <Col span={7} offset={1}>
-            <Card title="RabbitMQ" style={{height: '240px'}}>
+            <Card title="RabbitMQ" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
@@ -300,6 +276,7 @@ export default class C extends React.Component {
                 >
                  <Input placeholder="请填写队列名称" />
                 </FormItem>
+                {/* https://github.com/biblesyme/haier/issues/10 */}
               </Form>
             </Card>
             <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>

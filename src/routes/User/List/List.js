@@ -70,9 +70,9 @@ class C extends React.Component {
         <h3>用户列表</h3>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
-            <Button type="primary">
+            {/* <Button type="primary">
               新建角色
-            </Button>
+            </Button> */}
           </Col>
           <Col>
             <RadioGroup style={{ marginRight: 20 }}>

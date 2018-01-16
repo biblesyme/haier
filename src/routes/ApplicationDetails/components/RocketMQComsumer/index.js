@@ -62,30 +62,24 @@ export default class C extends React.Component {
                 </div>
               </CardGrid>
               <CardGrid style={{width: '33%', height: '168px'}}>
-                消费者应用总数
+                生产者应用总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
               <CardGrid style={{width: '34%', height: '168px'}}>
+                消费者应用总数
+                <div style={{fontSize: '64px', textAlign: 'right'}}>
+                  999
+                </div>
+              </CardGrid>
+              <CardGrid style={{width: '33%', height: '168px'}}>
                 消费者实例数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999
                 </div>
               </CardGrid>
               <CardGrid style={{width: '33%', height: '168px'}}>
-                生产者应用总数
-                <div style={{fontSize: '64px', textAlign: 'right'}}>
-                  999
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '33%', height: '168px'}}>
-                生产者实例数
-                <div style={{fontSize: '64px', textAlign: 'right'}}>
-                  999
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '34%', height: '168px'}}>
                 一个小时内的消息总数
                 <div style={{fontSize: '64px', textAlign: 'right'}}>
                   999

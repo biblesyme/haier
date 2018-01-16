@@ -106,83 +106,40 @@ export default class C extends React.Component {
           </Col>
           <Col span={20}>
             <Card bordered={false} style={{height: '250px'}}>
-              <CardGrid style={{width: '25%'}}>
-                {/* <Chart height={chartHeight} data={resoucesDv} scale={resoucesScale} forceFit>
-                  <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
-                  <Axis name="percent" />
-                  <Legend position='right' offsetY={-chartHeight / 2 + 120} offsetX={-100}/>
-                  <Tooltip
-                    showTitle={false}
-                    itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-                    />
-                  <Guide >
-                    <Html position ={[ '50%', '50%' ]} html='<div style="color:#000;font-size:1.16em;text-align: center;width: 10em;">资源<br />使用率</span></div>' alignX='middle' alignY='middle'/>
-                  </Guide>
-                  <Geom
-                    type="intervalStack"
-                    position="percent"
-                    color='item'
-                    tooltip={['item*percent',(item, percent) => {
-                      percent = percent * 100 + '%';
-                      return {
-                        name: item,
-                        value: percent
-                      };
-                    }]}
-                    style={{lineWidth: 1,stroke: '#fff'}}
-                    >
-                  </Geom>
-                </Chart> */}
+              <CardGrid style={{width: '34%'}}>
                 资源使用率
-                <div style={{textAlign: 'right'}}>
-                  <Progress type="dashboard"
-                            percent={30}
-                            width={120}
-                            format={percent => `
-                              ${percent}%`}
-                            style={{marginLeft: '20px'}}
-                  />
-                </div>
-              </CardGrid>
-              <CardGrid style={{width: '25%'}}>
-                {/* <Chart height={chartHeight} data={hostDv} scale={hostScale} forceFit>
-                  <Coord type={'theta'} radius={0.75} innerRadius={0.6} />
-                  <Axis name="percent" />
-                  <Legend position='right' offsetY={-chartHeight / 2 + 120} offsetX={-100}/>
-                  <Tooltip
-                    showTitle={false}
-                    itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+                <Row>
+                  <Col span={12} style={{fontSize: '12px'}}>
+                    <div style={{marginTop: '80px'}}>使用: 1024M</div>
+                    <div>总共: 10240M</div>
+                  </Col>
+                  <Col span={12}>
+                    <Progress type="dashboard"
+                              percent={30}
+                              width={120}
+                              format={percent => `
+                                ${percent}%`}
                     />
-                  <Guide >
-                    <Html position ={[ '50%', '50%' ]} html='<div style="color:#8c8c8c;font-size:1em;text-align: center;width: 10em;">实例<br><span style="color:#262626;font-size:1.2em">10</span></div>' alignX='middle' alignY='middle'/>
-                  </Guide>
-                  <Geom
-                    type="intervalStack"
-                    position="percent"
-                    color='item'
-                    tooltip={['item*percent',(item, percent) => {
-                      percent = percent * 100 + '%';
-                      return {
-                        name: item,
-                        value: percent
-                      };
-                    }]}
-                    style={{lineWidth: 1,stroke: '#fff'}}
-                    >
-                  </Geom>
-                </Chart> */}
-                健康实例率
-                <div style={{textAlign: 'right'}}>
-                  <Progress type="circle"
-                            percent={30}
-                            width={120}
-                            format={percent => `
-                              ${percent}%`}
-                            style={{marginLeft: '20px'}}
-                  />
-                </div>
+                  </Col>
+                </Row>
               </CardGrid>
-
+              <CardGrid style={{width: '34%'}}>
+                健康实例率
+                <Row>
+                  <Col span={12} style={{fontSize: '12px'}}>
+                    <div style={{marginTop: '80px'}}>健康: 3</div>
+                    <div>总共: 10</div>
+                  </Col>
+                  <Col span={12}>
+                    <Progress type="circle"
+                              percent={30}
+                              width={120}
+                              format={percent => `
+                                ${percent}%`}
+                    />
+                  </Col>
+                </Row>
+              </CardGrid>
             </Card>
           </Col>
         </Row>

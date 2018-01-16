@@ -67,7 +67,7 @@ export default class C extends React.Component {
                 {...formItemLayout}
                 label="账号"
               >
-                  <Input />
+                <Input />
               </FormItem>
               <FormItem
                 {...formItemLayout}
