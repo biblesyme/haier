@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card, Pagination, Icon, Modal, Button, Form, Input, Table } from 'antd';
 import New from './New'
+import Edit from './Edit'
+import Item from './Item'
 
 const FormItem = Form.Item;
 
@@ -103,7 +105,11 @@ class AreaManage extends React.Component {
 
     const domains = reduxState.domains.map(d => (
       <div key={d.id} className="inline-block mg-lr10 mg-b10">
-        <Card className={styles["area-card"]} title={d.name} extra={<Icon type="edit" onClick={this.showModal('visibleEdit')}/>} style={{ width: 300 }}>
+        <Card className={styles["area-card"]}
+              title={d.name}
+              extra={<Icon type="edit" onClick={this.showModal('visibleEdit')} style={{cursor: 'pointer'}}/>}
+              style={{ width: 300 }}
+        >
           <h4 className="pull-left">团队长：</h4>
           <div className="inline-block pd-l10">
             <p>张三 012349</p>
@@ -125,7 +131,7 @@ class AreaManage extends React.Component {
           <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={this.onChange} />
         </section>
 
-        <Modal
+        {/* <Modal
           title="修改领域"
           visible={this.state.visibleEdit}
           okText="添加"
@@ -133,50 +139,8 @@ class AreaManage extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Form onSubmit={this.handleSubmit}>
-            <FormItem
-              {...formItemLayout}
-              label="当前领域"
-            >
-              智能制造
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="当前团队长"
-            >
-              <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
-              <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
-              <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
-            </FormItem>
-          </Form>
-          <h3>新增团队长</h3>
-          <Form onSubmit={this.handleSubmit}>
-            {/* <FormItem
-              {...formItemLayout}
-              label="账号"
-            >
-              {getFieldDecorator('email', {
-                rules: [{
-                  required: true, message: 'Please input your E-mail!',
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem> */}
-            <FormItem
-              {...formItemLayout}
-              label="用户名"
-            >
-              {getFieldDecorator('email', {
-                rules: [{
-                  required: true, message: 'Please input your E-mail!',
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-          </Form>
-        </Modal>
+
+        </Modal> */}
 
         <Modal
           title="领域详情"
@@ -191,6 +155,11 @@ class AreaManage extends React.Component {
         </Modal>
         <New
           visible={this.state.visibleAdd}
+          onOk={(newData) => {this.saveAdd(newData)}}
+          onCancel={this.handleCancel}
+          />
+        <Edit
+          visible={this.state.visibleEdit}
           onOk={(newData) => {this.saveAdd(newData)}}
           onCancel={this.handleCancel}
           />
