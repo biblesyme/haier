@@ -144,9 +144,9 @@ class Application extends React.Component {
             {...formItemLayout}
             label="成员"
           >
-            <p>张三  12123124231<Icon className="mg-l10" type="delete" onClick={e => console.log('poi')} /></p>
-            <p>张三  12123124231<Icon className="mg-l10" type="delete" onClick={e => console.log('poi')} /></p>
-            <p>张三  12123124231<Icon  className="mg-l10" type="delete" onClick={e => console.log('poi')} /></p>
+            <p>张三  12123124231<Icon className="mg-l10" type="delete" /></p>
+            <p>张三  12123124231<Icon className="mg-l10" type="delete" /></p>
+            <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
           </FormItem>
         </Form>
         <h3>查询</h3>

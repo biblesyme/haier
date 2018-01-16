@@ -2,6 +2,7 @@ import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
 import { connect } from 'utils/ecos'
 import FormMapping from './components/FormMapping'
+import FormResource from './components/FormResource'
 import replace from 'utils/replace'
 
 const CheckboxGroup = Checkbox.Group;
@@ -246,59 +247,7 @@ class ApplicationForm extends React.Component {
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">应用资源配置：</label>
           <div style={{padding: '10px'}}></div>
-          <section className={styles["card-form"]}>
-            <div className={styles["card-header"]}>高配置资源</div>
-            <Form className={styles["card-body"]}>
-              <FormItem
-                {...formItemLayout3}
-                label="CPU内核数"
-                hasFeedback
-              >
-               16
-              </FormItem>
-              <FormItem
-                {...formItemLayout3}
-                label="内存"
-                hasFeedback
-              >
-               16G
-              </FormItem>
-              <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               1024G
-              </FormItem>
-            </Form>
-          </section>
-
-          <section className={styles["card-form"]}>
-            <div className={styles["card-header"]}>其他资源</div>
-            <Form className={styles["card-body"]}>
-              <FormItem
-                {...formItemLayout3}
-                label="CPU内核数"
-                hasFeedback
-              >
-               <Input></Input>
-              </FormItem>
-              <FormItem
-                {...formItemLayout3}
-                label="内存"
-                hasFeedback
-              >
-               <Input></Input>
-              </FormItem>
-              <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               <Input></Input>
-              </FormItem>
-            </Form>
-          </section>
+          <FormResource></FormResource>
         </section>
 
         <section className="page-section">

@@ -219,32 +219,7 @@ class Application extends React.Component {
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源：</label>
         <div style={{padding: '10px'}}></div>
-        <section className={styles["card-form"]}>
-          <div className={styles["card-header"]}>高配置资源</div>
-          <Form className={styles["card-body"]}>
-            <FormItem
-              {...formItemLayout3}
-              label="CPU内核数"
-              hasFeedback
-            >
-             16
-            </FormItem>
-            <FormItem
-              {...formItemLayout3}
-              label="内存"
-              hasFeedback
-            >
-             16G
-            </FormItem>
-            <FormItem
-              {...formItemLayout3}
-              label="硬盘"
-              hasFeedback
-            >
-             1024G
-            </FormItem>
-          </Form>
-        </section>
+        <Paas></Paas>
         <div className="text-right pd-tb10">
           <Button type="primary">前往容器云</Button>
         </div>
@@ -259,7 +234,6 @@ class Application extends React.Component {
 
         <Redis></Redis>
         <MySQL></MySQL>
-        <Paas></Paas>
         <RocketMQComsumer></RocketMQComsumer>
         <RabbitMQ></RabbitMQ>
         <br/>
@@ -282,7 +256,7 @@ class Application extends React.Component {
         </div>
       </div> */}
       <section className="page-section">
-        <h3>选择框架</h3>
+        <h3>框架</h3>
         <CheckboxGroup options={plainOptions} value="前端框架"/>
       </section>
       <section className="page-section">

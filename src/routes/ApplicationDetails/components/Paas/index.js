@@ -51,16 +51,18 @@ export default class C extends React.Component {
         }
       }
     }
-    const formItemLayout4 = {
+    const formItemLayout3 = {
       labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 },
-        pull: 0,
+        xs: { span: 10 },
+        sm: { span: 10 },
+            pull: 0,
+
       },
       wrapperCol: {
-        xs: { span: 18 },
-        sm: { span: 18 },
-        push: 0
+        xs: { span: 14 },
+        sm: { span: 14 },
+            push: 0,
+
       },
       style: {
         marginBottom: '10px'
@@ -70,28 +72,28 @@ export default class C extends React.Component {
       <main>
         <Row gutter={8}  style={{marginTop: '10px'}} >
           <Col span={4}>
-            <Card title="容器云PaaS" style={{height: '250px'}}>
-              <Form>
+            <Card title="高配置资源" style={{height: '250px'}}>
+              <Form className={styles["card-body"]}>
                 <FormItem
-                  {...formItemLayout4}
-                  label="地点"
+                  {...formItemLayout3}
+                  label="CPU内核数"
                   hasFeedback
                 >
-                 青岛
+                 16
                 </FormItem>
                 <FormItem
-                  {...formItemLayout4}
-                  label="资源"
+                  {...formItemLayout3}
+                  label="内存"
                   hasFeedback
                 >
-                  共享资源
+                 16G
                 </FormItem>
                 <FormItem
-                  {...formItemLayout4}
-                  label="配置"
+                  {...formItemLayout3}
+                  label="硬盘"
                   hasFeedback
                 >
-                 单例
+                 1024G
                 </FormItem>
               </Form>
             </Card>
@@ -184,7 +186,6 @@ export default class C extends React.Component {
             </Card>
           </Col>
         </Row>
-        <Divider dashed></Divider>
       </main>
     )
   }

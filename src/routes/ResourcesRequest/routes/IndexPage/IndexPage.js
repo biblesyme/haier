@@ -42,8 +42,8 @@ class C extends React.Component {
       }
     }, {
       title: '状态',
-      dataIndex: 'endsAt',
-      key: 'endsAt',
+      dataIndex: 'endsAt1',
+      key: 'endsAt1',
       render: (endsAt, record) => {
         return <span>{ (record.state === 'active' || record.state === 'suppressed') && endsAt}</span>
       }

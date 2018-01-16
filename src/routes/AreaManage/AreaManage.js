@@ -144,14 +144,14 @@ class AreaManage extends React.Component {
               {...formItemLayout}
               label="当前团队长"
             >
-              <p>张三  12123124231</p>
-              <p>张三  12123124231</p>
-              <p>张三  12123124231</p>
+              <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
+              <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
+              <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
             </FormItem>
           </Form>
           <h3>新增团队长</h3>
           <Form onSubmit={this.handleSubmit}>
-            <FormItem
+            {/* <FormItem
               {...formItemLayout}
               label="账号"
             >
@@ -162,7 +162,7 @@ class AreaManage extends React.Component {
               })(
                 <Input />
               )}
-            </FormItem>
+            </FormItem> */}
             <FormItem
               {...formItemLayout}
               label="用户名"
