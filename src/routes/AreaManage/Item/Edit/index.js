@@ -41,7 +41,7 @@ export default class C extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-
+    const {resource} = this.props
     return (
       <div>
         <Modal
@@ -56,7 +56,7 @@ export default class C extends React.Component {
                 {...formItemLayout}
                 label="当前领域"
               >
-                智能制造
+                {resource.name}
               </FormItem>
               <FormItem
                 {...formItemLayout}
