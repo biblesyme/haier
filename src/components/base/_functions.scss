@@ -1,0 +1,96 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass functions.
+// -----------------------------------------------------------------------------
+
+/// Native `url(..)` function wrapper
+/// @param {String} $base - base URL for the asset
+/// @param {String} $type - asset type folder (e.g. `fonts/`)
+/// @param {String} $path - asset path
+/// @return {Url}
+@function asset($base, $type, $path) {
+  @return url($base + $type + $path);
+}
+
+/// Returns URL to an image based on its path
+/// @param {String} $path - image path
+/// @param {String} $base [$base-url] - base URL
+/// @return {Url}
+/// @require $base-url
+@function image($path, $base: $base-url) {
+  @return asset($base, 'images/', $path);
+}
+
+/// Returns URL to a font based on its path
+/// @param {String} $path - font path
+/// @param {String} $base [$base-url] - base URL
+/// @return {Url}
+/// @require $base-url
+@function font($path, $base: $base-url) {
+  @return asset($base, 'fonts/', $path);
+}
+
+/// Set button text color based on lightness of bg-color
+// @function text-color($color) {
+//     @if (lightness( $color ) > 40) {
+//       @return #000;
+//     }
+//     @else {
+//       @return #fff;
+//     }
+// }
+
+///Computes the "brightness" of a color
+@function brightness($color) {
+  @if type-of($color) == color {
+    @return (red($color) * 0.299 + green($color) * 0.587 + blue($color) * 0.114) / 255 * 100%;
+  }
+  @else {
+    @return unquote("brightness(#{$color})");
+  }
+}
+
+
+///Select the more readable foreground color for a given background color.
+@function contrast-color($color, $dark: $contrasted-dark-default, $light: $contrasted-light-default, $threshold: null) {
+  @if $threshold {
+    // Deprecated in Compass 0.13
+    @warn "The $threshold argment to contrast-color is no longer needed and will be removed in the next release.";
+  }
+  @if $color == null {
+    @return null;
+  }
+  @else {
+    $color-brightness: brightness($color);
+    $dark-text-brightness: brightness($dark);
+    $light-text-brightness: brightness($light);
+    @return if(abs($color-brightness - $light-text-brightness) > abs($color-brightness - $dark-text-brightness), $light, $dark);
+  }
+}
+
+// Text indent, margins, and paddings from 5-50px in 5px increments
+// e.g. in-10 - {text-indent: 10px}
+// e.g. p-10 - {padding: 10px}
+// e.g. mt-20 - {margin-top: 20px}
+$spacing-property-map: (
+    m:  margin,
+    mt: margin-top,
+    mr: margin-right,
+    ml: margin-left,
+    mb: margin-bottom,
+    p:  padding,
+    pt: padding-top,
+    pb: padding-bottom,
+    pl: padding-left,
+    pr: padding-right,
+);
+
+@for $size from 0 through 10 {
+  $val: $size * 5;
+  .in-#{$val} { text-indent: 1px * $val; }
+
+  @each $keyword, $property in $spacing-property-map {
+    .#{$keyword}-#{$val} {
+      #{$property}: $val * 1px !important;
+    }
+  }
+}
