@@ -32,6 +32,8 @@ class C extends React.Component {
     filteredInfo: null,
     visibleDetail: false,
     record: {},
+    filter: null,
+    Selected: 'all',
   };
 
   handleCancel = (e) => {
@@ -42,6 +44,15 @@ class C extends React.Component {
 
   render() {
     let { filteredInfo, } = this.state;
+    const boxes = datas.filter(d => {
+      const {filter} = this.state
+      if (!filter || filter === 'all') {
+        return true
+      }
+      const reg = new RegExp(filter, 'i')
+      const fieldsToFilter = [d.state || '',].join()
+      return reg.test(fieldsToFilter)
+    })
     const columns = [{
       title: '序号',
       dataIndex: 'id',
@@ -99,18 +110,21 @@ class C extends React.Component {
       <main className="page-section">
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
-            <Select style={{width: '200px'}} defaultValue="1">
-              <Option key="1">待审批</Option>
-              <Option key="2">全部</Option>
-              <Option key="3">已审批</Option>
-              <Option key="4">已驳回</Option>
+            <Select style={{width: '200px'}}
+                    value={this.state.Selected}
+                    onChange={Selected => this.setState({Selected, filter: Selected,})}
+            >
+              <Option key='all'>全部</Option>
+              <Option key="待审批">待审批</Option>
+              <Option key="已审批">已审批</Option>
+              <Option key="已驳回">已驳回</Option>
             </Select>
           </Col>
         </Row>
         <Row>
         <Col>
           <Table
-            dataSource={datas}
+            dataSource={boxes}
             columns={columns}
             rowKey="id"
           />
