@@ -10,8 +10,11 @@ const RadioGroup = Radio.Group
 import styles from './styles.scss'
 
 class C extends React.Component {
+  state = {
+    tableSelect: 'staff',
+  }
   render() {
-    const columns = [{
+    const columnStaff = [{
       title: '序号',
       dataIndex: 'state',
       key: 'state',
@@ -73,13 +76,17 @@ class C extends React.Component {
             {/* <Button type="primary">
               新建角色
             </Button> */}
+            <RadioGroup style={{ marginRight: 20 }}
+                        size="large"
+                        value={this.state.tableSelect}
+                        onChange={e => this.setState({tableSelect: e.target.value})}
+            >
+              <RadioButton value='staff'>员工</RadioButton>
+              <RadioButton value="supplier">供应商</RadioButton>
+              <RadioButton value="management">管理层</RadioButton>
+            </RadioGroup>
           </Col>
           <Col>
-            <RadioGroup style={{ marginRight: 20 }}>
-              <RadioButton value={null}>员工</RadioButton>
-              <RadioButton value="active">供应商</RadioButton>
-              <RadioButton value="suppressed">管理层</RadioButton>
-            </RadioGroup>
             <Search
               placeholder="请输入您搜索的关键词"
               style={{ width: 200 }}
@@ -88,11 +95,13 @@ class C extends React.Component {
         </Row>
         <Row>
         <Col>
-          <Table
-            // dataSource={boxes}
-            columns={columns}
-            rowKey="id"
-          />
+          {this.state.tableSelect === 'staff' && (
+            <Table
+              // dataSource={boxes}
+              columns={columnStaff}
+              rowKey="id"
+            />
+          )}
         </Col>
       </Row>
     </main>

@@ -93,7 +93,7 @@ class MainPage extends React.Component {
                     <Menu.Item key="6">
                       <Link to="/information">
                         <span>
-                          <Icon type="mail" />
+                          <Icon type="desktop" />
                           <span>
                             信息中心
                           </span>

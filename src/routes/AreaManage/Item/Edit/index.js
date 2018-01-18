@@ -33,7 +33,8 @@ export default class C extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (err) return
       let value = {
-        name: values.name,
+        name: this.props.resource.name,
+        id: this.props.resource.id,
       }
       this.props.onOk(value)
     })

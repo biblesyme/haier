@@ -1,6 +1,6 @@
 import React from 'react'
 import {Table, Row, Col, Input, Button, Select} from 'antd'
-// import Detail from './Detail'
+import Detail from './Detail'
 
 const {Search} = Input
 const {Option} = Select
@@ -10,22 +10,12 @@ import styles from './styles.scss'
 const datas =[{
   id: 1,
   type: '中间件',
-  applicant: '张三',
-  department: '众创汇',
-  time: '20170901',
-  project: '海尔690大数据项目',
+  resource: 'MySQL',
+  application: 'PSI用户大屏',
+  description: 'poi',
   state: '已驳回',
   action: '查看',
-}, {
-  id: 2,
-  type: 'paas',
-  applicant: '李四',
-  department: '众创汇',
-  time: '20170901',
-  project: '海尔690大数据项目',
-  state: '待审批',
-  action: '查看',
-}]
+},]
 
 class C extends React.Component {
   state = {
@@ -76,16 +66,16 @@ class C extends React.Component {
       filterMultiple: false,
     }, {
       title: '资源信息',
-      dataIndex: 'applicant',
-      key: 'applicant',
+      dataIndex: 'resource',
+      key: 'resource',
     }, {
       title: '所属应用',
-      dataIndex: 'department',
-      key: 'department',
+      dataIndex: 'application',
+      key: 'application',
     }, {
       title: '描述',
-      dataIndex: 'time',
-      key: 'time',
+      dataIndex: 'description',
+      key: 'description',
     }, {
       title: '状态',
       dataIndex: 'state',
@@ -126,12 +116,12 @@ class C extends React.Component {
           />
         </Col>
       </Row>
-      {/* <Detail
+      <Detail
         visible={this.state.visibleDetail}
         onOk={(newData) => {this.saveAdd(newData)}}
         onCancel={this.handleCancel}
         resource={this.state.record}
-        /> */}
+        />
     </main>
     )
   }

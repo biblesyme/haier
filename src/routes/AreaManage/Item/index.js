@@ -2,10 +2,11 @@ import React from 'react'
 import {Card, Icon} from 'antd'
 import Edit from './Edit'
 import Detail from './Detail'
+import { connect } from 'utils/ecos'
 
 import styles from "./style.sass"
 
-export default class C extends React.Component {
+class Item extends React.Component {
   state = {
     visibleEdit: false,
     visibleDetail: false,
@@ -24,6 +25,18 @@ export default class C extends React.Component {
     this.setState({
       visibleEdit: false,
       visibleDetail: false,
+    });
+  }
+
+  updateDomain = (values) => {
+    let payload = {
+      ...values,
+      type: 'domain',
+    }
+    console.log('poi')
+    this.props.dispatch({type: 'AreaManage/updateDomain', payload, resource: this.props.resource})
+    this.setState({
+      visibleEdit: false,
     });
   }
 
@@ -46,7 +59,7 @@ export default class C extends React.Component {
         </Card>
         <Edit
           visible={this.state.visibleEdit}
-          onOk={(newData) => {this.saveAdd(newData)}}
+          onOk={(newData) => {this.updateDomain(newData)}}
           onCancel={this.handleCancel}
           resource={resource}
           />
@@ -60,3 +73,5 @@ export default class C extends React.Component {
     )
   }
 }
+
+export default connect(null,['AreaManage'])(Item)
