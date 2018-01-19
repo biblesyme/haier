@@ -33,6 +33,9 @@ export default class C extends React.Component {
       if (err) return
       let value = {
         name: values.name,
+        admin: {
+          accout: values.accout,
+        },
       }
       this.props.onOk(value)
     })
@@ -67,7 +70,13 @@ export default class C extends React.Component {
                 {...formItemLayout}
                 label="账号"
               >
-                <Input />
+                {getFieldDecorator('accout', {
+                  rules: [{
+                    required: true, message: '请输入',
+                  }],
+                })(
+                  <Input placeholder="请输入领域管理员账号"/>
+                )}
               </FormItem>
               <FormItem
                 {...formItemLayout}

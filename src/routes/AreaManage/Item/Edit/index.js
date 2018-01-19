@@ -10,6 +10,7 @@ import {
 const FormItem = Form.Item
 
 const { Option } = Select
+const {Search} = Input
 
 const formItemLayout = {
   labelCol: {
@@ -35,6 +36,7 @@ export default class C extends React.Component {
       let value = {
         name: this.props.resource.name,
         id: this.props.resource.id,
+        domainAdmin: values.domainAdmin,
       }
       this.props.onOk(value)
     })
@@ -84,14 +86,14 @@ export default class C extends React.Component {
               </FormItem> */}
               <FormItem
                 {...formItemLayout}
-                label="用户名"
+                label="账号"
               >
-                {getFieldDecorator('email', {
+                {getFieldDecorator('domainAdmin', {
                   rules: [{
-                    required: true, message: 'Please input your E-mail!',
+                    required: true, message: '请输入',
                   }],
                 })(
-                  <Input />
+                  <Input placeholder="请输入团队长账号"/>
                 )}
               </FormItem>
             </Form>

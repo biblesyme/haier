@@ -18,6 +18,7 @@ export default class C extends React.Component {
     isBackup: 'true',
     consumeMode: 'cluster',
     exchangeType: 'fanout',
+    exchangeName: null,
   }
 
   render() {
@@ -136,26 +137,32 @@ export default class C extends React.Component {
                   </Radio.Group>
                 </FormItem>
                 <FormItem
-                  {...formItemLayout4}
+                  {...formInputLayout}
                   label="内存"
                   hasFeedback
                 >
-                 <Radio.Group value={size}>
-                  <Radio.Button value="haier">高</Radio.Button>
-                  <Radio.Button value="nohaier">中</Radio.Button>
-                  <Radio.Button value="nohaier">低</Radio.Button>
-                 </Radio.Group>
+                  <Input placeholder="请输入内存大小"></Input>
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
-                  label="部署模式"
+                  label="集群类型"
                   hasFeedback
                 >
                  <Radio.Group value={this.state.mode} onChange={e => this.setState({mode: e.target.value})}>
                   <Radio.Button value="one">单例</Radio.Button>
-                  <Radio.Button value="cluster">集群</Radio.Button>
+                  <Radio.Button value="primary">主从</Radio.Button>
+                  <Radio.Button value="patch">分片</Radio.Button>
                  </Radio.Group>
                 </FormItem>
+                {this.state.mode === 'patch' && (
+                  <FormItem
+                    {...formInputLayout}
+                    label="分片数量"
+                    hasFeedback
+                  >
+                    <Input placeholder="请输入分片数量"></Input>
+                  </FormItem>
+                )}
               </Form>
             </Card>
             <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
@@ -268,7 +275,14 @@ export default class C extends React.Component {
                   hasFeedback
                   style = {{marginBottom: '10px'}}
                 >
-                 <Select placeholder="请选择Exchange名称"></Select>
+                 <Select placeholder="请选择Exchange名称"
+                         value={this.state.exchangeName}
+                         onChange={exchangeName => this.setState({exchangeName})}
+                 >
+                   <Option key="topic">主题应用</Option>
+                   <Option key="direct">直连应用</Option>
+                   <Option key="fanout">广播应用</Option>
+                 </Select>
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -276,7 +290,23 @@ export default class C extends React.Component {
                 >
                  <Input placeholder="请填写队列名称" />
                 </FormItem>
-                {/* https://github.com/biblesyme/haier/issues/10 */}
+
+                {this.state.exchangeName === 'topic' && (
+                  <FormItem
+                    {...formInputLayout}
+                    label="主题名"
+                  >
+                   <Input placeholder="请输入主题名称"></Input>
+                  </FormItem>
+                )}
+                {this.state.exchangeName === 'direct' && (
+                  <FormItem
+                    {...formInputLayout}
+                    label="直连名"
+                  >
+                   <Input placeholder="请输入直连名称"></Input>
+                  </FormItem>
+                )}
               </Form>
             </Card>
             <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>

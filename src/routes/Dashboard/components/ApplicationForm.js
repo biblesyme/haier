@@ -4,6 +4,7 @@ import { connect } from 'utils/ecos'
 import FormMapping from './components/FormMapping'
 import FormResource from './components/FormResource'
 import replace from 'utils/replace'
+import { Link } from 'react-router-dom'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -299,7 +300,7 @@ class ApplicationForm extends React.Component {
 
         <section className="page-section bottom-actions">
           <Button type="primary" icon="rollback">重置</Button>
-          <Button type="primary" icon="eye" style={{float: 'right'}}>预览</Button>
+          <Link to="/preview"><Button type="primary" icon="eye" style={{float: 'right'}}>预览</Button></Link>
         </section>
       </div>
     );

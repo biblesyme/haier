@@ -11,6 +11,7 @@ module.exports = [
 			require('./routes/Information'),
 			require('./routes/Resource'),
 			require('./routes/User'),
+			require('./routes/Preview'),
 		]
 	},
 ]

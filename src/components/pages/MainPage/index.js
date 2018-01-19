@@ -51,34 +51,13 @@ class MainPage extends React.Component {
               <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
             <Menu
-              defaultSelectedKeys={['1']}
+              defaultSelectedKeys={['5']}
               defaultOpenKeys={['sub0']}
               mode="inline"
               theme="light"
               inlineCollapsed={this.state.collapsed}
               style={{ marginTop: '10px' }}
             >
-              {['admin', 'domainAdmin', 'manager'].includes(role) && (
-                <Menu.ItemGroup title="审批管理">
-                  {['admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="1">
-                      <Link to="/resourcesRequest">
-                        <Icon type="approval1"></Icon>
-                        <span>资源审批</span>
-                      </Link>
-                    </Menu.Item>
-                  )}
-                  {['admin', 'manager', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="2">
-                      <Link to="/resourcesRequest/permissionsRequest">
-                        <Icon type="SubmitReview"></Icon>
-                        <span>我发起的审批</span>
-                      </Link>
-                    </Menu.Item>
-                  )}
-                </Menu.ItemGroup>
-              )}
-
               {['internal', 'manager', 'admin', 'domainAdmin', 'developer'].includes(role) && (
                 <Menu.ItemGroup title="资源管理">
                   {['internal', 'manager', 'admin', 'domainAdmin'].includes(role) && (
@@ -121,6 +100,29 @@ class MainPage extends React.Component {
                   )}
                 </Menu.ItemGroup>
               )}
+              
+              {['admin', 'domainAdmin', 'manager'].includes(role) && (
+                <Menu.ItemGroup title="审批管理">
+                  {['admin', 'domainAdmin'].includes(role) && (
+                    <Menu.Item key="1">
+                      <Link to="/resourcesRequest">
+                        <Icon type="approval1"></Icon>
+                        <span>资源审批</span>
+                      </Link>
+                    </Menu.Item>
+                  )}
+                  {['admin', 'manager', 'domainAdmin'].includes(role) && (
+                    <Menu.Item key="2">
+                      <Link to="/resourcesRequest/permissionsRequest">
+                        <Icon type="SubmitReview"></Icon>
+                        <span>我发起的审批</span>
+                      </Link>
+                    </Menu.Item>
+                  )}
+                </Menu.ItemGroup>
+              )}
+
+
 
               {role === 'admin' && (
                 <Menu.ItemGroup title="权限管理">
