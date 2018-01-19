@@ -57,12 +57,16 @@ class Item extends React.Component {
           </div>
           <div><Icon onClick={this.showModal('visibleDetail')} className="pull-right" type="ellipsis" style={{cursor: 'pointer'}}/></div>
         </Card>
-        <Edit
-          visible={this.state.visibleEdit}
-          onOk={(newData) => {this.updateDomain(newData)}}
-          onCancel={this.handleCancel}
-          resource={resource}
-          />
+
+        {this.state.visibleEdit && (
+          <Edit
+            visible={this.state.visibleEdit}
+            onOk={(newData) => {this.updateDomain(newData)}}
+            onCancel={this.handleCancel}
+            resource={resource}
+            />
+        )}
+
         <Detail
           visible={this.state.visibleDetail}
           onOk={(newData) => {this.saveAdd(newData)}}

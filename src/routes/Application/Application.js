@@ -40,7 +40,26 @@ function onChange(pagination, filters, sorter) {
 }
 
 class Application extends React.Component {
-  state = { visibleAdd: false, visibleEdit: false, visibleDetail: false, }
+  state = {
+    visibleAdd: false,
+    visibleEdit: false,
+    visibleDetail: false,
+    members: [],
+  }
+
+  componentWillMount() {
+    let members = [{
+      name: '张三',
+      accout: '12123124231'
+    }, {
+      name: '李四',
+      accout: '12123124232'
+    }, {
+      name: '王五',
+      accout: '12123124233'
+    }]
+    this.setState({members})
+  }
 
   showModal = (visible) => {
     return ()=>{this.setState({
@@ -64,6 +83,13 @@ class Application extends React.Component {
       visibleEdit: false,
       visibleDetail: false,
     });
+  }
+
+  deleteMember = (e, accout) => {
+    let newMembers = this.state.members.filter(m => m.accout !== accout)
+    this.setState({
+      members: newMembers,
+    })
   }
 
   render(){
@@ -117,6 +143,20 @@ class Application extends React.Component {
         )
       }
     }];
+
+    const members = this.state.members.map(m => {
+      return (
+        <p key={m.accout}>
+          {`${m.name} ${m.accout}`}
+          <Icon className="mg-l10"
+                type="delete"
+                style={{cursor: 'pointer'}}
+                onClick={e => this.deleteMember(e, m.accout)}
+          />
+        </p>
+      )
+    })
+
     return (
     <div>
       <div className="page-section">
@@ -128,10 +168,11 @@ class Application extends React.Component {
       <Modal
         title="成员管理"
         visible={this.state.visibleEdit}
-        okText="添加"
+        okText="提交"
         cancelText="取消"
         onOk={this.handleOk}
         onCancel={this.handleCancel}
+        destroyOnClose={true}
       >
         <Form onSubmit={this.handleSubmit}>
           <FormItem
@@ -144,9 +185,7 @@ class Application extends React.Component {
             {...formItemLayout}
             label="成员"
           >
-            <p>张三  12123124231<Icon className="mg-l10" type="delete" /></p>
-            <p>张三  12123124231<Icon className="mg-l10" type="delete" /></p>
-            <p>张三  12123124231<Icon  className="mg-l10" type="delete" /></p>
+            {members}
           </FormItem>
         </Form>
         <h3>查询</h3>
