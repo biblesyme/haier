@@ -27,6 +27,7 @@ const formItemLayout = {
 @Form.create()
 export default class C extends React.Component {
   state = {
+    username: '',
   }
   submit = () => {
     this.props.form.validateFields((err, values) => {
@@ -82,7 +83,7 @@ export default class C extends React.Component {
                 {...formItemLayout}
                 label="用户名"
               >
-                  <Input />
+                <Input value={this.state.username} onChange={e => this.setState({username: e.target.value})}/>
               </FormItem>
             </Form>
         </Modal>

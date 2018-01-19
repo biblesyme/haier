@@ -33,29 +33,42 @@ class Item extends React.Component {
       ...values,
       type: 'domain',
     }
-    console.log('poi')
     this.props.dispatch({type: 'AreaManage/updateDomain', payload, resource: this.props.resource})
     this.setState({
       visibleEdit: false,
     });
   }
 
+
+
   render() {
-    const {resource} = this.props
+    const {accounts=[], resource} = this.props
+    const domainAdmins = this.props.domainAdmins.map(domainAdmin => {
+      return (
+        <p key={domainAdmin.id}>{`${domainAdmin.account.name} ${domainAdmin.account.externalId}`}</p>
+      )
+    })
+
     return (
       <div className="inline-block mg-lr10 mg-b10">
         <Card className={styles["area-card"]}
               title={resource.name}
               extra={<Icon type="edit" onClick={this.showModal('visibleEdit')} style={{cursor: 'pointer'}}/>}
-              style={{ width: 300 }}
+              style={{ width: 300, height: 200 }}
         >
+
           <h4 className="pull-left">团队长：</h4>
-          <div className="inline-block pd-l10">
-            <p>张三 012349</p>
-            <p>张三 012349</p>
-            <p>张三 012349</p>
+          <div className="inline-block pd-l10" style={{height: '130px'}}>
+            {domainAdmins.length > 0 && domainAdmins}
           </div>
-          <div><Icon onClick={this.showModal('visibleDetail')} className="pull-right" type="ellipsis" style={{cursor: 'pointer'}}/></div>
+          {domainAdmins.length > 0 && (
+            <div><Icon onClick={this.showModal('visibleDetail')}
+                       className="pull-right"
+                       type="ellipsis"
+                       style={{cursor: 'pointer'}}
+                  /></div>
+          )}
+
         </Card>
 
         {this.state.visibleEdit && (
@@ -64,6 +77,8 @@ class Item extends React.Component {
             onOk={(newData) => {this.updateDomain(newData)}}
             onCancel={this.handleCancel}
             resource={resource}
+            domainAdmins={this.props.domainAdmins}
+            accounts={accounts}
             />
         )}
 
@@ -72,6 +87,7 @@ class Item extends React.Component {
           onOk={(newData) => {this.saveAdd(newData)}}
           onCancel={this.handleCancel}
           resource={resource}
+          domainAdmins={this.props.domainAdmins}
           />
       </div>
     )

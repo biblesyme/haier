@@ -30,34 +30,19 @@ const formItemLayout = {
 
 const columns = [{
   title: '序号',
-  dataIndex: 'key',
+  dataIndex: 'id',
 }, {
   title: 'Portal账号',
-  dataIndex: 'portal',
+  dataIndex: 'account.externalId',
 }, {
   title: '姓名',
-  dataIndex: 'name',
-}];
-const data = [{
-  key: '1',
-  name: '张三',
-  portal: 32,
-  address: 'New York No. 1 Lake Park',
-}, {
-  key: '2',
-  name: '张三',
-  portal: 42,
-  address: 'London No. 1 Lake Park',
-}, {
-  key: '3',
-  name: '张三',
-  portal: 32,
-  address: 'Sidney No. 1 Lake Park',
+  dataIndex: 'account.name',
 }];
 
 @Form.create()
 export default class C extends React.Component {
   state = {
+    page: 1,
   }
   submit = () => {
     this.props.form.validateFields((err, values) => {
@@ -71,7 +56,7 @@ export default class C extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const {resource} = this.props
+    const {resource, domainAdmins=[]} = this.props
     return (
       <div>
         <Modal
@@ -79,11 +64,11 @@ export default class C extends React.Component {
           {...this.props}
           footer={<Button onClick={this.props.onCancel}>返回</Button>}
           >
-            <p><label for="">当前领域：</label><span>{resource.name}</span></p>
+            <p><label>当前领域：</label><span>{resource.name}</span></p>
             <h3>团队长：</h3>
-            <Table pagination={false} columns={columns} dataSource={data} size="small" />
+            <Table pagination={false} columns={columns} dataSource={domainAdmins} size="small" rowKey="id"/>
             <div className="mg-b10"></div>
-            <div className="text-center"><Pagination showQuickJumper defaultCurrent={2} total={100} onChange={this.onChange} /></div>
+            <div className="text-center"><Pagination current={this.state.page} total={domainAdmins.length} onChange={this.onChange} /></div>
         </Modal>
       </div>
 

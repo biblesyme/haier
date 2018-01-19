@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Pagination, Icon, Modal, Button, Form, Input, Table } from 'antd';
+import { Card, Pagination, Icon, Modal, Button, Form, Input, Table, message } from 'antd';
 import New from './New'
 import Item from './Item'
 
@@ -32,10 +32,13 @@ const formItemLayout = {
 class AreaManage extends React.Component {
   state = {
     visibleAdd: false,
+    page: 1,
   }
 
   componentWillMount() {
     this.props.selfDispatch({type: 'findDomain'})
+    this.props.selfDispatch({type: 'findDomainAdmin'})
+    this.props.selfDispatch({type: 'findAccount'})
   }
 
   showModal = (visible) => {
@@ -57,38 +60,54 @@ class AreaManage extends React.Component {
       visibleAdd: false,
     });
   }
-  onChange(pageNumber) {
-    console.log('Page: ', pageNumber);
-  }
 
   saveAdd = (values) => {
     let payload = {
-      ...values,
-      type: 'domains',
+      data: {
+        ...values,
+        type: 'domains',
+      },
+      successCB: () => {
+        this.setState({
+          visibleAdd: false,
+        });
+        this.props.selfDispatch({type: 'findDomain'})
+        message.success('领域添加成功')
+      },
+      failCB: () => {
+        this.setState({
+          visibleAdd: false,
+        });
+        message.error('领域添加失败')
+      },
     }
-    this.props.selfDispatch({type: 'saveDomain', payload})
-    this.setState({
-      visibleAdd: false,
-    });
+    this.props.dispatch({type: 'App/saveRecord', payload})
   }
   render(){
     const { getFieldDecorator } = this.props.form
-    const {reduxState} = this.props
+    const {domains=[], domainAdmins, accounts} = this.props.reduxState
 
-    const domains = reduxState.domains.map(d => (
-      <Item key={d.id}
-            resource={d}
-      />
-    ))
+    const items = domains.slice((this.state.page - 1) * 9, this.state.page * 9).map(d => {
+      const filterAdmins = domainAdmins.filter(a => a.domainId === d.id)
+      return (
+        <Item key={d.id}
+              resource={d}
+              domainAdmins={filterAdmins}
+              accounts={accounts}
+        />
+      )
+    })
     return (
       <div>
         <section className="page-section">
           <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域</Button></div>
-          {domains}
-        </section>
-        <div style={{paddingBottom: '60px'}}></div>
-        <section className="page-section bottom-actions text-center">
-          <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={this.onChange} />
+          {items}
+          <Pagination className="text-center"
+                      current={this.state.page}
+                      total={domains.length}
+                      onChange={page => this.setState({page})}
+                      style={{marginTop: '20px'}}
+          />
         </section>
 
         <Modal
@@ -110,4 +129,4 @@ class AreaManage extends React.Component {
 
 AreaManage = Form.create()(AreaManage);
 Object.defineProperty(AreaManage, "name", { value: "AreaManage" });
-export default connect(require('./model'))(AreaManage)
+export default connect(require('./model'),['App'])(AreaManage)

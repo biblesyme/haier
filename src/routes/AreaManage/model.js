@@ -7,7 +7,13 @@ export default {
 		findDomainStatus: LOAD_STATUS.INITIAL,
 		saveDomainStatus: LOAD_STATUS.INITIAL,
 		updateDomainStatus: LOAD_STATUS.INITIAL,
+		findDomainAdminStatus: LOAD_STATUS.INITIAL,
+		addDomainAdminStatus: LOAD_STATUS.INITIAL,
+		findAccountStatus: LOAD_STATUS.INITIAL,
+		doActionStatus: LOAD_STATUS.INITIAL,
 		domains: [],
+		domainAdmins: [],
+		accounts: [],
 	},
 	reducers: {
 		setState(state,{payload}){
@@ -22,12 +28,42 @@ export default {
 			yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.START} })
 			try{
 				let domain = yield call([apiStore,apiStore.find], 'domain', null, {forceReload: true})
-				yield put({type:'setState',payload: {domains: domain.content}})
+				yield put({type:'setState',payload: {domains: domain.content.filter(d => d.state !== 'removed')}})
 				yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.SUCCESS} })
 			}
 			catch(e){
 				yield put({type:'setState',payload: {
 						findDomainStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+			}
+		},
+		*findDomainAdmin({payload},{call, put}){
+			yield put({type:'setState',payload: {findDomainAdminStatus: LOAD_STATUS.START} })
+			try{
+				let domainAdmins = yield call([apiStore,apiStore.find], 'domainAdmin', null, {forceReload: true})
+				yield put({type:'setState',payload: {domainAdmins: domainAdmins.content.filter(a => a.state !== 'removed')}})
+				yield put({type:'setState',payload: {findDomainAdminStatus: LOAD_STATUS.SUCCESS} })
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findDomainAdminStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+			}
+		},
+		*findAccount({payload},{call, put}){
+			yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
+			try{
+				let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
+				yield put({type:'setState',payload: {accounts: accounts.content.filter(a => a.state !== 'removed')}})
+				yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findAccountStatus: LOAD_STATUS.FAIL,
 						errorMessage: e.message()
 					}
 				})
@@ -65,6 +101,19 @@ export default {
 						errorMessage: e.message()
 					}
 				})
+			}
+		},
+		*doAction({payload}, {call, put}){
+			let {data, action, successCB,failCB} = payload
+			try{
+				let record  = yield call([apiStore,apiStore.find],`${data.type}`,`${data.id}` )
+				let afterActionRecord = yield call([record,record.doAction], action, {data})
+				if(successCB){
+					yield call(successCB,afterActionRecord)
+				}
+			}
+			catch(e){
+				if(failCB){yield call(failCB, e)}
 			}
 		},
 	}

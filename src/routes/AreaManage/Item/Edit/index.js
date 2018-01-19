@@ -7,7 +7,11 @@ import {
   Select,
   Icon,
   Button,
+  Divider,
+  message,
 } from 'antd'
+import { connect } from 'utils/ecos'
+
 const FormItem = Form.Item
 
 const { Option } = Select
@@ -42,41 +46,60 @@ const formPostLayout = {
 };
 
 @Form.create()
+@connect(null, ['AreaManage', 'App'])
 export default class C extends React.Component {
   state = {
     members: [],
+    searchName: '',
+    searchAccount: '',
   }
 
   componentWillMount() {
-    let members = [{
-      name: '张三',
-      accout: '12123124231'
-    }, {
-      name: '李四',
-      accout: '12123124232'
-    }, {
-      name: '王五',
-      accout: '12123124233'
-    }]
-    this.setState({members})
+    let payload = {
+      data: {
+        externalId: this.props.form.getFieldValue('domainAdmin'),
+        ...this.props.resource,
+      },
+      link: 'admins'
+    }
+    this.props.dispatch({'type': 'App/followLink', payload})
   }
 
   addMember = () => {
-    let newMembers = this.state.members
-    newMembers.push({
-      accout: this.props.form.getFieldValue('domainAdmin'),
-      name: '张三'
-    })
-    this.setState({
-      members: newMembers,
+    this.props.form.validateFields((err, values) => {
+      if (err) return
+      let newMembers = this.state.members
+      let payload = {
+        data: {
+          externalId: this.props.form.getFieldValue('domainAdmin'),
+          ...this.props.resource,
+        },
+        action: 'addAdmin',
+        failCB: () => message.error('团队长新增失败'),
+        successCB: () => {
+          this.props.dispatch({'type': 'AreaManage/findDomainAdmin'})
+          message.success('团队长新增成功')
+        }
+      }
+      this.props.dispatch({'type': 'App/doAction', payload})
     })
   }
 
-  deleteMember = (e, accout) => {
-    let newMembers = this.state.members.filter(m => m.accout !== accout)
-    this.setState({
-      members: newMembers,
-    })
+  deleteMember = (e, externalId) => {
+    console.log(e)
+    let payload = {
+      data: {
+        externalId,
+        ...this.props.resource,
+      },
+      action: 'deleteAdmin',
+      failCB: () => message.error('团队长删除失败'),
+      successCB: () => {
+        this.props.dispatch({'type': 'AreaManage/findDomainAdmin'})
+        message.success('团队长删除成功')
+      },
+    }
+    this.props.dispatch({'type': 'App/doAction', payload})
   }
 
   submit = () => {
@@ -91,18 +114,33 @@ export default class C extends React.Component {
     })
   }
 
+  searchDomainAdmin = (e) => {
+    let value = e.target.value
+    let account = this.props.accounts.filter(d => d.externalId === value)[0]
+    if (account !== undefined) {
+      this.setState({
+        searchName: account.name,
+        searchAccount: account.externalId,
+      })
+    } else {
+      this.setState({
+        searchName: '',
+        searchAccount: '',
+      })
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
-    const {resource} = this.props
-
-    const members = this.state.members.map(m => {
+    const {resource, domainAdmins = [], accounts = [], } = this.props
+    const members = domainAdmins.map(domainAdmin => {
       return (
-        <p key={m.accout}>
-          {`${m.name} ${m.accout}`}
+        <p key={domainAdmin.id}>
+          {`${domainAdmin.account.name} ${domainAdmin.account.externalId}`}
           <Icon className="mg-l10"
                 type="delete"
                 style={{cursor: 'pointer'}}
-                onClick={e => this.deleteMember(e, m.accout)}
+                onClick={e => this.deleteMember(e, domainAdmin.account.externalId)}
           />
         </p>
       )
@@ -113,11 +151,14 @@ export default class C extends React.Component {
         <Modal
           title="修改领域"
           {...this.props}
-          okText="修改"
-          cancelText="取消"
           onOk={this.submit}
           destroyOnClose={true}
           key={resource.id}
+          footer={
+            <div className="text-center">
+              <Button onClick={this.props.onCancel} >返回</Button>
+            </div>
+          }
           >
             <Form onSubmit={this.handleSubmit}>
               <FormItem
@@ -133,6 +174,7 @@ export default class C extends React.Component {
                 {members}
               </FormItem>
             </Form>
+            <Divider dashed></Divider>
             <h3>新增团队长</h3>
             <Form onSubmit={this.handleSubmit}>
               <FormItem
@@ -145,7 +187,7 @@ export default class C extends React.Component {
                       required: true, message: '请输入',
                     }],
                   })(
-                    <Search placeholder="请输入团队长账号" style={{width: '70%'}}/>
+                    <Search placeholder="请输入团队长账号" style={{width: '80%'}} onChange={this.searchDomainAdmin}/>
                   )}
                   <Button onClick={this.addMember}><Icon type="plus" /></Button>
                 </div>
@@ -154,12 +196,11 @@ export default class C extends React.Component {
                 {...formItemLayout}
                 label="用户信息"
               >
-                <p>张三  12123124231</p>
+                <p>{`${this.state.searchName} ${this.state.searchAccount}`}</p>
               </FormItem>
             </Form>
         </Modal>
       </div>
-
     )
   }
 }

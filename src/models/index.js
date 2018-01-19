@@ -50,7 +50,7 @@ export default {
 			let {data, action, successCB,failCB} = payload
 			try{
 				let record  = yield call([apiStore,apiStore.find],`${data.type}`,`${data.id}` )
-				let afterActionRecord = yield call([record,record.doAction], action)
+				let afterActionRecord = yield call([record,record.doAction], action, {data})
 				if(successCB){
 					yield call(successCB,afterActionRecord)
 				}
