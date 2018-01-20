@@ -62,7 +62,11 @@ export default class C extends React.Component {
         <Modal
           title="领域详情"
           {...this.props}
-          footer={<Button onClick={this.props.onCancel}>返回</Button>}
+          footer={
+            <div className="text-center">
+              <Button onClick={this.props.onCancel}>返回</Button>
+            </div>
+          }
           >
             <p><label>当前领域：</label><span>{resource.name}</span></p>
             <h3>团队长：</h3>

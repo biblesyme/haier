@@ -28,6 +28,7 @@ class Approval extends React.Component {
       }
     })
     this.props.selfDispatch({type: 'findAccount'})
+    this.props.selfDispatch({type: 'findProject'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['5']}})
   }
 
@@ -39,8 +40,7 @@ class Approval extends React.Component {
 
   render() {
     let { filteredInfo, } = this.state;
-    const {approvals=[], accounts=[]} = this.props.reduxState
-    // let datas = []
+    const {approvals=[], accounts=[], projects=[]} = this.props.reduxState
     const boxes = approvals.filter(d => {
       const {filter} = this.state
       if (!filter || filter === 'all') {
@@ -83,16 +83,27 @@ class Approval extends React.Component {
       }
     }, {
       title: '部门',
-      dataIndex: 'department',
-      key: 'department',
+      render: (record) => {
+        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        if (selector) {
+          return <span>{selector.data.data.businessDomain}</span>
+        } else {
+          return <span></span>
+        }
+      }
     }, {
       title: '申请时间',
-      dataIndex: 'time',
-      key: 'time',
+      render: (record) => <span>{new Date(record.requestTimestamp * 1000).toLocaleString()}</span>
     }, {
       title: '项目名称',
-      dataIndex: 'project',
-      key: 'project',
+      render: (record) => {
+        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        if (selector) {
+          return <span>{selector.data.data.name}</span>
+        } else {
+          return <span></span>
+        }
+      }
     }, {
       title: '状态',
       render: (record) => {
@@ -136,12 +147,14 @@ class Approval extends React.Component {
           />
         </Col>
       </Row>
-      <Detail
-        visible={this.state.visibleDetail}
-        onOk={(newData) => {this.saveAdd(newData)}}
-        onCancel={this.handleCancel}
-        resource={this.state.record}
-        />
+      {this.state.visibleDetail && (
+        <Detail key={this.state.record.id}
+                visible={this.state.visibleDetail}
+                onOk={(newData) => {this.saveAdd(newData)}}
+                onCancel={this.handleCancel}
+                resource={this.state.record}
+          />
+      )}
     </main>
     )
   }

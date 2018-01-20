@@ -8,8 +8,11 @@ import {
   Card,
   Form,
   Select,
+  Tag,
 } from 'antd'
 import nameMap from 'utils/nameMap'
+import getState from 'utils/getState'
+import { connect } from 'utils/ecos'
 
 import styles from './styles.scss'
 
@@ -34,9 +37,33 @@ const formItemLayout4 = {
 }
 
 @Form.create()
+@connect(null, ['App', 'Approval'])
 export default class C extends React.Component {
   state = {
+    resource: {},
   }
+
+  componentWillMount() {
+    this.props.dispatch({
+      'type': 'App/followLink',
+      payload: {
+        data: {
+          ...this.props.resource,
+        },
+        link: 'resource',
+        successCB: (resource) => {
+          if (resource.hasOwnProperty('data')) {
+            resource = {
+              ...resource,
+              data: JSON.parse(resource.data),
+            }
+          }
+          this.setState({resource})
+        }
+      },
+    })
+  }
+
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (err) return
@@ -45,6 +72,40 @@ export default class C extends React.Component {
       }
       this.props.onOk(value)
     })
+  }
+
+  deny = () => {
+    let payload = {
+      data: {
+        ...this.props.resource,
+      },
+      action: 'deny',
+      successCB: () => {
+        this.props.dispatch({'type': 'Approval/findApproval'})
+        this.props.onCancel()
+      },
+      failCB: () => {
+        this.props.onCancel()
+      }
+    }
+    this.props.dispatch({'type': 'App/doAction', payload})
+  }
+
+  pass = () => {
+    let payload = {
+      data: {
+        ...this.props.resource,
+      },
+      action: 'pass',
+      successCB: () => {
+        this.props.dispatch({'type': 'Approval/findApproval'})
+        this.props.onCancel()
+      },
+      failCB: () => {
+        this.props.onCancel()
+      }
+    }
+    this.props.dispatch({'type': 'App/doAction', payload})
   }
 
   render() {
@@ -56,7 +117,7 @@ export default class C extends React.Component {
           title={
             <div className="text-center">
               资源详情
-              <div className={[styles[resource.state], 'pull-right'].join(' ')}>{nameMap[resource.state]}</div>
+              <Tag {...getState(resource.state)} className="pull-right">{nameMap[resource.state]}</Tag>
             </div>
           }
           {...this.props}
@@ -66,8 +127,8 @@ export default class C extends React.Component {
             </div> :
             <div className="text-center">
               <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
-              <Button style={{marginRight: '16px'}}>驳回</Button>
-              <Button>通过</Button>
+              <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
+              <Button onClick={this.pass}>通过</Button>
             </div>
           }
           closable={false}
@@ -76,42 +137,44 @@ export default class C extends React.Component {
             {resource.state === '已驳回' && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
-                <Row>
-                  <Col span={8}>
-                    <Card title="MySQL" style={{height: '230px'}}>
-                      <Form>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="地点"
-                          hasFeedback
-                        >
-                         青岛
-                        </FormItem>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="配置"
-                          hasFeedback
-                        >
-                          中
-                        </FormItem>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="分片"
-                          hasFeedback
-                        >
-                         50片
-                        </FormItem>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="备份"
-                          hasFeedback
-                        >
-                         是
-                        </FormItem>
-                      </Form>
-                    </Card>
-                  </Col>
-                </Row>
+                {this.state.resource && (
+                  <Row>
+                    <Col span={8}>
+                      <Card title="MySQL" style={{height: '230px'}}>
+                        <Form>
+                          <FormItem
+                            {...formItemLayout4}
+                            label="地点"
+                            hasFeedback
+                          >
+                           青岛
+                          </FormItem>
+                          <FormItem
+                            {...formItemLayout4}
+                            label="配置"
+                            hasFeedback
+                          >
+                            中
+                          </FormItem>
+                          <FormItem
+                            {...formItemLayout4}
+                            label="分片"
+                            hasFeedback
+                          >
+                           50片
+                          </FormItem>
+                          <FormItem
+                            {...formItemLayout4}
+                            label="备份"
+                            hasFeedback
+                          >
+                           是
+                          </FormItem>
+                        </Form>
+                      </Card>
+                    </Col>
+                  </Row>
+                )}
               </div>
             )}
 
@@ -120,44 +183,6 @@ export default class C extends React.Component {
                 <Select placeholder="请选择集群"
                         style={{width: '200px', marginRight: '24px', marginBottom: '16px'}}
                 ></Select>
-                <div>中间件配置: </div>
-                <br/>
-                <Row>
-                  <Col span={8}>
-                    <Card title="MySQL" style={{height: '230px'}}>
-                      <Form>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="地点"
-                          hasFeedback
-                        >
-                         青岛
-                        </FormItem>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="配置"
-                          hasFeedback
-                        >
-                          中
-                        </FormItem>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="分片"
-                          hasFeedback
-                        >
-                         50片
-                        </FormItem>
-                        <FormItem
-                          {...formItemLayout4}
-                          label="备份"
-                          hasFeedback
-                        >
-                         是
-                        </FormItem>
-                      </Form>
-                    </Card>
-                  </Col>
-                </Row>
               </div>
             )}
         </Modal>

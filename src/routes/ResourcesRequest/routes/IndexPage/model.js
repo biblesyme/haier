@@ -49,7 +49,7 @@ export default {
       yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
       try{
         let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
-        yield put({type:'setState',payload: {accounts: accounts.content.filter(a => a.state !== 'removed')}})
+        yield put({type:'setState',payload: {accounts: accounts.content}})
         yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
       }
       catch(e){
@@ -64,7 +64,13 @@ export default {
       yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.START} })
       try{
         let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
-        yield put({type:'setState',payload: {projects: projects.content.filter(a => a.state !== 'removed')}})
+        let fomatProjects = projects.content.map(p => {
+          return {
+            ...p,
+            data: JSON.parse(p.data),
+          }
+        })
+        yield put({type:'setState',payload: {projects: fomatProjects}})
         yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.SUCCESS} })
       }
       catch(e){
