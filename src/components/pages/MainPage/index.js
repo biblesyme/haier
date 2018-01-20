@@ -17,6 +17,11 @@ class MainPage extends React.Component {
       collapsed: !this.state.collapsed,
     });
   }
+
+  select = ({key}) => {
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: [key]}})
+  }
+
   componentWillMount(){
     this.props.init();
     // this.props.dispatch({type: 'App/findDomain'})
@@ -51,17 +56,18 @@ class MainPage extends React.Component {
               <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
             <Menu
-              defaultSelectedKeys={['5']}
+              selectedKeys={this.props.App.selectedKeys}
               defaultOpenKeys={['sub0']}
               mode="inline"
               theme="light"
               inlineCollapsed={this.state.collapsed}
               style={{ marginTop: '10px' }}
+              onSelect={this.select}
             >
               {['internal', 'manager', 'admin', 'domainAdmin', 'developer'].includes(role) && (
                 <Menu.ItemGroup title="资源管理">
                   {['internal', 'manager', 'admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="5">
+                    <Menu.Item key="1">
                       <Link to="/">
                         <Icon type="app"></Icon>
                         <span>应用创建</span>
@@ -69,7 +75,7 @@ class MainPage extends React.Component {
                     </Menu.Item>
                   )}
                   {['admin'].includes(role) && (
-                    <Menu.Item key="6">
+                    <Menu.Item key="2">
                       <Link to="/information">
                         <span>
                           <Icon type="desktop" />
@@ -81,7 +87,7 @@ class MainPage extends React.Component {
                     </Menu.Item>
                   )}
                   {['developer', 'manager', 'admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="7">
+                    <Menu.Item key="3">
                       <Link to="/application">
                         <span>
                           <Icon type="appstore" />
@@ -91,7 +97,7 @@ class MainPage extends React.Component {
                     </Menu.Item>
                   )}
                   {['admin'].includes(role) && (
-                    <Menu.Item key="8">
+                    <Menu.Item key="4">
                       <Link to="/resource">
                         <Icon type="resource"></Icon>
                         <span>资源列表</span>
@@ -100,11 +106,11 @@ class MainPage extends React.Component {
                   )}
                 </Menu.ItemGroup>
               )}
-              
+
               {['admin', 'domainAdmin', 'manager'].includes(role) && (
                 <Menu.ItemGroup title="审批管理">
                   {['admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="1">
+                    <Menu.Item key="5">
                       <Link to="/resourcesRequest">
                         <Icon type="approval1"></Icon>
                         <span>资源审批</span>
@@ -112,7 +118,7 @@ class MainPage extends React.Component {
                     </Menu.Item>
                   )}
                   {['admin', 'manager', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="2">
+                    <Menu.Item key="6">
                       <Link to="/resourcesRequest/permissionsRequest">
                         <Icon type="SubmitReview"></Icon>
                         <span>我发起的审批</span>
@@ -126,7 +132,7 @@ class MainPage extends React.Component {
 
               {role === 'admin' && (
                 <Menu.ItemGroup title="权限管理">
-                  <Menu.Item key="9">
+                  <Menu.Item key="7">
                     <Link to="/user">
                       <span>
                         <Icon type="user" />
@@ -136,7 +142,7 @@ class MainPage extends React.Component {
                       </span>
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key="10">
+                  <Menu.Item key="8">
                     <Link to="/areamanage">
                       <Icon type="area"></Icon>
                       <span>领域管理</span>

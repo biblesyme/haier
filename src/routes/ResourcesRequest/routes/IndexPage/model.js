@@ -1,9 +1,79 @@
 import { delay } from 'redux-saga'
+import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
+import apiStore from 'utils/apiStore'
+
 export default {
-  state: '',
+  state: {
+    findApprovalStatus: LOAD_STATUS.INITIAL,
+		findAccountStatus: LOAD_STATUS.INITIAL,
+		findProjectStatus: LOAD_STATUS.INITIAL,
+    approvals: [],
+		accounts: [],
+    projects: [],
+  },
   reducers: {
     setText(state,action){
       return action.payload
-    }
+    },
+    setState(state,{payload}){
+      return {
+        ...state,
+        ...payload,
+      }
+    },
+  },
+  effects: {
+		*findApproval({payload},{call, put}){
+      let {callback} = payload
+			yield put({type:'setState',payload: {findApprovalStatus: LOAD_STATUS.START} })
+			try{
+				let approval = yield call([apiStore,apiStore.find], 'approval', null, {forceReload: true})
+				yield put({type:'setState',payload: {approvals: approval.content}})
+				yield put({type:'setState',payload: {findApprovalStatus: LOAD_STATUS.SUCCESS} })
+        if(callback){
+          yield call(callback)
+        }
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findApprovalStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+        if(callback){
+          yield call(callback)
+        }
+			}
+		},
+    *findAccount({payload},{call, put}){
+      yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
+      try{
+        let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
+        yield put({type:'setState',payload: {accounts: accounts.content.filter(a => a.state !== 'removed')}})
+        yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
+      }
+      catch(e){
+        yield put({type:'setState',payload: {
+            findAccountStatus: LOAD_STATUS.FAIL,
+            errorMessage: e.message()
+          }
+        })
+      }
+    },
+    *findProject({payload},{call, put}){
+      yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.START} })
+      try{
+        let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
+        yield put({type:'setState',payload: {projects: projects.content.filter(a => a.state !== 'removed')}})
+        yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.SUCCESS} })
+      }
+      catch(e){
+        yield put({type:'setState',payload: {
+            findProjectStatus: LOAD_STATUS.FAIL,
+            errorMessage: e.message()
+          }
+        })
+      }
+    },
   }
 }

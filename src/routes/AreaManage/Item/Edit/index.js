@@ -124,7 +124,7 @@ export default class C extends React.Component {
       })
     } else {
       this.setState({
-        searchName: '',
+        searchName: '账号不存在',
         searchAccount: '',
       })
     }

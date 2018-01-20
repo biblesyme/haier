@@ -36,9 +36,16 @@ class AreaManage extends React.Component {
   }
 
   componentWillMount() {
-    this.props.selfDispatch({type: 'findDomain'})
+    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.props.selfDispatch({
+      type: 'findDomain',
+      payload: {
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+      },
+    })
     this.props.selfDispatch({type: 'findDomainAdmin'})
     this.props.selfDispatch({type: 'findAccount'})
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['8']}})
   }
 
   showModal = (visible) => {

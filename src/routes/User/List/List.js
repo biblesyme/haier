@@ -2,6 +2,7 @@ import React from 'react'
 import {Table, Row, Col, Input, Radio, Button} from 'antd'
 import userActions from './userActions'
 import ActionDropdown from '../../../components/ActionDropdown'
+import { connect } from 'utils/ecos'
 
 const {Search} = Input
 const RadioButton = Radio.Button
@@ -9,10 +10,15 @@ const RadioGroup = Radio.Group
 
 import styles from './styles.scss'
 
-class C extends React.Component {
+class User extends React.Component {
   state = {
     tableSelect: 'staff',
   }
+
+  componentWillMount() {
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['7']}})
+  }
+
   render() {
     const columnStaff = [{
       title: '序号',
@@ -109,4 +115,5 @@ class C extends React.Component {
   }
 }
 
-export default C
+Object.defineProperty(User, "name", { value: "User" });
+export default connect(null,['App'])(User)

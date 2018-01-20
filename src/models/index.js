@@ -9,6 +9,8 @@ export default {
 		loadSchemaStatus: LOAD_STATUS.INITIAL,
 		errorMessage: '',
 		role: 'admin',
+		loading: false,
+    selectedKeys: [],
 	},
 	reducers: {
 		setState(state,{payload}){

@@ -59,6 +59,7 @@ class Application extends React.Component {
       accout: '12123124233'
     }]
     this.setState({members})
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['3']}})
   }
 
   showModal = (visible) => {
@@ -209,4 +210,4 @@ class Application extends React.Component {
       )
   }
 }
-export default modelConnect(require('./model'))(Application)
+export default modelConnect(require('./model'), ['App'])(Application)

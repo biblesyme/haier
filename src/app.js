@@ -1,7 +1,8 @@
 import React from 'react'
 import renderRoutes from 'utils/renderRoutes'
 import {Link} from 'react-router-dom'
-import { Tabs, Button,Menu } from 'antd';
+import { Tabs, Button,Menu, Spin } from 'antd';
+import Spinner from './components/Spinner'
 
 import styles from './app.sass'
 import './antd.less'
@@ -35,13 +36,26 @@ class App extends React.Component {
       payload: {login: false}
     })
   }
+
+  updateLoading = (loading) => {
+    this.setState({loading})
+  }
+
   render() {
     // console.log(this.props, '=========')
     let output = <LoginForm
                   submit={this.submit.bind(this)}
                   ></LoginForm>
     if(this.props.reduxState&&this.props.reduxState.login){
-      output = <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}</MainPage>
+      output = (
+        <Spin spinning={this.props.reduxState.loading}
+              tip="加载中..."
+              size="large"
+              style={{marginTop: '200px'}}
+        >
+          <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}</MainPage>
+        </Spin>
+      )
     }
     return (
       <div className="page-wrap">

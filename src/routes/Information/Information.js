@@ -2,12 +2,16 @@ import React from 'react'
 import {Card, Row, Col, Progress, Divider} from 'antd'
 import { Circle, Line } from 'rc-progress';
 import MyProgress from '@/components/MyProgress'
+import { connect } from 'utils/ecos'
 
 const CardGrid = Card.Grid
 
 const stateHeight = '168px'
 
-class C extends React.Component {
+class Information extends React.Component {
+  componentWillMount() {
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['2']}})
+  }
   render() {
     return (
       <div className="page-wrap">
@@ -58,7 +62,7 @@ class C extends React.Component {
                       />
                     </Col>
                     <Col span={8}>
-                      <span style={{marginRight: '24px'}}>RabbitMQ</span>         
+                      <span style={{marginRight: '24px'}}>RabbitMQ</span>
                       <MyProgress percent="90"
                                   width="85px"
                       />
@@ -75,4 +79,5 @@ class C extends React.Component {
   }
 }
 
-export default C
+Object.defineProperty(Information, "name", { value: "Information" });
+export default connect(null,['App'])(Information)

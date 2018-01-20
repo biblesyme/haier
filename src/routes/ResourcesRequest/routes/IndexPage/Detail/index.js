@@ -9,6 +9,9 @@ import {
   Form,
   Select,
 } from 'antd'
+import nameMap from 'utils/nameMap'
+
+import styles from './styles.scss'
 
 
 const FormItem = Form.Item
@@ -53,7 +56,7 @@ export default class C extends React.Component {
           title={
             <div className="text-center">
               资源详情
-              <div className="pull-right" style={resource.state === '已驳回' ? {color: '#ffa940'} : {color: '#005aab'}}>{resource.state}</div>
+              <div className={[styles[resource.state], 'pull-right'].join(' ')}>{nameMap[resource.state]}</div>
             </div>
           }
           {...this.props}
@@ -62,7 +65,7 @@ export default class C extends React.Component {
               <Button type="primary" onClick={this.props.onCancel} >返回</Button>
             </div> :
             <div className="text-center">
-              <Button type="primary" onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
+              <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
               <Button style={{marginRight: '16px'}}>驳回</Button>
               <Button>通过</Button>
             </div>
@@ -112,7 +115,7 @@ export default class C extends React.Component {
               </div>
             )}
 
-            {resource.state !== '已驳回' && (
+            {resource.state === 'pendding' && (
               <div>
                 <Select placeholder="请选择集群"
                         style={{width: '200px', marginRight: '24px', marginBottom: '16px'}}

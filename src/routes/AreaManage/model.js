@@ -25,11 +25,15 @@ export default {
 	}
 	,effects: {
 		*findDomain({payload},{call, put}){
+      let {callback} = payload
 			yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.START} })
 			try{
 				let domain = yield call([apiStore,apiStore.find], 'domain', null, {forceReload: true})
 				yield put({type:'setState',payload: {domains: domain.content.filter(d => d.state !== 'removed')}})
 				yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.SUCCESS} })
+				if(callback){
+					yield call(callback)
+				}
 			}
 			catch(e){
 				yield put({type:'setState',payload: {
@@ -37,6 +41,9 @@ export default {
 						errorMessage: e.message()
 					}
 				})
+				if(callback){
+					yield call(callback)
+				}
 			}
 		},
 		*findDomainAdmin({payload},{call, put}){

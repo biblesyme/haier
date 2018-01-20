@@ -90,6 +90,7 @@ class ApplicationForm extends React.Component {
 
   componentWillMount() {
     this.addMiddlewareMapping('MySQL')
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
   }
 
   toggleCollapsed = () => {
@@ -308,4 +309,4 @@ class ApplicationForm extends React.Component {
 }
 
 const WrappedApp = Form.create()(ApplicationForm);
-export default WrappedApp
+export default connect(null, ['App'])(WrappedApp)

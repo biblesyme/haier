@@ -1,6 +1,7 @@
 import React from 'react'
 import {Table, Row, Col, Input, Button, Select} from 'antd'
 import Detail from './Detail'
+import { connect } from 'utils/ecos'
 
 const {Search} = Input
 const {Option} = Select
@@ -17,7 +18,7 @@ const datas =[{
   action: '查看',
 },]
 
-class C extends React.Component {
+class MySubmit extends React.Component {
   state = {
     filteredInfo: null,
     visibleDetail: false,
@@ -25,6 +26,10 @@ class C extends React.Component {
     filter: null,
     Selected: 'all',
   };
+
+  componentWillMount() {
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['6']}})
+  }
 
   handleCancel = (e) => {
     this.setState({
@@ -127,4 +132,5 @@ class C extends React.Component {
   }
 }
 
-export default C
+Object.defineProperty(MySubmit, "name", { value: "MySubmit" });
+export default connect(null,['App'])(MySubmit)
