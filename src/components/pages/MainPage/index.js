@@ -8,7 +8,8 @@ const {Option} = Select
 
 import styles from './style.sass'
 
-class MainPage extends React.Component {
+@connect(null,['App'])
+export default class MainPage extends React.Component {
   state = {
     collapsed: false,
   }
@@ -48,7 +49,7 @@ class MainPage extends React.Component {
               <Option key="internal">非A账号</Option>
               <Option key="external">A账号</Option>
             </Select>
-            <span className="mg-l10" onClick={this.props.exit}><Icon type="logout"></Icon>&nbsp;退出</span>
+            <span className={styles.logout} onClick={this.props.exit}><Icon type="logout"></Icon>&nbsp;退出</span>
           </div>
         </div>
         <div className={styles["page-navigation"]}>
@@ -157,4 +158,3 @@ class MainPage extends React.Component {
     );
   }
 }
-export default connect(null,['App'])(MainPage)

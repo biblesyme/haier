@@ -210,4 +210,5 @@ class Application extends React.Component {
       )
   }
 }
+Object.defineProperty(Application, "name", { value: "Application" });
 export default modelConnect(require('./model'), ['App'])(Application)

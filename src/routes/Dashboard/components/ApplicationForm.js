@@ -309,4 +309,5 @@ class ApplicationForm extends React.Component {
 }
 
 const WrappedApp = Form.create()(ApplicationForm);
+Object.defineProperty(WrappedApp, "name", { value: "WrappedApp" });
 export default connect(null, ['App'])(WrappedApp)
