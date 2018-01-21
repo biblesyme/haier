@@ -54,16 +54,15 @@ export default class C extends React.Component {
     searchAccount: '',
   }
 
-  componentWillMount() {
-    let payload = {
-      data: {
-        externalId: this.props.form.getFieldValue('domainAdmin'),
-        ...this.props.resource,
-      },
-      link: 'admins'
-    }
-    this.props.dispatch({'type': 'App/followLink', payload})
-  }
+  // componentWillMount() {
+  //   let payload = {
+  //     data: {
+  //       ...this.props.resource,
+  //     },
+  //     link: 'admins'
+  //   }
+  //   this.props.dispatch({'type': 'App/followLink', payload})
+  // }
 
   addMember = () => {
     this.props.form.validateFields((err, values) => {

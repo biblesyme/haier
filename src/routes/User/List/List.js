@@ -1,8 +1,10 @@
 import React from 'react'
-import {Table, Row, Col, Input, Radio, Button} from 'antd'
+import {Table, Row, Col, Input, Radio, Button, Tag} from 'antd'
 import userActions from './userActions'
 import ActionDropdown from '../../../components/ActionDropdown'
 import { connect } from 'utils/ecos'
+import nameMap from 'utils/nameMap'
+import getState from 'utils/getState'
 
 const {Search} = Input
 const RadioButton = Radio.Button
@@ -13,67 +15,189 @@ import styles from './styles.scss'
 class User extends React.Component {
   state = {
     tableSelect: 'staff',
+    filter: null,
   }
 
   componentWillMount() {
+    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.props.selfDispatch({
+      type: 'findAccount',
+      payload: {
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+      }
+    })
+    this.props.selfDispatch({type: 'findProject'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['7']}})
   }
 
   render() {
+    const {accounts=[], projects=[],} = this.props.reduxState
     const columnStaff = [{
       title: '序号',
-      dataIndex: 'state',
-      key: 'state',
-      render: (state, record) => {
-        return (
-          <div>
-            <Tag {...getState(record.state)}>
-              {nameMap[state]}
-            </Tag>
-          </div>
-        )
-      }
+      dataIndex: 'id',
+      key: 'id',
     }, {
       title: '用户名',
-      dataIndex: 'description',
-      key: 'description',
+      dataIndex: 'externalId',
+      key: 'externalId',
     }, {
       title: '姓名',
-      dataIndex: 'rule',
-      key: 'rule',
+      dataIndex: 'name',
+      key: 'name',
     }, {
       title: '角色',
-      dataIndex: 'endPoint',
-      key: 'endPoint',
+      render: (record) => {
+        let formatter = record.roles.map(r => nameMap[r])
+        return <span>{formatter.join(',')}</span>
+      }
     }, {
-      title: '领域',
-      dataIndex: 'startsAt',
-      key: 'startsAt',
-      render: (startsAt, record) => {
-        return <span>{ (record.state === 'active' || record.state === 'suppressed') && startsAt}</span>
+      title: '所属项目',
+      render: (record) => {
+        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
+        if (selector) {
+          return <span>{selector.name}</span>
+        } else {
+          return <span></span>
+        }
+      }
+    }, {
+      title: '部门/公司',
+      render: (record) => {
+        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
+        if (selector) {
+          return <span>{selector.data.data.businessDomain}</span>
+        } else {
+          return <span></span>
+        }
       }
     }, {
       title: '状态',
-      dataIndex: 'endsAt',
-      key: 'endsAt',
-      render: (endsAt, record) => {
-        return <span>{ (record.state === 'active' || record.state === 'suppressed') && endsAt}</span>
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+    }, {
+      title: '操作',
+      render: (record) => {
+        if (record.state === 'active') {
+          return <a>停用</a>
+        }
+        if (record.state === 'inactive') {
+          return <a>启用</a>
+        }
       }
-    },
-    {
-      className: styles.center,
-      render: (d, record) => {
-        return (
-          <ActionDropdown
-            actions={alertActions(record)}
-            resource={record}
-            component={this}
-            cbMap={this.alertActions}
-          />
-        )},
-      width: 100,
-      fixed: 'right',
     },];
+
+    const columnDeveloper = [{
+      title: '序号',
+      dataIndex: 'id',
+      key: 'id',
+    }, {
+      title: '用户名',
+      dataIndex: 'externalId',
+      key: 'externalId',
+    }, {
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+    }, {
+      title: '角色',
+      render: (record) => {
+        let formatter = record.roles.map(r => nameMap[r])
+        return <span>{formatter.join(',')}</span>
+      }
+    }, {
+      title: '所属项目',
+      render: (record) => {
+        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
+        if (selector) {
+          return <span>{selector.name}</span>
+        } else {
+          return <span></span>
+        }
+      }
+    }, {
+      title: '项目经理',
+      render: (record) => {
+        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
+        if (selector) {
+          return <span>{selector.data.data.businessDomain}</span>
+        } else {
+          return <span></span>
+        }
+      }
+    }, {
+      title: '资源',
+    },{
+      title: '状态',
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+    }, {
+      title: '操作',
+      render: (record) => {
+        if (record.state === 'active') {
+          return <a>停用</a>
+        }
+        if (record.state === 'inactive') {
+          return <a>启用</a>
+        }
+      }
+    },];
+
+    const columnAdmin = [{
+      title: '序号',
+      dataIndex: 'id',
+      key: 'id',
+    }, {
+      title: '用户名',
+      dataIndex: 'externalId',
+      key: 'externalId',
+    }, {
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+    }, {
+      title: '状态',
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+    }, {
+      title: '操作',
+      render: (record) => {
+        if (record.state === 'active') {
+          return <a>停用</a>
+        }
+        if (record.state === 'inactive') {
+          return <a>启用</a>
+        }
+      }
+    },];
+
+    let selector = []
+    if (this.state.tableSelect === 'staff') {
+      selector = accounts.filter(a => {
+        if (!a.roles.includes('developer')) {
+          return a
+        }
+      })
+    }
+    if (this.state.tableSelect === 'developer') {
+      selector = accounts.filter(a => {
+        if (a.roles.includes('developer')) {
+          return a
+        }
+      })
+    }
+    if (this.state.tableSelect === 'admin') {
+      selector = accounts.filter(a => {
+        if (a.isAdmin) {
+          return a
+        }
+      })
+    }
+    const boxes = selector.filter(a => {
+      const {filter} = this.state
+      if (!filter) {
+        return true
+      }
+      const reg = new RegExp(filter, 'i')
+      const fieldsToFilter = [a.name || '', a.externalId || ''].join()
+      return reg.test(fieldsToFilter)
+    })
     return (
       <main className="page-section">
         <h3>用户列表</h3>
@@ -88,14 +212,15 @@ class User extends React.Component {
                         onChange={e => this.setState({tableSelect: e.target.value})}
             >
               <RadioButton value='staff'>员工</RadioButton>
-              <RadioButton value="supplier">供应商</RadioButton>
-              <RadioButton value="management">管理层</RadioButton>
+              <RadioButton value="developer">供应商</RadioButton>
+              <RadioButton value="admin">管理层</RadioButton>
             </RadioGroup>
           </Col>
           <Col>
             <Search
               placeholder="请输入您搜索的关键词"
               style={{ width: 200 }}
+              onChange={e => this.setState({filter: e.target.value})}
             />
           </Col>
         </Row>
@@ -103,9 +228,26 @@ class User extends React.Component {
         <Col>
           {this.state.tableSelect === 'staff' && (
             <Table
-              // dataSource={boxes}
+              dataSource={boxes}
               columns={columnStaff}
               rowKey="id"
+              pagination={{showQuickJumper: true}}
+            />
+          )}
+          {this.state.tableSelect === 'developer' && (
+            <Table
+              dataSource={boxes}
+              columns={columnDeveloper}
+              rowKey="id"
+              pagination={{showQuickJumper: true}}
+            />
+          )}
+          {this.state.tableSelect === 'admin' && (
+            <Table
+              dataSource={boxes}
+              columns={columnAdmin}
+              rowKey="id"
+              pagination={{showQuickJumper: true}}
             />
           )}
         </Col>
@@ -116,4 +258,4 @@ class User extends React.Component {
 }
 
 Object.defineProperty(User, "name", { value: "User" });
-export default connect(null,['App'])(User)
+export default connect(require('./model'),['App'])(User)

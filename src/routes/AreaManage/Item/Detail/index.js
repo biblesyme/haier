@@ -30,7 +30,7 @@ const formItemLayout = {
 
 const columns = [{
   title: '序号',
-  dataIndex: 'id',
+  dataIndex: 'count',
 }, {
   title: 'Portal账号',
   dataIndex: 'account.externalId',
@@ -57,6 +57,8 @@ export default class C extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const {resource, domainAdmins=[]} = this.props
+    let count = 1
+    let boxes = domainAdmins.map(d => ({...d, count: count++}))
     return (
       <div>
         <Modal
@@ -70,7 +72,7 @@ export default class C extends React.Component {
           >
             <p><label>当前领域：</label><span>{resource.name}</span></p>
             <h3>团队长：</h3>
-            <Table pagination={false} columns={columns} dataSource={domainAdmins} size="small" rowKey="id"/>
+            <Table pagination={false} columns={columns} dataSource={boxes} size="small" rowKey="id"/>
             <div className="mg-b10"></div>
             <div className="text-center"><Pagination current={this.state.page} total={domainAdmins.length} onChange={this.onChange} /></div>
         </Modal>

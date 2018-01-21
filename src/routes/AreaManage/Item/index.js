@@ -82,13 +82,16 @@ class Item extends React.Component {
             />
         )}
 
+      {this.state.visibleDetail && (
         <Detail
+          key={resource.id}
           visible={this.state.visibleDetail}
           onOk={(newData) => {this.saveAdd(newData)}}
           onCancel={this.handleCancel}
           resource={resource}
           domainAdmins={this.props.domainAdmins}
           />
+      )}
       </div>
     )
   }

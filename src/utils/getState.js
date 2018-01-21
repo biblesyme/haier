@@ -5,18 +5,13 @@ const defaultStateMap = {
   denied: {
     color: 'red',
   },
-  confirmed: {
-    color: 'green',
-  },
-  activating: {
-    color: 'green',
-  },
-  enabled: {
-    color: 'green',
-  },
   active: {
+    color: 'green',
+  },
+  inactive: {
     color: 'red',
   },
+
   created: {
     className: 'text-info'
   },
@@ -39,9 +34,6 @@ const defaultStateMap = {
   },
   healthy: {
     className: 'text-success',
-  },
-  'inactive': {
-    className: 'text-error',
   },
   disconnected: {
     className: 'text-warning'
