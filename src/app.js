@@ -66,13 +66,16 @@ class App extends React.Component {
                   ></LoginForm>
     if(this.props.reduxState&&this.props.reduxState.login){
       output = (
-        <Spin spinning={this.props.reduxState.loading}
-              tip="加载中..."
-              size="large"
-              style={{marginTop: '200px'}}
-        >
-          <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}</MainPage>
-        </Spin>
+
+          <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}
+            <Spin spinning={this.props.reduxState.loading}
+                  tip="加载中..."
+                  size="large"
+                  style={{position: 'absolute', top: '50%', left: '50%'}}
+            >
+                    </Spin>
+          </MainPage>
+
       )
     }
     return (
