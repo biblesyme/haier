@@ -106,13 +106,7 @@ class Approval extends React.Component {
       }
     }, {
       title: '状态',
-      render: (record) => {
-        return (
-          <Tag {...getState(record.state)}>
-            {nameMap[record.state]}
-          </Tag>
-        )
-      }
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>  
     }, {
       title: '操作',
       render: (record) => {

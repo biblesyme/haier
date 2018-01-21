@@ -1,5 +1,5 @@
 import React from 'react'
-import {Table, Row, Col, Input, Radio, Button, Tag} from 'antd'
+import {Table, Row, Col, Input, Radio, Button, Tag, message} from 'antd'
 import userActions from './userActions'
 import ActionDropdown from '../../../components/ActionDropdown'
 import { connect } from 'utils/ecos'
@@ -28,6 +28,42 @@ class User extends React.Component {
     })
     this.props.selfDispatch({type: 'findProject'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['7']}})
+  }
+
+  deactivate = () => {
+    let payload = {
+      data: {
+        ...this.props.resource,
+        externalId: this.props.App.user.externalId,
+      },
+      action: 'deactivate',
+      successCB: () => {
+        this.props.selfDispatch({'type': 'findAccount'})
+        message.success('账号停用成功')
+      },
+      failCB: () => {
+        message.error('账号停用失败')
+      }
+    }
+    this.props.dispatch({'type': 'App/doAction', payload})
+  }
+
+  activate = () => {
+    let payload = {
+      data: {
+        ...this.props.resource,
+        externalId: this.props.App.user.externalId,
+      },
+      action: 'deactivate',
+      successCB: () => {
+        this.props.selfDispatch({'type': 'findAccount'})
+        message.success('账号启用成功')
+      },
+      failCB: () => {
+        message.error('账号启用失败')
+      }
+    }
+    this.props.dispatch({'type': 'App/doAction', payload})
   }
 
   render() {
@@ -77,10 +113,10 @@ class User extends React.Component {
       title: '操作',
       render: (record) => {
         if (record.state === 'active') {
-          return <a>停用</a>
+          return <a onClick={this.deactivate}>停用</a>
         }
         if (record.state === 'inactive') {
-          return <a>启用</a>
+          return <a onClick={this.activate}>启用</a>
         }
       }
     },];

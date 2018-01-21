@@ -41,7 +41,9 @@ class MySubmit extends React.Component {
   render() {
     let { filteredInfo, } = this.state;
     const {approvals=[], accounts=[], projects=[]} = this.props.reduxState
-    const boxes = approvals.filter(d => {
+    const user = this.props.App || {}
+    const selector = approvals.filter(a => a.requesterId === user.id)
+    const boxes = selector.filter(d => {
       const {filter} = this.state
       if (!filter || filter === 'all') {
         return true
