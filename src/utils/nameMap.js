@@ -9,7 +9,12 @@ export default {
   developer: '开发者',
   domainAdmin: '团队长',
   admin: '管理员',
-  
+
   active: '可用',
   inactive: '停用',
+
+  // Project
+  ApplyingResource: '待部署',
+  ResourceReady: '已部署',
+  DeployingResource: '正在部署',
 }

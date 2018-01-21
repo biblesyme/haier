@@ -58,7 +58,7 @@ function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
 
-class Application extends React.Component {
+class ApplicationDetail extends React.Component {
   render(){
     const col = 12
     const formItemLayout = {
@@ -257,7 +257,7 @@ class Application extends React.Component {
       </div> */}
       <section className="page-section">
         <h3>框架</h3>
-        <CheckboxGroup options={plainOptions} value="前端框架"/>
+        <CheckboxGroup options={plainOptions} value={["前端框架"]}/>
       </section>
       <section className="page-section">
         <h3>监控功能</h3>
@@ -276,4 +276,4 @@ class Application extends React.Component {
       )
   }
 }
-export default connect(require('./model'))(Application)
+export default ApplicationDetail
