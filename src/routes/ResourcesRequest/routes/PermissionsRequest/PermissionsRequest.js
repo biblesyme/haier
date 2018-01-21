@@ -1,22 +1,14 @@
 import React from 'react'
-import {Table, Row, Col, Input, Button, Select} from 'antd'
+import {Table, Row, Col, Input, Button, Select, Tag} from 'antd'
 import Detail from './Detail'
 import { connect } from 'utils/ecos'
+import nameMap from 'utils/nameMap'
+import getState from 'utils/getState'
 
 const {Search} = Input
 const {Option} = Select
 
 import styles from './styles.scss'
-
-const datas =[{
-  id: 1,
-  type: '中间件',
-  resource: 'MySQL',
-  application: 'PSI用户大屏',
-  description: 'poi',
-  state: '已驳回',
-  action: '查看',
-},]
 
 class MySubmit extends React.Component {
   state = {
@@ -28,6 +20,15 @@ class MySubmit extends React.Component {
   };
 
   componentWillMount() {
+    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.props.selfDispatch({
+      type: 'findApproval',
+      payload: {
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+      }
+    })
+    this.props.selfDispatch({type: 'findAccount'})
+    this.props.selfDispatch({type: 'findProject'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['6']}})
   }
 
@@ -39,7 +40,8 @@ class MySubmit extends React.Component {
 
   render() {
     let { filteredInfo, } = this.state;
-    const boxes = datas.filter(d => {
+    const {approvals=[], accounts=[], projects=[]} = this.props.reduxState
+    const boxes = approvals.filter(d => {
       const {filter} = this.state
       if (!filter || filter === 'all') {
         return true
@@ -54,8 +56,8 @@ class MySubmit extends React.Component {
       key: 'id',
     }, {
       title: '类型',
-      dataIndex: 'type',
-      key: 'type',
+      dataIndex: 'type23',
+      key: 'type23',
       filters: [
         { text: '全部', value: 'all' },
         { text: '中间件', value: '中间件' },
@@ -70,29 +72,53 @@ class MySubmit extends React.Component {
       },
       filterMultiple: false,
     }, {
-      title: '资源信息',
-      dataIndex: 'resource',
-      key: 'resource',
+      title: '申请人',
+      render: (record) => {
+        let selector = accounts.filter(a => a.id === record.requesterId)[0] || ''
+        if (selector) {
+          return <span>{selector.name}</span>
+        } else {
+          return <span></span>
+        }
+      }
     }, {
-      title: '所属应用',
-      dataIndex: 'application',
-      key: 'application',
+      title: '部门',
+      render: (record) => {
+        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        if (selector) {
+          return <span>{selector.data.data.businessDomain}</span>
+        } else {
+          return <span></span>
+        }
+      }
     }, {
-      title: '描述',
-      dataIndex: 'description',
-      key: 'description',
+      title: '申请时间',
+      render: (record) => <span>{new Date(record.requestTimestamp * 1000).toLocaleString()}</span>
+    }, {
+      title: '项目名称',
+      render: (record) => {
+        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        if (selector) {
+          return <span>{selector.data.data.name}</span>
+        } else {
+          return <span></span>
+        }
+      }
     }, {
       title: '状态',
-      dataIndex: 'state',
-      key: 'state',
+      render: (record) => {
+        return (
+          <Tag {...getState(record.state)}>
+            {nameMap[record.state]}
+          </Tag>
+        )
+      }
     }, {
       title: '操作',
-      dataIndex: 'action',
-      key: 'action',
-      render: (action, record) => {
+      render: (record) => {
         return (
           <div>
-            <a onClick={e => this.setState({visibleDetail: true, record})}>{action}</a>
+            <a onClick={e => this.setState({visibleDetail: true, record})}>查看</a>
           </div>
         )
       }
@@ -105,10 +131,10 @@ class MySubmit extends React.Component {
                     value={this.state.Selected}
                     onChange={Selected => this.setState({Selected, filter: Selected,})}
             >
-              <Option key="all">全部</Option>
-              <Option key="待审批">待审批</Option>
-              <Option key="已审批">已审批</Option>
-              <Option key="已驳回">已驳回</Option>
+              <Option key='all'>全部</Option>
+              <Option key="pendding">待审批</Option>
+              <Option key="confirmed">已审批</Option>
+              <Option key="denied">已驳回</Option>
             </Select>
           </Col>
         </Row>
@@ -118,6 +144,7 @@ class MySubmit extends React.Component {
             dataSource={boxes}
             columns={columns}
             rowKey="id"
+            pagination={{showQuickJumper: true}}
           />
         </Col>
       </Row>
@@ -133,4 +160,4 @@ class MySubmit extends React.Component {
 }
 
 Object.defineProperty(MySubmit, "name", { value: "MySubmit" });
-export default connect(null,['App'])(MySubmit)
+export default connect(require('./model'),['App'])(MySubmit)

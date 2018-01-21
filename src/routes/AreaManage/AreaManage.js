@@ -114,6 +114,7 @@ class AreaManage extends React.Component {
                       total={domains.length}
                       onChange={page => this.setState({page})}
                       style={{marginTop: '20px'}}
+                      showQuickJumper
           />
         </section>
 

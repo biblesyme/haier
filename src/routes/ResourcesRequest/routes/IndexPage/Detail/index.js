@@ -9,13 +9,11 @@ import {
   Form,
   Select,
   Tag,
+  message,
 } from 'antd'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
 import { connect } from 'utils/ecos'
-
-import styles from './styles.scss'
-
 
 const FormItem = Form.Item
 const {Option} = Select
@@ -78,6 +76,7 @@ export default class C extends React.Component {
     let payload = {
       data: {
         ...this.props.resource,
+        externalId: this.props.App.user.externalId,
       },
       action: 'deny',
       successCB: () => {
@@ -85,6 +84,7 @@ export default class C extends React.Component {
         this.props.onCancel()
       },
       failCB: () => {
+        message.error('驳回失败')
         this.props.onCancel()
       }
     }
@@ -95,6 +95,7 @@ export default class C extends React.Component {
     let payload = {
       data: {
         ...this.props.resource,
+        externalId: this.props.App.user.externalId,
       },
       action: 'pass',
       successCB: () => {
@@ -102,6 +103,7 @@ export default class C extends React.Component {
         this.props.onCancel()
       },
       failCB: () => {
+        message.error('通过失败')
         this.props.onCancel()
       }
     }

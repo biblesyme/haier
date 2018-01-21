@@ -144,6 +144,7 @@ class Approval extends React.Component {
             dataSource={boxes}
             columns={columns}
             rowKey="id"
+            pagination={{showQuickJumper: true}}
           />
         </Col>
       </Row>
