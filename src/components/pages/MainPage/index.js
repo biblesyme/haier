@@ -25,11 +25,12 @@ export default class MainPage extends React.Component {
 
   componentWillMount(){
     this.props.init();
+    const {user= {},} = this.props.App
+    this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
     // this.props.dispatch({type: 'App/findDomain'})
   }
   render() {
-    const role = this.props.App.role
-
+    const {user= {}, role} = this.props.App
     return (
       <div className={styles["page-wrap"]}>
         <div className={styles["page-header"]}>
@@ -37,7 +38,7 @@ export default class MainPage extends React.Component {
             海尔产品整合PORTAL
           </div>
           <div className="user-info">
-            当前登录： 张三
+            当前登录： {user.name}
             <Select defaultValue="管理员"
                     value={role}
                     onChange={role => this.props.dispatch({type:'App/setState',payload: {role}})}

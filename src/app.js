@@ -1,7 +1,7 @@
 import React from 'react'
 import renderRoutes from 'utils/renderRoutes'
 import {Link} from 'react-router-dom'
-import { Tabs, Button,Menu, Spin } from 'antd';
+import { Tabs, Button,Menu, Spin, message } from 'antd';
 import Spinner from './components/Spinner'
 
 import styles from './app.sass'
@@ -19,16 +19,34 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  componentWillMount() {
+    this.props.selfDispatch({type: 'findAccount'})
+    this.props.selfDispatch({
+      type: 'setState',
+      payload: {login: false}
+    })
+  }
+
   init = ()=>{
     this.props.selfDispatch({
       type: 'loadSchema'
     })
   }
-  submit(){
-    this.props.selfDispatch({
-      type: 'setState',
-      payload: {login: true}
-    })
+  submit = (e, values) => {
+    const {accounts=[]} = this.props.reduxState
+    let account = accounts.filter(a => a.externalId === values.username)
+    if (account.length > 0) {
+      this.props.selfDispatch({
+        type: 'setState',
+        payload: {
+          login: true,
+          user: account[0],
+        }
+      })
+    } else {
+      message.error('账号不存在')
+    }
   }
   exit = ()=>{
     this.props.selfDispatch({
@@ -44,7 +62,7 @@ class App extends React.Component {
   render() {
     // console.log(this.props, '=========')
     let output = <LoginForm
-                  submit={this.submit.bind(this)}
+                  submit={this.submit}
                   ></LoginForm>
     if(this.props.reduxState&&this.props.reduxState.login){
       output = (

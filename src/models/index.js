@@ -7,10 +7,13 @@ export default {
 	state: {
 		login: false,
 		loadSchemaStatus: LOAD_STATUS.INITIAL,
+		findAccountStatus: LOAD_STATUS.INITIAL,
 		errorMessage: '',
 		role: 'admin',
 		loading: false,
     selectedKeys: [],
+		accounts: [],
+		user: {},
 	},
 	reducers: {
 		setState(state,{payload}){
@@ -30,6 +33,21 @@ export default {
 			catch(e){
 				yield put({type:'setState',payload: {
 						loadSchemaStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+			}
+		},
+		*findAccount({payload},{call, put}){
+			yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
+			try{
+				let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
+				yield put({type:'setState',payload: {accounts: accounts.content}})
+				yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findAccountStatus: LOAD_STATUS.FAIL,
 						errorMessage: e.message()
 					}
 				})
