@@ -257,8 +257,7 @@ class ApplicationDetail extends React.Component {
       <div style={{paddingBottom: '60px'}}></div>
 
       <section className="page-section bottom-actions">
-        <Button type="primary" icon="rollback">重置</Button>
-        <Button type="primary" icon="eye" style={{float: 'right'}}>预览</Button>
+        <Button type="primary" style={{float: 'right'}} onClick={() => this.props.history.goBack()}>返回</Button>
       </section>
     </div>
       )
