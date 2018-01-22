@@ -21,7 +21,7 @@ export default {
     },
   },
   effects: {
-    *findAccount({payload},{call, put}){
+    *findAccount({payload={}},{call, put}){
       let {callback} = payload
       yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
       try{

@@ -30,11 +30,10 @@ class User extends React.Component {
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['7']}})
   }
 
-  deactivate = () => {
+  deactivate = (record) => {
     let payload = {
       data: {
-        ...this.props.resource,
-        externalId: this.props.App.user.externalId,
+        ...record,
       },
       action: 'deactivate',
       successCB: () => {
@@ -48,13 +47,12 @@ class User extends React.Component {
     this.props.dispatch({'type': 'App/doAction', payload})
   }
 
-  activate = () => {
+  activate = (record) => {
     let payload = {
       data: {
-        ...this.props.resource,
-        externalId: this.props.App.user.externalId,
+        ...record,
       },
-      action: 'deactivate',
+      action: 'activate',
       successCB: () => {
         this.props.selfDispatch({'type': 'findAccount'})
         message.success('账号启用成功')
@@ -113,10 +111,10 @@ class User extends React.Component {
       title: '操作',
       render: (record) => {
         if (record.state === 'active') {
-          return <a onClick={this.deactivate}>停用</a>
+          return <a record={record}  onClick={() => this.deactivate(record)}>停用</a>
         }
         if (record.state === 'inactive') {
-          return <a onClick={this.activate}>启用</a>
+          return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
       }
     },];
