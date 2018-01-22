@@ -5,6 +5,7 @@ import FormMapping from './components/FormMapping'
 import FormResource from './components/FormResource'
 import replace from 'utils/replace'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -86,6 +87,8 @@ class ApplicationForm extends React.Component {
     checkedList: [],
     middlewareSelect: 'MySQL',
     middlewareMappings: [],
+    company: 'haier',
+    location: 'qd',
   }
 
   componentWillMount() {
@@ -131,14 +134,23 @@ class ApplicationForm extends React.Component {
     this.addMiddlewareMapping(middlewareSelect)
   }
 
+  preview = () => {
+    const form = {
+      company: this.state.company,
+    }
+    this.props.dispatch({type:'App/setState',payload: {form}})
+    this.props.history.push({pathname: '/preview'})
+  }
+
   render() {
     const { size, size2 } = this.state;
     const { getFieldDecorator } = this.props.form;
+    
     return (
       <div className="page-wrap">
         <section className="page-section">
           <label>应用归属：</label>
-          <Radio.Group value={size}>
+          <Radio.Group value={this.state.company} onChange={e=> this.setState({company: e.target.value})}>
             <Radio.Button value="haier">海尔</Radio.Button>
             <Radio.Button value="nohaier">非海尔</Radio.Button>
           </Radio.Group>
@@ -241,11 +253,10 @@ class ApplicationForm extends React.Component {
 
         <section className="page-section">
           <label htmlFor="">资源所在地：</label>
-          <Radio.Group value={size2}>
-            <Radio.Button value="qd">青岛</Radio.Button>
-            <Radio.Button value="bj">北京</Radio.Button>
-            <Radio.Button value="qt">其他</Radio.Button>
-          </Radio.Group>
+            <Select value={this.state.location} onChange={location => this.setState({location})} style={{width: '200px'}}>
+              <Option key="qd">青岛</Option>
+              <Option key="bj">北京</Option>
+            </Select>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">应用资源配置：</label>
           <div style={{padding: '10px'}}></div>
@@ -301,7 +312,7 @@ class ApplicationForm extends React.Component {
 
         <section className="page-section bottom-actions">
           <Button type="primary" icon="rollback">重置</Button>
-          <Link to="/preview"><Button type="primary" icon="eye" style={{float: 'right'}}>预览</Button></Link>
+          <Button type="primary" icon="eye" style={{float: 'right'}} onClick={this.preview}>预览</Button>
         </section>
       </div>
     );
@@ -310,4 +321,4 @@ class ApplicationForm extends React.Component {
 
 const WrappedApp = Form.create()(ApplicationForm);
 Object.defineProperty(WrappedApp, "name", { value: "WrappedApp" });
-export default connect(null, ['App'])(WrappedApp)
+export default withRouter(connect(null, ['App'])(WrappedApp))

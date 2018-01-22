@@ -9,6 +9,7 @@ import Paas from './components/Paas'
 import RocketMQProduct from './components/RocketMQProduct'
 import RocketMQComsumer from './components/RocketMQComsumer'
 import RabbitMQ from './components/RabbitMQ'
+import { withRouter } from 'react-router'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -52,6 +53,69 @@ const data = [{
   actions: '查看详情'
 }];
 
+const col = 12
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+  },
+  style: {
+    marginBottom: '10px'
+  }
+};
+
+const formItemLayout2 = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+  },
+  style: {
+    marginBottom: '0'
+  }
+}
+
+const formItemLayout3 = {
+  labelCol: {
+    xs: { span: 10 },
+    sm: { span: 10 },
+        pull: 0,
+
+  },
+  wrapperCol: {
+    xs: { span: 14 },
+    sm: { span: 14 },
+        push: 0,
+
+  },
+  style: {
+    marginBottom: '10px'
+  }
+}
+
+const formItemLayout4 = {
+  labelCol: {
+    xs: { span: 6 },
+    sm: { span: 6 },
+    pull: 0,
+  },
+  wrapperCol: {
+    xs: { span: 18 },
+    sm: { span: 18 },
+    push: 0
+  },
+  style: {
+    marginBottom: '10px'
+  }
+}
+
 const plainOptions = ['前端框架', '后台框架']
 
 function onChange(pagination, filters, sorter) {
@@ -60,86 +124,12 @@ function onChange(pagination, filters, sorter) {
 
 class ApplicationDetail extends React.Component {
   render(){
-    const col = 12
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-      },
-      style: {
-        marginBottom: '10px'
-      }
-    };
-
-    const formItemLayout2 = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 24 },
-      },
-      style: {
-        marginBottom: '0'
-      }
-    }
-
-    const formItemLayout3 = {
-      labelCol: {
-        xs: { span: 10 },
-        sm: { span: 10 },
-            pull: 0,
-
-      },
-      wrapperCol: {
-        xs: { span: 14 },
-        sm: { span: 14 },
-            push: 0,
-
-      },
-      style: {
-        marginBottom: '10px'
-      }
-    }
-
-    const formItemLayout4 = {
-      labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 },
-        pull: 0,
-      },
-      wrapperCol: {
-        xs: { span: 18 },
-        sm: { span: 18 },
-        push: 0
-      },
-      style: {
-        marginBottom: '10px'
-      }
-    }
-    // 数据源
-    const data = [
-      { genre: 'Sports', sold: 275, income: 2300 },
-      { genre: 'Strategy', sold: 115, income: 667 },
-      { genre: 'Action', sold: 120, income: 982 },
-      { genre: 'Shooter', sold: 350, income: 5271 },
-      { genre: 'Other', sold: 150, income: 3710 }
-    ];
-
-    // 定义度量
-    const cols = {
-      sold: { alias: '销售量' },
-      genre: { alias: '游戏种类' }
-    };
+    const {record={}} = this.props.location
+    console.log(record)
     return (
     <div>
       <section className="page-section">
-        <label>应用归属：海尔</label>
+        <label>应用归属：</label>
       </section>
       <section className="page-section">
         <label>应用信息:</label>
@@ -148,18 +138,16 @@ class ApplicationDetail extends React.Component {
             <FormItem
               {...formItemLayout}
               label="应用名称"
-              hasFeedback
             >
-             海尔690大数据平台规划
+             {record.name}
             </FormItem>
           </Col>
           <Col span={col}>
             <FormItem
               {...formItemLayout}
               label="申请日期"
-              hasFeedback
             >
-             2017年11月5日
+             {new Date(record.data.data.createdAt).toLocaleString()}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -168,7 +156,7 @@ class ApplicationDetail extends React.Component {
               label="业务负责人"
               hasFeedback
             >
-             张三、王五
+
             </FormItem>
           </Col>
           <Col span={col}>
@@ -177,7 +165,7 @@ class ApplicationDetail extends React.Component {
               label="技术负责人"
               hasFeedback
             >
-             李四
+
             </FormItem>
           </Col>
           <Col span={col}>
@@ -187,7 +175,7 @@ class ApplicationDetail extends React.Component {
               label="归属部门"
               hasFeedback
             >
-             大数据部
+             {record.data.data.businessDomain}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -196,7 +184,7 @@ class ApplicationDetail extends React.Component {
               label="应用属性"
               hasFeedback
             >
-             自开发
+             {record.data.data.applicationType}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -205,7 +193,7 @@ class ApplicationDetail extends React.Component {
               label="应用领域"
               hasFeedback
             >
-             供应链
+
             </FormItem>
           </Col>
         </Row>
@@ -223,7 +211,7 @@ class ApplicationDetail extends React.Component {
         <div className="text-right pd-tb10">
           <Button type="primary">前往容器云</Button>
         </div>
-    </section>
+      </section>
 
     <section className="page-section">
       <Row>
@@ -276,4 +264,6 @@ class ApplicationDetail extends React.Component {
       )
   }
 }
-export default ApplicationDetail
+
+Object.defineProperty(ApplicationDetail, "name", { value: "ApplicationDetail" });
+export default withRouter(connect(null, ['App'])(ApplicationDetail))

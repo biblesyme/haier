@@ -14,6 +14,7 @@ export default {
     selectedKeys: [],
 		accounts: [],
 		user: {},
+		form: {},
 	},
 	reducers: {
 		setState(state,{payload}){

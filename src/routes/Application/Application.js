@@ -23,19 +23,6 @@ const formItemLayout = {
   }
 };
 
-
-
-const data = [{
-  key: '1',
-  name: '大数据',
-  manager: '张三',
-  health: '50%',
-  resourceUsage: '30%',
-  middleWareHealth: '75% 80% 60%',
-  status: '待部署',
-  actions: '查看详情'
-}];
-
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
@@ -45,17 +32,8 @@ class Application extends React.Component {
     visibleAdd: false,
     visibleEdit: false,
     visibleDetail: false,
-    members: [{
-      key: '1',
-      name: '大数据',
-      manager: '张三',
-      health: '50%',
-      resourceUsage: '30%',
-      middleWareHealth: '75% 80% 60%',
-      status: '待部署',
-      actions: '查看详情'
-    }],
     domainSelect: 'all',
+    filter: null,
   }
 
   componentWillMount() {
@@ -92,6 +70,10 @@ class Application extends React.Component {
       visibleEdit: false,
       visibleDetail: false,
     });
+  }
+
+  detail = (record) => {
+    this.props.history.push({pathname: `/applications/${record.id}`, record})
   }
 
   deleteMember = (e, accout) => {
@@ -142,8 +124,8 @@ class Application extends React.Component {
       render: (record, index) => {
         return (
           <div>
-            {/* <Link to={`/resourcesRequest`}>申请资源</Link> */}
-            <Link className="mg-l10" to={`/applications/${record.id}`} key={record.id}>查看详情</Link>
+            <a onClick={() => this.detail(record)}>查看详情</a>
+            {/* <Link className="mg-l10" to={`/applications/${record.id}`} key={record.id}>查看详情</Link> */}
             <a className="mg-l10"
                onClick={this.showModal('visibleEdit')}
             >成员管理</a>
@@ -165,7 +147,15 @@ class Application extends React.Component {
     //   )
     // })
 
-    const boxes = projects
+    const boxes = projects.filter(a => {
+      const {filter} = this.state
+      if (!filter) {
+        return true
+      }
+      const reg = new RegExp(filter, 'i')
+      const fieldsToFilter = [a.name || '', a.externalId || ''].join()
+      return reg.test(fieldsToFilter)
+    })
 
     return (
     <div>

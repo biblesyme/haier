@@ -17,4 +17,8 @@ export default {
   ApplyingResource: '待部署',
   ResourceReady: '已部署',
   DeployingResource: '正在部署',
+
+  // Application
+  haier: '海尔',
+  nohaier: '非海尔',
 }
