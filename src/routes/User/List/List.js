@@ -204,21 +204,21 @@ class User extends React.Component {
     let selector = []
     if (this.state.tableSelect === 'staff') {
       selector = accounts.filter(a => {
-        if (!a.roles.includes('developer')) {
+        if (!(a.roles.includes('developer') || a.roles.includes('external'))) {
           return a
         }
       })
     }
     if (this.state.tableSelect === 'developer') {
       selector = accounts.filter(a => {
-        if (a.roles.includes('developer')) {
+        if (a.roles.includes('developer') || a.roles.includes('external')) {
           return a
         }
       })
     }
     if (this.state.tableSelect === 'admin') {
       selector = accounts.filter(a => {
-        if (a.isAdmin) {
+        if (a.roles.includes('admin')) {
           return a
         }
       })
