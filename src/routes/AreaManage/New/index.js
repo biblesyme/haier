@@ -27,19 +27,35 @@ const formItemLayout = {
 @Form.create()
 export default class C extends React.Component {
   state = {
-    username: '',
+    searchName: '',
+    searchAccount: '',
   }
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (err) return
       let value = {
-        name: values.name,
         admin: {
           accout: values.accout,
         },
       }
       this.props.onOk(value)
     })
+  }
+
+  searchDomainAdmin = (e) => {
+    let value = e.target.value
+    let account = this.props.accounts.filter(d => d.externalId === value)[0]
+    if (account !== undefined) {
+      this.setState({
+        searchName: account.name,
+        searchAccount: account.externalId,
+      })
+    } else {
+      this.setState({
+        searchName: '账号不存在',
+        searchAccount: '',
+      })
+    }
   }
 
   render() {
@@ -76,14 +92,14 @@ export default class C extends React.Component {
                     required: true, message: '请输入',
                   }],
                 })(
-                  <Input placeholder="请输入领域管理员账号"/>
+                  <Input placeholder="请输入领域管理员账号" onChange={this.searchDomainAdmin}/>
                 )}
               </FormItem>
               <FormItem
                 {...formItemLayout}
-                label="用户名"
+                label="用户信息"
               >
-                <Input value={this.state.username} onChange={e => this.setState({username: e.target.value})}/>
+                <p>{`${this.state.searchName} ${this.state.searchAccount}`}</p>
               </FormItem>
             </Form>
         </Modal>

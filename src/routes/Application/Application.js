@@ -104,7 +104,7 @@ class Application extends React.Component {
   render(){
     const {projects=[],} = this.props.reduxState
     const columns = [{
-      title: '序号',
+      title: 'ID',
       dataIndex: 'id',
     }, {
       title: '应用名称',

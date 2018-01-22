@@ -67,10 +67,6 @@ class User extends React.Component {
   render() {
     const {accounts=[], projects=[],} = this.props.reduxState
     const columnStaff = [{
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-    }, {
       title: '用户名',
       dataIndex: 'externalId',
       key: 'externalId',
@@ -84,26 +80,16 @@ class User extends React.Component {
         let formatter = record.roles.map(r => nameMap[r])
         return <span>{formatter.join(',')}</span>
       }
-    }, {
-      title: '所属项目',
-      render: (record) => {
-        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
-        if (selector) {
-          return <span>{selector.name}</span>
-        } else {
-          return <span></span>
-        }
-      }
-    }, {
+    },{
       title: '部门/公司',
-      render: (record) => {
-        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
-        if (selector) {
-          return <span>{selector.data.data.businessDomain}</span>
-        } else {
-          return <span></span>
-        }
-      }
+      // render: (record) => {
+      //   let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
+      //   if (selector) {
+      //     return <span>{selector.data.data.businessDomain}</span>
+      //   } else {
+      //     return <span></span>
+      //   }
+      // }
     }, {
       title: '状态',
       render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
@@ -120,10 +106,6 @@ class User extends React.Component {
     },];
 
     const columnDeveloper = [{
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-    }, {
       title: '用户名',
       dataIndex: 'externalId',
       key: 'externalId',
@@ -137,17 +119,7 @@ class User extends React.Component {
         let formatter = record.roles.map(r => nameMap[r])
         return <span>{formatter.join(',')}</span>
       }
-    }, {
-      title: '所属项目',
-      render: (record) => {
-        let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
-        if (selector) {
-          return <span>{selector.name}</span>
-        } else {
-          return <span></span>
-        }
-      }
-    }, {
+    },{
       title: '项目经理',
       render: (record) => {
         let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
@@ -166,19 +138,15 @@ class User extends React.Component {
       title: '操作',
       render: (record) => {
         if (record.state === 'active') {
-          return <a>停用</a>
+          return <a record={record}  onClick={() => this.deactivate(record)}>停用</a>
         }
         if (record.state === 'inactive') {
-          return <a>启用</a>
+          return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
       }
     },];
 
     const columnAdmin = [{
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-    }, {
       title: '用户名',
       dataIndex: 'externalId',
       key: 'externalId',
@@ -193,10 +161,10 @@ class User extends React.Component {
       title: '操作',
       render: (record) => {
         if (record.state === 'active') {
-          return <a>停用</a>
+          return <a record={record}  onClick={() => this.deactivate(record)}>停用</a>
         }
         if (record.state === 'inactive') {
-          return <a>启用</a>
+          return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
       }
     },];
@@ -280,7 +248,7 @@ class User extends React.Component {
             <Table
               dataSource={boxes}
               columns={columnAdmin}
-              rowKey="id"
+              rowKey="externalId"
               pagination={{showQuickJumper: true}}
             />
           )}

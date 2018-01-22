@@ -129,6 +129,7 @@ class AreaManage extends React.Component {
           visible={this.state.visibleAdd}
           onOk={(newData) => {this.saveAdd(newData)}}
           onCancel={this.handleCancel}
+          accounts={accounts}
           />
       </div>
       )

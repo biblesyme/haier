@@ -53,27 +53,28 @@ class MySubmit extends React.Component {
       return reg.test(fieldsToFilter)
     })
     const columns = [{
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-    }, {
-      title: '类型',
-      dataIndex: 'type23',
-      key: 'type23',
-      filters: [
-        { text: '全部', value: 'all' },
-        { text: '中间件', value: '中间件' },
-        { text: 'PAAS', value: 'paas' },
-        { text: '能力开放平台', value: 'Platform' },
-      ],
-      onFilter: (value, record) => {
-        if (value === 'all') {
-          return record.type
-        }
-        return record.type.includes(value)
-      },
-      filterMultiple: false,
-    }, {
+      title: 'ID',
+      dataIndex: 'id'
+    },
+    // {
+      // title: '类型',
+      // dataIndex: 'type23',
+      // key: 'type23',
+      // filters: [
+      //   { text: '全部', value: 'all' },
+      //   { text: '中间件', value: '中间件' },
+      //   { text: 'PAAS', value: 'paas' },
+      //   { text: '能力开放平台', value: 'Platform' },
+      // ],
+      // onFilter: (value, record) => {
+      //   if (value === 'all') {
+      //     return record.type
+      //   }
+      //   return record.type.includes(value)
+      // },
+      // filterMultiple: false,
+    // },
+     {
       title: '申请人',
       render: (record) => {
         let selector = accounts.filter(a => a.id === record.requesterId)[0] || ''
@@ -161,5 +162,4 @@ class MySubmit extends React.Component {
   }
 }
 
-Object.defineProperty(MySubmit, "name", { value: "MySubmit" });
 export default connect(require('./model'),['App'])(MySubmit)

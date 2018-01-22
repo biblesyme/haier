@@ -24,7 +24,7 @@ class Resource extends React.Component {
   render() {
     const {resources=[], projects=[]} = this.props.reduxState
     const columns = [{
-      title: '序号',
+      title: 'ID',
       dataIndex: 'id'
     }, {
       title: '类型',
@@ -59,6 +59,9 @@ class Resource extends React.Component {
     }, {
       title: '状态',
       render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+    }, {
+      title: '操作',
+      render: (record) => <a>详情</a>
     }]
     const boxes = resources
     return (

@@ -51,26 +51,8 @@ class Approval extends React.Component {
       return reg.test(fieldsToFilter)
     })
     const columns = [{
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-    }, {
-      title: '类型',
-      dataIndex: 'type23',
-      key: 'type23',
-      filters: [
-        { text: '全部', value: 'all' },
-        { text: '中间件', value: '中间件' },
-        { text: 'PAAS', value: 'paas' },
-        { text: '能力开放平台', value: 'Platform' },
-      ],
-      onFilter: (value, record) => {
-        if (value === 'all') {
-          return record.type
-        }
-        return record.type.includes(value)
-      },
-      filterMultiple: false,
+      title: 'ID',
+      dataIndex: 'id'
     }, {
       title: '申请人',
       render: (record) => {
@@ -106,7 +88,7 @@ class Approval extends React.Component {
       }
     }, {
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>  
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
     }, {
       title: '操作',
       render: (record) => {
