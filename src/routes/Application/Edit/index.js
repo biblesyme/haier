@@ -1,5 +1,4 @@
 import React from 'react'
-
 import {
   Modal,
   Form,
@@ -11,6 +10,7 @@ import {
   message,
 } from 'antd'
 import { connect } from 'utils/ecos'
+import nameMap from 'utils/nameMap'
 
 const FormItem = Form.Item
 
@@ -55,7 +55,7 @@ export default class C extends React.Component {
     particpants: [],
   }
 
-  componentWillMount() {
+  update = () => {
     let payload = {
       data: {
         ...this.props.resource,
@@ -66,7 +66,15 @@ export default class C extends React.Component {
     this.props.dispatch({'type': 'App/followLink', payload})
   }
 
+  componentWillMount() {
+    this.update()
+  }
+
   addMember = () => {
+    if (this.props.resource.state !== 'ResourceReady') {
+      message.warning(`应用${nameMap[this.props.resource.state]} 无法操作成员`)
+      return
+    }
     this.props.form.validateFields((err, values) => {
       if (err) return
       let newMembers = this.state.members
@@ -75,10 +83,10 @@ export default class C extends React.Component {
           externalId: this.props.form.getFieldValue('domainAdmin'),
           ...this.props.resource,
         },
-        action: 'addAdmin',
+        action: 'addMember',
         failCB: () => message.error('项目成员新增失败'),
         successCB: () => {
-          this.props.dispatch({'type': 'AreaManage/findDomainAdmin'})
+          this.update()
           message.success('项目成员新增成功')
         }
       }
@@ -87,16 +95,19 @@ export default class C extends React.Component {
   }
 
   deleteMember = (e, externalId) => {
-    console.log(e)
+    if (this.props.resource.state !== 'ResourceReady') {
+      message.warning(`应用${nameMap[this.props.resource.state]} 无法操作成员`)
+      return
+    }
     let payload = {
       data: {
         externalId,
         ...this.props.resource,
       },
-      action: 'deleteAdmin',
+      action: 'removeMember',
       failCB: () => message.error('项目成员删除失败'),
       successCB: () => {
-        this.props.dispatch({'type': 'AreaManage/findDomainAdmin'})
+        this.update()
         message.success('项目成员删除成功')
       },
     }

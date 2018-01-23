@@ -229,6 +229,7 @@ class Application extends React.Component {
           onOk={(newData) => {this.updateDomain(newData)}}
           onCancel={this.handleCancel}
           resource={this.state.record}
+          accounts={accounts}
           />
       )}
 
