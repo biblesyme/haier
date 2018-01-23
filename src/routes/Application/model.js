@@ -36,7 +36,7 @@ export default {
         })
       }
     },
-    *findProject({payload},{call, put}){
+    *findProject({payload={}},{call, put}){
       let {callback} = payload
       yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.START} })
       try{

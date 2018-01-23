@@ -120,12 +120,12 @@ class Application extends React.Component {
       title: '状态',
       render: (record) => <span>{nameMap[record.state]}</span>
     }, {
-      title: '操作',
+      title: <div className="text-center">操作</div>,
       render: (record, index) => {
         return (
-          <div>
-            <a onClick={() => this.detail(record)}>查看详情</a>
-            {/* <Link className="mg-l10" to={`/applications/${record.id}`} key={record.id}>查看详情</Link> */}
+          <div className="text-center">
+            <a onClick={() => this.detail(record)}>申请资源</a>
+            <a className="mg-l10" onClick={() => this.detail(record)}>查看详情</a>
             <a className="mg-l10"
                onClick={this.showModal('visibleEdit')}
             >成员管理</a>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Row, Col, Form, Select, Checkbox} from 'antd'
+import {Button, Row, Col, Form, Select, Checkbox, message} from 'antd'
 import { withRouter } from 'react-router'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
@@ -24,6 +24,25 @@ const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['前端框架', '后台框架']
 
 class Preview extends React.Component {
+  submit = () => {
+    const {form} = this.props.App
+    this.props.dispatch({
+      type: 'App/saveRecord',
+      payload: {
+        data: {
+          ...form,
+          type: 'projects',
+        },
+        successCB: () => {
+          message.success('应用创建成功')
+          this.props.history.push({pathname: '/application'})
+        },
+        failCB: () => {
+          message.error('应用创建失败')
+        },
+      }
+    })
+  }
   render() {
     const {history} = this.props
     const {form} = this.props.App
@@ -42,7 +61,7 @@ class Preview extends React.Component {
                 label="应用名称"
                 hasFeedback
               >
-               海尔690大数据平台规划
+               {form.projectInfo.name}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -51,7 +70,7 @@ class Preview extends React.Component {
                 label="申请日期"
                 hasFeedback
               >
-               2017年11月5日
+               {new Date(form.projectInfo.createdAt).toLocaleString()}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -60,16 +79,7 @@ class Preview extends React.Component {
                 label="业务负责人"
                 hasFeedback
               >
-               张三、王五
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="技术负责人"
-                hasFeedback
-              >
-               李四
+               {form.projectInfo.ownerUser}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -79,7 +89,7 @@ class Preview extends React.Component {
                 label="归属部门"
                 hasFeedback
               >
-               大数据部
+               {form.projectInfo.ownerUserDp}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -88,7 +98,7 @@ class Preview extends React.Component {
                 label="应用属性"
                 hasFeedback
               >
-               自开发
+               {form.projectInfo.applicationType}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -97,7 +107,7 @@ class Preview extends React.Component {
                 label="应用领域"
                 hasFeedback
               >
-               供应链
+               {form.projectInfo.businessDomain}
               </FormItem>
             </Col>
           </Row>

@@ -24,7 +24,7 @@ export default {
 		}
 	}
 	,effects: {
-		*findDomain({payload},{call, put}){
+		*findDomain({payload={}},{call, put}){
       let {callback} = payload
 			yield put({type:'setState',payload: {findDomainStatus: LOAD_STATUS.START} })
 			try{

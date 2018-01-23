@@ -10,6 +10,7 @@ export default {
   removed: '已移除',
   pendding: '待审批',
   rejected: '已驳回',
+  Pending: '待审批',
   ApplyingResource: '待部署',
   ResourceReady: '已部署',
   DeployingResource: '正在部署',

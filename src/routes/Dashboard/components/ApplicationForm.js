@@ -1,17 +1,20 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin } from 'antd';
 import { connect } from 'utils/ecos'
 import FormMapping from './components/FormMapping'
 import FormResource from './components/FormResource'
 import replace from 'utils/replace'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import axios from 'axios'
+import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
 
 const CheckboxGroup = Checkbox.Group;
 
-const SubMenu = Menu.SubMenu;
-const Option = Select.Option;
+const {SubMenu} = Menu;
+const {Option} = Select;
 const FormItem = Form.Item;
+const {Search} = Input
 
 import styles from './style.sass'
 
@@ -89,11 +92,18 @@ class ApplicationForm extends React.Component {
     middlewareMappings: [],
     company: 'haier',
     location: 'qd',
+    projectInfo: null,
+    searching: LOAD_STATUS.INITIAL,
+    domainId: '',
   }
 
   componentWillMount() {
     this.addMiddlewareMapping('MySQL')
+    this.props.dispatch({type:'NewApplication/findDomain'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
+    // if(this.props.form) {
+    //   console.log('poi')
+    // }
   }
 
   toggleCollapsed = () => {
@@ -135,17 +145,41 @@ class ApplicationForm extends React.Component {
   }
 
   preview = () => {
-    const form = {
-      company: this.state.company,
+    this.props.form.validateFields((err, values) => {
+      const form = {
+        company: this.state.company,
+        projectInfo: this.state.projectInfo,
+        domainId: this.state.domainId,
+        name: this.state.projectInfo.name,
+        scode: values.scode,
+      }
+      this.props.dispatch({type:'App/setState', payload: {form}})
+      this.props.history.push({pathname: '/preview'})
+    })
+  }
+
+  reset = () => {
+    this.setState({
+      company: 'haier',
+      location: 'qd',
+    })
+  }
+
+  searchSCODE = (value) => {
+    if (this.state.searching !== LOAD_STATUS.START) {
+      this.setState({searching: LOAD_STATUS.START})
+      axios.get(`/v1/query/projects/${value}`)
+        .then((res) => this.setState({projectInfo: res.data.data, searching: LOAD_STATUS.SUCCESS, domainId: res.data.data.businessDomainId}))
+        .catch((err) => this.setState({projectInfo: null, searching: LOAD_STATUS.FAIL}))
     }
-    this.props.dispatch({type:'App/setState',payload: {form}})
-    this.props.history.push({pathname: '/preview'})
   }
 
   render() {
-    const { size, size2 } = this.state;
+    const { projectInfo } = this.state;
     const { getFieldDecorator } = this.props.form;
-    
+    const {domains} = this.props.NewApplication
+    console.log(domains)
+
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -165,79 +199,80 @@ class ApplicationForm extends React.Component {
                 hasFeedback
               >
                {getFieldDecorator('scode', {
-                  rules: [{ required: false, message: "请输入应用S码" }],
+                  rules: [{ required: true, message: "请输入应用S码" }],
                 })(
-                  <Input placeholder="请输入应用S码"/>
+                  <Search placeholder="请输入应用S码" enterButton onSearch={value => this.searchSCODE(value)}/>
                 )}
               </FormItem>
             </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="应用名称"
-                hasFeedback
-              >
-               海尔690大数据平台规划
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="申请日期"
-                hasFeedback
-              >
-               2017年11月5日
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="业务负责人"
-                hasFeedback
-              >
-               张三、王五
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="技术负责人"
-                hasFeedback
-              >
-               李四
-              </FormItem>
-            </Col>
-            <Col span={col}>
+          </Row>
+            {this.state.searching === LOAD_STATUS.START && <div className="text-center"><Icon type="loading" style={{ fontSize: 24 }} spin /></div>}
+            {(this.state.searching === LOAD_STATUS.FAIL) && (
+               <div className="text-center">S码不存在</div>
+            )}
+            {this.state.searching === LOAD_STATUS.SUCCESS && (
+            <Row gutter={24}>
+              <Col span={col}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用名称"
+                  hasFeedback
+                >
+                 {projectInfo.name}
+                </FormItem>
+              </Col>
+              <Col span={col}>
+                <FormItem
+                  {...formItemLayout}
+                  label="申请日期"
+                  hasFeedback
+                >
+                 {new Date(projectInfo.createdAt).toLocaleString()}
+                </FormItem>
+              </Col>
+              <Col span={col}>
+                <FormItem
+                  {...formItemLayout}
+                  label="业务负责人"
+                  hasFeedback
+                >
+                {projectInfo.ownerUser}
+                </FormItem>
+              </Col>
+              <Col span={col}>
 
-              <FormItem
-                {...formItemLayout}
-                label="归属部门"
-                hasFeedback
-              >
-               大数据部
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="应用属性"
-                hasFeedback
-              >
-               自开发
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="应用领域"
-                hasFeedback
-              >
-               <Select defaultValue="supply" disabled>
-                 <Option key="supply">供应链</Option>
-               </Select>
-              </FormItem>
-            </Col>
+                <FormItem
+                  {...formItemLayout}
+                  label="归属部门"
+                  hasFeedback
+                >
+                 {projectInfo.ownerUserDp}
+                </FormItem>
+              </Col>
+              <Col span={col}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用属性"
+                  hasFeedback
+                >
+                 {projectInfo.applicationType}
+                </FormItem>
+              </Col>
+              <Col span={col}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用领域"
+                  hasFeedback
+                >
+                 <Select value={this.state.domainId} onChange={domainId => this.setState({domainId})}>
+                   {domains.map(d => <Option key={d.id}>{d.name}</Option>)}
+                 </Select>
+                </FormItem>
+              </Col>
             </Row>
+            )}
+
+
             {/* <Row gutter={24}>
               <Col span={24} style={{textAlign: 'right'}}>
                 <FormItem
@@ -311,7 +346,7 @@ class ApplicationForm extends React.Component {
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
-          <Button type="primary" icon="rollback">重置</Button>
+          <Button type="primary" onClick={this.reset}>重置</Button>
           <Button type="primary" icon="eye" style={{float: 'right'}} onClick={this.preview}>预览</Button>
         </section>
       </div>
@@ -321,4 +356,4 @@ class ApplicationForm extends React.Component {
 
 const WrappedApp = Form.create()(ApplicationForm);
 Object.defineProperty(WrappedApp, "name", { value: "WrappedApp" });
-export default withRouter(connect(null, ['App'])(WrappedApp))
+export default withRouter(connect(null, ['App', 'NewApplication'])(WrappedApp))
