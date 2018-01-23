@@ -80,7 +80,7 @@ export default {
 				if(failCB){yield call(failCB, e)}
 			}
 		},
-		*followLink({payload}, {call, put}){
+		*followLink({payload={}}, {call, put}){
 			let {data, link, successCB,failCB} = payload
 			try{
 				let record  = yield call([apiStore,apiStore.find],`${data.type}`,`${data.id}` )

@@ -3,6 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect as modelConnect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
+import Edit from './Edit'
 
 import styles from './styles.scss'
 
@@ -34,6 +35,7 @@ class Application extends React.Component {
     visibleDetail: false,
     domainSelect: 'all',
     filter: null,
+    record: {},
   }
 
   componentWillMount() {
@@ -84,7 +86,7 @@ class Application extends React.Component {
   }
 
   render(){
-    const {projects=[],} = this.props.reduxState
+    const {projects=[], accounts=[]} = this.props.reduxState
     const columns = [{
       title: 'ID',
       dataIndex: 'id',
@@ -127,7 +129,7 @@ class Application extends React.Component {
             <a onClick={() => this.detail(record)}>申请资源</a>
             <a className="mg-l10" onClick={() => this.detail(record)}>查看详情</a>
             <a className="mg-l10"
-               onClick={this.showModal('visibleEdit')}
+               onClick={() => this.setState({visibleEdit: true, record})}
             >成员管理</a>
           </div>
         )
@@ -183,14 +185,13 @@ class Application extends React.Component {
         <Table pagination={{showQuickJumper: true}} columns={columns} dataSource={boxes} rowKey="id"/>
       </div>
 
-      <Modal
+      {/* <Modal
         title="成员管理"
         visible={this.state.visibleEdit}
         okText="提交"
         cancelText="取消"
         onOk={this.handleOk}
         onCancel={this.handleCancel}
-        // destroyOnClose={true}
       >
         <Form onSubmit={this.handleSubmit}>
           <FormItem
@@ -203,7 +204,6 @@ class Application extends React.Component {
             {...formItemLayout}
             label="成员"
           >
-            {/* {members} */}
           </FormItem>
         </Form>
         <h3>查询</h3>
@@ -222,7 +222,16 @@ class Application extends React.Component {
             <p>张三  12123124231</p>
           </FormItem>
         </Form>
-      </Modal>
+      </Modal> */}
+      {this.state.visibleEdit && (
+        <Edit
+          visible={this.state.visibleEdit}
+          onOk={(newData) => {this.updateDomain(newData)}}
+          onCancel={this.handleCancel}
+          resource={this.state.record}
+          />
+      )}
+
     </div>
       )
   }
