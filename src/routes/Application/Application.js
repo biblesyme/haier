@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect as modelConnect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import Edit from './Edit'
+import getState from 'utils/getState'
 
 import styles from './styles.scss'
 
@@ -120,7 +121,7 @@ class Application extends React.Component {
     },
     {
       title: '状态',
-      render: (record) => <span>{nameMap[record.state]}</span>
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
     }, {
       title: <div className="text-center">操作</div>,
       render: (record, index) => {

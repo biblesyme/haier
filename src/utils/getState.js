@@ -11,6 +11,15 @@ const defaultStateMap = {
   inactive: {
     color: 'red',
   },
+  ApplyingResource: {
+    color: 'orange',
+  },
+  ResourceReady: {
+    color: 'green',
+  },
+  Pending: {
+    color: 'orange',
+  },
 
   created: {
     className: 'text-info'

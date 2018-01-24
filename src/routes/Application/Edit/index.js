@@ -61,7 +61,9 @@ export default class C extends React.Component {
         ...this.props.resource,
       },
       link: 'projectParticipants',
-      successCB: (particpants) => this.setState({particpants: particpants.content})
+      successCB: (particpants) => {
+        this.setState({particpants: particpants.content.filter(p => p.stat !== 'removed')})
+      }
     }
     this.props.dispatch({'type': 'App/followLink', payload})
   }
@@ -77,11 +79,13 @@ export default class C extends React.Component {
     }
     this.props.form.validateFields((err, values) => {
       if (err) return
-      let newMembers = this.state.members
       let payload = {
         data: {
-          externalId: this.props.form.getFieldValue('domainAdmin'),
+          // externalId: this.props.form.getFieldValue('externalId'),
           ...this.props.resource,
+          accountId: this.state.accountId,
+          projectId: this.props.resource.id,
+          accountExternalId: this.state.searchAccount,
         },
         action: 'addMember',
         failCB: () => message.error('项目成员新增失败'),
@@ -94,14 +98,15 @@ export default class C extends React.Component {
     })
   }
 
-  deleteMember = (e, externalId) => {
+  deleteMember = (e, accountId) => {
     if (this.props.resource.state !== 'ResourceReady') {
       message.warning(`应用${nameMap[this.props.resource.state]} 无法操作成员`)
       return
     }
     let payload = {
       data: {
-        externalId,
+        accountId,
+        projectId: this.props.resource.id,
         ...this.props.resource,
       },
       action: 'removeMember',
@@ -114,47 +119,37 @@ export default class C extends React.Component {
     this.props.dispatch({'type': 'App/doAction', payload})
   }
 
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return
-      let value = {
-        name: this.props.resource.name,
-        id: this.props.resource.id,
-        domainAdmin: values.domainAdmin,
-      }
-      this.props.onOk(value)
-    })
-  }
-
-  searchDomainAdmin = (e) => {
+  searchExternalId = (e) => {
     let value = e.target.value
     let account = this.props.accounts.filter(d => d.externalId === value)[0]
     if (account !== undefined) {
       this.setState({
         searchName: account.name,
         searchAccount: account.externalId,
+        accountId: account.id,
       })
     } else {
       this.setState({
         searchName: '账号不存在',
         searchAccount: '',
+        accountId: '',
       })
     }
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const {resource={}, domainAdmins = [], accounts = [], } = this.props
+    const {resource={}, accounts = [], } = this.props
     const {particpants} = this.state
-    console.log(particpants)
     const members = particpants.map(p => {
+      console.log(p)
       return (
         <p key={p.id}>
           {`${p.accountName} ${p.accountExternalId}`}
           <Icon className="mg-l10"
                 type="delete"
                 style={{cursor: 'pointer'}}
-                onClick={e => this.deleteMember(e, p.id)}
+                onClick={e => this.deleteMember(e, p.accountId)}
           />
         </p>
       )
@@ -196,12 +191,12 @@ export default class C extends React.Component {
                 label="账号"
               >
                 <div>
-                  {getFieldDecorator('domainAdmin', {
+                  {getFieldDecorator('externalId', {
                     rules: [{
                       required: true, message: '请输入',
                     }],
                   })(
-                    <Search placeholder="请输入账号" style={{width: '80%'}} onChange={this.searchDomainAdmin}/>
+                    <Search placeholder="请输入账号" style={{width: '80%'}} onChange={this.searchExternalId}/>
                   )}
                   <Button onClick={this.addMember}><Icon type="plus" /></Button>
                 </div>

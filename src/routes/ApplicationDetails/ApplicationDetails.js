@@ -156,16 +156,7 @@ class ApplicationDetail extends React.Component {
               label="业务负责人"
               hasFeedback
             >
-
-            </FormItem>
-          </Col>
-          <Col span={col}>
-            <FormItem
-              {...formItemLayout}
-              label="技术负责人"
-              hasFeedback
-            >
-
+              {record.data.data.ownerUser}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -193,7 +184,7 @@ class ApplicationDetail extends React.Component {
               label="应用领域"
               hasFeedback
             >
-
+              {record.data.data.businessDomain}
             </FormItem>
           </Col>
         </Row>
