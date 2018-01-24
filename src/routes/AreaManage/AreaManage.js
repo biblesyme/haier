@@ -93,8 +93,8 @@ class AreaManage extends React.Component {
   render(){
     const { getFieldDecorator } = this.props.form
     const {domains=[], domainAdmins, accounts} = this.props.reduxState
-
-    const items = domains.slice((this.state.page - 1) * 9, this.state.page * 9).map(d => {
+    const activeDomian = domains.filter(d => d.state !== 'removed')
+    const items = activeDomian.slice((this.state.page - 1) * 12, this.state.page * 12).map(d => {
       const filterAdmins = domainAdmins.filter(a => a.domainId === d.id)
       return (
         <Item key={d.id}
@@ -111,10 +111,11 @@ class AreaManage extends React.Component {
           {items}
           <Pagination className="text-center"
                       current={this.state.page}
-                      total={domains.length}
+                      total={activeDomian.length}
                       onChange={page => this.setState({page})}
                       style={{marginTop: '20px'}}
                       showQuickJumper
+                      pageSize={12}
           />
         </section>
 
@@ -125,12 +126,14 @@ class AreaManage extends React.Component {
         >
 
         </Modal>
-        <New
-          visible={this.state.visibleAdd}
-          onOk={(newData) => {this.saveAdd(newData)}}
-          onCancel={this.handleCancel}
-          accounts={accounts}
-          />
+        {this.state.visibleAdd && (
+          <New
+            visible={this.state.visibleAdd}
+            onOk={(newData) => {this.saveAdd(newData)}}
+            onCancel={this.handleCancel}
+            accounts={accounts}
+            />
+        )}
       </div>
       )
   }

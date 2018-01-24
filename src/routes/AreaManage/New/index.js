@@ -34,6 +34,7 @@ export default class C extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (err) return
       let value = {
+        name: values.name,
         admin: {
           accout: values.accout,
         },

@@ -16,10 +16,11 @@ export default {
   DeployingResource: '正在部署',
   Updating: '更新中',
   deploying: '部署中',
-  ready: '就绪',
+  ready: '已就绪',
   deployError: '失败',
   confirmed: '已通过',
   denied: '已驳回',
+  passed: '已通过',
 
   // Account
   internal: '内部员工',

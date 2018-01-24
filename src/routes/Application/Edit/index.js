@@ -81,7 +81,6 @@ export default class C extends React.Component {
       if (err) return
       let payload = {
         data: {
-          // externalId: this.props.form.getFieldValue('externalId'),
           ...this.props.resource,
           accountId: this.state.accountId,
           projectId: this.props.resource.id,

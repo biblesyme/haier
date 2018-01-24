@@ -1,15 +1,21 @@
 const defaultStateMap = {
-  pendding: {
-    color: 'orange',
-  },
-  denied: {
-    color: 'red',
-  },
   active: {
     color: 'green',
   },
   inactive: {
     color: 'red',
+  },
+  removed: {
+    color: 'red',
+  },
+  pendding: {
+    color: 'orange',
+  },
+  rejected: {
+    color: 'red',
+  },
+  Pending: {
+    color: 'orange',
   },
   ApplyingResource: {
     color: 'orange',
@@ -17,8 +23,20 @@ const defaultStateMap = {
   ResourceReady: {
     color: 'green',
   },
-  Pending: {
-    color: 'orange',
+  ready: {
+    color: 'green',
+  },
+  deployError: {
+    color: 'red',
+  },
+  confirmed: {
+    color: 'green',
+  },
+  denied: {
+    color: 'red',
+  },
+  passed: {
+    color: 'green',
   },
 
   created: {

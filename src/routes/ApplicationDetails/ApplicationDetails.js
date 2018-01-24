@@ -166,7 +166,7 @@ class ApplicationDetail extends React.Component {
               label="归属部门"
               hasFeedback
             >
-             {record.data.data.businessDomain}
+             {record.data.data.ownerUserDp}
             </FormItem>
           </Col>
           <Col span={col}>
