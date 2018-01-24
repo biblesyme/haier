@@ -28,15 +28,101 @@ const formItemLayout3 = {
 
 export default class C extends React.Component {
   state = {
-    resource: 1,
+    resource: 'height',
+    machineRoomId: 'qd',
+    customeCPU: '1',
+    customeMemory: '2',
+    customeDiskSize: '256',
   }
+
+  componentWillMount() {
+    this.setState({
+      ...this.props.item,
+    })
+  }
+
+  resourceSelect = (e) => {
+    const {value} = e.target
+    if (value === 'height') {
+      const obj = {
+        cpu: 16,
+        memory: (16*1024).toString(),
+        diskSize: 1024,
+        resource: value,
+      }
+      const nextState = {
+        ...this.state,
+        ...obj,
+      }
+      this.props.onChange(nextState)
+      this.setState({
+        ...obj,
+      })
+    }
+    if (value === 'middle') {
+      const obj = {
+        cpu: 16,
+        memory: (16*1024).toString(),
+        diskSize: 500,
+        resource: value,
+      }
+      const nextState = {
+        ...this.state,
+        ...obj,
+      }
+      this.props.onChange(nextState)
+      this.setState({
+        ...obj,
+      })
+    }
+    if (value === 'low') {
+      const obj = {
+        cpu: 16,
+        memory: (16*1024).toString(),
+        diskSize: 256,
+        resource: value,
+      }
+      const nextState = {
+        ...this.state,
+        ...obj,
+      }
+      this.props.onChange(nextState)
+      this.setState({
+        ...obj,
+      })
+    }
+    if (value === 'custome') {
+      this.onChange(value, 'resource')
+    }
+  }
+
+
+  onChange = (value, field) => {
+    const nextState = {
+      ...this.state,
+      [field]: value,
+    }
+    this.props.onChange(nextState)
+    this.setState({
+      [field]: value,
+    })
+  }
+
   render() {
     return (
       <main>
-        <RadioGroup name="radiogroup" value={this.state.resource} onChange={e => this.setState({resource: e.target.value})}>
-          <section className={this.state.resource !== 1 ? styles["card-disabled"] : styles["card-form"]}>
+        <label htmlFor="">资源所在地：</label>
+          <Select value={this.state.machineRoomId} onChange={value => this.onChange(value, 'machineRoomId')} style={{width: '200px'}}>
+            <Option key="qd">青岛</Option>
+            <Option key="bj">北京</Option>
+          </Select>
+        <div style={{padding: '10px'}}></div>
+        <label htmlFor="">应用资源配置：</label>
+        <div style={{padding: '10px'}}></div>
+        <RadioGroup name="radiogroup" value={this.state.resource} onChange={this.resourceSelect}>
+          <section className={this.state.resource !== 'height' ? styles["card-disabled"] : styles["card-form"]}>
             <div className={styles["card-header"]}>
-              <Radio value={1}>
+              <Radio value='height'>
               </Radio>
               高配置资源
             </div>
@@ -65,9 +151,9 @@ export default class C extends React.Component {
             </Form>
           </section>
 
-          <section className={this.state.resource !== 2 ? styles["card-disabled"] : styles["card-form"]}>
+          <section className={this.state.resource !== 'middle' ? styles["card-disabled"] : styles["card-form"]}>
             <div className={styles["card-header"]}>
-              <Radio value={2}>
+              <Radio value='middle'>
               </Radio>
               中配置资源
             </div>
@@ -96,9 +182,9 @@ export default class C extends React.Component {
             </Form>
           </section>
 
-          <section className={this.state.resource !== 3 ? styles["card-disabled"] : styles["card-form"]}>
+          <section className={this.state.resource !== 'low' ? styles["card-disabled"] : styles["card-form"]}>
             <div className={styles["card-header"]}>
-              <Radio value={3}>
+              <Radio value='low'>
               </Radio>
               低配置资源
             </div>
@@ -127,11 +213,11 @@ export default class C extends React.Component {
             </Form>
           </section>
 
-          <section className={this.state.resource !==4 ? styles["card-disabled"] : styles["card-form"]}>
+          <section className={this.state.resource !== 'custome' ? styles["card-disabled"] : styles["card-form"]}>
             <div className={styles["card-header"]}>
-              <Radio value={4}>
+              <Radio value='custome'>
               </Radio>
-              其他资源
+              其他配置
             </div>
             <Form className={styles["card-body"]}>
               <FormItem
@@ -139,8 +225,11 @@ export default class C extends React.Component {
                 label="CPU内核数"
                 hasFeedback
               >
-               <Input disabled={this.state.resource !== 4}
+               <Input disabled={this.state.resource !== 'custome'}
                       placeholder="1-16"
+                      value={this.state.customeCPU}
+                      onChange={e => this.onChange(e.target.value, 'customeCPU')}
+                      type="number"
                 ></Input>
               </FormItem>
               <FormItem
@@ -148,8 +237,12 @@ export default class C extends React.Component {
                 label="内存"
                 hasFeedback
               >
-               <Input disabled={this.state.resource !== 4}
+               <Input disabled={this.state.resource !== 'custome'}
                       placeholder="2-32"
+                      value={this.state.customeMemory}
+                      onChange={e => this.onChange(e.target.value, 'customeMemory')}
+                      type="number"
+                      addonAfter="G"
                 ></Input>
               </FormItem>
               <FormItem
@@ -157,8 +250,12 @@ export default class C extends React.Component {
                 label="硬盘"
                 hasFeedback
               >
-               <Input disabled={this.state.resource !== 4}
+               <Input disabled={this.state.resource !== 'custome'}
                       placeholder="256-1024"
+                      value={this.state.customeDiskSize}
+                      onChange={e => this.onChange(e.target.value, 'customeDiskSize')}
+                      type="number"
+                      addonAfter="G"
                 ></Input>
               </FormItem>
             </Form>

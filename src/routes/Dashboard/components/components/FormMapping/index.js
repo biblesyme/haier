@@ -19,6 +19,7 @@ export default class C extends React.Component {
     consumeMode: 'cluster',
     exchangeType: 'fanout',
     exchangeName: null,
+    machineRoomId: 'qd',
   }
 
   render() {
@@ -57,10 +58,10 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                 <Radio.Group value={this.state.location} onChange={e => this.setState({location: e.target.value})}>
-                    <Radio.Button value="qd">青岛</Radio.Button>
-                    <Radio.Button value="bj">北京</Radio.Button>
-                  </Radio.Group>
+                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
+                    <Option key="qd">青岛</Option>
+                    <Option key="bj">北京</Option>
+                  </Select>
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
@@ -131,10 +132,10 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                 <Radio.Group value={this.state.location} onChange={e => this.setState({location: e.target.value})}>
-                    <Radio.Button value="qd">青岛</Radio.Button>
-                    <Radio.Button value="bj">北京</Radio.Button>
-                  </Radio.Group>
+                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
+                    <Option key="qd">青岛</Option>
+                    <Option key="bj">北京</Option>
+                  </Select>
                 </FormItem>
                 <FormItem
                   {...formInputLayout}

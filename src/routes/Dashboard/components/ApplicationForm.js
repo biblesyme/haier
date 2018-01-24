@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin, message } from 'antd';
 import { connect } from 'utils/ecos'
 import FormMapping from './components/FormMapping'
 import FormResource from './components/FormResource'
@@ -27,6 +27,22 @@ const formItemLayout = {
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 12 },
+  },
+  style: {
+    marginBottom: '10px'
+  }
+};
+
+const formItemLeft = {
+  labelCol: {
+    xs: { span: 20 },
+    sm: { span: 5 },
+    push: 4,
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+    push: 4,
   },
   style: {
     marginBottom: '10px'
@@ -85,8 +101,6 @@ const plainOptions = ['前端框架', '后台框架']
 
 class ApplicationForm extends React.Component {
   state = {
-    size: 'haier',
-    size2: 'qd',
     checkedList: [],
     middlewareSelect: 'MySQL',
     middlewareMappings: [],
@@ -95,15 +109,36 @@ class ApplicationForm extends React.Component {
     projectInfo: null,
     searching: LOAD_STATUS.INITIAL,
     domainId: '',
+    paas: {
+      machineRoomId: 'qd',
+      clusterName: '',
+      cpu: '16',
+      memory: (16 * 1024).toString(),
+      diskSize: '1024',
+    },
   }
 
   componentWillMount() {
     this.addMiddlewareMapping('MySQL')
     this.props.dispatch({type:'NewApplication/findDomain'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
-    // if(this.props.form) {
-    //   console.log('poi')
-    // }
+    if (this.props.history.action === 'POP' && this.props.App.preview) {
+      const {form} = this.props.App
+      this.setState({
+        ...form,
+      })
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.history.action === 'POP' && this.props.App.preview) {
+      const {form} = this.props.App
+      this.props.form.setFieldsValue({
+        scode: form.scode,
+      })
+      console.log(this.props)
+      this.searchSCODE(form.scode)
+    }
   }
 
   toggleCollapsed = () => {
@@ -122,6 +157,7 @@ class ApplicationForm extends React.Component {
       ip: null,
       id: this.middlewareMappingId++,
       type: value,
+      machineRoomId: 'qd',
     }
     const {middlewareMappings} = this.state
     this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
@@ -145,15 +181,26 @@ class ApplicationForm extends React.Component {
   }
 
   preview = () => {
+    if (this.state.searching !== LOAD_STATUS.SUCCESS) {
+      message.warning('S码未验证')
+      return
+    }
+    let formatPaas = this.state.paas
+    if (this.state.paas.resource === 'custome') {
+      formatPaas = {
+        ...this.state.paas,
+        cpu: this.state.paas.customeCPU,
+        memory: (this.state.paas.customeMemory * 1024).toString(),
+        diskSize: this.state.paas.customeDiskSize,
+      }
+    }
     this.props.form.validateFields((err, values) => {
       const form = {
-        company: this.state.company,
-        projectInfo: this.state.projectInfo,
-        domainId: this.state.domainId,
-        name: this.state.projectInfo.name,
+        ...this.state,
         scode: values.scode,
+        paas: formatPaas,
       }
-      this.props.dispatch({type:'App/setState', payload: {form}})
+      this.props.dispatch({type:'App/setState', payload: {form, preview: true}})
       this.props.history.push({pathname: '/preview'})
     })
   }
@@ -174,12 +221,16 @@ class ApplicationForm extends React.Component {
     }
   }
 
+  paasChange = (paas) => {
+    console.log(paas)
+    this.setState({paas})
+  }
+
   render() {
     const { projectInfo } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {domains} = this.props.NewApplication
-    console.log(domains)
-
+    console.log(this.state.middlewareMappings)
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -201,7 +252,7 @@ class ApplicationForm extends React.Component {
                {getFieldDecorator('scode', {
                   rules: [{ required: true, message: "请输入应用S码" }],
                 })(
-                  <Search placeholder="请输入应用S码" enterButton onSearch={value => this.searchSCODE(value)}/>
+                  <Search placeholder="请输入应用S码" enterButton="验证" onSearch={value => this.searchSCODE(value)}/>
                 )}
               </FormItem>
             </Col>
@@ -211,10 +262,10 @@ class ApplicationForm extends React.Component {
                <div className="text-center">S码不存在</div>
             )}
             {this.state.searching === LOAD_STATUS.SUCCESS && (
-            <Row gutter={24}>
+            <Row gutter={24}  className="scode-info">
               <Col span={col}>
                 <FormItem
-                  {...formItemLayout}
+                  {...formItemLeft}
                   label="应用名称"
                   hasFeedback
                 >
@@ -232,7 +283,7 @@ class ApplicationForm extends React.Component {
               </Col>
               <Col span={col}>
                 <FormItem
-                  {...formItemLayout}
+                  {...formItemLeft}
                   label="业务负责人"
                   hasFeedback
                 >
@@ -251,7 +302,7 @@ class ApplicationForm extends React.Component {
               </Col>
               <Col span={col}>
                 <FormItem
-                  {...formItemLayout}
+                  {...formItemLeft}
                   label="应用属性"
                   hasFeedback
                 >
@@ -287,15 +338,7 @@ class ApplicationForm extends React.Component {
         </section>
 
         <section className="page-section">
-          <label htmlFor="">资源所在地：</label>
-            <Select value={this.state.location} onChange={location => this.setState({location})} style={{width: '200px'}}>
-              <Option key="qd">青岛</Option>
-              <Option key="bj">北京</Option>
-            </Select>
-          <div style={{padding: '10px'}}></div>
-          <label htmlFor="">应用资源配置：</label>
-          <div style={{padding: '10px'}}></div>
-          <FormResource></FormResource>
+          <FormResource onChange={this.paasChange} item={this.state.paas}/>
         </section>
 
         <section className="page-section">

@@ -40,4 +40,10 @@ export default {
   // Application
   haier: '海尔',
   nohaier: '非海尔',
+  height: '高配置资源',
+  middle: '中配置资源',
+  low: '低配置资源',
+  custome: '其他配置',
+  qd: '青岛',
+  bj: '北京',
 }

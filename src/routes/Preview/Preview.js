@@ -3,6 +3,7 @@ import {Button, Row, Col, Form, Select, Checkbox, message} from 'antd'
 import { withRouter } from 'react-router'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
+import Paas from './Paas'
 
 const col = 12
 const formItemLayout = {
@@ -43,9 +44,14 @@ class Preview extends React.Component {
       }
     })
   }
+
+  goBack = () => {
+    this.props.history.goBack()
+  }
+
   render() {
     const {history} = this.props
-    const {form} = this.props.App
+    const {form={projectInfo: {}}} = this.props.App
     return (
       <main>
         <section className="page-section">
@@ -117,10 +123,7 @@ class Preview extends React.Component {
         </section>
 
         <section className="page-section">
-          <label>资源所在地: 青岛</label>
-          <div style={{padding: '10px'}}></div>
-          <label htmlFor="">应用资源：</label>
-          <div style={{padding: '10px'}}></div>
+          <Paas item={form.paas}></Paas>
           <div className="text-right pd-tb10">
             <Button type="primary">前往容器云</Button>
           </div>
@@ -154,7 +157,7 @@ class Preview extends React.Component {
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
-          <Button type="primary" onClick={e => history.goBack()}>返回</Button>
+          <Button type="primary" onClick={this.goBack}>返回</Button>
           <Button type="primary" style={{float: 'right'}} onClick={this.submit}>创建</Button>
         </section>
       </main>

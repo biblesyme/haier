@@ -8,6 +8,7 @@ import {
   Button,
   Divider,
   message,
+  Radio,
 } from 'antd'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
@@ -53,6 +54,7 @@ export default class C extends React.Component {
     searchName: '',
     searchAccount: '',
     particpants: [],
+    participantType: 'manager',
   }
 
   update = () => {
@@ -85,6 +87,7 @@ export default class C extends React.Component {
           accountId: this.state.accountId,
           projectId: this.props.resource.id,
           accountExternalId: this.state.searchAccount,
+          participantType: this.state.participantType,
         },
         action: 'addMember',
         failCB: () => message.error('项目成员新增失败'),
@@ -185,6 +188,12 @@ export default class C extends React.Component {
             <Divider dashed></Divider>
             <h3>新增项目成员</h3>
             <Form onSubmit={this.handleSubmit}>
+              <FormItem {...formItemLayout} label="类型">
+                <Radio.Group value={this.state.participantType} onChange={e=> this.setState({participantType: e.target.value})}>
+                  <Radio.Button value="manager">项目经理</Radio.Button>
+                  <Radio.Button value="developer">开发者</Radio.Button>
+                </Radio.Group>
+              </FormItem>
               <FormItem
                 {...formItemLayout}
                 label="账号"

@@ -15,6 +15,7 @@ export default {
 		accounts: [],
 		user: {},
 		form: {},
+		preview: false,
 	},
 	reducers: {
 		setState(state,{payload}){
