@@ -249,36 +249,31 @@ export default class C extends React.Component {
                   hasFeedback
                   style = {{marginBottom: '10px'}}
                 >
-                 <Select placeholder="请选择Exchange名称"
-                         value={this.state.exchangeName}
-                         onChange={exchangeName => this.setState({exchangeName})}
-                 >
-                   <Option key="topic">主题应用</Option>
-                   <Option key="direct">直连应用</Option>
-                   <Option key="fanout">广播应用</Option>
-                 </Select>
+                  {item.exchangeName === 'topic' && '主题应用'}
+                  {item.exchangeName === 'direct' && '直连应用'}
+                  {item.exchangeName === 'fanout' && '广播应用'}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="队列名"
                 >
-                 <Input placeholder="请填写队列名称" />
+                 {item.queueName}
                 </FormItem>
 
-                {this.state.exchangeName === 'topic' && (
+                {item.exchangeName === 'topic' && (
                   <FormItem
                     {...formInputLayout}
                     label="主题名"
                   >
-                   <Input placeholder="请输入主题名称"></Input>
+                   {item.topicName}
                   </FormItem>
                 )}
-                {this.state.exchangeName === 'direct' && (
+                {item.exchangeName === 'direct' && (
                   <FormItem
                     {...formInputLayout}
                     label="直连名"
                   >
-                   <Input placeholder="请输入直连名称"></Input>
+                   {item.RouteKey}
                   </FormItem>
                 )}
               </Form>

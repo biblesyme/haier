@@ -303,8 +303,8 @@ export default class C extends React.Component {
                   hasFeedback
                 >
                  <Select placeholder="请选择Exchange名称"
-                         value={this.state.exchangeName}
-                         onChange={exchangeName => this.setState({exchangeName})}
+                         value={item.exchangeName}
+                         onChange={exchangeName => onChange({...item, exchangeName})}
                  >
                    <Option key="topic">主题应用</Option>
                    <Option key="direct">直连应用</Option>
@@ -315,23 +315,32 @@ export default class C extends React.Component {
                   {...formInputLayout}
                   label="队列名"
                 >
-                 <Input placeholder="请填写队列名称" />
+                 <Input placeholder="请填写队列名称"
+                        value={item.queueName}
+                        onChange={e => onChange({...item, queueName: e.target.value})}
+                 />
                 </FormItem>
 
-                {this.state.exchangeName === 'topic' && (
+                {item.exchangeName === 'topic' && (
                   <FormItem
                     {...formInputLayout}
                     label="主题名"
                   >
-                   <Input placeholder="请输入主题名称"></Input>
+                   <Input placeholder="请输入主题名称"
+                          value={item.topicName}
+                          onChange={e => onChange({...item, topicName: e.target.value})}
+                   />
                   </FormItem>
                 )}
-                {this.state.exchangeName === 'direct' && (
+                {item.exchangeName === 'direct' && (
                   <FormItem
                     {...formInputLayout}
                     label="直连名"
                   >
-                   <Input placeholder="请输入直连名称"></Input>
+                   <Input placeholder="请输入直连名称"
+                          value={item.RouteKey}
+                          onChange={e => onChange({...item, RouteKey: e.target.value})}
+                   />
                   </FormItem>
                 )}
               </Form>

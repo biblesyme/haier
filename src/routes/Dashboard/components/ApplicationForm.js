@@ -199,6 +199,10 @@ class ApplicationForm extends React.Component {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
         producerApplicationScode: 'S123451',
+        exchangeName: 'topic',
+        queueName: '',
+        topicName: '',
+        RouteKey: '',
       }
     }
     const {middlewareMappings} = this.state
