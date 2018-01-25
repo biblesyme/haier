@@ -57,7 +57,7 @@ export default class C extends React.Component {
       <main>
         {item.resourceType === 'mysql' && (
           <Col {...gridLayout}>
-            <Card title="MySQL" style={{height: '290px'}}>
+            <Card title="MySQL" style={{height: '290px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -112,125 +112,106 @@ export default class C extends React.Component {
                 </FormItem>
               </Form>
             </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
           </Col>
         )}
 
-        {item.resourceType === 'Redis' && (
+        {item.resourceType === 'redis' && (
           <Col {...gridLayout}>
-            <Card title="Redis" style={{height: '290px'}}>
+            <Card title="Redis" style={{height: '290px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
-                    <Option key="qd">青岛</Option>
-                    <Option key="bj">北京</Option>
-                  </Select>
+                  {nameMap[item.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="内存"
                   hasFeedback
                 >
-                  <Input placeholder="请输入内存大小"></Input>
+                  {`${item.memorySize}M`}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
                   label="集群类型"
                   hasFeedback
                 >
-                 <Radio.Group value={this.state.mode} onChange={e => this.setState({mode: e.target.value})}>
-                  <Radio.Button value="one">单例</Radio.Button>
-                  <Radio.Button value="primary">主从</Radio.Button>
-                  <Radio.Button value="patch">分片</Radio.Button>
-                 </Radio.Group>
+                  {item.clusterType === 'one' && '单例'}
+                  {item.clusterType === 'masterSlave' && '主从'}
+                  {item.clusterType === 'shared' && '分片'}
                 </FormItem>
-                {this.state.mode === 'patch' && (
+                {item.clusterType === 'shared' && (
                   <FormItem
                     {...formInputLayout}
                     label="分片数量"
                     hasFeedback
                   >
-                    <Input placeholder="请输入分片数量"></Input>
+                    {item.sharedCount}
                   </FormItem>
                 )}
               </Form>
             </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+
           </Col>
         )}
 
-        {item.resourceType === 'RocketMQ' && (
+        {item.resourceType === 'rocketMQTopic' && (
           <Col {...gridLayout}>
-            <Card title="RocketMQ" style={{height: '290px'}}>
+            <Card title="RocketMQ" style={{height: '290px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                 <Radio.Group value={this.state.location} onChange={e => this.setState({location: e.target.value})}>
-                    <Radio.Button value="qd">青岛</Radio.Button>
-                    <Radio.Button value="bj">北京</Radio.Button>
-                  </Radio.Group>
+                 {nameMap[item.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
                   label="集群类型"
                   hasFeedback
                 >
-                 <Radio.Group value={this.state.consumeMode} onChange={e => this.setState({consumeMode: e.target.value})}>
-                    <Radio.Button value="standalone">单机</Radio.Button>
-                    <Radio.Button value="cluster">集群</Radio.Button>
-                  </Radio.Group>
+                 {item.clusterType === 'standalone' ? '单机' : '集群'}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="主题名称"
                   hasFeedback
                 >
-                 <Input placeholder="请输入主题名称"></Input>
+                 {item.topicName}
                 </FormItem>
               </Form>
             </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+
           </Col>
         )}
 
-        {item.resourceType === 'RabbitMQP' && (
+        {item.resourceType === 'rabbitMQProducer' && (
           <Col {...gridLayout}>
-            <Card title="RabbitMQ" style={{height: '290px'}}>
+            <Card title="RabbitMQ-生产者" style={{height: '290px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
-                  {...formItemLayout4}
+                  {...formInputLayout}
                   label="地点"
                   hasFeedback
                 >
-                 <Radio.Group value={this.state.location} onChange={e => this.setState({location: e.target.value})}>
-                    <Radio.Button value="qd">青岛</Radio.Button>
-                    <Radio.Button value="bj">北京</Radio.Button>
-                  </Radio.Group>
+                 {nameMap[item.machineRoomId]}
                 </FormItem>
                 <FormItem
-                  labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
-                  wrapperCol={{xs: { span: 14 }, sm: { span: 14 }, push: 0}}
-                  style = {{marginBottom: '10px'}}
+                  {...formInputLayout}
                   label="最大消息吞吐量"
                   hasFeedback
                 >
-                 <Input placeholder="请输入" type="number"></Input>
+                 {item.maxIO}
                 </FormItem>
                 <FormItem
-                  labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
-                  wrapperCol={{xs: { span: 14 }, sm: { span: 14 }, push: 0}}
+                  {...formInputLayout}
                   label="Exchange名称"
                   hasFeedback
-                  style = {{marginBottom: '10px'}}
                 >
-                 <Input placeholder="请输入Exchange名称"></Input>
+                 {item.exchangeName}
                 </FormItem>
                 <FormItem
                   labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
@@ -239,28 +220,27 @@ export default class C extends React.Component {
                   label="Exchange类型"
                   hasFeedback
                 >
-                  <Radio.Group value={this.state.exchangeType} onChange={e => this.setState({exchangeType: e.target.value})}>
-                     <Radio.Button value="fanout">广播</Radio.Button>
-                     <Radio.Button value="topic">主题</Radio.Button>
-                     <Radio.Button value="direct">直连</Radio.Button>
-                   </Radio.Group>
+                  {item.exchangeType === 'fanout' && '广播'}
+                  {item.exchangeType === 'topic' && '主题'}
+                  {item.exchangeType === 'direct' && '直连'}
                 </FormItem>
               </Form>
             </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+
           </Col>
         )}
 
-        {item.resourceType === 'RabbitMQC' && (
+        {item.resourceType === 'rabbitMQConsumer' && (
           <Col {...gridLayout}>
-            <Card title="RabbitMQ" style={{height: '290px'}}>
+            <Card title="RabbitMQ-消费者" style={{height: '290px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
                   label="应用"
                   hasFeedback
                 >
-                 <Select placeholder="请选择应用"></Select>
+                 {item.producerApplicationScode === 'S123451' && '产品中心'}
+                 {item.producerApplicationScode === 'S123450' && '鹿屋基地'}
                 </FormItem>
                 <FormItem
                   labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
@@ -303,7 +283,7 @@ export default class C extends React.Component {
                 )}
               </Form>
             </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="delete" /></Button>
+
           </Col>
         )}
       </main>

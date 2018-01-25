@@ -127,6 +127,7 @@ class ApplicationForm extends React.Component {
       this.setState({
         ...form,
       })
+      this.middlewareMappingId = form.middlewareMappingId
     }
   }
 
@@ -168,7 +169,38 @@ class ApplicationForm extends React.Component {
         backup: 'false',
       }
     }
-    // if (value === '')
+    if (value === 'redis') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        memorySize: '100',
+        clusterType: 'one',
+        sharedCount: '0',
+      }
+    }
+    if (value === 'rocketMQTopic') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        clusterType: 'standalone',
+        topicName: '',
+      }
+    }
+    if (value === 'rabbitMQProducer') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        maxIO: '100',
+        exchangeName: '',
+        exchangeType: 'fanout',
+      }
+    }
+    if (value === 'rabbitMQConsumer') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        producerApplicationScode: 'S123451',
+      }
+    }
     const {middlewareMappings} = this.state
     this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
   }
@@ -210,6 +242,7 @@ class ApplicationForm extends React.Component {
         ...this.state,
         scode: values.scode,
         paas: formatPaas,
+        middlewareMappingId: this.middlewareMappingId,
       }
       this.props.dispatch({type:'App/setState', payload: {form, preview: true}})
       this.props.history.push({pathname: '/preview'})
@@ -220,7 +253,20 @@ class ApplicationForm extends React.Component {
     this.setState({
       company: 'haier',
       location: 'qd',
+      middlewareMappings: [{
+        machineRoomId: 'qd',
+        deployMode: 'one',
+        masterSlaveOption: '1',
+        mycatClusterManagerNodeCount: 0,
+        mycatClusterDataNodeCount: 0,
+        backup: 'false',
+        id: this.middlewareMappingId++,
+        resourceType: 'mysql',
+      }],
+      projectInfo: {},
+      searching: LOAD_STATUS.INITIAL,
     })
+    // this.addMiddlewareMapping('mysql')
   }
 
   searchSCODE = (value) => {
@@ -361,10 +407,10 @@ class ApplicationForm extends React.Component {
                   onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
           >
             <Option key="mysql">MySQL</Option>
-            <Option key="Redis">Redis</Option>
-            <Option key="RocketMQ">RocketMQ</Option>
-            <Option key="RabbitMQP">RabbitMQ(生产者)</Option>
-            <Option key="RabbitMQC">RabbitMQ(消费者)</Option>
+            <Option key="redis">Redis</Option>
+            <Option key="rocketMQTopic">RocketMQ</Option>
+            <Option key="rabbitMQProducer">RabbitMQ(生产者)</Option>
+            <Option key="rabbitMQConsumer">RabbitMQ(消费者)</Option>
           </Select>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>

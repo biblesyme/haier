@@ -118,16 +118,10 @@ class Preview extends React.Component {
               </FormItem>
             </Col>
           </Row>
-          <div className="text-right pd-tb10">
-            <Button type="primary">前往监控平台</Button>
-          </div>
         </section>
 
         <section className="page-section">
           <Paas item={form.paas}></Paas>
-          <div className="text-right pd-tb10">
-            <Button type="primary">前往容器云</Button>
-          </div>
         </section>
 
         <section className="page-section">
@@ -149,9 +143,6 @@ class Preview extends React.Component {
               })}
             </Row>
             <Col span={24}>
-              <div className="text-right pd-tb10">
-                <Button type="primary">前往中间件平台</Button>
-              </div>
             </Col>
           </Row>
         </section>
