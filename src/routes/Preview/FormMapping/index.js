@@ -1,5 +1,6 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
+import nameMap from 'utils/nameMap'
 
 const CheckboxGroup = Checkbox.Group;
 const SubMenu = Menu.SubMenu;
@@ -63,21 +64,14 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
-                    <Option key="qd">青岛</Option>
-                    <Option key="bj">北京</Option>
-                  </Select>
+                  {nameMap[item.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
                   label="部署模式"
                   hasFeedback
                 >
-                 <Radio.Group value={item.deployMode} onChange={e => onChange({...item, deployMode: e.target.value})}>
-                    <Radio.Button value="one">单机</Radio.Button>
-                    <Radio.Button value="primary">主从</Radio.Button>
-                    <Radio.Button value="cluster">集群</Radio.Button>
-                  </Radio.Group>
+                 {nameMap[item.deployMode]}
                 </FormItem>
 
                 {item.deployMode === 'primary' && (
@@ -86,10 +80,7 @@ export default class C extends React.Component {
                     label="主从"
                     hasFeedback
                   >
-                   <Radio.Group value={item.masterSlaveOption} onChange={e => onChange({...item, masterSlaveOption: e.target.value})}>
-                      <Radio.Button value="1">一主一从</Radio.Button>
-                      <Radio.Button value="2">一主两从</Radio.Button>
-                    </Radio.Group>
+                   {item.masterSlaveOption === '1' ? '一主一从' : '一主两从'}
                   </FormItem>
                 )}
 
@@ -100,18 +91,14 @@ export default class C extends React.Component {
                       label="管理节点数量"
                       hasFeedback
                     >
-                     <Input placeholder="请输入管理节点数量" type="number" value={item.mycatClusterManagerNodeCount}
-                            onChange={e => onChange({...item, mycatClusterManagerNodeCount: e.target.value})}
-                      ></Input>
+                     {item.mycatClusterManagerNodeCount}
                     </FormItem>
                     <FormItem
                       {...formInputLayout}
                       label="数据节点数量"
                       hasFeedback
                     >
-                     <Input placeholder="请输入数据节点数量" type="number" value={item.mycatClusterDataNodeCount}
-                            onChange={e => onChange({...item, mycatClusterDataNodeCount: e.target.value})}
-                      ></Input>
+                     {item.mycatClusterDataNodeCount}
                     </FormItem>
                   </div>
                 )}
@@ -121,10 +108,7 @@ export default class C extends React.Component {
                   label="备份"
                   hasFeedback
                 >
-                  <Radio.Group value={item.backup} onChange={e => onChange({...item, backup: e.target.value})}>
-                    <Radio.Button value="true">是</Radio.Button>
-                    <Radio.Button value="false">否</Radio.Button>
-                  </Radio.Group>
+                  {nameMap[item.backup]}
                 </FormItem>
               </Form>
             </Card>

@@ -119,7 +119,7 @@ class ApplicationForm extends React.Component {
   }
 
   componentWillMount() {
-    this.addMiddlewareMapping('MySQL')
+    this.addMiddlewareMapping('mysql')
     this.props.dispatch({type:'NewApplication/findDomain'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
     if (this.props.history.action === 'POP' && this.props.App.preview) {
@@ -153,12 +153,22 @@ class ApplicationForm extends React.Component {
 
   middlewareMappingId = 0
   addMiddlewareMapping = (value) => {
-    const defaultMiddlewareMapping = {
-      ip: null,
+    let defaultMiddlewareMapping = {
       id: this.middlewareMappingId++,
-      type: value,
-      machineRoomId: 'qd',
+      resourceType: value,
     }
+    if (value === 'mysql') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        deployMode: 'one',
+        masterSlaveOption: '1',
+        mycatClusterManagerNodeCount: 0,
+        mycatClusterDataNodeCount: 0,
+        backup: 'false',
+      }
+    }
+    // if (value === '')
     const {middlewareMappings} = this.state
     this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
   }
@@ -192,6 +202,7 @@ class ApplicationForm extends React.Component {
         cpu: this.state.paas.customeCPU,
         memory: (this.state.paas.customeMemory * 1024).toString(),
         diskSize: this.state.paas.customeDiskSize,
+        resourceType: 'containerHost',
       }
     }
     this.props.form.validateFields((err, values) => {
@@ -349,7 +360,7 @@ class ApplicationForm extends React.Component {
                   value={this.state.middlewareSelect}
                   onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
           >
-            <Option key="MySQL">MySQL</Option>
+            <Option key="mysql">MySQL</Option>
             <Option key="Redis">Redis</Option>
             <Option key="RocketMQ">RocketMQ</Option>
             <Option key="RabbitMQP">RabbitMQ(生产者)</Option>

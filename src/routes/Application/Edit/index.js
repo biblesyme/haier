@@ -9,6 +9,8 @@ import {
   Divider,
   message,
   Radio,
+  Row,
+  Col,
 } from 'antd'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
@@ -34,11 +36,11 @@ const formItemLayout = {
 
 const formPostLayout = {
   labelCol: {
-    xs: { span: 24 },
+    xs: { span: 12 },
     sm: { span: 5 },
   },
   wrapperCol: {
-    xs: { span: 20 },
+    xs: { span: 12 },
     sm: { span: 12 },
   },
   style: {
@@ -143,8 +145,19 @@ export default class C extends React.Component {
     const { getFieldDecorator } = this.props.form
     const {resource={}, accounts = [], } = this.props
     const {particpants} = this.state
-    const members = particpants.map(p => {
-      console.log(p)
+    const managers = particpants.filter(p => p.participantType === 'manager').map(p => {
+      return (
+        <p key={p.id}>
+          {`${p.accountName} ${p.accountExternalId}`}
+          <Icon className="mg-l10"
+                type="delete"
+                style={{cursor: 'pointer'}}
+                onClick={e => this.deleteMember(e, p.accountId)}
+          />
+        </p>
+      )
+    })
+    const developers = particpants.filter(p => p.participantType === 'developer').map(p => {
       return (
         <p key={p.id}>
           {`${p.accountName} ${p.accountExternalId}`}
@@ -170,20 +183,38 @@ export default class C extends React.Component {
               <Button onClick={this.props.onCancel} >返回</Button>
             </div>
           }
+          width={800}
           >
             <Form onSubmit={this.handleSubmit}>
-              <FormItem
-                {...formItemLayout}
-                label="应用"
-              >
-                {resource.name}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="项目成员"
-              >
-                {members}
-              </FormItem>
+              <Row>
+                <Col span={12} push={2}>
+                  <FormItem
+                    {...formItemLayout}
+                    label="应用"
+                  >
+                    {resource.name}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12} push={2}>
+                  <FormItem
+                    {...formPostLayout}
+                    label="项目经理"
+                  >
+                    {managers}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    {...formItemLayout}
+                    label="开发者"
+                  >
+                    {developers}
+                  </FormItem>
+                </Col>
+              </Row>
+
             </Form>
             <Divider dashed></Divider>
             <h3>新增项目成员</h3>

@@ -46,4 +46,9 @@ export default {
   custome: '其他配置',
   qd: '青岛',
   bj: '北京',
+  one: '单机',
+  primary: '主从',
+  cluster: '集群',
+  true: '是',
+  false: '否',
 }

@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import Paas from './Paas'
+import FormMapping from './FormMapping'
 
 const col = 12
 const formItemLayout = {
@@ -135,6 +136,18 @@ class Preview extends React.Component {
               <label htmlFor="">中间件：</label>
               <div style={{padding: '10px'}}></div>
             </Col>
+            <Row>
+              {form.middlewareMappings.map(item => {
+                return (
+                  <FormMapping
+                    onChange={(item) => this.middlewareMappingChange(item)}
+                    onRemove={() => this.removeMiddlewareMapping(item.id)}
+                    key={item.id}
+                    item={item}
+                    />
+                )
+              })}
+            </Row>
             <Col span={24}>
               <div className="text-right pd-tb10">
                 <Button type="primary">前往中间件平台</Button>
