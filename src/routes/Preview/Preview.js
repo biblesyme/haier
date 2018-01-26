@@ -47,7 +47,7 @@ class Preview extends React.Component {
           data: JSON.stringify({...r}),
           version: 1,
           resourceType: 'containerHost',
-          projectId: projectInfo.id,
+          projectId: projectInfo.id.toString(),
           type: 'resource',
         })
       }
@@ -55,7 +55,7 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'mysql',
-          projectId: projectInfo.id,
+          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -64,7 +64,7 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'redis',
-          projectId: projectInfo.id,
+          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -73,7 +73,7 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'mysql',
-          projectId: projectInfo.id,
+          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -82,7 +82,7 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'mysql',
-          projectId: projectInfo.id,
+          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -91,7 +91,7 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'mysql',
-          projectId: projectInfo.id,
+          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
