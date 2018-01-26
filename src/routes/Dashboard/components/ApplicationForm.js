@@ -74,7 +74,6 @@ const formItemLayout3 = {
     xs: { span: 14 },
     sm: { span: 14 },
         push: 0,
-
   },
   style: {
     marginBottom: '10px'
@@ -97,7 +96,13 @@ const formItemLayout4 = {
   }
 }
 const col = 12
-const plainOptions = ['前端框架', '后台框架']
+const plainOptions = [{
+  label: '前端框架',
+  value: 'front',
+}, {
+  label: '后台框架',
+  value: 'back',
+}]
 
 class ApplicationForm extends React.Component {
   state = {
@@ -115,7 +120,10 @@ class ApplicationForm extends React.Component {
       cpu: '16',
       memory: (16 * 1024).toString(),
       diskSize: '1024',
+      resourceType: 'containerHost',
     },
+    frame: [],
+    alert: false,
   }
 
   componentWillMount() {
@@ -247,6 +255,7 @@ class ApplicationForm extends React.Component {
         scode: values.scode,
         paas: formatPaas,
         middlewareMappingId: this.middlewareMappingId,
+        name: this.state.projectInfo.name
       }
       this.props.dispatch({type:'App/setState', payload: {form, preview: true}})
       this.props.history.push({pathname: '/preview'})
@@ -438,11 +447,12 @@ class ApplicationForm extends React.Component {
 
         <section className="page-section">
           <h3>选择框架</h3>
-          <CheckboxGroup options={plainOptions} />
+          <CheckboxGroup options={plainOptions} value={this.state.frame} onChange={frame => this.setState({frame})}/>
         </section>
         <section className="page-section">
           <h3>监控功能</h3>
-          <Checkbox
+          <Checkbox checked={this.state.alert}
+                    onChange={e => this.setState({alert: e.target.checked})}
           >
             开启
           </Checkbox>

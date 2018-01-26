@@ -5,6 +5,7 @@ import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import Paas from './Paas'
 import FormMapping from './FormMapping'
+import apiStore from 'utils/apiStore'
 
 const col = 12
 const formItemLayout = {
@@ -23,11 +24,81 @@ const formItemLayout = {
 
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
-const plainOptions = ['前端框架', '后台框架']
+const plainOptions = [{
+  label: '前端框架',
+  value: 'front',
+}, {
+  label: '后台框架',
+  value: 'back',
+}]
 
 class Preview extends React.Component {
   submit = () => {
     const {form} = this.props.App
+    if (!form.scode) {
+      message.error('未能获取S码 请返回上一页')
+      return
+    }
+    const {projectInfo} = form
+    const resoures = [...form.middlewareMappings, form.paas]
+    const record = resoures.map(r => {
+      if (r.resourceType === 'containerHost') {
+        return apiStore.createRecord({
+          data: JSON.stringify({...r}),
+          version: 1,
+          resourceType: 'containerHost',
+          projectId: projectInfo.id,
+          type: 'resource',
+        })
+      }
+      if (r.resourceType === 'mysql') {
+        return apiStore.createRecord({
+          version: 1,
+          resourceType: 'mysql',
+          projectId: projectInfo.id,
+          type: 'resource',
+          data: JSON.stringify({...r})
+        })
+      }
+      if (r.resourceType === 'redis') {
+        return apiStore.createRecord({
+          version: 1,
+          resourceType: 'redis',
+          projectId: projectInfo.id,
+          type: 'resource',
+          data: JSON.stringify({...r})
+        })
+      }
+      if (r.resourceType === 'rocketMQTopic') {
+        return apiStore.createRecord({
+          version: 1,
+          resourceType: 'mysql',
+          projectId: projectInfo.id,
+          type: 'resource',
+          data: JSON.stringify({...r})
+        })
+      }
+      if (r.resourceType === 'rabbitMQProducer') {
+        return apiStore.createRecord({
+          version: 1,
+          resourceType: 'mysql',
+          projectId: projectInfo.id,
+          type: 'resource',
+          data: JSON.stringify({...r})
+        })
+      }
+      if (r.resourceType === 'rabbitMQConsumer') {
+        return apiStore.createRecord({
+          version: 1,
+          resourceType: 'mysql',
+          projectId: projectInfo.id,
+          type: 'resource',
+          data: JSON.stringify({...r})
+        })
+      }
+      return r
+    })
+    console.log(record)
     this.props.dispatch({
       type: 'App/saveRecord',
       payload: {
@@ -52,7 +123,8 @@ class Preview extends React.Component {
 
   render() {
     const {history} = this.props
-    const {form={projectInfo: {}}} = this.props.App
+    const {form={}} = this.props.App
+    const {projectInfo={}, middlewareMappings=[]} = form
     return (
       <main>
         <section className="page-section">
@@ -68,7 +140,7 @@ class Preview extends React.Component {
                 label="应用名称"
                 hasFeedback
               >
-               {form.projectInfo.name}
+               {projectInfo.name}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -77,7 +149,7 @@ class Preview extends React.Component {
                 label="申请日期"
                 hasFeedback
               >
-               {new Date(form.projectInfo.createdAt).toLocaleString()}
+               {new Date(projectInfo.createdAt).toLocaleString()}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -86,7 +158,7 @@ class Preview extends React.Component {
                 label="业务负责人"
                 hasFeedback
               >
-               {form.projectInfo.ownerUser}
+               {projectInfo.ownerUser}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -96,7 +168,7 @@ class Preview extends React.Component {
                 label="归属部门"
                 hasFeedback
               >
-               {form.projectInfo.ownerUserDp}
+               {projectInfo.ownerUserDp}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -105,7 +177,7 @@ class Preview extends React.Component {
                 label="应用属性"
                 hasFeedback
               >
-               {form.projectInfo.applicationType}
+               {projectInfo.applicationType}
               </FormItem>
             </Col>
             <Col span={col}>
@@ -114,7 +186,7 @@ class Preview extends React.Component {
                 label="应用领域"
                 hasFeedback
               >
-               {form.projectInfo.businessDomain}
+               {projectInfo.businessDomain}
               </FormItem>
             </Col>
           </Row>
@@ -131,7 +203,7 @@ class Preview extends React.Component {
               <div style={{padding: '10px'}}></div>
             </Col>
             <Row>
-              {form.middlewareMappings.map(item => {
+              {middlewareMappings.map(item => {
                 return (
                   <FormMapping
                     onChange={(item) => this.middlewareMappingChange(item)}
@@ -149,11 +221,11 @@ class Preview extends React.Component {
 
         <section className="page-section">
           <h3>框架</h3>
-          <CheckboxGroup options={plainOptions} value={["前端框架"]}/>
+          <CheckboxGroup options={plainOptions} value={form.frame}/>
         </section>
         <section className="page-section">
           <h3>监控功能</h3>
-          <Checkbox checked
+          <Checkbox checked={form.alert}
           >
             开启
           </Checkbox>
