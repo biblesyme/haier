@@ -10,6 +10,7 @@ import {
   Select,
   Tag,
   message,
+  Input,
 } from 'antd'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
@@ -25,8 +26,8 @@ const formItemLayout4 = {
     pull: 0,
   },
   wrapperCol: {
-    xs: { span: 18 },
-    sm: { span: 18 },
+    xs: { span: 12 },
+    sm: { span: 12 },
     push: 0
   },
   style: {
@@ -73,22 +74,27 @@ export default class C extends React.Component {
   }
 
   deny = () => {
-    let payload = {
-      data: {
-        ...this.props.resource,
-        externalId: this.props.App.user.externalId,
-      },
-      action: 'deny',
-      successCB: () => {
-        this.props.dispatch({'type': 'Approval/findApproval'})
-        this.props.onCancel()
-      },
-      failCB: () => {
-        message.error('驳回失败')
-        this.props.onCancel()
+    this.props.form.validateFields((err, values) => {
+      if (err) return
+
+      let payload = {
+        data: {
+          ...this.props.resource,
+          deniedMessages: values.deniedMessages,
+          deniedAccountId: parseInt(this.props.App.user.id),
+        },
+        action: 'deny',
+        successCB: () => {
+          this.props.dispatch({'type': 'Approval/findApproval'})
+          this.props.onCancel()
+        },
+        failCB: () => {
+          message.error('驳回失败')
+          this.props.onCancel()
+        }
       }
-    }
-    this.props.dispatch({'type': 'App/doAction', payload})
+      this.props.dispatch({'type': 'App/doAction', payload})
+    })
   }
 
   pass = () => {
@@ -123,9 +129,9 @@ export default class C extends React.Component {
             </div>
           }
           {...this.props}
-          footer={ resource.state === '已驳回' ?
+          footer={ resource.state !== 'pendding' ?
             <div className="text-center">
-              <Button type="primary" onClick={this.props.onCancel} >返回</Button>
+              <Button onClick={this.props.onCancel} >返回</Button>
             </div> :
             <div className="text-center">
               <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
@@ -136,7 +142,7 @@ export default class C extends React.Component {
           closable={false}
           width={800}
           >
-            {resource.state === '已驳回' && (
+            {resource.state === 'denied' && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
                 {this.state.resource && (
@@ -182,9 +188,25 @@ export default class C extends React.Component {
 
             {resource.state === 'pendding' && (
               <div>
-                <Select placeholder="请选择集群"
-                        style={{width: '200px', marginRight: '24px', marginBottom: '16px'}}
-                ></Select>
+                {resource.resourceTypeId === 'containerHost' && (
+                  <Select placeholder="请选择集群"
+                          style={{width: '200px', marginRight: '24px', marginBottom: '16px'}}
+                  ></Select>
+                )}
+                <FormItem
+                  label="驳回理由"
+                  {...formItemLayout4}
+                >
+                  {this.props.form.getFieldDecorator('deniedMessages', {
+                    rules: [{
+                      required: true,
+                      message: '请输入驳回理由',
+                    }],
+                  })(
+                    <Input placeholder="请输入驳回理由" />
+                  )}
+                </FormItem>
+
               </div>
             )}
         </Modal>
