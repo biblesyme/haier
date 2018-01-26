@@ -10,10 +10,13 @@ import RocketMQProduct from './components/RocketMQProduct'
 import RocketMQComsumer from './components/RocketMQComsumer'
 import RabbitMQ from './components/RabbitMQ'
 import { withRouter } from 'react-router'
+import FormMapping from '@/components/FormMapping'
+import replace from 'utils/replace'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
 const CheckboxGroup = Checkbox.Group;
+const {Option} = Select;
 
 import styles from './style.sass'
 
@@ -138,10 +141,93 @@ function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
 
-class ApplicationDetail extends React.Component {
+class NewResource extends React.Component {
+  state = {
+    middlewareMappings: [],
+    middlewareSelect: 'mysql',
+  }
+
+  middlewareMappingId = 0
+  addMiddlewareMapping = (value) => {
+    let defaultMiddlewareMapping = {
+      id: this.middlewareMappingId++,
+      resourceType: value,
+    }
+    if (value === 'mysql') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        deployMode: 'one',
+        masterSlaveOption: '1',
+        mycatClusterManagerNodeCount: 0,
+        mycatClusterDataNodeCount: 0,
+        backup: 'false',
+      }
+    }
+    if (value === 'redis') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        memorySize: '100',
+        clusterType: 'one',
+        sharedCount: '0',
+      }
+    }
+    if (value === 'rocketMQTopic') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        clusterType: 'standalone',
+        topicName: '',
+      }
+    }
+    if (value === 'rabbitMQProducer') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        machineRoomId: 'qd',
+        maxIO: '100',
+        exchangeName: '',
+        exchangeType: 'fanout',
+      }
+    }
+    if (value === 'rabbitMQConsumer') {
+      defaultMiddlewareMapping = {
+        ...defaultMiddlewareMapping,
+        producerApplicationScode: 'S123451',
+        exchangeName: 'topic',
+        queueName: '',
+        topicName: '',
+        RouteKey: '',
+      }
+    }
+    const {middlewareMappings} = this.state
+    this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
+  }
+
+  removeMiddlewareMapping = (id) => {
+    const {middlewareMappings} = this.state
+    const filtered = middlewareMappings.filter(item => item.id !== id)
+    this.setState({middlewareMappings: filtered})
+  }
+
+  middlewareMappingChange = (newItem) => {
+    const {middlewareMappings} = this.state
+    const nextAry = replace(middlewareMappings, newItem)
+    this.setState({middlewareMappings: nextAry})
+  }
+
+  onMiddlewareSelect = (middlewareSelect) => {
+    this.setState({middlewareSelect})
+    this.addMiddlewareMapping(middlewareSelect)
+  }
+
+
   render(){
     const {record={}} = this.props.location
-    console.log(record)
+    const projectInfo = (record &&
+      record.data &&
+      record.data.data
+    ) || {}
     return (
     <div>
       <section className="page-section">
@@ -163,7 +249,7 @@ class ApplicationDetail extends React.Component {
               {...formItemLayout}
               label="申请日期"
             >
-             {new Date(record.data.data.createdAt).toLocaleString()}
+             {new Date(projectInfo.createdAt).toLocaleString()}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -172,7 +258,7 @@ class ApplicationDetail extends React.Component {
               label="业务负责人"
               hasFeedback
             >
-              {record.data.data.ownerUser}
+              {projectInfo.ownerUser}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -182,7 +268,7 @@ class ApplicationDetail extends React.Component {
               label="归属部门"
               hasFeedback
             >
-             {record.data.data.ownerUserDp}
+             {projectInfo.ownerUserDp}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -191,7 +277,7 @@ class ApplicationDetail extends React.Component {
               label="应用属性"
               hasFeedback
             >
-             {record.data.data.applicationType}
+             {projectInfo.applicationType}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -200,13 +286,10 @@ class ApplicationDetail extends React.Component {
               label="应用领域"
               hasFeedback
             >
-              {record.data.data.businessDomain}
+              {projectInfo.businessDomain}
             </FormItem>
           </Col>
         </Row>
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往监控平台</Button>
-        </div>
       </section>
 
       <section className="page-section">
@@ -214,10 +297,6 @@ class ApplicationDetail extends React.Component {
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源：</label>
         <div style={{padding: '10px'}}></div>
-        <Paas></Paas>
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往容器云</Button>
-        </div>
       </section>
 
     <section className="page-section">
@@ -225,17 +304,32 @@ class ApplicationDetail extends React.Component {
         <Col>
           <label htmlFor="">中间件：</label>
           <div style={{padding: '10px'}}></div>
-        </Col>
+          <Select style={{width: '170px', marginLeft: '20px'}}
+                  value={this.state.middlewareSelect}
+                  onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
+          >
+            <Option key="mysql">MySQL</Option>
+            <Option key="redis">Redis</Option>
+            <Option key="rocketMQTopic">RocketMQ</Option>
+            <Option key="rabbitMQProducer">RabbitMQ(生产者)</Option>
+            <Option key="rabbitMQConsumer">RabbitMQ(消费者)</Option>
+          </Select>
+          <div style={{padding: '10px'}}></div>
+          <label htmlFor="">推荐中间件：</label>
+          <div style={{padding: '10px'}}></div>
 
-        <Redis></Redis>
-        <MySQL></MySQL>
-        <RocketMQComsumer></RocketMQComsumer>
-        <RabbitMQ></RabbitMQ>
-        <br/>
-        <Col span={24}>
-          <div className="text-right pd-tb10">
-            <Button type="primary">前往中间件平台</Button>
-          </div>
+          <Row>
+            {this.state.middlewareMappings.map(item => {
+              return (
+                <FormMapping
+                  onChange={(item) => this.middlewareMappingChange(item)}
+                  onRemove={() => this.removeMiddlewareMapping(item.id)}
+                  key={item.id}
+                  item={item}
+                  />
+              )
+            })}
+          </Row>
         </Col>
       </Row>
     </section>
@@ -271,5 +365,5 @@ class ApplicationDetail extends React.Component {
   }
 }
 
-Object.defineProperty(ApplicationDetail, "name", { value: "ApplicationDetail" });
-export default withRouter(connect(null, ['App'])(ApplicationDetail))
+Object.defineProperty(NewResource, "name", { value: "NewResource" });
+export default withRouter(connect(null, ['App'])(NewResource))

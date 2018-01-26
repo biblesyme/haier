@@ -1,8 +1,8 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin, message } from 'antd';
 import { connect } from 'utils/ecos'
-import FormMapping from './components/FormMapping'
-import FormResource from './components/FormResource'
+import FormMapping from '@/components/FormMapping'
+import FormResource from '@/components/FormResource'
 import replace from 'utils/replace'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'

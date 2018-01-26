@@ -98,13 +98,13 @@ class Preview extends React.Component {
       }
       return r
     })
-    console.log(record)
     this.props.dispatch({
       type: 'App/saveRecord',
       payload: {
         data: {
           ...form,
           type: 'projects',
+          resources: record,
         },
         successCB: () => {
           message.success('应用创建成功')
