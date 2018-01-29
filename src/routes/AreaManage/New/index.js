@@ -36,7 +36,7 @@ export default class C extends React.Component {
       let value = {
         name: values.name,
         admin: {
-          accout: values.accout,
+          account: values.account,
         },
       }
       this.props.onOk(value)
@@ -88,7 +88,7 @@ export default class C extends React.Component {
                 {...formItemLayout}
                 label="账号"
               >
-                {getFieldDecorator('accout', {
+                {getFieldDecorator('account', {
                   rules: [{
                     required: true, message: '请输入',
                   }],

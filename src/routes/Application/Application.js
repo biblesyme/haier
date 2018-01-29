@@ -79,8 +79,8 @@ class Application extends React.Component {
     this.props.history.push({pathname: `/applications/${record.id}`, record})
   }
 
-  deleteMember = (e, accout) => {
-    let newMembers = this.state.members.filter(m => m.accout !== accout)
+  deleteMember = (e, account) => {
+    let newMembers = this.state.members.filter(m => m.account !== account)
     this.setState({
       members: newMembers,
     })

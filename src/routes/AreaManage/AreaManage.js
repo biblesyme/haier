@@ -78,6 +78,7 @@ class AreaManage extends React.Component {
         this.setState({
           visibleAdd: false,
         });
+        this.props.selfDispatch({type: 'findDomainAdmin'})
         this.props.selfDispatch({type: 'findDomain'})
         message.success('领域添加成功')
       },
