@@ -29,6 +29,7 @@ class MySubmit extends React.Component {
     })
     this.props.selfDispatch({type: 'findAccount'})
     this.props.selfDispatch({type: 'findProject'})
+    this.props.selfDispatch({type: 'findResource'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['6']}})
   }
 
@@ -40,7 +41,7 @@ class MySubmit extends React.Component {
 
   render() {
     let { filteredInfo, } = this.state;
-    const {approvals=[], accounts=[], projects=[]} = this.props.reduxState
+    const {approvals=[], accounts=[], projects=[], resources=[]} = this.props.reduxState
     const {user={}} = this.props.App
     const selector = approvals.filter(a => a.requesterId === user.id)
     const boxes = selector.filter(d => {
@@ -119,9 +120,10 @@ class MySubmit extends React.Component {
     }, {
       title: '操作',
       render: (record) => {
+        let resource = resources.filter(r => r.id === record.resourceId)[0]
         return (
           <div>
-            <a onClick={e => this.setState({visibleDetail: true, record})}>查看</a>
+            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看</a>
           </div>
         )
       }
@@ -151,12 +153,15 @@ class MySubmit extends React.Component {
           />
         </Col>
       </Row>
-      <Detail
-        visible={this.state.visibleDetail}
-        onOk={(newData) => {this.saveAdd(newData)}}
-        onCancel={this.handleCancel}
-        resource={this.state.record}
-        />
+      {this.state.visibleDetail && (
+        <Detail
+          visible={this.state.visibleDetail}
+          onOk={(newData) => {this.saveAdd(newData)}}
+          onCancel={this.handleCancel}
+          resource={this.state.record}
+          filterResource={this.state.resource}
+          />
+      )}
     </main>
     )
   }

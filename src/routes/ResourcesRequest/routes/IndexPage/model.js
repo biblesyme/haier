@@ -7,9 +7,11 @@ export default {
     findApprovalStatus: LOAD_STATUS.INITIAL,
 		findAccountStatus: LOAD_STATUS.INITIAL,
 		findProjectStatus: LOAD_STATUS.INITIAL,
+    findResourceStatus: LOAD_STATUS.INITIAL,
     approvals: [],
 		accounts: [],
     projects: [],
+    resources: [],
   },
   reducers: {
     setText(state,action){
@@ -64,7 +66,7 @@ export default {
       yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.START} })
       try{
         let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
-        let fomatProjects = projects.content.map(p => {
+        let fomatProjects = yield projects.content.map(p => {
           return {
             ...p,
             data: JSON.parse(p.data),
@@ -79,6 +81,34 @@ export default {
             errorMessage: e.message()
           }
         })
+      }
+    },
+    *findResource({payload={}},{call, put}){
+      let {callback} = payload
+      yield put({type:'setState',payload: {findResourceStatus: LOAD_STATUS.START} })
+      try{
+        let resources = yield call([apiStore,apiStore.find], 'resource', null, {forceReload: true})
+        let fomatResources = yield resources.content.map(r => {
+          return {
+            ...r,
+            data: JSON.parse(r.data),
+          }
+        })
+        yield put({type:'setState',payload: {resources: fomatResources}})
+        yield put({type:'setState',payload: {findResourcelStatus: LOAD_STATUS.SUCCESS} })
+        if(callback){
+          yield call(callback)
+        }
+      }
+      catch(e){
+        yield put({type:'setState',payload: {
+            findResourceStatus: LOAD_STATUS.FAIL,
+            errorMessage: e.message()
+          }
+        })
+        if(callback){
+          yield call(callback)
+        }
       }
     },
   }

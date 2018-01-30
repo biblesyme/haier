@@ -21,7 +21,7 @@ export default {
     },
   },
   effects: {
-		*findResource({payload},{call, put}){
+		*findResource({payload={}},{call, put}){
       let {callback} = payload
 			yield put({type:'setState',payload: {findResourceStatus: LOAD_STATUS.START} })
 			try{

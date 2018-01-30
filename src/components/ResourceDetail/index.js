@@ -66,7 +66,7 @@ export default class C extends React.Component {
     const {data={}} = resource
     return (
       <main>
-        {resource.resourceType === 'containerHost' && (
+        {data.resourceType === 'containerHost' && (
           <div className="text-center">
             <label htmlFor="">资源所在地：</label>
               {nameMap[data.machineRoomId]}
@@ -101,7 +101,7 @@ export default class C extends React.Component {
               </section>
           </div>
         )}
-        {resource.resourceType === 'mysql' && (
+        {data.resourceType === 'mysql' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="MySQL" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
@@ -160,7 +160,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {resource.resourceType === 'redis' && (
+        {data.resourceType === 'redis' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="Redis" style={{width: '216px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
@@ -200,7 +200,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {resource.resourceType === 'rocketMQTopic' && (
+        {data.resourceType === 'rocketMQTopic' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RocketMQ" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
@@ -229,7 +229,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {resource.resourceType === 'rabbitMQProducer' && (
+        {data.resourceType === 'rabbitMQProducer' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
@@ -269,7 +269,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {resource.resourceType === 'rabbitMQConsumer' && (
+        {data.resourceType === 'rabbitMQConsumer' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>

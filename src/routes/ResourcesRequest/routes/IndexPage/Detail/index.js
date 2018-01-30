@@ -15,6 +15,7 @@ import {
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
 import { connect } from 'utils/ecos'
+import ResourceDetail from '@/components/ResourceDetail'
 
 const FormItem = Form.Item
 const {Option} = Select
@@ -76,7 +77,10 @@ export default class C extends React.Component {
   deny = () => {
     this.props.form.validateFields((err, values) => {
       if (err) return
-
+      if (values.deniedMessages === undefined || values.deniedMessages === '') {
+        message.warning('请输入驳回理由')
+        return
+      }
       let payload = {
         data: {
           ...this.props.resource,
@@ -118,7 +122,7 @@ export default class C extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const {resource} = this.props
+    const {resource, filterResource} = this.props
     return (
       <div>
         <Modal
@@ -145,61 +149,21 @@ export default class C extends React.Component {
             {resource.state === 'denied' && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
-                {this.state.resource && (
-                  <Row>
-                    <Col span={8}>
-                      <Card title="MySQL" style={{height: '230px'}}>
-                        <Form>
-                          <FormItem
-                            {...formItemLayout4}
-                            label="地点"
-                            hasFeedback
-                          >
-                           青岛
-                          </FormItem>
-                          <FormItem
-                            {...formItemLayout4}
-                            label="配置"
-                            hasFeedback
-                          >
-                            中
-                          </FormItem>
-                          <FormItem
-                            {...formItemLayout4}
-                            label="分片"
-                            hasFeedback
-                          >
-                           50片
-                          </FormItem>
-                          <FormItem
-                            {...formItemLayout4}
-                            label="备份"
-                            hasFeedback
-                          >
-                           是
-                          </FormItem>
-                        </Form>
-                      </Card>
-                    </Col>
-                  </Row>
-                )}
+                <ResourceDetail resource={filterResource}/>
               </div>
             )}
 
             {resource.state === 'pendding' && (
               <div>
-                {resource.resourceTypeId === 'containerHost' && (
-                  <Select placeholder="请选择集群"
-                          style={{width: '200px', marginRight: '24px', marginBottom: '16px'}}
-                  ></Select>
-                )}
+                <ResourceDetail resource={filterResource}/>
+                <br/>
                 <FormItem
                   label="驳回理由"
                   {...formItemLayout4}
                 >
                   {this.props.form.getFieldDecorator('deniedMessages', {
                     rules: [{
-                      required: true,
+                      required: false,
                       message: '请输入驳回理由',
                     }],
                   })(
@@ -207,6 +171,11 @@ export default class C extends React.Component {
                   )}
                 </FormItem>
 
+              </div>
+            )}
+            {(resource.state === 'confirmed' || resource.state === 'passed') && (
+              <div>
+                <ResourceDetail resource={filterResource}/>
               </div>
             )}
         </Modal>
