@@ -26,7 +26,13 @@ export default {
 			yield put({type:'setState',payload: {findResourceStatus: LOAD_STATUS.START} })
 			try{
 				let resources = yield call([apiStore,apiStore.find], 'resource', null, {forceReload: true})
-				yield put({type:'setState',payload: {resources: resources.content}})
+        let fomatResources = resources.content.map(r => {
+          return {
+            ...r,
+            data: JSON.parse(r.data),
+          }
+        })
+				yield put({type:'setState',payload: {resources: fomatResources}})
 				yield put({type:'setState',payload: {findResourcelStatus: LOAD_STATUS.SUCCESS} })
         if(callback){
           yield call(callback)

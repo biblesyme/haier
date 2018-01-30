@@ -3,12 +3,18 @@ import {Table, Row, Col, Input, Button, Select, Tag} from 'antd'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
+import Detail from './Detail'
 
 const {Search} = Input
 
 import styles from './styles.scss'
 
 class Resource extends React.Component {
+  state = {
+    visibleDetail: false,
+    record: {},
+  }
+
   componentWillMount() {
     this.props.dispatch({type: 'App/setState', payload: {loading: true}})
     this.props.selfDispatch({
@@ -21,6 +27,12 @@ class Resource extends React.Component {
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['4']}})
   }
 
+  handleCancel = (e) => {
+    this.setState({
+      visibleDetail: false,
+    });
+  }
+
   render() {
     const {resources=[], projects=[]} = this.props.reduxState
     const columns = [{
@@ -28,21 +40,20 @@ class Resource extends React.Component {
       dataIndex: 'id'
     }, {
       title: '类型',
-      dataIndex: 'type23',
-      key: 'type23',
-      filters: [
-        { text: '全部', value: 'all' },
-        { text: '中间件', value: '中间件' },
-        { text: 'PAAS', value: 'paas' },
-        { text: '能力开放平台', value: 'Platform' },
-      ],
-      onFilter: (value, record) => {
-        if (value === 'all') {
-          return record.type
-        }
-        return record.type.includes(value)
-      },
-      filterMultiple: false,
+      dataIndex: 'resourceType',
+      // filters: [
+      //   { text: '全部', value: 'all' },
+      //   { text: '中间件', value: '中间件' },
+      //   { text: 'PAAS', value: 'paas' },
+      //   { text: '能力开放平台', value: 'Platform' },
+      // ],
+      // onFilter: (value, record) => {
+      //   if (value === 'all') {
+      //     return record.type
+      //   }
+      //   return record.type.includes(value)
+      // },
+      // filterMultiple: false,
     }, {
       title: '项目名称',
       render: (record) => {
@@ -61,7 +72,13 @@ class Resource extends React.Component {
       render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
     }, {
       title: '操作',
-      render: (record) => <a>详情</a>
+      render: (record) => {
+        return (
+          <div>
+            <a onClick={e => this.setState({visibleDetail: true, record})}>详情</a>
+          </div>
+        )
+      }
     }]
     const boxes = resources
     return (
@@ -77,6 +94,13 @@ class Resource extends React.Component {
             />
           </Col>
         </Row>
+        {this.state.visibleDetail && (
+          <Detail key={this.state.record.id}
+                  visible={this.state.visibleDetail}
+                  onCancel={this.handleCancel}
+                  resource={this.state.record}
+            />
+        )}
     </main>
     )
   }

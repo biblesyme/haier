@@ -33,6 +33,22 @@ const formItemLayout = {
   }
 };
 
+const formItemCenter = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+    push: 1
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+    push: 1
+  },
+  style: {
+    marginBottom: '10px'
+  }
+};
+
 const formItemLeft = {
   labelCol: {
     xs: { span: 20 },
@@ -315,7 +331,7 @@ class ApplicationForm extends React.Component {
             <Row gutter={24}>
             <Col span={24}>
               <FormItem
-                {...formItemLayout}
+                {...formItemCenter}
                 label="S码验证"
                 hasFeedback
               >

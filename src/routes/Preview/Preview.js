@@ -47,7 +47,6 @@ class Preview extends React.Component {
           data: JSON.stringify({...r}),
           version: 1,
           resourceType: 'containerHost',
-          projectId: projectInfo.id.toString(),
           type: 'resource',
         })
       }
@@ -55,7 +54,6 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'mysql',
-          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -64,7 +62,6 @@ class Preview extends React.Component {
         return apiStore.createRecord({
           version: 1,
           resourceType: 'redis',
-          projectId: projectInfo.id.toString(),
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -72,8 +69,7 @@ class Preview extends React.Component {
       if (r.resourceType === 'rocketMQTopic') {
         return apiStore.createRecord({
           version: 1,
-          resourceType: 'mysql',
-          projectId: projectInfo.id.toString(),
+          resourceType: 'rocketMQTopic',
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -81,8 +77,7 @@ class Preview extends React.Component {
       if (r.resourceType === 'rabbitMQProducer') {
         return apiStore.createRecord({
           version: 1,
-          resourceType: 'mysql',
-          projectId: projectInfo.id.toString(),
+          resourceType: 'rabbitMQProducer',
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -90,8 +85,7 @@ class Preview extends React.Component {
       if (r.resourceType === 'rabbitMQConsumer') {
         return apiStore.createRecord({
           version: 1,
-          resourceType: 'mysql',
-          projectId: projectInfo.id.toString(),
+          resourceType: 'rabbitMQConsumer',
           type: 'resource',
           data: JSON.stringify({...r})
         })
@@ -108,7 +102,11 @@ class Preview extends React.Component {
         },
         successCB: () => {
           message.success('应用创建成功')
-          this.props.history.push({pathname: '/application'})
+          if (this.props.App.role !== 'admin') {
+            this.props.history.push({pathname: '/application'})
+          } else {
+            this.props.history.push({pathname: '/information'})
+          }
         },
         failCB: () => {
           message.error('应用创建失败')

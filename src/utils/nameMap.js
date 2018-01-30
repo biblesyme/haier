@@ -51,4 +51,10 @@ export default {
   cluster: '集群',
   true: '是',
   false: '否',
+
+  // // Resorce
+  // containerHost: 'PAAS',
+  // mysql: 'M',
+  // RocketMQ: 'RMQ',
+  // RabbitMQ: ''
 }
