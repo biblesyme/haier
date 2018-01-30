@@ -26,7 +26,7 @@ export default {
 			yield put({type:'setState',payload: {findResourceStatus: LOAD_STATUS.START} })
 			try{
 				let resources = yield call([apiStore,apiStore.find], 'resource', null, {forceReload: true})
-        let fomatResources = resources.content.map(r => {
+        let fomatResources = yield resources.content.map(r => {
           return {
             ...r,
             data: JSON.parse(r.data),
@@ -53,7 +53,7 @@ export default {
       yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.START} })
       try{
         let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
-        let fomatProjects = projects.content.map(p => {
+        let fomatProjects = yield projects.content.map(p => {
           return {
             ...p,
             data: JSON.parse(p.data),
