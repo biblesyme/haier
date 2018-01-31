@@ -87,9 +87,13 @@ export default {
       try{
         let resources = yield call([apiStore,apiStore.find], 'resource', null, {forceReload: true})
         let fomatResources = yield resources.content.map(r => {
-          return {
-            ...r,
-            data: JSON.parse(r.data),
+          if (r.hasOwnProperty('data')) {
+            return {
+              ...r,
+              data: JSON.parse(r.data),
+            }
+          } else {
+            return r
           }
         })
         yield put({type:'setState',payload: {resources: fomatResources}})

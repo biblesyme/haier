@@ -25,10 +25,6 @@ const formItemLayout = {
   }
 };
 
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
-
 class Application extends React.Component {
   state = {
     visibleAdd: false,
@@ -95,10 +91,6 @@ class Application extends React.Component {
       title: '应用名称',
       dataIndex: 'name',
       // sorter: (a, b) => a.name.length - b.name.length,
-    }, {
-      title: '项目经理',
-      dataIndex: 'data.data.ownerUser',
-      // sorter: (a, b) => a.manager.length - b.manager.length,
     }, {
       title: '应用告警数',
       dataIndex: 'health',

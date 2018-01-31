@@ -110,6 +110,12 @@ export default class C extends React.Component {
       action: 'pass',
       successCB: () => {
         this.props.dispatch({'type': 'Approval/findApproval'})
+        if (this.props.App.role === 'domainAdmin') {
+          message.success('确认成功')
+        }
+        if (this.props.App.role === 'admin') {
+          message.success('通过成功')
+        }
         this.props.onCancel()
       },
       failCB: () => {
@@ -123,6 +129,29 @@ export default class C extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const {resource, filterResource} = this.props
+    const footer = (
+      <div>
+        {(resource.state === 'pendding') && (
+          <div className="text-center">
+            <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
+            <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
+            <Button onClick={this.pass}>同意</Button>
+          </div>
+        )}
+        {resource.state === 'confirmed' && (
+          <div className="text-center">
+            <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
+            <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
+            <Button onClick={this.pass}>同意</Button>
+          </div>
+        )}
+        {(resource.state === 'passed' || resource.state === 'denied') && (
+          <div className="text-center">
+            <Button onClick={this.props.onCancel} >返回</Button>
+          </div>
+        )}
+      </div>
+    )
     return (
       <div>
         <Modal
@@ -133,16 +162,7 @@ export default class C extends React.Component {
             </div>
           }
           {...this.props}
-          footer={ resource.state !== 'pendding' ?
-            <div className="text-center">
-              <Button onClick={this.props.onCancel} >返回</Button>
-            </div> :
-            <div className="text-center">
-              <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
-              <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
-              <Button onClick={this.pass}>{this.props.App.role === 'admin' ? '通过' : '同意'}</Button>
-            </div>
-          }
+          footer={footer}
           closable={false}
           width={800}
           >
