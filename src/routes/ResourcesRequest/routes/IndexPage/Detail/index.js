@@ -140,7 +140,7 @@ export default class C extends React.Component {
             <div className="text-center">
               <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
               <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
-              <Button onClick={this.pass}>通过</Button>
+              <Button onClick={this.pass}>{this.props.App.role === 'admin' ? '通过' : '同意'}</Button>
             </div>
           }
           closable={false}

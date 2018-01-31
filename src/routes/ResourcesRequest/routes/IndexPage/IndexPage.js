@@ -10,6 +10,20 @@ const {Option} = Select
 
 import styles from './styles.scss'
 
+const adminMap = {
+  confirmed: '待通过',
+  passed: '已通过',
+  denied: '已驳回',
+  pendding: '待审批',
+}
+
+const adminState = {
+  confirmed: 'orange',
+  denied: 'red',
+  passed: 'green',
+  pendding: 'orange',
+}
+
 class Approval extends React.Component {
   state = {
     filteredInfo: null,
@@ -43,7 +57,14 @@ class Approval extends React.Component {
   render() {
     let { filteredInfo, } = this.state;
     const {approvals=[], accounts=[], projects=[], resources=[],} = this.props.reduxState
-    const boxes = approvals.filter(d => {
+    const {role} = this.props.App
+    let roleFilter = []
+    if (role === 'admin') {
+      roleFilter = approvals.filter(d => d.state !== 'pendding')
+    } else {
+      roleFilter = approvals
+    }
+    const boxes = roleFilter.filter(d => {
       const {filter} = this.state
       if (!filter || filter === 'all') {
         return true
@@ -90,7 +111,12 @@ class Approval extends React.Component {
       }
     }, {
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+      render: (record) => {
+        if (role === 'admin') {
+          return <Tag color={adminState[record.state]}>{adminMap[record.state]}</Tag>
+        }
+        return <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+      }
     }, {
       title: '操作',
       render: (record) => {
@@ -106,15 +132,29 @@ class Approval extends React.Component {
       <main className="page-section">
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
-            <Select style={{width: '200px'}}
-                    value={this.state.Selected}
-                    onChange={Selected => this.setState({Selected, filter: Selected,})}
-            >
-              <Option key='all'>全部</Option>
-              <Option key="pendding">待审批</Option>
-              <Option key="confirmed">已审批</Option>
-              <Option key="denied">已驳回</Option>
-            </Select>
+            {this.props.App.role === 'admin' && (
+              <Select style={{width: '200px'}}
+                      value={this.state.Selected}
+                      onChange={Selected => this.setState({Selected, filter: Selected,})}
+              >
+                <Option key='all'>全部</Option>
+                <Option key="confirmed">待审批</Option>
+                <Option key="passed">已通过</Option>
+                <Option key="denied">已驳回</Option>
+              </Select>
+            )}
+            {this.props.App.role === 'domainAdmin' && (
+              <Select style={{width: '200px'}}
+                      value={this.state.Selected}
+                      onChange={Selected => this.setState({Selected, filter: Selected,})}
+              >
+                <Option key='all'>全部</Option>
+                <Option key="pendding">待审批</Option>
+                <Option key="confirmed">已同意</Option>
+                <Option key="passed">已通过</Option>
+                <Option key="denied">已驳回</Option>
+              </Select>
+            )}
           </Col>
         </Row>
         <Row>

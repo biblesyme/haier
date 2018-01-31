@@ -18,7 +18,7 @@ export default {
   deploying: '部署中',
   ready: '已就绪',
   deployError: '失败',
-  confirmed: '已通过',
+  confirmed: '已同意',
   denied: '已驳回',
   passed: '已通过',
 

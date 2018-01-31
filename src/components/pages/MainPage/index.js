@@ -23,9 +23,15 @@ export default class MainPage extends React.Component {
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: [key]}})
   }
 
+  roleChange = (role) => {
+    document.cookie = `currentRole=${role};`
+    this.props.dispatch({type:'App/setState',payload: {role}})
+  }
+
   componentWillMount(){
     this.props.init();
     const {user= {},} = this.props.App
+    document.cookie = `currentRole=${user.roles[0]};`
     this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
     // this.props.dispatch({type: 'App/findDomain'})
   }
@@ -41,7 +47,7 @@ export default class MainPage extends React.Component {
             当前登录： {user.name}
             <Select defaultValue="管理员"
                     value={role}
-                    onChange={role => this.props.dispatch({type:'App/setState',payload: {role}})}
+                    onSelect={this.roleChange}
             >
               <Option key="admin">管理员</Option>
               <Option key="domainAdmin">团队长</Option>
