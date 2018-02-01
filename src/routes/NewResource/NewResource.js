@@ -3,12 +3,7 @@ import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
-import Redis from './components/Redis'
-import MySQL from './components/MySQL'
-import Paas from './components/Paas'
-import RocketMQProduct from './components/RocketMQProduct'
-import RocketMQComsumer from './components/RocketMQComsumer'
-import RabbitMQ from './components/RabbitMQ'
+import Paas from './Paas'
 import { withRouter } from 'react-router'
 import FormMapping from '@/components/FormMapping'
 import replace from 'utils/replace'
@@ -147,6 +142,24 @@ class NewResource extends React.Component {
     middlewareSelect: 'mysql',
   }
 
+  componentWillMount() {
+    const {record={}} = this.props.location
+    this.props.selfDispatch({
+      type: 'followProjectLink',
+      payload: {
+        data: record,
+        link: 'self',
+      },
+    })
+    this.props.selfDispatch({
+      type: 'followResourceLink',
+      payload: {
+        data: record,
+        link: 'resources',
+      },
+    })
+  }
+
   middlewareMappingId = 0
   addMiddlewareMapping = (value) => {
     let defaultMiddlewareMapping = {
@@ -224,10 +237,13 @@ class NewResource extends React.Component {
 
   render(){
     const {record={}} = this.props.location
+    const {resources=[]} = this.props.reduxState
     const projectInfo = (record &&
       record.data &&
       record.data.data
     ) || {}
+    const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
+    const middleware = resources.filter(r => r.resourceType !== 'containerHost')
     return (
     <div>
       <section className="page-section">
@@ -293,57 +309,12 @@ class NewResource extends React.Component {
       </section>
 
       <section className="page-section">
-        <label>资源所在地: 青岛</label>
-        <div style={{padding: '10px'}}></div>
-        <label htmlFor="">应用资源：</label>
-        <div style={{padding: '10px'}}></div>
+        <Paas resource={paas}/>
       </section>
 
     <section className="page-section">
-      <Row>
-        <Col>
-          <label htmlFor="">中间件：</label>
-          <div style={{padding: '10px'}}></div>
-          <Select style={{width: '170px', marginLeft: '20px'}}
-                  value={this.state.middlewareSelect}
-                  onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
-          >
-            <Option key="mysql">MySQL</Option>
-            <Option key="redis">Redis</Option>
-            <Option key="rocketMQTopic">RocketMQ</Option>
-            <Option key="rabbitMQProducer">RabbitMQ(生产者)</Option>
-            <Option key="rabbitMQConsumer">RabbitMQ(消费者)</Option>
-          </Select>
-          <div style={{padding: '10px'}}></div>
-          <label htmlFor="">推荐中间件：</label>
-          <div style={{padding: '10px'}}></div>
-
-          <Row>
-            {this.state.middlewareMappings.map(item => {
-              return (
-                <FormMapping
-                  onChange={(item) => this.middlewareMappingChange(item)}
-                  onRemove={() => this.removeMiddlewareMapping(item.id)}
-                  key={item.id}
-                  item={item}
-                  />
-              )
-            })}
-          </Row>
-        </Col>
-      </Row>
+      {middleware.map(m => <Paas resource={m} style={{display: 'inline-block'}}/>)}
     </section>
-      {/* <div className="page-section">
-        <h3>已选框架</h3>
-        <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
-      </div>
-      <div className="page-section">
-        <h3>已选能力<span className="pull-right mg-l10">已使用能力：2个</span> <span className="pull-right">已发布能力：3个</span></h3>
-        <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往能力开放平台</Button>
-        </div>
-      </div> */}
       <section className="page-section">
         <h3>框架</h3>
         <CheckboxGroup options={plainOptions} value={["前端框架"]}/>
@@ -358,7 +329,13 @@ class NewResource extends React.Component {
       <div style={{paddingBottom: '60px'}}></div>
 
       <section className="page-section bottom-actions">
-        <Button type="primary" style={{float: 'right'}} onClick={() => this.props.history.goBack()}>返回</Button>
+        <Button type="primary" style={{float: 'right'}}
+                onClick={() => {
+                  this.props.selfDispatch({type:'setState',payload: {resources: []}})
+                  this.props.history.goBack()}
+                }>
+          返回
+        </Button>
       </section>
     </div>
       )
@@ -366,4 +343,4 @@ class NewResource extends React.Component {
 }
 
 Object.defineProperty(NewResource, "name", { value: "NewResource" });
-export default withRouter(connect(null, ['App'])(NewResource))
+export default withRouter(connect(require('./model'), ['App'])(NewResource))

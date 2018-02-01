@@ -143,6 +143,7 @@ class ApplicationForm extends React.Component {
   }
 
   componentWillMount() {
+    this.props.dispatch({type: 'App/setState', payload: {loading: false}})
     this.addMiddlewareMapping('mysql')
     this.props.dispatch({type:'NewApplication/findDomain'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})

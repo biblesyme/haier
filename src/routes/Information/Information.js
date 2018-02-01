@@ -10,6 +10,7 @@ const stateHeight = '168px'
 
 class Information extends React.Component {
   componentWillMount() {
+    this.props.dispatch({type: 'App/setState', payload: {loading: false}})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['2']}})
   }
   render() {

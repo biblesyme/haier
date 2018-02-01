@@ -91,6 +91,6 @@ export default {
 			catch(e){
 				if(failCB){yield call(failCB, e)}
 			}
-		}
+		},
 	}
 }
