@@ -1,5 +1,6 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
+import { connect } from 'utils/ecos'
 
 const CheckboxGroup = Checkbox.Group;
 const SubMenu = Menu.SubMenu;
@@ -8,6 +9,7 @@ const FormItem = Form.Item;
 
 import styles from './style.sass'
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     size: 'haier',
@@ -19,10 +21,24 @@ export default class C extends React.Component {
     consumeMode: 'cluster',
     exchangeType: 'fanout',
     exchangeName: null,
-    machineRoomId: 'qd',
+    machineRoomId: '',
+    machineRooms: [],
+  }
+
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'App/findMachineRoom',
+      payload: {
+        successCB: (res) => {
+          this.setState({machineRooms: res.data.data, machineRoomId: res.data.data[0].id})
+          this.props.onChange({...this.props.item, machineRoomId: res.data.data[0].id})
+        },
+      }
+    })
   }
 
   render() {
+    console.log(this.state)
     const {onChange, item, onRemove} = this.props
     const { size, size2 } = this.state;
     const formItemLayout4 = {
@@ -52,22 +68,25 @@ export default class C extends React.Component {
       md: {span: 11, offset: 1}
     }
 
+    const machineRoomId = (
+      <FormItem
+        {...formItemLayout4}
+        label="地点"
+        hasFeedback
+      >
+        <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
+          {this.state.machineRooms.map(m => <Option key={m.id}>{m.roomName}</Option>)}
+        </Select>
+      </FormItem>
+    )
+
     return (
       <main>
         {item.resourceType === 'mysql' && (
           <Col {...gridLayout}>
             <Card title="MySQL" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formInputLayout}
-                  label="地点"
-                  hasFeedback
-                >
-                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
-                    <Option key="qd">青岛</Option>
-                    <Option key="bj">北京</Option>
-                  </Select>
-                </FormItem>
+                {machineRoomId}
                 <FormItem
                   {...formItemLayout4}
                   label="部署模式"
@@ -136,16 +155,7 @@ export default class C extends React.Component {
           <Col {...gridLayout}>
             <Card title="Redis" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formInputLayout}
-                  label="地点"
-                  hasFeedback
-                >
-                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
-                    <Option key="qd">青岛</Option>
-                    <Option key="bj">北京</Option>
-                  </Select>
-                </FormItem>
+                {machineRoomId}
                 <FormItem
                   {...formInputLayout}
                   label="内存"
@@ -193,16 +203,7 @@ export default class C extends React.Component {
           <Col {...gridLayout}>
             <Card title="RocketMQ" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formInputLayout}
-                  label="地点"
-                  hasFeedback
-                >
-                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
-                    <Option key="qd">青岛</Option>
-                    <Option key="bj">北京</Option>
-                  </Select>
-                </FormItem>
+                {machineRoomId}
                 <FormItem
                   {...formItemLayout4}
                   label="集群类型"
@@ -230,16 +231,7 @@ export default class C extends React.Component {
           <Col {...gridLayout}>
             <Card title="RabbitMQ-生产者" style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formInputLayout}
-                  label="地点"
-                  hasFeedback
-                >
-                  <Select value={item.machineRoomId} onChange={machineRoomId => onChange({...item, machineRoomId})}>
-                    <Option key="qd">青岛</Option>
-                    <Option key="bj">北京</Option>
-                  </Select>
-                </FormItem>
+                {machineRoomId}
                 <FormItem
                   {...formInputLayout}
                   label="最大消息吞吐量"

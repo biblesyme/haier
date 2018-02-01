@@ -147,7 +147,6 @@ export default class C extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <main>
         <label htmlFor="">资源所在地：</label>

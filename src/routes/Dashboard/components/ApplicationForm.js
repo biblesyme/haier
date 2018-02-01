@@ -187,7 +187,6 @@ class ApplicationForm extends React.Component {
     if (value === 'mysql') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
         deployMode: 'one',
         masterSlaveOption: '1',
         mycatClusterManagerNodeCount: 0,
@@ -198,7 +197,6 @@ class ApplicationForm extends React.Component {
     if (value === 'redis') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
         memorySize: '100',
         clusterType: 'one',
         sharedCount: '0',
@@ -207,7 +205,6 @@ class ApplicationForm extends React.Component {
     if (value === 'rocketMQTopic') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
         clusterType: 'standalone',
         topicName: '',
       }
@@ -215,7 +212,6 @@ class ApplicationForm extends React.Component {
     if (value === 'rabbitMQProducer') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
         maxIO: '100',
         exchangeName: '',
         exchangeType: 'fanout',

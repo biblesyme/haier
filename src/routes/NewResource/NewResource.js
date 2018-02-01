@@ -3,7 +3,7 @@ import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
-import Paas from './Paas'
+import Item from './Item'
 import { withRouter } from 'react-router'
 import FormMapping from '@/components/FormMapping'
 import replace from 'utils/replace'
@@ -309,11 +309,16 @@ class NewResource extends React.Component {
       </section>
 
       <section className="page-section">
-        <Paas resource={paas}/>
+        <Item resource={paas}/>
       </section>
 
     <section className="page-section">
-      {middleware.map(m => <Paas resource={m} style={{display: 'inline-block'}}/>)}
+      <Row gutter={24}>
+        {middleware.map(m => (
+          <Col span={6}><Item resource={m} /></Col>
+        ))}
+      </Row>
+
     </section>
       <section className="page-section">
         <h3>框架</h3>

@@ -115,5 +115,13 @@ export default {
 
 			}
 		},
+		*findMachineRoom({payload={}}, {call, put}) {
+			let {successCB} = payload
+			try {
+				let machineRoom = yield call([axios, axios.get], `/v1/query/mid/machineRooms`)
+				if (successCB) {yield call(successCB, machineRoom)}
+			}
+			catch(e) {}
+		}
 	}
 }
