@@ -271,7 +271,9 @@ class NewResource extends React.Component {
       {resources.length > 0 && (
         <div>
           <section className="page-section">
-            <Item  key={'paas'} resource={paas}/>
+            <Row gutter={24}>
+              <Col key={'paas'} span={6}><Item resource={paas}/></Col>
+            </Row>
           </section>
 
           <section className="page-section">

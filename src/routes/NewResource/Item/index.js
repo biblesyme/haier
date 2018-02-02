@@ -120,10 +120,7 @@ export default class C extends React.Component {
             <label htmlFor="">已选集群：</label>
               {clusterFilter.name}
             <div style={{padding: '10px'}}></div>
-              <section className={styles["card-form"]}>
-                <div className={styles["card-header"]}>
-                  {nameMap[this.state.resource]}
-                </div>
+              <Card title={nameMap[this.state.resource]}>
                 <Form className={styles["card-body"]}>
                   <FormItem
                     {...formItemLayout3}
@@ -147,12 +144,13 @@ export default class C extends React.Component {
                    {`${data.diskSize || ''}G`}
                   </FormItem>
                 </Form>
-              </section>
+              </Card>
+              <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="edit" /></Button>
           </div>
         )}
         {data.resourceType === 'mysql' && (
           <div >
-            <Card title="MySQL" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="MySQL">
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -207,11 +205,12 @@ export default class C extends React.Component {
                 </FormItem>
               </Form>
             </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="edit" /></Button>
           </div>
         )}
         {data.resourceType === 'redis' && (
           <div >
-            <Card title="Redis" style={{width: '216px', marginBottom: '20px'}}>
+            <Card title="Redis" style={{marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
