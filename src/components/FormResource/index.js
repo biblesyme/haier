@@ -1,5 +1,6 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
+import { connect } from 'utils/ecos'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -26,16 +27,37 @@ const formItemLayout3 = {
   }
 }
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     resource: 'height',
-    machineRoomId: 'qd',
+    machineRoomId: '',
     customeCPU: '1',
     customeMemory: '2',
     customeDiskSize: '256',
+    clusters: [],
+    locations: [],
+    clusterName: '',
   }
 
   componentWillMount() {
+    this.props.dispatch({
+      type: 'App/findLocation',
+      payload: {
+        successCB: (res) => {
+          this.setState({locations: res.data.data, machineRoomId: res.data.data[0].id}),
+          this.props.dispatch({
+            type: 'App/followCluster',
+            payload: {
+              data: {
+                id: res.data.data[0].id,
+              },
+              successCB: (res) => this.setState({clusters: res.data.data, clusterName: res.data.data[0].id}),
+            }
+          })
+        }
+      }
+    })
     this.setState({
       ...this.props.item,
     })
@@ -108,14 +130,34 @@ export default class C extends React.Component {
     })
   }
 
+  locationChange = (value) => {
+    this.props.dispatch({
+      type: 'App/followCluster',
+      payload: {
+        data: {
+          id: value,
+        },
+        successCB: (res) =>  {
+          this.setState({clusters: res.data.data, clusterName: res.data.data[0].id})
+          this.onChange(res.data.data[0].id, 'clusterName')
+        },
+      }
+    })
+    this.onChange(value, 'machineRoomId')
+  }
+
   render() {
+    console.log(this.state)
     return (
       <main>
         <label htmlFor="">资源所在地：</label>
-          <Select value={this.state.machineRoomId} onChange={value => this.onChange(value, 'machineRoomId')} style={{width: '200px'}}>
-            <Option key="qd">青岛</Option>
-            <Option key="bj">北京</Option>
+          <Select value={this.state.machineRoomId} onChange={this.locationChange} style={{width: '200px'}}>
+            {this.state.locations.map(l => <Option key={l.id}>{l.name}</Option>)}
           </Select>
+          <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
+            <Select value={this.state.clusterName} onChange={value => this.onChange(value, 'clusterName')} style={{width: '200px'}}>
+              {this.state.clusters.map(c => <Option key={c.id}>{c.name}</Option>)}
+            </Select>
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源配置：</label>
         <div style={{padding: '10px'}}></div>

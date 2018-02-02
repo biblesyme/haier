@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
+import { connect } from 'utils/ecos'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -49,6 +50,7 @@ const formInputLayout = {
   style: {marginBottom: '10px'},
 }
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     resource: 'height',
@@ -59,6 +61,7 @@ export default class C extends React.Component {
     this.setState({
       ...this.props.item,
     })
+    // this.props.dispatch({type: 'App/findLocation'})
   }
 
   render() {

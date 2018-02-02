@@ -36,6 +36,7 @@ export default class MainPage extends React.Component {
       document.cookie = `currentRole=${user.roles[0]};`
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
     }
+    this.props.dispatch({type: 'App/findLocation'})
     // this.props.dispatch({type: 'App/findDomain'})
   }
   render() {

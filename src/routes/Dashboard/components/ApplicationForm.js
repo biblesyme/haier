@@ -131,7 +131,7 @@ class ApplicationForm extends React.Component {
     searching: LOAD_STATUS.INITIAL,
     domainId: '',
     paas: {
-      machineRoomId: 'qd',
+      machineRoomId: '',
       clusterName: '',
       cpu: '16',
       memory: (16 * 1024).toString(),
@@ -140,6 +140,7 @@ class ApplicationForm extends React.Component {
     },
     frame: [],
     alert: false,
+    locations: [],
   }
 
   componentWillMount() {
@@ -282,7 +283,7 @@ class ApplicationForm extends React.Component {
   reset = () => {
     this.setState({
       company: 'haier',
-      location: 'qd',
+      location: (this.props.App.locations[0] && this.props.App.locations[0].id) || '',
       middlewareMappings: [{
         machineRoomId: 'qd',
         deployMode: 'one',
@@ -309,7 +310,6 @@ class ApplicationForm extends React.Component {
   }
 
   paasChange = (paas) => {
-    console.log(paas)
     this.setState({paas})
   }
 
@@ -317,7 +317,6 @@ class ApplicationForm extends React.Component {
     const { projectInfo } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {domains} = this.props.NewApplication
-    console.log(this.state.middlewareMappings)
     return (
       <div className="page-wrap">
         <section className="page-section">

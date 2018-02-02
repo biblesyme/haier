@@ -1,6 +1,7 @@
 import { delay } from 'redux-saga'
 import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
 import apiStore from 'utils/apiStore'
+import axios from 'axios'
 // import stateKeyGenerator from 'utils/stateKeyGenerator'
 
 export default {
@@ -16,6 +17,7 @@ export default {
 		user: {},
 		form: {},
 		preview: false,
+		locations: [],
 	},
 	reducers: {
 		setState(state,{payload}){
@@ -90,6 +92,27 @@ export default {
 			}
 			catch(e){
 				if(failCB){yield call(failCB, e)}
+			}
+		},
+		*findLocation({payload={}}, {call, put}){
+			let {successCB} = payload
+			try {
+				let location = yield call([axios, axios.get], `/v1/query/paas/locations`)
+				yield put({type: 'setState', payload: {locations: location.data.data}})
+				if (successCB) {yield call(successCB, location)}
+			}
+			catch(e) {
+
+			}
+		},
+		*followCluster({payload={}}, {call, put}){
+			let {data, successCB} = payload
+			try {
+				let cluster = yield call([axios, axios.get], `/v1/query/paas/locations/${data.id}/clusters`)
+				if (successCB) {yield call(successCB, cluster)}
+			}
+			catch(e) {
+
 			}
 		},
 	}
