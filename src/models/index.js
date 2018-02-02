@@ -124,9 +124,10 @@ export default {
 			catch(e) {}
 		},
 		*followClusterDetail({payload={}}, {call, put}) {
-			let {successCB} = payload
+			let {data={}, successCB} = payload
 			try {
-				let clusterDetail = yield call([axios, axios.get], `/v1/query/mid/machineRooms`)
+				let clusterDetail = yield call([axios, axios.get], `/v1/query/paas/clusterInfo/${data.id}`)
+				if (successCB) {yield call(successCB, clusterDetail)}
 			} catch (e) {
 
 			}

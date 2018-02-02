@@ -59,6 +59,7 @@ export default class C extends React.Component {
     machineRooms: [],
     locations: [],
     clusters: [],
+    clusterInfo: {},
   }
 
   componentWillMount() {
@@ -80,6 +81,15 @@ export default class C extends React.Component {
           successCB: (res) => this.setState({clusters: res.data.data}),
         }
       })
+      this.props.dispatch({
+        type: 'App/followClusterDetail',
+        payload: {
+          data: {
+            id: data.clusterName,
+          },
+          successCB: (res) => this.setState({clusterInfo: res.data}),
+        }
+      })
     } else {
       this.props.dispatch({
         type: 'App/findMachineRoom',
@@ -99,6 +109,8 @@ export default class C extends React.Component {
   render() {
     const {resource={}} = this.props
     const {data={}} = resource
+    const {used={}} = this.state.clusterInfo
+    const {quota={}} = this.state.clusterInfo
     const locationFilter = this.state.locations.filter(l => l.id === data.machineRoomId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterName)[0] || {}
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
@@ -148,17 +160,17 @@ export default class C extends React.Component {
                   <Form className={styles["card-body"]}>
                     <FormItem
                       {...formItemLayout3}
-                      label="可用CPU"
+                      label="已用CPU"
                       hasFeedback
                     >
-                     {data.cpu}
+                     {`${used.cpu} / ${quota.cpu}`}
                     </FormItem>
                     <FormItem
                       {...formItemLayout3}
-                      label="可用内存"
+                      label="已用内存"
                       hasFeedback
                     >
-                     {`${parseInt(data.memory) / 1024 || ''}G`}
+                     {`${used.memory} / ${quota.memory}`}
                     </FormItem>
                   </Form>
                 </section>
