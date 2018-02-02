@@ -31,7 +31,7 @@ export default class C extends React.Component {
       type: 'App/findMachineRoom',
       payload: {
         successCB: (res) => {
-          this.setState({machineRooms: res.data.data})
+          this.setState({machineRooms: res.data.data || []})
         },
       }
     })

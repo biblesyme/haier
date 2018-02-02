@@ -2,6 +2,7 @@ import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
+import Edit from './Edit'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -58,6 +59,8 @@ export default class C extends React.Component {
     machineRooms: [],
     locations: [],
     clusters: [],
+    visibleEdit: false,
+    record: {},
   }
 
   componentWillMount() {
@@ -103,13 +106,24 @@ export default class C extends React.Component {
     })
   }
 
+  handleCancel = (e) => {
+    this.setState({
+      visibleEdit: false,
+    });
+  }
+
+  handleEdit = (e) => {
+    this.setState({
+      visibleEdit: true,
+    })
+  }
+
   render() {
     const {resource={}} = this.props
     const {data={}} = resource
     const locationFilter = this.state.locations.filter(l => l.id === data.machineRoomId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterName)[0] || {}
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
-    console.log(locationFilter)
     return (
       <main>
         {data.resourceType === 'containerHost' && (
@@ -145,7 +159,7 @@ export default class C extends React.Component {
                   </FormItem>
                 </Form>
               </Card>
-              <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => onRemove()}><Icon type="edit" /></Button>
+              <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
           </div>
         )}
         {data.resourceType === 'mysql' && (
@@ -366,6 +380,14 @@ export default class C extends React.Component {
               </Form>
             </Card>
           </div>
+        )}
+        {this.state.visibleEdit && (
+          <Edit
+            visible={this.state.visibleEdit}
+            onOk={(newData) => {this.saveAdd(newData)}}
+            onCancel={this.handleCancel}
+            resource={this.props.resource}
+            />
         )}
       </main>
     )

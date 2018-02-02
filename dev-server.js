@@ -8,7 +8,7 @@ var webpackConfig = require("./webpack/webpack.base.js");
 var app = express();
 var compiler = webpack(webpackConfig);
 
-var backendIP=process.env.BACKEND_IP ? process.env.BACKEND_IP : '127.0.0.1'
+var backendIP=process.env.BACKEND_IP ? process.env.BACKEND_IP : '120.79.157.233'
 var backendPort=process.env.BACKEND_PORT ? process.env.BACKEND_PORT: '60080'
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler)

@@ -8,7 +8,7 @@ const defaultStateMap = {
   removed: {
     color: 'red',
   },
-  pendding: {
+  pending: {
     color: 'orange',
   },
   rejected: {

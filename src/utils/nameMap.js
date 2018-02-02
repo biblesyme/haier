@@ -8,7 +8,7 @@ export default {
   updating: '更新中',
   removing: '移除中',
   removed: '已移除',
-  pendding: '待审批',
+  pending: '待审批',
   rejected: '已驳回',
   Pending: '待审批',
   ApplyingResource: '待部署',

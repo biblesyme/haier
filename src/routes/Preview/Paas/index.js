@@ -42,7 +42,7 @@ export default class C extends React.Component {
     this.props.dispatch({
       type: 'App/findLocation',
       payload: {
-        successCB: (res) => this.setState({locations: res.data.data}),
+        successCB: (res) => this.setState({locations: res.data.data || []}),
       }
     })
     this.props.dispatch({
@@ -51,7 +51,7 @@ export default class C extends React.Component {
         data: {
           id: item.machineRoomId,
         },
-        successCB: (res) => this.setState({clusters: res.data.data}),
+        successCB: (res) => this.setState({clusters: res.data.data || []}),
       }
     })
     this.setState({
