@@ -122,6 +122,14 @@ export default {
 				if (successCB) {yield call(successCB, machineRoom)}
 			}
 			catch(e) {}
+		},
+		*followClusterDetail({payload={}}, {call, put}) {
+			let {successCB} = payload
+			try {
+				let clusterDetail = yield call([axios, axios.get], `/v1/query/mid/machineRooms`)
+			} catch (e) {
+
+			}
 		}
 	}
 }

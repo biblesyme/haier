@@ -2,6 +2,7 @@ import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
+import { withRouter } from 'react-router'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -96,7 +97,6 @@ export default class C extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     const {resource={}} = this.props
     const {data={}} = resource
     const locationFilter = this.state.locations.filter(l => l.id === data.machineRoomId)[0] || {}
@@ -140,6 +140,29 @@ export default class C extends React.Component {
                   </FormItem>
                 </Form>
               </section>
+              {this.props.approval && (
+                <section className={styles["card-form"]}>
+                  <div className={styles["card-header"]}>
+                    {nameMap[this.state.resource]}
+                  </div>
+                  <Form className={styles["card-body"]}>
+                    <FormItem
+                      {...formItemLayout3}
+                      label="可用CPU"
+                      hasFeedback
+                    >
+                     {data.cpu}
+                    </FormItem>
+                    <FormItem
+                      {...formItemLayout3}
+                      label="可用内存"
+                      hasFeedback
+                    >
+                     {`${parseInt(data.memory) / 1024 || ''}G`}
+                    </FormItem>
+                  </Form>
+                </section>
+              )}
           </div>
         )}
         {data.resourceType === 'mysql' && (

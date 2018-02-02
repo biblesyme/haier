@@ -25,7 +25,7 @@ export default {
     },
   },
   effects: {
-		*findApproval({payload},{call, put}){
+		*findApproval({payload={}},{call, put}){
       let {callback} = payload
 			yield put({type:'setState',payload: {findApprovalStatus: LOAD_STATUS.START} })
 			try{

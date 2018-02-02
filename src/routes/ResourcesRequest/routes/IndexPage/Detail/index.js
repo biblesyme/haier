@@ -138,11 +138,16 @@ export default class C extends React.Component {
             <Button onClick={this.pass}>同意</Button>
           </div>
         )}
-        {resource.state === 'confirmed' && (
+        {(resource.state === 'confirmed' && this.props.App.role === 'admin') && (
           <div className="text-center">
             <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
             <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
             <Button onClick={this.pass}>同意</Button>
+          </div>
+        )}
+        {(resource.state === 'confirmed' && this.props.App.role !== 'admin') && (
+          <div className="text-center">
+            <Button onClick={this.props.onCancel} >返回</Button>
           </div>
         )}
         {(resource.state === 'passed' || resource.state === 'denied') && (
@@ -169,13 +174,13 @@ export default class C extends React.Component {
             {resource.state === 'denied' && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
-                <ResourceDetail resource={filterResource}/>
+                <ResourceDetail resource={filterResource} approval={true}/>
               </div>
             )}
 
             {resource.state === 'pendding' && (
               <div>
-                <ResourceDetail resource={filterResource}/>
+                <ResourceDetail resource={filterResource} approval={true}/>
                 <br/>
                 <FormItem
                   label="驳回理由"
@@ -195,7 +200,7 @@ export default class C extends React.Component {
             )}
             {(resource.state === 'confirmed' || resource.state === 'passed') && (
               <div>
-                <ResourceDetail resource={filterResource}/>
+                <ResourceDetail resource={filterResource} approval={true}/>
               </div>
             )}
         </Modal>
