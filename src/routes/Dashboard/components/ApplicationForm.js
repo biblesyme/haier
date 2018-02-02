@@ -148,6 +148,29 @@ class ApplicationForm extends React.Component {
     this.addMiddlewareMapping('mysql')
     this.props.dispatch({type:'NewApplication/findDomain'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
+    this.props.dispatch({
+      type: 'App/findLocation',
+      payload: {
+        successCB: (res) => {
+          this.setState({paas:{
+            ...this.state.paas,
+            machineRoomId: res.data.data[0].id
+          }}),
+          this.props.dispatch({
+            type: 'App/followCluster',
+            payload: {
+              data: {
+                id: res.data.data[0].id,
+              },
+              successCB: (res) => this.setState({paas: {
+                ...this.state.paas,
+                clusterName: res.data.data[0].id,
+              }}),
+            }
+          })
+        }
+      }
+    })
     if (this.props.history.action === 'POP' && this.props.App.preview) {
       const {form} = this.props.App
       this.setState({

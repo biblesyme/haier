@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
 import nameMap from 'utils/nameMap'
+import { connect } from 'utils/ecos'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -27,13 +28,32 @@ const formItemLayout3 = {
   }
 }
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     resource: 'height',
     machineRoomId: 'qd',
+    locations: [],
+    clusters: [],
   }
 
   componentWillMount() {
+    const {item={}} = this.props
+    this.props.dispatch({
+      type: 'App/findLocation',
+      payload: {
+        successCB: (res) => this.setState({locations: res.data.data}),
+      }
+    })
+    this.props.dispatch({
+      type: 'App/followCluster',
+      payload: {
+        data: {
+          id: item.machineRoomId,
+        },
+        successCB: (res) => this.setState({clusters: res.data.data}),
+      }
+    })
     this.setState({
       ...this.props.item,
     })
@@ -51,11 +71,15 @@ export default class C extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    const locationFilter = this.state.locations.filter(l => l.id === this.state.machineRoomId)[0] || {}
+    const clusterFilter = this.state.clusters.filter(c => c.id === this.state.clusterName)[0] || {}
     return (
       <main>
         <label htmlFor="">资源所在地：</label>
-          {nameMap[this.state.machineRoomId]}
+          {locationFilter.name}
+        <div style={{padding: '10px'}}></div>
+        <label htmlFor="">已选集群：</label>
+          {clusterFilter.name}
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源配置：</label>
         <div style={{padding: '10px'}}></div>

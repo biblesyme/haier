@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
+import { connect } from 'utils/ecos'
 
 const CheckboxGroup = Checkbox.Group;
 const SubMenu = Menu.SubMenu;
@@ -9,6 +10,7 @@ const FormItem = Form.Item;
 
 import styles from './style.sass'
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     size: 'haier',
@@ -21,11 +23,25 @@ export default class C extends React.Component {
     exchangeType: 'fanout',
     exchangeName: null,
     machineRoomId: 'qd',
+    machineRooms: [],
+  }
+
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'App/findMachineRoom',
+      payload: {
+        successCB: (res) => {
+          this.setState({machineRooms: res.data.data})
+        },
+      }
+    })
   }
 
   render() {
-    const {onChange, item, onRemove} = this.props
+    console.log(this.state)
+    const {onChange, item={}, onRemove} = this.props
     const { size, size2 } = this.state;
+    const machineRoomFilter = this.state.machineRooms.filter(m => m.id === item.machineRoomId)[0] || {}
     const formItemLayout4 = {
       labelCol: {
         xs: { span: 6 },
@@ -64,7 +80,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                  {nameMap[item.machineRoomId]}
+                  {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
