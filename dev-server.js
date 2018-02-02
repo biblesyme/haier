@@ -8,6 +8,9 @@ var webpackConfig = require("./webpack/webpack.base.js");
 var app = express();
 var compiler = webpack(webpackConfig);
 
+var backendIP=process.env.BACKEND_IP ? process.env.BACKEND_IP : '127.0.0.1'
+var backendPort=process.env.BACKEND_PORT ? process.env.BACKEND_PORT: '60080'
+
 var hotMiddleware = require('webpack-hot-middleware')(compiler)
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
@@ -42,8 +45,8 @@ app.use("/v1", function(req, res) {
   console.log('proxy: ',req.url);
   apiProxy.proxyRequest(req, res, {
     target: {
-      port: 60080,
-      host: '120.79.157.233'
+      port: parseInt(backendPort),
+      host: backendIP
     }
   });
 });
