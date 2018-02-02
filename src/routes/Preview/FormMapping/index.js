@@ -140,7 +140,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                  {nameMap[item.machineRoomId]}
+                  {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -182,7 +182,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                 {nameMap[item.machineRoomId]}
+                 {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
@@ -213,7 +213,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                 {nameMap[item.machineRoomId]}
+                 {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
