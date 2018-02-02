@@ -15,42 +15,6 @@ const {Option} = Select;
 
 import styles from './style.sass'
 
-const columns = [{
-  title: '序号',
-  dataIndex: 'key',
-}, {
-  title: '能力名称',
-  dataIndex: 'name',
-  sorter: (a, b) => a.name.length - b.name.length,
-}, {
-  title: '类型',
-  dataIndex: 'manager',
-  defaultSortOrder: 'descend',
-  sorter: (a, b) => a.manager.length - b.manager.length,
-}, {
-  title: '能力介绍',
-  dataIndex: 'health',
-}, {
-  title: '操作',
-  dataIndex: 'actions',
-  render(text, record, index){
-    return (
-      <Link to={`/application/${record.key}`}>{text}</Link>
-    )
-  }
-}];
-
-const data = [{
-  key: '1',
-  name: '大数据',
-  manager: '张三',
-  health: '50%',
-  resourceUsage: '30%',
-  middleWareHealth: '75% 80% 60%',
-  status: '待部署',
-  actions: '查看详情'
-}];
-
 const col = 12
 const formItemLayout = {
   labelCol: {
@@ -131,10 +95,6 @@ const formItemLayout4 = {
 }
 
 const plainOptions = ['前端框架', '后台框架']
-
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
 
 class NewResource extends React.Component {
   state = {
@@ -308,18 +268,23 @@ class NewResource extends React.Component {
         </Row>
       </section>
 
-      <section className="page-section">
-        <Item resource={paas}/>
-      </section>
+      {resources.length > 0 && (
+        <div>
+          <section className="page-section">
+            <Item  key={'paas'} resource={paas}/>
+          </section>
 
-    <section className="page-section">
-      <Row gutter={24}>
-        {middleware.map(m => (
-          <Col span={6}><Item resource={m} /></Col>
-        ))}
-      </Row>
+          <section className="page-section">
+            <Row gutter={24}>
+              {middleware.map(m => (
+                <Col key={m.id} span={6}><Item resource={m} /></Col>
+              ))}
+            </Row>
+          </section>
+        </div>
+      )}
 
-    </section>
+
       <section className="page-section">
         <h3>框架</h3>
         <CheckboxGroup options={plainOptions} value={["前端框架"]}/>

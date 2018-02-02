@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
+import { connect } from 'utils/ecos'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -49,13 +50,54 @@ const formInputLayout = {
   style: {marginBottom: '10px'},
 }
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     resource: 'height',
     machineRoomId: 'qd',
+    machineRooms: [],
+    locations: [],
+    clusters: [],
   }
 
   componentWillMount() {
+    const {resource={}} = this.props
+    const {data={}} = resource
+    if (data.resourceType === 'containerHost') {
+      this.props.dispatch({
+        type: 'App/findLocation',
+        payload: {
+          successCB: (res) => this.setState({locations: res.data.data}),
+        }
+      })
+      this.props.dispatch({
+        type: 'App/followCluster',
+        payload: {
+          data: {
+            id: data.machineRoomId,
+          },
+          successCB: (res) => this.setState({clusters: res.data.data}),
+        }
+      })
+      this.props.dispatch({
+        type: 'App/followClusterDetail',
+        payload: {
+          data: {
+            id: data.clusterName,
+          },
+          successCB: (res) => this.setState({clusterInfo: res.data}),
+        }
+      })
+    } else {
+      this.props.dispatch({
+        type: 'App/findMachineRoom',
+        payload: {
+          successCB: (res) => {
+            this.setState({machineRooms: res.data.data})
+          },
+        }
+      })
+    }
     this.setState({
       ...this.props.item,
     })
@@ -64,12 +106,19 @@ export default class C extends React.Component {
   render() {
     const {resource={}} = this.props
     const {data={}} = resource
+    const locationFilter = this.state.locations.filter(l => l.id === data.machineRoomId)[0] || {}
+    const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterName)[0] || {}
+    const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
+    console.log(locationFilter)
     return (
       <main>
         {data.resourceType === 'containerHost' && (
           <div>
             <label htmlFor="">资源所在地：</label>
-              {nameMap[data.machineRoomId]}
+              {locationFilter.name}
+            <div style={{padding: '10px'}}></div>
+            <label htmlFor="">已选集群：</label>
+              {clusterFilter.name}
             <div style={{padding: '10px'}}></div>
               <section className={styles["card-form"]}>
                 <div className={styles["card-header"]}>
@@ -110,7 +159,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                  {nameMap[data.machineRoomId]}
+                  {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
@@ -169,7 +218,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                  {nameMap[data.machineRoomId]}
+                  {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -209,7 +258,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                 {nameMap[data.machineRoomId]}
+                 {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
@@ -238,7 +287,7 @@ export default class C extends React.Component {
                   label="地点"
                   hasFeedback
                 >
-                 {nameMap[data.machineRoomId]}
+                 {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}

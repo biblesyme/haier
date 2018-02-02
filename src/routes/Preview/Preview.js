@@ -44,7 +44,12 @@ class Preview extends React.Component {
     const record = resoures.map(r => {
       if (r.resourceType === 'containerHost') {
         return apiStore.createRecord({
-          data: JSON.stringify({...r}),
+          data: JSON.stringify({
+            ...r,
+            cpu: parseInt(r.cpu),
+            memory: parseInt(r.memory),
+            diskSize: parseInt(r.diskSize),
+          }),
           version: 1,
           resourceType: 'containerHost',
           type: 'resource',
