@@ -31,13 +31,14 @@ const formItemLayout3 = {
 export default class C extends React.Component {
   state = {
     resource: 'height',
-    machineRoomId: '',
+    locationId: '',
     customeCPU: '1',
     customeMemory: '2',
     customeDiskSize: '256',
     clusters: [],
     locations: [],
     clusterName: '',
+    clusterId: '',
   }
 
   componentWillMount() {
@@ -45,14 +46,20 @@ export default class C extends React.Component {
       type: 'App/findLocation',
       payload: {
         successCB: (res) => {
-          this.setState({locations: res.data.data, machineRoomId: res.data.data[0].id}),
+          this.setState({locations: res.data.data, locationId: res.data.data[0].id}),
           this.props.dispatch({
             type: 'App/followCluster',
             payload: {
               data: {
                 id: res.data.data[0].id,
               },
-              successCB: (res) => this.setState({clusters: res.data.data, clusterName: res.data.data[0].id}),
+              successCB: (res) => {
+                this.setState({
+                  clusters: res.data.data,
+                  clusterId: res.data.data[0].id,
+                  clusterName: res.data.data[0].name
+                })
+              },
             }
           })
         }
@@ -138,23 +145,23 @@ export default class C extends React.Component {
           id: value,
         },
         successCB: (res) =>  {
-          this.setState({clusters: res.data.data, clusterName: res.data.data[0].id})
-          this.onChange(res.data.data[0].id, 'clusterName')
+          this.setState({clusters: res.data.data, clusterName: res.data.data[0].name, clusterId: res.data.data[0].id})
+          this.onChange(res.data.data[0].id, 'clusterId')
         },
       }
     })
-    this.onChange(value, 'machineRoomId')
+    this.onChange(value, 'locationId')
   }
 
   render() {
     return (
       <main>
         <label htmlFor="">资源所在地：</label>
-          <Select value={this.state.machineRoomId} onChange={this.locationChange} style={{width: '200px'}}>
+          <Select value={this.state.locationId} onChange={this.locationChange} style={{width: '200px'}}>
             {this.state.locations.map(l => <Option key={l.id}>{l.name}</Option>)}
           </Select>
           <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
-            <Select value={this.state.clusterName} onChange={value => this.onChange(value, 'clusterName')} style={{width: '200px'}}>
+            <Select value={this.state.clusterName} onChange={value => this.onChange(value, 'clusterId')} style={{width: '200px'}}>
               {this.state.clusters.map(c => <Option key={c.id}>{c.name}</Option>)}
             </Select>
         <div style={{padding: '10px'}}></div>
@@ -182,13 +189,13 @@ export default class C extends React.Component {
               >
                16G
               </FormItem>
-              <FormItem
+              {/* <FormItem
                 {...formItemLayout3}
                 label="硬盘"
                 hasFeedback
               >
                1024G
-              </FormItem>
+              </FormItem> */}
             </Form>
           </section>
 
@@ -213,13 +220,13 @@ export default class C extends React.Component {
               >
                16G
               </FormItem>
-              <FormItem
+              {/* <FormItem
                 {...formItemLayout3}
                 label="硬盘"
                 hasFeedback
               >
                500G
-              </FormItem>
+              </FormItem> */}
             </Form>
           </section>
 
@@ -244,13 +251,13 @@ export default class C extends React.Component {
               >
                16G
               </FormItem>
-              <FormItem
+              {/* <FormItem
                 {...formItemLayout3}
                 label="硬盘"
                 hasFeedback
               >
                256G
-              </FormItem>
+              </FormItem> */}
             </Form>
           </section>
 
@@ -286,7 +293,7 @@ export default class C extends React.Component {
                       addonAfter="G"
                 ></Input>
               </FormItem>
-              <FormItem
+              {/* <FormItem
                 {...formItemLayout3}
                 label="硬盘"
                 hasFeedback
@@ -298,7 +305,7 @@ export default class C extends React.Component {
                       type="number"
                       addonAfter="G"
                 ></Input>
-              </FormItem>
+              </FormItem> */}
             </Form>
           </section>
         </RadioGroup>

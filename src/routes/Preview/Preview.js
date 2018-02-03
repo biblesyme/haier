@@ -48,7 +48,7 @@ class Preview extends React.Component {
             ...r,
             cpu: parseInt(r.cpu),
             memory: parseInt(r.memory),
-            diskSize: parseInt(r.diskSize),
+            // diskSize: parseInt(r.diskSize),
           }),
           version: 1,
           resourceType: 'containerHost',

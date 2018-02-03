@@ -102,13 +102,13 @@ export default class C extends React.Component {
               >
                {`${parseInt(this.state.memory) / 1024}G`}
               </FormItem>
-              <FormItem
+              {/* <FormItem
                 {...formItemLayout3}
                 label="硬盘"
                 hasFeedback
               >
                {`${this.state.diskSize}G`}
-              </FormItem>
+              </FormItem> */}
             </Form>
           </section>
       </main>

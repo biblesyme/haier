@@ -131,11 +131,12 @@ class ApplicationForm extends React.Component {
     searching: LOAD_STATUS.INITIAL,
     domainId: '',
     paas: {
-      machineRoomId: '',
+      locationId: '',
       clusterName: '',
+      clusterId: '',
       cpu: '16',
       memory: (16 * 1024).toString(),
-      diskSize: '1024',
+      // diskSize: '1024',
       resourceType: 'containerHost',
     },
     frame: [],
@@ -154,7 +155,7 @@ class ApplicationForm extends React.Component {
         successCB: (res) => {
           this.setState({paas:{
             ...this.state.paas,
-            machineRoomId: res.data.data[0].id
+            locationId: res.data.data[0].id
           }}),
           this.props.dispatch({
             type: 'App/followCluster',
@@ -164,7 +165,8 @@ class ApplicationForm extends React.Component {
               },
               successCB: (res) => this.setState({paas: {
                 ...this.state.paas,
-                clusterName: res.data.data[0].id,
+                clusterId: res.data.data[0].id,
+                clusterName: res.data.data[0].name,
               }}),
             }
           })
@@ -282,7 +284,7 @@ class ApplicationForm extends React.Component {
         ...this.state.paas,
         cpu: this.state.paas.customeCPU,
         memory: (this.state.paas.customeMemory * 1024).toString(),
-        diskSize: this.state.paas.customeDiskSize,
+        // diskSize: this.state.paas.customeDiskSize,
         resourceType: 'containerHost',
       }
     }
@@ -304,7 +306,7 @@ class ApplicationForm extends React.Component {
       company: 'haier',
       location: (this.props.App.locations[0] && this.props.App.locations[0].id) || '',
       middlewareMappings: [{
-        machineRoomId: 'qd',
+        locationId: 'qd',
         deployMode: 'one',
         masterSlaveOption: '1',
         mycatClusterManagerNodeCount: 0,
