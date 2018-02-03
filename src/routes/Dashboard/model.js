@@ -33,10 +33,14 @@ export default {
 			try{
 				let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
 				let fomatProjects = projects.content.map(p => {
-					return {
-						...p,
-						data: JSON.parse(p.data),
-					}
+					if (p.hasOwnProperty('data')) {
+            return {
+              ...p,
+              data: JSON.parse(p.data),
+            }
+          } else {
+            return p
+          }
 				})
 				yield put({type:'setState',payload: {projects: fomatProjects}})
 				yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.SUCCESS} })

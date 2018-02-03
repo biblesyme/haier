@@ -141,7 +141,10 @@ function onChange(pagination, filters, sorter) {
 class ApplicationDetail extends React.Component {
   render(){
     const {record={}} = this.props.location
-    console.log(record)
+    const projectInfo = (record &&
+      record.data &&
+      record.data.data
+    ) || {}
     return (
     <div>
       <section className="page-section">
@@ -163,7 +166,7 @@ class ApplicationDetail extends React.Component {
               {...formItemLayout}
               label="申请日期"
             >
-             {new Date(record.data.data.createdAt).toLocaleString()}
+             {new Date(projectInfo.createdAt).toLocaleString()}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -172,7 +175,7 @@ class ApplicationDetail extends React.Component {
               label="业务负责人"
               hasFeedback
             >
-              {record.data.data.ownerUser}
+              {projectInfo.ownerUser}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -182,7 +185,7 @@ class ApplicationDetail extends React.Component {
               label="归属部门"
               hasFeedback
             >
-             {record.data.data.ownerUserDp}
+             {projectInfo.ownerUserDp}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -191,7 +194,7 @@ class ApplicationDetail extends React.Component {
               label="应用属性"
               hasFeedback
             >
-             {record.data.data.applicationType}
+             {projectInfo.applicationType}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -200,7 +203,7 @@ class ApplicationDetail extends React.Component {
               label="应用领域"
               hasFeedback
             >
-              {record.data.data.businessDomain}
+              {projectInfo.businessDomain}
             </FormItem>
           </Col>
         </Row>

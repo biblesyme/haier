@@ -57,9 +57,10 @@ class Resource extends React.Component {
     }, {
       title: '项目名称',
       render: (record) => {
-        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        let selector = projects.filter(p => p.id === record.projectId)[0] || {}
+        const {name} = (selector.data && selector.data.data) || {}
         if (selector) {
-          return <span>{selector.data.data.name}</span>
+          return <span>{name}</span>
         } else {
           return <span></span>
         }

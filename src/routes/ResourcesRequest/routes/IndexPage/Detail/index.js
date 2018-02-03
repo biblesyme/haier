@@ -131,7 +131,7 @@ export default class C extends React.Component {
     const {resource, filterResource} = this.props
     const footer = (
       <div>
-        {(resource.state === 'pendding') && (
+        {(resource.state === 'pending') && (
           <div className="text-center">
             <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
             <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
@@ -178,7 +178,7 @@ export default class C extends React.Component {
               </div>
             )}
 
-            {resource.state === 'pendding' && (
+            {resource.state === 'pending' && (
               <div>
                 <ResourceDetail resource={filterResource} approval={true}/>
                 <br/>

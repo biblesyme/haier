@@ -14,14 +14,14 @@ const adminMap = {
   confirmed: '待通过',
   passed: '已通过',
   denied: '已驳回',
-  pendding: '待审批',
+  pending: '待审批',
 }
 
 const adminState = {
   confirmed: 'orange',
   denied: 'red',
   passed: 'green',
-  pendding: 'orange',
+  pending: 'orange',
 }
 
 class Approval extends React.Component {
@@ -79,7 +79,7 @@ class Approval extends React.Component {
     }, {
       title: '申请人',
       render: (record) => {
-        let selector = accounts.filter(a => a.id === record.requesterId)[0] || ''
+        let selector = accounts.filter(a => a.id === record.requesterId)[0] || {}
         if (selector) {
           return <span>{selector.name}</span>
         } else {
@@ -89,9 +89,10 @@ class Approval extends React.Component {
     }, {
       title: '部门',
       render: (record) => {
-        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        let selector = projects.filter(p => p.id === record.projectId)[0] || {}
+        const {businessDomain} = (selector.data && selector.data.data) || {}
         if (selector) {
-          return <span>{selector.data.data.businessDomain}</span>
+          return <span>{businessDomain}</span>
         } else {
           return <span></span>
         }
@@ -102,9 +103,10 @@ class Approval extends React.Component {
     }, {
       title: '项目名称',
       render: (record) => {
-        let selector = projects.filter(p => p.id === record.projectId)[0] || ''
+        let selector = projects.filter(p => p.id === record.projectId)[0] || {}
+        const {name} = (selector.data && selector.data.data) || {}
         if (selector) {
-          return <span>{selector.data.data.name}</span>
+          return <span>{name}</span>
         } else {
           return <span></span>
         }
