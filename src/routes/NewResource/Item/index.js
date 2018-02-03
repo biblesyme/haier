@@ -150,13 +150,13 @@ export default class C extends React.Component {
                   >
                    {`${parseInt(data.memory) / 1024 || ''}G`}
                   </FormItem>
-                  <FormItem
+                  {/* <FormItem
                     {...formItemLayout3}
                     label="硬盘"
                     hasFeedback
                   >
                    {`${data.diskSize || ''}G`}
-                  </FormItem>
+                  </FormItem> */}
                 </Form>
               </Card>
               <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>

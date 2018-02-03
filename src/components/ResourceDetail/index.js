@@ -155,7 +155,7 @@ export default class C extends React.Component {
               {this.props.approval && (
                 <section className={styles["card-form"]}>
                   <div className={styles["card-header"]}>
-                    {nameMap[this.state.resource]}
+                    集群信息
                   </div>
                   <Form className={styles["card-body"]}>
                     <FormItem
