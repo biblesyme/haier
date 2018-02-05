@@ -20,7 +20,7 @@ const defaultStateMap = {
   ApplyingResource: {
     color: 'orange',
   },
-  ResourceReady: {
+  resourceReady: {
     color: 'green',
   },
   ready: {

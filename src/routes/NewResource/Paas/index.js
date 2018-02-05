@@ -1,120 +1,151 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
-import { connect } from 'utils/ecos'
 import {deployModeEnum} from 'utils/enum'
 
-const CheckboxGroup = Checkbox.Group;
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 import styles from './style.sass'
 
-@connect(null,['App'])
+const formItemLayout3 = {
+  labelCol: {
+    xs: { span: 10 },
+    sm: { span: 10 },
+        pull: 0,
+
+  },
+  wrapperCol: {
+    xs: { span: 14 },
+    sm: { span: 14 },
+        push: 0,
+
+  },
+  style: {
+    marginBottom: '10px'
+  }
+}
+
+const formItemLayout4 = {
+  labelCol: {
+    xs: { span: 12 },
+    sm: { span: 12 },
+    pull: 0,
+  },
+  wrapperCol: {
+    xs: { span: 12 },
+    sm: { span: 12 },
+    push: 0
+  },
+  style: {
+    marginBottom: '10px'
+  }
+}
+
+const formInputLayout = {
+  labelCol: {xs: { span: 10 }, sm: { span: 10 }, pull: 0},
+  wrapperCol: {xs: { span: 14 }, sm: { span: 14 }, push: 0},
+  style: {marginBottom: '10px'},
+}
+
 export default class C extends React.Component {
   state = {
-    size: 'haier',
-    location: 'qd',
-    checkedList: [],
-    mode: 'one',
-    servant: '1',
-    isBackup: 'true',
-    consumeMode: 'cluster',
-    exchangeType: 'fanout',
-    exchangeName: null,
+    resource: 'height',
     machineRoomId: 'qd',
-    machineRooms: [],
   }
 
   componentWillMount() {
-    this.props.dispatch({
-      type: 'App/findMachineRoom',
-      payload: {
-        successCB: (res) => {
-          this.setState({machineRooms: res.data.data || []})
-        },
-      }
+    this.setState({
+      ...this.props.item,
     })
   }
 
   render() {
-    const {onChange, item={}, onRemove} = this.props
-    const { size, size2 } = this.state;
-    const machineRoomFilter = this.state.machineRooms.filter(m => m.id === item.machineRoomId)[0] || {}
-    const formItemLayout4 = {
-      labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 },
-        pull: 0,
-      },
-      wrapperCol: {
-        xs: { span: 18 },
-        sm: { span: 18 },
-        push: 0
-      },
-      style: {
-        marginBottom: '10px'
-      }
-    }
-
-    const formInputLayout = {
-      labelCol: {xs: { span: 10 }, sm: { span: 10 }, pull: 0},
-      wrapperCol: {xs: { span: 14 }, sm: { span: 14 }, push: 0},
-      style: {marginBottom: '10px'},
-    }
-
-    const gridLayout = {
-      xl: {span: 7, offset: 1},
-      md: {span: 11, offset: 1}
-    }
-
+    const {resource={}} = this.props
+    const {data={}} = resource
     return (
       <main>
-        {item.resourceType === 'mysql' && (
-          <Col {...gridLayout}>
-            <Card title="MySQL" style={{height: '290px', marginBottom: '20px'}}>
+        {data.resourceType === 'containerHost' && (
+          <div>
+            <label htmlFor="">资源所在地：</label>
+              {nameMap[data.machineRoomId]}
+            <div style={{padding: '10px'}}></div>
+              <section className={styles["card-form"]}>
+                <div className={styles["card-header"]}>
+                  {nameMap[this.state.resource]}
+                </div>
+                <Form className={styles["card-body"]}>
+                  <FormItem
+                    {...formItemLayout3}
+                    label="CPU内核数"
+                    hasFeedback
+                  >
+                   {data.cpu}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout3}
+                    label="内存"
+                    hasFeedback
+                  >
+                   {`${parseInt(data.memory) / 1024 || ''}G`}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout3}
+                    label="硬盘"
+                    hasFeedback
+                  >
+                   {`${data.diskSize || ''}G`}
+                  </FormItem>
+                </Form>
+              </section>
+          </div>
+        )}
+        {data.resourceType === 'mysql' && (
+          <div >
+            <Card title="MySQL" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                  {machineRoomFilter.roomName}
+                  {nameMap[data.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
                   label="部署模式"
                   hasFeedback
                 >
-                 {deployModeEnum(item.deployMode)}
+                 {deployModeEnum(data.deployMode)}
                 </FormItem>
 
-                {item.deployMode === '1' && (
+                {data.deployMode === 1 && (
                   <FormItem
                     {...formItemLayout4}
                     label="主从"
                     hasFeedback
                   >
-                   {item.masterSlaveOption === '0' ? '一主一从' : '一主两从'}
+                   {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
                   </FormItem>
                 )}
 
-                {item.deployMode === '2' && (
+                {data.deployMode === 2 && (
                   <div>
                     <FormItem
                       {...formInputLayout}
                       label="管理节点数量"
                       hasFeedback
                     >
-                     {item.mycatClusterManagerNodeCount}
+                     {data.mycatClusterManagerNodeCount}
                     </FormItem>
                     <FormItem
                       {...formInputLayout}
                       label="数据节点数量"
                       hasFeedback
                     >
-                     {item.mycatClusterDataNodeCount}
+                     {data.mycatClusterDataNodeCount}
                     </FormItem>
                   </div>
                 )}
@@ -124,110 +155,105 @@ export default class C extends React.Component {
                   label="备份"
                   hasFeedback
                 >
-                  {nameMap[item.backup]}
+                  {nameMap[data.backup]}
                 </FormItem>
               </Form>
             </Card>
-          </Col>
+          </div>
         )}
-
-        {item.resourceType === 'redis' && (
-          <Col {...gridLayout}>
-            <Card title="Redis" style={{height: '290px', marginBottom: '20px'}}>
+        {data.resourceType === 'redis' && (
+          <div >
+            <Card title="Redis" style={{width: '216px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                  {machineRoomFilter.roomName}
+                  {nameMap[data.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="内存"
                   hasFeedback
                 >
-                  {`${item.memorySize}M`}
+                  {`${data.memorySize}M`}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
                   label="集群类型"
                   hasFeedback
                 >
-                  {item.clusterType === 'one' && '单例'}
-                  {item.clusterType === 'masterSlave' && '主从'}
-                  {item.clusterType === 'shared' && '分片'}
+                  {data.clusterType === 'one' && '单例'}
+                  {data.clusterType === 'masterSlave' && '主从'}
+                  {data.clusterType === 'shared' && '分片'}
                 </FormItem>
-                {item.clusterType === 'shared' && (
+                {data.clusterType === 'shared' && (
                   <FormItem
                     {...formInputLayout}
                     label="分片数量"
                     hasFeedback
                   >
-                    {item.sharedCount}
+                    {data.sharedCount}
                   </FormItem>
                 )}
               </Form>
             </Card>
-
-          </Col>
+          </div>
         )}
-
-        {item.resourceType === 'rocketMQTopic' && (
-          <Col {...gridLayout}>
-            <Card title="RocketMQ" style={{height: '290px', marginBottom: '20px'}}>
+        {data.resourceType === 'rocketMQTopic' && (
+          <div >
+            <Card title="RocketMQ" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                 {machineRoomFilter.roomName}
+                 {nameMap[data.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
                   label="集群类型"
                   hasFeedback
                 >
-                 {item.clusterType === 'standalone' ? '单机' : '集群'}
+                 {data.clusterType === 'standalone' ? '单机' : '集群'}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="主题名称"
                   hasFeedback
                 >
-                 {item.topicName}
+                 {data.topicName}
                 </FormItem>
               </Form>
             </Card>
-
-          </Col>
+          </div>
         )}
-
-        {item.resourceType === 'rabbitMQProducer' && (
-          <Col {...gridLayout}>
-            <Card title="RabbitMQ-生产者" style={{height: '290px', marginBottom: '20px'}}>
+        {data.resourceType === 'rabbitMQProducer' && (
+          <div >
+            <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
                   label="地点"
                   hasFeedback
                 >
-                 {machineRoomFilter.roomName}
+                 {nameMap[data.machineRoomId]}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="最大消息吞吐量"
                   hasFeedback
                 >
-                 {item.maxIO}
+                 {data.maxIO}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="Exchange名称"
                   hasFeedback
                 >
-                 {item.exchangeName}
+                 {data.exchangeName}
                 </FormItem>
                 <FormItem
                   labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
@@ -236,27 +262,25 @@ export default class C extends React.Component {
                   label="Exchange类型"
                   hasFeedback
                 >
-                  {item.exchangeType === 'fanout' && '广播'}
-                  {item.exchangeType === 'topic' && '主题'}
-                  {item.exchangeType === 'direct' && '直连'}
+                  {data.exchangeType === 'fanout' && '广播'}
+                  {data.exchangeType === 'topic' && '主题'}
+                  {data.exchangeType === 'direct' && '直连'}
                 </FormItem>
               </Form>
             </Card>
-
-          </Col>
+          </div>
         )}
-
-        {item.resourceType === 'rabbitMQConsumer' && (
-          <Col {...gridLayout}>
-            <Card title="RabbitMQ-消费者" style={{height: '290px', marginBottom: '20px'}}>
+        {data.resourceType === 'rabbitMQConsumer' && (
+          <div >
+            <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '216px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
                   label="应用"
                   hasFeedback
                 >
-                 {item.producerApplicationScode === 'S123451' && '产品中心'}
-                 {item.producerApplicationScode === 'S123450' && '鹿屋基地'}
+                 {data.producerApplicationScode === 'S123451' && '产品中心'}
+                 {data.producerApplicationScode === 'S123450' && '鹿屋基地'}
                 </FormItem>
                 <FormItem
                   labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
@@ -265,40 +289,38 @@ export default class C extends React.Component {
                   hasFeedback
                   style = {{marginBottom: '10px'}}
                 >
-                  {item.exchangeName === 'topic' && '主题应用'}
-                  {item.exchangeName === 'direct' && '直连应用'}
-                  {item.exchangeName === 'fanout' && '广播应用'}
+                  {data.exchangeName === 'topic' && '主题应用'}
+                  {data.exchangeName === 'direct' && '直连应用'}
+                  {data.exchangeName === 'fanout' && '广播应用'}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
                   label="队列名"
                 >
-                 {item.queueName}
+                 {data.queueName}
                 </FormItem>
 
-                {item.exchangeName === 'topic' && (
+                {data.exchangeName === 'topic' && (
                   <FormItem
                     {...formInputLayout}
                     label="主题名"
                   >
-                   {item.topicName}
+                   {data.topicName}
                   </FormItem>
                 )}
-                {item.exchangeName === 'direct' && (
+                {data.exchangeName === 'direct' && (
                   <FormItem
                     {...formInputLayout}
                     label="直连名"
                   >
-                   {item.RouteKey}
+                   {data.RouteKey}
                   </FormItem>
                 )}
               </Form>
             </Card>
-
-          </Col>
+          </div>
         )}
       </main>
-
     )
   }
 }

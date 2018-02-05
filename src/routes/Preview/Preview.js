@@ -60,7 +60,11 @@ class Preview extends React.Component {
           version: 1,
           resourceType: 'mysql',
           type: 'resource',
-          data: JSON.stringify({...r})
+          data: JSON.stringify({
+            ...r,
+            deployMode: parseInt(r.deployMode),
+            masterSlaveOption: parseInt(r.masterSlaveOption),
+          })
         })
       }
       if (r.resourceType === 'redis') {

@@ -93,26 +93,26 @@ export default class C extends React.Component {
                   hasFeedback
                 >
                  <Radio.Group value={item.deployMode} onChange={e => onChange({...item, deployMode: e.target.value})}>
-                    <Radio.Button value="one">单机</Radio.Button>
-                    <Radio.Button value="primary">主从</Radio.Button>
-                    <Radio.Button value="cluster">集群</Radio.Button>
+                    <Radio.Button value="0">单机</Radio.Button>
+                    <Radio.Button value="1">主从</Radio.Button>
+                    <Radio.Button value="2">集群</Radio.Button>
                   </Radio.Group>
                 </FormItem>
 
-                {item.deployMode === 'primary' && (
+                {item.deployMode === '1' && (
                   <FormItem
                     {...formItemLayout4}
                     label="主从"
                     hasFeedback
                   >
                    <Radio.Group value={item.masterSlaveOption} onChange={e => onChange({...item, masterSlaveOption: e.target.value})}>
-                      <Radio.Button value="1">一主一从</Radio.Button>
-                      <Radio.Button value="2">一主两从</Radio.Button>
+                      <Radio.Button value="0">一主一从</Radio.Button>
+                      <Radio.Button value="1">一主两从</Radio.Button>
                     </Radio.Group>
                   </FormItem>
                 )}
 
-                {item.deployMode === 'cluster' && (
+                {item.deployMode === '2' && (
                   <div>
                     <FormItem
                       {...formInputLayout}

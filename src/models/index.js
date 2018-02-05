@@ -70,7 +70,7 @@ export default {
 				if(failCB){yield call(failCB, e)}
 			}
 		},
-		*doAction({payload}, {call, put}){
+		*doAction({payload={}}, {call, put}){
 			let {data, action, successCB,failCB} = payload
 			try{
 				let record  = yield call([apiStore,apiStore.find],`${data.type}`,`${data.id}` )
@@ -131,6 +131,21 @@ export default {
 			} catch (e) {
 
 			}
-		}
+		},
+		*doSelfAction({payload={}}, {call, put}){
+			let {data, action, successCB,failCB, findRecord} = payload
+			try{
+				let record  = yield call([apiStore,apiStore.find], findRecord.type, findRecord.id, {forceReload: true})
+				let afterLink = yield call([record,record.followLink], 'self')
+				let afterActionRecord = yield call([afterLink,afterLink.doAction], action, {data})
+				console.log(afterActionRecord)
+				if(successCB){
+					yield call(successCB,afterActionRecord)
+				}
+			}
+			catch(e){
+				if(failCB){yield call(failCB, e)}
+			}
+		},
 	}
 }

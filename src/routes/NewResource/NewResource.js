@@ -7,6 +7,7 @@ import Item from './Item'
 import { withRouter } from 'react-router'
 import FormMapping from '@/components/FormMapping'
 import replace from 'utils/replace'
+import New from './New'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -120,81 +121,6 @@ class NewResource extends React.Component {
     })
   }
 
-  middlewareMappingId = 0
-  addMiddlewareMapping = (value) => {
-    let defaultMiddlewareMapping = {
-      id: this.middlewareMappingId++,
-      resourceType: value,
-    }
-    if (value === 'mysql') {
-      defaultMiddlewareMapping = {
-        ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
-        deployMode: 'one',
-        masterSlaveOption: '1',
-        mycatClusterManagerNodeCount: 0,
-        mycatClusterDataNodeCount: 0,
-        backup: 'false',
-      }
-    }
-    if (value === 'redis') {
-      defaultMiddlewareMapping = {
-        ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
-        memorySize: '100',
-        clusterType: 'one',
-        sharedCount: '0',
-      }
-    }
-    if (value === 'rocketMQTopic') {
-      defaultMiddlewareMapping = {
-        ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
-        clusterType: 'standalone',
-        topicName: '',
-      }
-    }
-    if (value === 'rabbitMQProducer') {
-      defaultMiddlewareMapping = {
-        ...defaultMiddlewareMapping,
-        machineRoomId: 'qd',
-        maxIO: '100',
-        exchangeName: '',
-        exchangeType: 'fanout',
-      }
-    }
-    if (value === 'rabbitMQConsumer') {
-      defaultMiddlewareMapping = {
-        ...defaultMiddlewareMapping,
-        producerApplicationScode: 'S123451',
-        exchangeName: 'topic',
-        queueName: '',
-        topicName: '',
-        RouteKey: '',
-      }
-    }
-    const {middlewareMappings} = this.state
-    this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
-  }
-
-  removeMiddlewareMapping = (id) => {
-    const {middlewareMappings} = this.state
-    const filtered = middlewareMappings.filter(item => item.id !== id)
-    this.setState({middlewareMappings: filtered})
-  }
-
-  middlewareMappingChange = (newItem) => {
-    const {middlewareMappings} = this.state
-    const nextAry = replace(middlewareMappings, newItem)
-    this.setState({middlewareMappings: nextAry})
-  }
-
-  onMiddlewareSelect = (middlewareSelect) => {
-    this.setState({middlewareSelect})
-    this.addMiddlewareMapping(middlewareSelect)
-  }
-
-
   render(){
     const {record={}} = this.props.location
     const {resources=[]} = this.props.reduxState
@@ -225,7 +151,7 @@ class NewResource extends React.Component {
               {...formItemLayout}
               label="申请日期"
             >
-             {new Date(projectInfo.createdAt).toLocaleString()}
+             {new Date(record.createDate * 1000).toLocaleString()}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -272,22 +198,23 @@ class NewResource extends React.Component {
         <div>
           <section className="page-section">
             <Row gutter={24}>
-              <Col key={'paas'} span={6}><Item resource={paas}/></Col>
+              <Col key={'paas'} span={6}><Item resource={paas} project={record}/></Col>
             </Row>
           </section>
 
           <section className="page-section">
             <Row gutter={24}>
               {middleware.map(m => (
-                <Col key={m.id} span={6}><Item resource={m} /></Col>
+                <Col key={m.id} span={6}><Item resource={m} project={record}/></Col>
               ))}
+              <Col span={6}><New project={record}></New></Col>
             </Row>
           </section>
         </div>
       )}
 
 
-      <section className="page-section">
+      {/* <section className="page-section">
         <h3>框架</h3>
         <CheckboxGroup options={plainOptions} value={["前端框架"]}/>
       </section>
@@ -297,12 +224,10 @@ class NewResource extends React.Component {
         >
           开启
         </Checkbox>
-      </section>
-      <div style={{paddingBottom: '60px'}}></div>
+      </section> */}
 
-      <section className="page-section bottom-actions">
-        <Button type="primary" style={{float: 'right'}}
-                onClick={() => {
+      <section className="page-section text-center">
+        <Button onClick={() => {
                   this.props.selfDispatch({type:'setState',payload: {resources: []}})
                   this.props.history.goBack()}
                 }>

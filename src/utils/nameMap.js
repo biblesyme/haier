@@ -12,7 +12,7 @@ export default {
   rejected: '已驳回',
   Pending: '待审批',
   ApplyingResource: '待部署',
-  ResourceReady: '已部署',
+  resourceReady: '已部署',
   DeployingResource: '正在部署',
   Updating: '更新中',
   deploying: '部署中',
@@ -34,7 +34,7 @@ export default {
 
   // Project
   ApplyingResource: '待部署',
-  ResourceReady: '已部署',
+  resourceReady: '已部署',
   DeployingResource: '正在部署',
 
   // Application

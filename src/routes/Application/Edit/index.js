@@ -77,7 +77,7 @@ export default class C extends React.Component {
   }
 
   addMember = () => {
-    if (this.props.resource.state !== 'ResourceReady') {
+    if (this.props.resource.state !== 'resourceReady') {
       message.warning(`应用${nameMap[this.props.resource.state]} 无法操作成员`)
       return
     }
@@ -103,7 +103,7 @@ export default class C extends React.Component {
   }
 
   deleteMember = (e, accountId) => {
-    if (this.props.resource.state !== 'ResourceReady') {
+    if (this.props.resource.state !== 'resourceReady') {
       message.warning(`应用${nameMap[this.props.resource.state]} 无法操作成员`)
       return
     }

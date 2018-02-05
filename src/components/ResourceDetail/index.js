@@ -3,6 +3,7 @@ import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Car
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import { withRouter } from 'react-router'
+import {deployModeEnum} from 'utils/enum'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -69,25 +70,25 @@ export default class C extends React.Component {
       this.props.dispatch({
         type: 'App/findLocation',
         payload: {
-          successCB: (res) => this.setState({locations: res.data.data}),
+          successCB: (res) => this.setState({locations: res.data.data || []}),
         }
       })
       this.props.dispatch({
         type: 'App/followCluster',
         payload: {
           data: {
-            id: data.machineRoomId,
+            id: data.locationId,
           },
-          successCB: (res) => this.setState({clusters: res.data.data}),
+          successCB: (res) => this.setState({clusters: res.data.data || []}),
         }
       })
       this.props.dispatch({
         type: 'App/followClusterDetail',
         payload: {
           data: {
-            id: data.clusterName,
+            id: data.clusterId,
           },
-          successCB: (res) => this.setState({clusterInfo: res.data}),
+          successCB: (res) => this.setState({clusterInfo: res.data || {}}),
         }
       })
     } else {
@@ -111,8 +112,8 @@ export default class C extends React.Component {
     const {data={}} = resource
     const {used={}} = this.state.clusterInfo
     const {quota={}} = this.state.clusterInfo
-    const locationFilter = this.state.locations.filter(l => l.id === data.machineRoomId)[0] || {}
-    const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterName)[0] || {}
+    const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
+    const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
     return (
       <main>
@@ -193,20 +194,20 @@ export default class C extends React.Component {
                   label="部署模式"
                   hasFeedback
                 >
-                 {nameMap[data.deployMode]}
+                 {deployModeEnum(data.deployMode)}
                 </FormItem>
 
-                {data.deployMode === 'primary' && (
+                {data.deployMode === 1 && (
                   <FormItem
                     {...formItemLayout4}
                     label="主从"
                     hasFeedback
                   >
-                   {data.masterSlaveOption === '1' ? '一主一从' : '一主两从'}
+                   {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
                   </FormItem>
                 )}
 
-                {data.deployMode === 'cluster' && (
+                {data.deployMode === 2 && (
                   <div>
                     <FormItem
                       {...formInputLayout}

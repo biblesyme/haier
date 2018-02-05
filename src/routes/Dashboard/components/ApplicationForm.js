@@ -212,8 +212,8 @@ class ApplicationForm extends React.Component {
     if (value === 'mysql') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        deployMode: 'one',
-        masterSlaveOption: '1',
+        deployMode: '0',
+        masterSlaveOption: '0',
         mycatClusterManagerNodeCount: 0,
         mycatClusterDataNodeCount: 0,
         backup: 'false',
@@ -307,8 +307,8 @@ class ApplicationForm extends React.Component {
       location: (this.props.App.locations[0] && this.props.App.locations[0].id) || '',
       middlewareMappings: [{
         locationId: 'qd',
-        deployMode: 'one',
-        masterSlaveOption: '1',
+        deployMode: '0',
+        masterSlaveOption: '0',
         mycatClusterManagerNodeCount: 0,
         mycatClusterDataNodeCount: 0,
         backup: 'false',

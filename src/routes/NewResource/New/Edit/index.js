@@ -45,15 +45,11 @@ const formInputLayout = {
   style: {marginBottom: '10px'},
 }
 
-@connect(null,['App', 'NewResource'])
+@connect(null,['App'])
 // @Form.create()
 export default class C extends React.Component {
   state = {
     middlewareSelect: '',
-    containerHost: {
-      cpu: '',
-      memory: '',
-    },
     mysql: {
       deployMode: '0',
       masterSlaveOption: '0',
@@ -96,39 +92,22 @@ export default class C extends React.Component {
         },
       }
     })
-    const {resource={}} = this.props
-    const {data} = resource
-    this.setState({
-      containerHost: {
-        ...data,
-        memory: data.memory / 1024,
-      },
-      mysql: {
-        ...data,
-        deployMode: data.deployMode.toString(),
-        masterSlaveOption: data.masterSlaveOption.toString(),
-      },
-      redis: data,
-      rocketMQTopic: data,
-      rabbitMQConsumer: data,
-      rabbitMQProducer: data,
-    })
   }
 
   submit = () => {
-    const {resource} = this.props
-    let data = this.state[resource.resourceType]
-    if (resource.resourceType === 'containerHost') {
-      data = {
-        ...data,
-        memory: data.memory * 1024,
-      }
+    if (this.state.middlewareSelect === '') {
+      message.warning('请选择中间件类型')
+      return
     }
-    if (resource.resourceType === 'mysql') {
+    let data = {
+      ...this.state[this.state.middlewareSelect],
+      machineRoomId: this.state.machineRoomId,
+    }
+    if (this.state.middlewareSelect === 'mysql') {
       data = {
-        ...data,
-        deployMode: parseInt(data.deployMode),
-        masterSlaveOption: parseInt(data.masterSlaveOption),
+        ...this.state.mysql,
+        deployMode: parseInt(this.state.mysql.deployMode),
+        masterSlaveOption: parseInt(this.state.mysql.masterSlaveOption),
       }
     }
     this.props.dispatch({
@@ -137,11 +116,9 @@ export default class C extends React.Component {
         data: {
           data: JSON.stringify(data),
           projectId: this.props.project.id,
-          id: resource.id,
-          resourceType: resource.resourceType,
-          // resourceTypeId: '1',
-          version: resource.version,
-          // state: 'pending',
+          // id: resource.id,
+          resourceType: this.state.middlewareSelect,
+          // version: 1,
         },
         successCB: () => {
           message.success('资源申请成功')
@@ -167,8 +144,7 @@ export default class C extends React.Component {
   }
 
   render() {
-    const {resource={}, project={}} = this.props
-    const {containerHost, mysql, redis, rocketMQTopic, rabbitMQProducer, rabbitMQConsumer} = this.state
+    const {mysql, redis, rocketMQTopic, rabbitMQProducer, rabbitMQConsumer} = this.state
     const machineRoomId = (
       <FormItem
         {...formItemLayout4}
@@ -185,52 +161,35 @@ export default class C extends React.Component {
         <Modal
           title={
             <div className="text-center">
-              修改配置
+              添加中间件
             </div>
           }
           {...this.props}
           footer={
             <div className="text-center">
               <Button onClick={this.props.onCancel} >返回</Button>
-              <Button onClick={this.submit} style={{marginLeft: '16px'}} type="primary">提交</Button>
+              <Button onClick={this.submit} style={{marginLeft: '16px'}} type="primary">添加</Button>
             </div>
           }
           closable={false}
           width={800}
           >
             <div className="text-center">
+              中间件类型：
+              <Select style={{width: '170px', marginLeft: '16px', marginBottom: '16px'}}
+                      // value={this.state.middlewareSelect}
+                      onSelect={middlewareSelect => this.setState({middlewareSelect})}
+                      placeholder="请选择中间件类型"
+              >
+                <Option key="mysql">MySQL</Option>
+                <Option key="redis">Redis</Option>
+                <Option key="rocketMQTopic">RocketMQ</Option>
+                <Option key="rabbitMQProducer">RabbitMQ(生产者)</Option>
+                <Option key="rabbitMQConsumer">RabbitMQ(消费者)</Option>
+              </Select>
               <Row>
                 <Col span={12} offset={6}>
-                  {resource.resourceType === 'containerHost' && (
-                    <Card title="自定义配置">
-                      <Form className={styles["card-body"]}>
-                        <FormItem
-                          {...formInputLayout}
-                          label="CPU内核数"
-                          hasFeedback
-                        >
-                         <Input
-                                value={containerHost.cpu}
-                                onChange={e => this.setState({containerHost: {...containerHost, cpu: e.target.value}})}
-                                type="number"
-                          ></Input>
-                        </FormItem>
-                        <FormItem
-                          {...formInputLayout}
-                          label="内存"
-                          hasFeedback
-                        >
-                         <Input
-                                value={containerHost.memory}
-                                onChange={e => this.setState({containerHost: {...containerHost, memory: e.target.value}})}
-                                type="number"
-                                addonAfter="G"
-                          ></Input>
-                        </FormItem>
-                      </Form>
-                    </Card>
-                  )}
-                  {resource.resourceType === 'mysql' && (
+                  {this.state.middlewareSelect === 'mysql' && (
                     <Card title="MySQL">
                       <Form className={styles["card-body"]}>
                         {machineRoomId}
@@ -296,7 +255,7 @@ export default class C extends React.Component {
                     </Card>
                   )}
 
-                  {resource.resourceType === 'redis' && (
+                  {this.state.middlewareSelect === 'redis' && (
                       <Card title="Redis">
                         <Form className={styles["card-body"]}>
                           {machineRoomId}
@@ -340,7 +299,7 @@ export default class C extends React.Component {
                         </Form>
                       </Card>
                   )}
-                  {resource.resourceType === 'rocketMQTopic' && (
+                  {this.state.middlewareSelect === 'rocketMQTopic' && (
                     <Card title="RocketMQ">
                       <Form className={styles["card-body"]}>
                         {machineRoomId}
@@ -364,7 +323,7 @@ export default class C extends React.Component {
                       </Form>
                     </Card>
                   )}
-                  {resource.resourceType === 'rabbitMQProducer' && (
+                  {this.state.middlewareSelect === 'rabbitMQProducer' && (
                     <Card title="RabbitMQ-生产者">
                       <Form className={styles["card-body"]}>
                         {machineRoomId}
@@ -405,7 +364,7 @@ export default class C extends React.Component {
                       </Form>
                     </Card>
                   )}
-                  {resource.resourceType === 'rabbitMQConsumer' && (
+                  {this.state.middlewareSelect === 'rabbitMQConsumer' && (
                     <Card title="RabbitMQ-消费者">
                       <Form className={styles["card-body"]}>
                         <FormItem
