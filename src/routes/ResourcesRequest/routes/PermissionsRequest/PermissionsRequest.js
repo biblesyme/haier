@@ -24,7 +24,8 @@ class MySubmit extends React.Component {
     this.props.selfDispatch({
       type: 'findApproval',
       payload: {
-        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        account: this.props.App.user,
       }
     })
     this.props.selfDispatch({type: 'findAccount'})

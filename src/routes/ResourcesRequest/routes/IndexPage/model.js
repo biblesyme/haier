@@ -26,22 +26,14 @@ export default {
   },
   effects: {
 		*findApproval({payload={}},{call, put}){
-      let {callback} = payload
-			yield put({type:'setState',payload: {findApprovalStatus: LOAD_STATUS.START} })
+      let {callback, account} = payload
 			try{
-				let approval = yield call([apiStore,apiStore.find], 'approval', null, {forceReload: true})
+				let approval = yield call([account,account.followLink], 'approvals')
 				yield put({type:'setState',payload: {approvals: approval.content}})
-				yield put({type:'setState',payload: {findApprovalStatus: LOAD_STATUS.SUCCESS} })
         if(callback){
           yield call(callback)
         }
-			}
-			catch(e){
-				yield put({type:'setState',payload: {
-						findApprovalStatus: LOAD_STATUS.FAIL,
-						errorMessage: e.message()
-					}
-				})
+			} catch(e) {
         if(callback){
           yield call(callback)
         }
