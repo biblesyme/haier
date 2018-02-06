@@ -40,7 +40,8 @@ class Application extends React.Component {
     this.props.selfDispatch({
       type: 'findProject',
       payload: {
-        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        account: this.props.App.user,
       }
     })
     this.props.selfDispatch({type: 'findAccount'})

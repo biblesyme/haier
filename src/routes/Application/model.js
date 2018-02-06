@@ -36,11 +36,10 @@ export default {
         })
       }
     },
-    *findProject({payload={}},{call, put}){
-      let {callback} = payload
-      yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.START} })
-      try{
-        let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
+    *findProject({payload={}}, {call, put}) {
+      let {callback, account} = payload
+      try {
+        let projects = yield call([account,account.followLink], 'projects')
         let fomatProjects = projects.content.map(p => {
           if (p.hasOwnProperty('data')) {
             return {
@@ -52,21 +51,14 @@ export default {
           }
         })
         yield put({type:'setState',payload: {projects: fomatProjects}})
-        yield put({type:'setState',payload: {findProjectStatus: LOAD_STATUS.SUCCESS} })
+        if(callback){
+          yield call(callback)
+        }
+      } catch(e) {
         if(callback){
           yield call(callback)
         }
       }
-      catch(e){
-        yield put({type:'setState',payload: {
-            findProjectStatus: LOAD_STATUS.FAIL,
-            errorMessage: e.message()
-          }
-        })
-        if(callback){
-          yield call(callback)
-        }
-      }
-    },
+    }
   }
 }
