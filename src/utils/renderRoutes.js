@@ -15,7 +15,7 @@ const renderRoutes = (routes, extraProps = {}, switchProps = {}) => routes ? (
           if (extraProps.hasOwnProperty('app')) {
             let Store = extraProps.app._store.getState()
             let roles = route.role || []
-            if (roles.includes(Store.App.role) || route.path === '/') {
+            if (roles.includes(Store.App.role)) {
               return <route.component {...props} {...extraProps} route={route}/>
             } else {
               return <Exception></Exception>

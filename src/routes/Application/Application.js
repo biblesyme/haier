@@ -119,11 +119,11 @@ class Application extends React.Component {
       render: (record, index) => {
         return (
           <div className="text-center">
-            {record.state === 'resourceReady' && (
+            {(record.state === 'resourceReady' && this.props.App.role !== 'developer') && (
               <a onClick={() => this.props.history.push({pathname: `/applications/${record.id}/NewResource`, record})}>申请资源</a>
             )}
             <a className="mg-l10" onClick={() => this.detail(record)}>查看详情</a>
-            {record.state === 'resourceReady' && (
+            {(record.state === 'resourceReady' && this.props.App.role !== 'developer') && (
               <a className="mg-l10"
                  onClick={() => this.setState({visibleEdit: true, record})}
               >成员管理</a>

@@ -98,7 +98,7 @@ export default class MainPage extends React.Component {
                       </Link>
                     </Menu.Item>
                   )}
-                  {['developer', 'manager', 'domainAdmin'].includes(role) && (
+                  {['developer', 'manager', 'domainAdmin', 'admin'].includes(role) && (
                     <Menu.Item key="3">
                       <Link to="/application">
                         <span>
