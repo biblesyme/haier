@@ -108,6 +108,20 @@ export default class C extends React.Component {
         ...this.state.mysql,
         deployMode: parseInt(this.state.mysql.deployMode),
         masterSlaveOption: parseInt(this.state.mysql.masterSlaveOption),
+        mycatClusterManagerNodeCount: parseInt(this.state.mysql.mycatClusterManagerNodeCount),
+        mycatClusterDataNodeCount: parseInt(this.state.mysql.mycatClusterDataNodeCount),
+      }
+    }
+    if (this.state.middlewareSelect === 'redis') {
+      data = {
+        ...this.state.redis,
+        sharedCount: parseInt(this.state.mysql.sharedCount),
+      }
+    }
+    if (this.state.middlewareSelect === 'rabbitMQProducer') {
+      data = {
+        ...this.state.rabbitMQProducer,
+        maxIO: parseInt(this.state.mysql.maxIO),
       }
     }
     this.props.dispatch({

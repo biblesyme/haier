@@ -65,20 +65,6 @@ const formItemLeft = {
   }
 };
 
-const formItemLayout2 = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-  },
-  style: {
-    marginBottom: '0'
-  }
-}
-
 const formItemLayout3 = {
   labelCol: {
     xs: { span: 10 },
@@ -188,7 +174,6 @@ class ApplicationForm extends React.Component {
       this.props.form.setFieldsValue({
         scode: form.scode,
       })
-      console.log(this.props)
       this.searchSCODE(form.scode)
     }
   }
@@ -197,10 +182,6 @@ class ApplicationForm extends React.Component {
     this.setState({
       collapsed: !this.state.collapsed,
     });
-  }
-
-  addMiddleware = () => {
-    console.log(this.state.middlewareSelect)
   }
 
   middlewareMappingId = 0

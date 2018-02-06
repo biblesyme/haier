@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import nameMap from 'utils/nameMap'
+import { connect } from 'utils/ecos'
 import {deployModeEnum} from 'utils/enum'
 
 const SubMenu = Menu.SubMenu;
@@ -50,32 +51,90 @@ const formInputLayout = {
   style: {marginBottom: '10px'},
 }
 
+@connect(null,['App'])
 export default class C extends React.Component {
   state = {
     resource: 'height',
     machineRoomId: 'qd',
+    machineRooms: [],
+    locations: [],
+    clusters: [],
+    visibleEdit: false,
+    record: {},
   }
 
   componentWillMount() {
+    const {resource={}} = this.props
+    const {data={}} = resource
+    if (data.resourceType === 'containerHost') {
+      this.props.dispatch({
+        type: 'App/findLocation',
+        payload: {
+          successCB: (res) => this.setState({locations: res.data.data || []}),
+        }
+      })
+      this.props.dispatch({
+        type: 'App/followCluster',
+        payload: {
+          data: {
+            id: data.locationId,
+          },
+          successCB: (res) => this.setState({clusters: res.data.data || []}),
+        }
+      })
+      this.props.dispatch({
+        type: 'App/followClusterDetail',
+        payload: {
+          data: {
+            id: data.clusterId,
+          },
+          successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+        }
+      })
+    } else {
+      this.props.dispatch({
+        type: 'App/findMachineRoom',
+        payload: {
+          successCB: (res) => {
+            this.setState({machineRooms: res.data.data || []})
+          },
+        }
+      })
+    }
     this.setState({
       ...this.props.item,
+    })
+  }
+
+  handleCancel = (e) => {
+    this.setState({
+      visibleEdit: false,
+    });
+  }
+
+  handleEdit = (e) => {
+    this.setState({
+      visibleEdit: true,
     })
   }
 
   render() {
     const {resource={}} = this.props
     const {data={}} = resource
+    const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
+    const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
+    const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
     return (
       <main>
-        {data.resourceType === 'containerHost' && (
-          <div>
+        {resource.resourceType === 'containerHost' && (
+          <div >
             <label htmlFor="">资源所在地：</label>
-              {nameMap[data.machineRoomId]}
+              {locationFilter.name}
             <div style={{padding: '10px'}}></div>
-              <section className={styles["card-form"]}>
-                <div className={styles["card-header"]}>
-                  {nameMap[this.state.resource]}
-                </div>
+            <label htmlFor="">已选集群：</label>
+              {clusterFilter.name}
+            <div style={{padding: '10px'}}></div>
+              <Card title={nameMap[this.state.resource]}>
                 <Form className={styles["card-body"]}>
                   <FormItem
                     {...formItemLayout3}
@@ -91,27 +150,28 @@ export default class C extends React.Component {
                   >
                    {`${parseInt(data.memory) / 1024 || ''}G`}
                   </FormItem>
-                  <FormItem
+                  {/* <FormItem
                     {...formItemLayout3}
                     label="硬盘"
                     hasFeedback
                   >
                    {`${data.diskSize || ''}G`}
-                  </FormItem>
+                  </FormItem> */}
                 </Form>
-              </section>
+              </Card>
+              <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
           </div>
         )}
-        {data.resourceType === 'mysql' && (
+        {resource.resourceType === 'mysql' && (
           <div >
-            <Card title="MySQL" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="MySQL" style={{height: '250px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                  {nameMap[data.machineRoomId]}
+                  {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
@@ -159,18 +219,19 @@ export default class C extends React.Component {
                 </FormItem>
               </Form>
             </Card>
+            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
           </div>
         )}
-        {data.resourceType === 'redis' && (
+        {resource.resourceType === 'redis' && (
           <div >
-            <Card title="Redis" style={{width: '216px', marginBottom: '20px'}}>
+            <Card title="Redis" style={{marginBottom: '20px', height: '250px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                  {nameMap[data.machineRoomId]}
+                  {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -201,16 +262,16 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'rocketMQTopic' && (
+        {resource.resourceType === 'rocketMQTopic' && (
           <div >
-            <Card title="RocketMQ" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="RocketMQ" style={{marginBottom: '16px', height: '250px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
                   label="地点"
                   hasFeedback
                 >
-                 {nameMap[data.machineRoomId]}
+                 {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
@@ -230,16 +291,16 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'rabbitMQProducer' && (
+        {resource.resourceType === 'rabbitMQProducer' && (
           <div >
-            <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', height: '250px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
                   label="地点"
                   hasFeedback
                 >
-                 {nameMap[data.machineRoomId]}
+                 {machineRoomFilter.roomName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -270,9 +331,9 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'rabbitMQConsumer' && (
+        {resource.resourceType === 'rabbitMQConsumer' && (
           <div >
-            <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', height: '250px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}

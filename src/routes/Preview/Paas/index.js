@@ -49,7 +49,7 @@ export default class C extends React.Component {
       type: 'App/followCluster',
       payload: {
         data: {
-          id: item.machineRoomId,
+          id: item.locationId,
         },
         successCB: (res) => this.setState({clusters: res.data.data || []}),
       }
@@ -73,6 +73,7 @@ export default class C extends React.Component {
   render() {
     const locationFilter = this.state.locations.filter(l => l.id === this.state.machineRoomId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === this.state.clusterId)[0] || {}
+    const {item} = this.props
     return (
       <main>
         <label htmlFor="">资源所在地：</label>
@@ -85,7 +86,7 @@ export default class C extends React.Component {
         <div style={{padding: '10px'}}></div>
           <section className={styles["card-form"]}>
             <div className={styles["card-header"]}>
-              {nameMap[this.state.resource]}
+              {nameMap[item.resource]}
             </div>
             <Form className={styles["card-body"]}>
               <FormItem
@@ -93,22 +94,15 @@ export default class C extends React.Component {
                 label="CPU内核数"
                 hasFeedback
               >
-               {this.state.cpu}
+               {item.cpu}
               </FormItem>
               <FormItem
                 {...formItemLayout3}
                 label="内存"
                 hasFeedback
               >
-               {`${parseInt(this.state.memory) / 1024}G`}
+               {`${parseInt(item.memory) / 1024}G`}
               </FormItem>
-              {/* <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               {`${this.state.diskSize}G`}
-              </FormItem> */}
             </Form>
           </section>
       </main>

@@ -38,7 +38,6 @@ export default class C extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     const {onChange, item, onRemove} = this.props
     const { size, size2 } = this.state;
     const formItemLayout4 = {

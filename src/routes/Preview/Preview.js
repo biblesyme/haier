@@ -7,6 +7,8 @@ import Paas from './Paas'
 import FormMapping from './FormMapping'
 import apiStore from 'utils/apiStore'
 
+import styles from './style.sass'
+
 const col = 12
 const formItemLayout = {
   labelCol: {
@@ -16,6 +18,22 @@ const formItemLayout = {
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 12 },
+  },
+  style: {
+    marginBottom: '10px'
+  }
+};
+
+const formItemLeft = {
+  labelCol: {
+    xs: { span: 20 },
+    sm: { span: 5 },
+    push: 4,
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+    push: 4,
   },
   style: {
     marginBottom: '10px'
@@ -40,6 +58,8 @@ class Preview extends React.Component {
       return
     }
     const {projectInfo} = form
+    delete form.paas.clusters
+    delete form.paas.locations
     const resoures = [...form.middlewareMappings, form.paas]
     const record = resoures.map(r => {
       if (r.resourceType === 'containerHost') {
@@ -64,6 +84,8 @@ class Preview extends React.Component {
             ...r,
             deployMode: parseInt(r.deployMode),
             masterSlaveOption: parseInt(r.masterSlaveOption),
+            mycatClusterManagerNodeCount: parseInt(r.mycatClusterManagerNodeCount),
+            mycatClusterDataNodeCount: parseInt(r.mycatClusterDataNodeCount),
           })
         })
       }
@@ -72,7 +94,10 @@ class Preview extends React.Component {
           version: 1,
           resourceType: 'redis',
           type: 'resource',
-          data: JSON.stringify({...r})
+          data: JSON.stringify({
+            ...r,
+            sharedCount: parseInt(r.sharedCount),
+          })
         })
       }
       if (r.resourceType === 'rocketMQTopic') {
@@ -88,7 +113,10 @@ class Preview extends React.Component {
           version: 1,
           resourceType: 'rabbitMQProducer',
           type: 'resource',
-          data: JSON.stringify({...r})
+          data: JSON.stringify({
+            ...r,
+            maxIO: r.maxIO,
+          })
         })
       }
       if (r.resourceType === 'rabbitMQConsumer') {
@@ -140,10 +168,10 @@ class Preview extends React.Component {
         <section className="page-section">
           <label>应用信息:</label>
           <div style={{marginTop: '8px'}}></div>
-          <Row gutter={24}>
+          <Row gutter={24} className="scode-info">
             <Col span={col}>
               <FormItem
-                {...formItemLayout}
+                {...formItemLeft}
                 label="应用名称"
                 hasFeedback
               >
@@ -161,7 +189,7 @@ class Preview extends React.Component {
             </Col>
             <Col span={col}>
               <FormItem
-                {...formItemLayout}
+                {...formItemLeft}
                 label="业务负责人"
                 hasFeedback
               >
@@ -180,7 +208,7 @@ class Preview extends React.Component {
             </Col>
             <Col span={col}>
               <FormItem
-                {...formItemLayout}
+                {...formItemLeft}
                 label="应用属性"
                 hasFeedback
               >

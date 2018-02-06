@@ -10,6 +10,7 @@ import RocketMQProduct from './components/RocketMQProduct'
 import RocketMQComsumer from './components/RocketMQComsumer'
 import RabbitMQ from './components/RabbitMQ'
 import { withRouter } from 'react-router'
+import Item from './Item'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -139,12 +140,32 @@ function onChange(pagination, filters, sorter) {
 }
 
 class ApplicationDetail extends React.Component {
+  componentWillMount() {
+    const {record={}} = this.props.location
+    this.props.selfDispatch({
+      type: 'followProjectLink',
+      payload: {
+        data: record,
+        link: 'self',
+      },
+    })
+    this.props.selfDispatch({
+      type: 'followResourceLink',
+      payload: {
+        data: record,
+        link: 'resources',
+      },
+    })
+  }
   render(){
     const {record={}} = this.props.location
+    const {resources=[]} = this.props.reduxState
     const projectInfo = (record &&
       record.data &&
       record.data.data
     ) || {}
+    const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
+    const middleware = resources.filter(r => r.resourceType !== 'containerHost')
     return (
     <div>
       <section className="page-section">
@@ -166,7 +187,7 @@ class ApplicationDetail extends React.Component {
               {...formItemLayout}
               label="申请日期"
             >
-             {new Date(projectInfo.createdAt).toLocaleString()}
+             {new Date(record.createDate * 1000).toLocaleString()}
             </FormItem>
           </Col>
           <Col span={col}>
@@ -212,18 +233,40 @@ class ApplicationDetail extends React.Component {
         </div>
       </section>
 
-      <section className="page-section">
+      {resources.length > 0 && (
+        <div>
+          <section className="page-section">
+            <Row gutter={24}>
+              <Col key={'paas'} span={6}><Item resource={paas} project={record}/></Col>
+            </Row>
+            <div className="text-right pd-tb10">
+              <Button type="primary">前往容器云</Button>
+            </div>
+          </section>
+
+          <section className="page-section">
+            <Row gutter={24}>
+              {middleware.map(m => (
+                <Col key={m.id} span={6}><Item resource={m} project={record}/></Col>
+              ))}
+            </Row>
+            <div className="text-right pd-tb10">
+              <Button type="primary">前往中间件平台</Button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* <section className="page-section">
         <label>资源所在地: 青岛</label>
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源：</label>
         <div style={{padding: '10px'}}></div>
         <Paas></Paas>
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往容器云</Button>
-        </div>
-      </section>
 
-    <section className="page-section">
+      </section> */}
+
+    {/* <section className="page-section">
       <Row>
         <Col>
           <label htmlFor="">中间件：</label>
@@ -236,12 +279,10 @@ class ApplicationDetail extends React.Component {
         <RabbitMQ></RabbitMQ>
         <br/>
         <Col span={24}>
-          <div className="text-right pd-tb10">
-            <Button type="primary">前往中间件平台</Button>
-          </div>
+
         </Col>
       </Row>
-    </section>
+    </section> */}
       {/* <div className="page-section">
         <h3>已选框架</h3>
         <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
@@ -275,4 +316,4 @@ class ApplicationDetail extends React.Component {
 }
 
 Object.defineProperty(ApplicationDetail, "name", { value: "ApplicationDetail" });
-export default withRouter(connect(null, ['App'])(ApplicationDetail))
+export default withRouter(connect(require('./model'), ['App'])(ApplicationDetail))

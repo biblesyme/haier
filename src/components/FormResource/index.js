@@ -90,7 +90,7 @@ export default class C extends React.Component {
     }
     if (value === 'middle') {
       const obj = {
-        cpu: 16,
+        cpu: 8,
         memory: (16*1024).toString(),
         diskSize: 500,
         resource: value,
@@ -106,7 +106,7 @@ export default class C extends React.Component {
     }
     if (value === 'low') {
       const obj = {
-        cpu: 16,
+        cpu: 4,
         memory: (16*1024).toString(),
         diskSize: 256,
         resource: value,
@@ -161,7 +161,7 @@ export default class C extends React.Component {
             {this.state.locations.map(l => <Option key={l.id}>{l.name}</Option>)}
           </Select>
           <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
-            <Select value={this.state.clusterName} onChange={value => this.onChange(value, 'clusterId')} style={{width: '200px'}}>
+            <Select value={this.state.clusterId} onChange={value => this.onChange(value, 'clusterId')} style={{width: '200px'}}>
               {this.state.clusters.map(c => <Option key={c.id}>{c.name}</Option>)}
             </Select>
         <div style={{padding: '10px'}}></div>
@@ -211,7 +211,7 @@ export default class C extends React.Component {
                 label="CPU内核数"
                 hasFeedback
               >
-               16
+               8
               </FormItem>
               <FormItem
                 {...formItemLayout3}
@@ -242,7 +242,7 @@ export default class C extends React.Component {
                 label="CPU内核数"
                 hasFeedback
               >
-               16
+               4
               </FormItem>
               <FormItem
                 {...formItemLayout3}
