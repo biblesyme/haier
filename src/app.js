@@ -17,13 +17,14 @@ import MainPage from './components/pages/MainPage'
 
 const TabPane = Tabs.TabPane;
 
-const url = 'http://localhost'
+const url = window.location.host
 class App extends React.Component {
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
+    // document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
     this.props.selfDispatch({
       type: 'setState',
       payload: {login: false}
@@ -32,7 +33,8 @@ class App extends React.Component {
       type: 'loadSchema',
       payload: {
         failCB: (e) => {
-          if (e.error.response.status === 401) {
+          if (e.error && e.error.response && e.error.response.status === 401) {
+          // if (e.error.response.status === 401) {
             window.location.href=`http://t.c.haier.net/login?url=${url}`
           }
         },
@@ -40,9 +42,13 @@ class App extends React.Component {
           let user = {}
           if (getCookieItem('account') !== null) {
             user = JSON.parse(b64DecodeUnicode(getCookieItem('account')))
-            user = apiStore.createRecord(user)
+            this.props.selfDispatch({
+              type: 'findUser',
+              payload: {
+                id: user.id,
+                successCB: () => this.props.selfDispatch({ type: 'setState', payload: {login: true}})
+            }})
           }
-          this.props.selfDispatch({ type: 'setState', payload: {login: true , user}})
         }
       }
     })

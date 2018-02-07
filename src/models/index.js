@@ -150,5 +150,16 @@ export default {
 				if(failCB){yield call(failCB, e)}
 			}
 		},
+		*findUser({payload={}},{call, put}){
+			const {failCB, successCB, id} = payload
+			try{
+				let accounts = yield call([apiStore,apiStore.find], 'account', id, {forceReload: true})
+				console.log(accounts)
+				yield put({type:'setState',payload: {user: accounts}})
+				if(successCB){yield call(successCB)}
+			}
+			catch(e){
+			}
+		},
 	}
 }
