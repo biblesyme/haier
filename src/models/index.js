@@ -28,31 +28,34 @@ export default {
 		}
 	},
 	effects: {
-		*loadSchema({payload},{call, put}){
+		*loadSchema({payload={}},{call, put}){
+			const {failCB, successCB} = payload
 			yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.START} })
 			try{
 				let schema = yield call([apiStore,apiStore.find], 'schema')
 				yield put({type:'setState',payload: {loadSchemaStatus: LOAD_STATUS.SUCCESS} })
+				if(successCB){yield call(successCB)}
 			}
 			catch(e){
 				yield put({type:'setState',payload: {
 						loadSchemaStatus: LOAD_STATUS.FAIL,
-						errorMessage: e.message()
 					}
 				})
+				if(failCB){yield call(failCB, e)}
 			}
 		},
-		*findAccount({payload},{call, put}){
+		*findAccount({payload={}},{call, put}){
+			const {failCB, successCB} = payload
 			yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
 			try{
 				let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
 				yield put({type:'setState',payload: {accounts: accounts.content}})
 				yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
+				if(successCB){yield call(successCB)}
 			}
 			catch(e){
 				yield put({type:'setState',payload: {
 						findAccountStatus: LOAD_STATUS.FAIL,
-						errorMessage: e.message()
 					}
 				})
 			}

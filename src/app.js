@@ -3,6 +3,8 @@ import renderRoutes from 'utils/renderRoutes'
 import {Link} from 'react-router-dom'
 import { Tabs, Button,Menu, Spin, message } from 'antd';
 import Spinner from './components/Spinner'
+import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
+import apiStore from 'utils/apiStore'
 
 import styles from './app.sass'
 import './antd.less'
@@ -12,26 +14,42 @@ import model from './models'
 
 import LoginForm from './components/pages/LoginForm'
 import MainPage from './components/pages/MainPage'
-import apiStore from 'utils/apiStore'
 
 const TabPane = Tabs.TabPane;
+
+const url = 'http://localhost'
 class App extends React.Component {
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
-    this.props.selfDispatch({type: 'findAccount'})
     this.props.selfDispatch({
       type: 'setState',
       payload: {login: false}
     })
+    this.props.selfDispatch({
+      type: 'loadSchema',
+      payload: {
+        failCB: (e) => {
+          if (e.error.response.status === 401) {
+            window.location.href=`http://t.c.haier.net/login?url=${url}`
+          }
+        },
+        successCB: () => {
+          let user = {}
+          if (getCookieItem('account') !== null) {
+            user = JSON.parse(b64DecodeUnicode(getCookieItem('account')))
+            user = apiStore.createRecord(user)
+          }
+          this.props.selfDispatch({ type: 'setState', payload: {login: true , user}})
+        }
+      }
+    })
   }
 
   init = ()=>{
-    this.props.selfDispatch({
-      type: 'loadSchema'
-    })
+
   }
   submit = (e, values) => {
     const {accounts=[]} = this.props.reduxState
@@ -61,26 +79,21 @@ class App extends React.Component {
 
   render() {
     // console.log(this.props, '=========')
-    let output = <LoginForm
-                  submit={this.submit}
-                  ></LoginForm>
-    if(this.props.reduxState&&this.props.reduxState.login){
-      output = (
 
-          <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}
-            <Spin spinning={this.props.reduxState.loading}
-                  tip="加载中..."
-                  size="large"
-                  style={{position: 'absolute', top: '50%', left: '50%'}}
-            >
-                    </Spin>
-          </MainPage>
-
-      )
-    }
     return (
       <div className="page-wrap">
-        {output}
+        {
+          this.props.reduxState.login === true ?
+          (
+                <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}
+                  <Spin spinning={this.props.reduxState.loading}
+                        tip="加载中..."
+                        size="large"
+                        style={{position: 'absolute', top: '50%', left: '50%'}}
+                  />
+                </MainPage>
+          ) : <p>验证中</p>
+        }
       </div>
     );
   }

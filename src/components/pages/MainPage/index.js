@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
+import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
 
 import { Menu, Icon, Button, Select } from 'antd';
 const SubMenu = Menu.SubMenu;
@@ -32,6 +33,7 @@ export default class MainPage extends React.Component {
     this.props.init();
     const {user= {},} = this.props.App
     // document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
+
     if (user.hasOwnProperty('roles')) {
       document.cookie = `currentRole=${user.roles[0]};`
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
@@ -41,6 +43,7 @@ export default class MainPage extends React.Component {
   }
   render() {
     const {user= {}, role} = this.props.App
+    console.log(this.props.App, '-----------')
     return (
       <div className={styles["page-wrap"]}>
         <div className={styles["page-header"]}>
