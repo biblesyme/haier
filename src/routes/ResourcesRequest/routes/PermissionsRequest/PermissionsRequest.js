@@ -10,6 +10,20 @@ const {Option} = Select
 
 import styles from './styles.scss'
 
+const adminMap = {
+  confirmed: '待通过',
+  passed: '已通过',
+  denied: '已驳回',
+  pending: '待审批',
+}
+
+const adminState = {
+  confirmed: 'orange',
+  denied: 'red',
+  passed: 'green',
+  pending: 'orange',
+}
+
 class MySubmit extends React.Component {
   state = {
     filteredInfo: null,
@@ -43,7 +57,7 @@ class MySubmit extends React.Component {
   render() {
     let { filteredInfo, } = this.state;
     const {approvals=[], accounts=[], projects=[], resources=[]} = this.props.reduxState
-    const {user={}} = this.props.App
+    const {user={}, role} = this.props.App
     const selector = approvals.filter(a => a.requesterId === user.id)
     const boxes = selector.filter(d => {
       const {filter} = this.state
@@ -114,11 +128,10 @@ class MySubmit extends React.Component {
     }, {
       title: '状态',
       render: (record) => {
-        return (
-          <Tag {...getState(record.state)}>
-            {nameMap[record.state]}
-          </Tag>
-        )
+        if (role === 'admin') {
+          return <Tag color={adminState[record.state]}>{adminMap[record.state]}</Tag>
+        }
+        return <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
       }
     }, {
       title: '操作',

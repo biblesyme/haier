@@ -13,6 +13,7 @@ import {
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
 import ResourceDetail from '@/components/ResourceDetail'
+import { connect } from 'utils/ecos'
 
 const FormItem = Form.Item
 const {Option} = Select
@@ -47,6 +48,7 @@ const adminState = {
   pending: 'orange',
 }
 
+@connect(null, ['App'])
 @Form.create()
 export default class C extends React.Component {
   state = {

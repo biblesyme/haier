@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
+import nameMap from 'utils/nameMap'
 
 import { Menu, Icon, Button, Select } from 'antd';
 const SubMenu = Menu.SubMenu;
@@ -43,7 +44,6 @@ export default class MainPage extends React.Component {
   }
   render() {
     const {user= {}, role} = this.props.App
-    console.log(this.props.App, '-----------')
     return (
       <div className={styles["page-wrap"]}>
         <div className={styles["page-header"]}>
@@ -52,16 +52,10 @@ export default class MainPage extends React.Component {
           </div>
           <div className="user-info">
             当前登录： {user.name}
-            <Select defaultValue="管理员"
-                    value={role}
+            <Select value={role}
                     onSelect={this.roleChange}
             >
-              <Option key="admin">管理员</Option>
-              <Option key="domainAdmin">团队长</Option>
-              <Option key="manager">项目经理</Option>
-              <Option key="developer">开发者</Option>
-              <Option key="internal">非A账号</Option>
-              <Option key="external">A账号</Option>
+              {user.roles.map(r => <Option key={r}>{nameMap[r]}</Option>)}
             </Select>
             <span className={styles.logout} onClick={this.props.exit}><Icon type="logout"></Icon>&nbsp;退出</span>
           </div>
