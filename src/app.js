@@ -17,7 +17,7 @@ import MainPage from './components/pages/MainPage'
 
 const TabPane = Tabs.TabPane;
 
-const url = window.location.host
+const url = window.location.origin
 class App extends React.Component {
   constructor(props) {
     super(props);
