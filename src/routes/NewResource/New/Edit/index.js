@@ -72,8 +72,6 @@ export default class C extends React.Component {
       exchangeType: 'fanout',
     },
     rabbitMQConsumer: {
-      producerApplicationScode: 'S123451',
-      exchangeName: 'topic',
       queueName: '',
       topicName: '',
       RouteKey: '',
@@ -159,6 +157,12 @@ export default class C extends React.Component {
 
   render() {
     const {mysql, redis, rocketMQTopic, rabbitMQProducer, rabbitMQConsumer} = this.state
+    const {allProjects=[], allResource=[]} = this.props
+
+    let projectSelect = allProjects.filter(p => rabbitMQConsumer.producerApplicationScode === p.scode)[0]
+    let exchanges = allResource.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
+    let exchangeData = exchanges.filter(e => e.data.exchangeName === rabbitMQConsumer.exchangeName)[0] || {}
+
     const machineRoomId = (
       <FormItem
         {...formItemLayout4}
@@ -390,8 +394,7 @@ export default class C extends React.Component {
                                  value={rabbitMQConsumer.producerApplicationScode}
                                  onChange={producerApplicationScode => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, producerApplicationScode}})}
                           >
-                           <Option key="S123451">产品中心</Option>
-                           <Option key="S123450">鹿屋基地</Option>
+                           {allProjects.map(p => <Option key={p.scode}>{p.name}</Option>)}
                          </Select>
                         </FormItem>
                         <FormItem
@@ -403,9 +406,7 @@ export default class C extends React.Component {
                                  value={rabbitMQConsumer.exchangeName}
                                  onChange={exchangeName => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, exchangeName}})}
                          >
-                           <Option key="topic">主题应用</Option>
-                           <Option key="direct">直连应用</Option>
-                           <Option key="fanout">广播应用</Option>
+                           {exchanges.map(e => <Option key={e.id} value={e.data.exchangeName}>{e.data.exchangeName}</Option>)}
                          </Select>
                         </FormItem>
                         <FormItem
@@ -418,7 +419,7 @@ export default class C extends React.Component {
                          />
                         </FormItem>
 
-                        {rabbitMQConsumer.exchangeName === 'topic' && (
+                        {exchangeData.exchangeType === 'topic' && (
                           <FormItem
                             {...formInputLayout}
                             label="主题名"
@@ -429,7 +430,7 @@ export default class C extends React.Component {
                            />
                           </FormItem>
                         )}
-                        {rabbitMQConsumer.exchangeName === 'direct' && (
+                        {exchangeData.exchangeType === 'direct' && (
                           <FormItem
                             {...formInputLayout}
                             label="直连名"

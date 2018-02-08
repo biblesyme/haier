@@ -82,11 +82,9 @@ export default class C extends React.Component {
         <label htmlFor="">已选集群：</label>
           {clusterFilter.name}
         <div style={{padding: '10px'}}></div>
-        <label htmlFor="">应用资源配置：</label>
-        <div style={{padding: '10px'}}></div>
           <section className={styles["card-form"]}>
             <div className={styles["card-header"]}>
-              {nameMap[item.resource]}
+              应用资源配置
             </div>
             <Form className={styles["card-body"]}>
               <FormItem

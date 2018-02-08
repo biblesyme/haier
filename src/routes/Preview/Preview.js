@@ -163,7 +163,7 @@ class Preview extends React.Component {
     return (
       <main>
         <section className="page-section">
-          <label>应用归属：{nameMap[form.company]}</label>
+          <label>应用归属：海尔</label>
         </section>
         <section className="page-section">
           <label>应用信息:</label>

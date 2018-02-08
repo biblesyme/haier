@@ -105,8 +105,8 @@ export default class C extends React.Component {
       },
       mysql: {
         ...data,
-        deployMode: data.deployMode.toString(),
-        masterSlaveOption: data.masterSlaveOption.toString(),
+        deployMode: data.deployMode,
+        masterSlaveOption: data.masterSlaveOption,
       },
       redis: data,
       rocketMQTopic: data,
@@ -181,8 +181,12 @@ export default class C extends React.Component {
   }
 
   render() {
-    const {resource={}, project={}} = this.props
+    const {resource={}, project={}, allProjects=[], allResource=[]} = this.props
     const {containerHost, mysql, redis, rocketMQTopic, rabbitMQProducer, rabbitMQConsumer} = this.state
+
+    let projectSelect = allProjects.filter(p => rabbitMQConsumer.producerApplicationScode === p.scode)[0]
+    let exchanges = allResource.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
+    let exchangeData = exchanges.filter(e => e.data.exchangeName === rabbitMQConsumer.exchangeName)[0] || {}
     const machineRoomId = (
       <FormItem
         {...formItemLayout4}
@@ -223,8 +227,7 @@ export default class C extends React.Component {
                           label="CPU内核数"
                           hasFeedback
                         >
-                         <Input
-                                value={containerHost.cpu}
+                         <Input value={containerHost.cpu}
                                 onChange={e => this.setState({containerHost: {...containerHost, cpu: e.target.value}})}
                                 type="number"
                           ></Input>
@@ -253,27 +256,27 @@ export default class C extends React.Component {
                           label="部署模式"
                           hasFeedback
                         >
-                         <Radio.Group value={mysql.deployMode} onChange={e => this.setState({mysql: {...mysql, deployMode: e.target.value}})}>
+                         <Radio.Group value={mysql.deployMode.toString()} onChange={e => this.setState({mysql: {...mysql, deployMode: e.target.value}})}>
                            <Radio.Button value="0">单机</Radio.Button>
                            <Radio.Button value="1">主从</Radio.Button>
                            <Radio.Button value="2">集群</Radio.Button>
                          </Radio.Group>
                         </FormItem>
 
-                        {mysql.deployMode === '1' && (
+                        {mysql.deployMode === 1 && (
                           <FormItem
                             {...formItemLayout4}
                             label="主从"
                             hasFeedback
                           >
-                           <Radio.Group value={mysql.masterSlaveOption} onChange={e => this.setState({mysql: {...mysql, masterSlaveOption: e.target.value}})}>
+                           <Radio.Group value={mysql.masterSlaveOption.toString()} onChange={e => this.setState({mysql: {...mysql, masterSlaveOption: e.target.value}})}>
                               <Radio.Button value="0">一主一从</Radio.Button>
                               <Radio.Button value="1">一主两从</Radio.Button>
                             </Radio.Group>
                           </FormItem>
                         )}
 
-                        {mysql.deployMode === '2' && (
+                        {mysql.deployMode === 2 && (
                           <div>
                             <FormItem
                               {...formInputLayout}
@@ -431,8 +434,7 @@ export default class C extends React.Component {
                                  value={rabbitMQConsumer.producerApplicationScode}
                                  onChange={producerApplicationScode => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, producerApplicationScode}})}
                           >
-                           <Option key="S123451">产品中心</Option>
-                           <Option key="S123450">鹿屋基地</Option>
+                           {allProjects.map(p => <Option key={p.scode}>{p.name}</Option>)}
                          </Select>
                         </FormItem>
                         <FormItem
@@ -444,9 +446,7 @@ export default class C extends React.Component {
                                  value={rabbitMQConsumer.exchangeName}
                                  onChange={exchangeName => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, exchangeName}})}
                          >
-                           <Option key="topic">主题应用</Option>
-                           <Option key="direct">直连应用</Option>
-                           <Option key="fanout">广播应用</Option>
+                           {exchanges.map(e => <Option key={e.id} value={e.data.exchangeName}>{e.data.exchangeName}</Option>)}
                          </Select>
                         </FormItem>
                         <FormItem
@@ -459,7 +459,7 @@ export default class C extends React.Component {
                          />
                         </FormItem>
 
-                        {rabbitMQConsumer.exchangeName === 'topic' && (
+                        {exchangeData.exchangeName === 'topic' && (
                           <FormItem
                             {...formInputLayout}
                             label="主题名"
@@ -470,7 +470,7 @@ export default class C extends React.Component {
                            />
                           </FormItem>
                         )}
-                        {rabbitMQConsumer.exchangeName === 'direct' && (
+                        {exchangeData.exchangeName === 'direct' && (
                           <FormItem
                             {...formInputLayout}
                             label="直连名"

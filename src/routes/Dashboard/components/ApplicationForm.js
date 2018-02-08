@@ -134,6 +134,8 @@ class ApplicationForm extends React.Component {
     this.props.dispatch({type: 'App/setState', payload: {loading: false}})
     this.addMiddlewareMapping('mysql')
     this.props.dispatch({type:'NewApplication/findDomain'})
+    this.props.dispatch({type:'NewApplication/findProject'})
+    this.props.dispatch({type:'NewApplication/findResource'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
     this.props.dispatch({
       type: 'App/findLocation',
@@ -226,8 +228,6 @@ class ApplicationForm extends React.Component {
     if (value === 'rabbitMQConsumer') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        producerApplicationScode: 'S123451',
-        exchangeName: 'topic',
         queueName: '',
         topicName: '',
         RouteKey: '',
@@ -322,11 +322,7 @@ class ApplicationForm extends React.Component {
     return (
       <div className="page-wrap">
         <section className="page-section">
-          <label>应用归属：</label>
-          <Radio.Group value={this.state.company} onChange={e=> this.setState({company: e.target.value})}>
-            <Radio.Button value="haier">海尔</Radio.Button>
-            <Radio.Button value="nohaier">非海尔</Radio.Button>
-          </Radio.Group>
+          <label>应用归属：海尔</label>
         </section>
         <section className="page-section">
           <Form>
@@ -455,6 +451,8 @@ class ApplicationForm extends React.Component {
                   onRemove={() => this.removeMiddlewareMapping(item.id)}
                   key={item.id}
                   item={item}
+                  projects={this.props.NewApplication.projects}
+                  resources={this.props.NewApplication.resources}
                   />
               )
             })}

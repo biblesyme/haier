@@ -166,10 +166,11 @@ class ApplicationDetail extends React.Component {
     ) || {}
     const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
+    console.log(record)
     return (
     <div>
       <section className="page-section">
-        <label>应用归属：</label>
+        <label>应用归属：海尔</label>
       </section>
       <section className="page-section">
         <label>应用信息:</label>

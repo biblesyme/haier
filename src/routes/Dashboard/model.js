@@ -11,6 +11,7 @@ export default {
 		findDomainStatus: LOAD_STATUS.INITIAL,
 		projects: [],
 		domains: [],
+		resources: [],
 	},
 	reducers: {
 		setStatus(state, {payload}){
@@ -74,6 +75,35 @@ export default {
 				yield put({type:'setState',payload: {
 						findDomainStatus: LOAD_STATUS.FAIL,
 						errorMessage: e.message()
+					}
+				})
+				if(callback){
+					yield call(callback)
+				}
+			}
+		},
+		*findResource({payload={}},{call, put}){
+			let {callback} = payload
+			try{
+				let resources = yield call([apiStore,apiStore.find], 'resource', null, {forceReload: true})
+				let fomatResources = yield resources.content.map(r => {
+					if (r.hasOwnProperty('data')) {
+						return {
+							...r,
+							data: JSON.parse(r.data),
+						}
+					} else {
+						return r
+					}
+				})
+				yield put({type:'setState',payload: {resources: fomatResources}})
+				if(callback){
+					yield call(callback)
+				}
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findResourceStatus: LOAD_STATUS.FAIL,
 					}
 				})
 				if(callback){

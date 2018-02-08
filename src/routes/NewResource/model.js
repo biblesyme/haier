@@ -6,6 +6,8 @@ export default {
   state: {
     project: {},
     resources: [],
+    allProjects: [],
+    allResource: [],
   },
   reducers: {
     setState(state,{payload}){
@@ -48,6 +50,64 @@ export default {
       }
       catch(e){
         if(failCB){yield call(failCB, e)}
+      }
+    },
+    *findProject({payload={}},{call, put}){
+      let {callback} = payload
+      try{
+        let projects = yield call([apiStore,apiStore.find], 'project', null, {forceReload: true})
+        let fomatProjects = projects.content.map(p => {
+          if (p.hasOwnProperty('data')) {
+            return {
+              ...p,
+              data: JSON.parse(p.data),
+            }
+          } else {
+            return p
+          }
+        })
+        yield put({type:'setState',payload: {allProjects: fomatProjects}})
+        if(callback){
+          yield call(callback)
+        }
+      }
+      catch(e){
+        yield put({type:'setState',payload: {
+            findProjectStatus: LOAD_STATUS.FAIL,
+          }
+        })
+        if(callback){
+          yield call(callback)
+        }
+      }
+    },
+    *findResource({payload={}},{call, put}){
+      let {callback} = payload
+      try{
+        let resources = yield call([apiStore,apiStore.find], 'resource', null, {forceReload: true})
+        let fomatResources = yield resources.content.map(r => {
+          if (r.hasOwnProperty('data')) {
+            return {
+              ...r,
+              data: JSON.parse(r.data),
+            }
+          } else {
+            return r
+          }
+        })
+        yield put({type:'setState',payload: {allResource: fomatResources}})
+        if(callback){
+          yield call(callback)
+        }
+      }
+      catch(e){
+        yield put({type:'setState',payload: {
+            findResourceStatus: LOAD_STATUS.FAIL,
+          }
+        })
+        if(callback){
+          yield call(callback)
+        }
       }
     },
   }

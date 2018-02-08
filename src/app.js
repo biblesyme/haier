@@ -34,7 +34,6 @@ class App extends React.Component {
       payload: {
         failCB: (e) => {
           if (e.error && e.error.response && e.error.response.status === 401) {
-          // if (e.error.response.status === 401) {
             window.location.href=`http://t.c.haier.net/login?url=${url}`
           }
         },

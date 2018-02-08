@@ -136,6 +136,8 @@ export default class C extends React.Component {
             onCancel={this.handleCancel}
             resource={this.props.resource}
             project={this.props.project}
+            allProjects={this.props.allProjects}
+            allResource={this.props.allResource}
             />
         )}
       </main>

@@ -159,12 +159,12 @@ export default class C extends React.Component {
                   </FormItem> */}
                 </Form>
               </Card>
-              <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
+
           </div>
         )}
         {resource.resourceType === 'mysql' && (
           <div >
-            <Card title="MySQL" style={{height: '250px'}}>
+            <Card title="MySQL" style={{height: '250px', marginBottom: '16px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -219,12 +219,11 @@ export default class C extends React.Component {
                 </FormItem>
               </Form>
             </Card>
-            <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
           </div>
         )}
         {resource.resourceType === 'redis' && (
           <div >
-            <Card title="Redis" style={{marginBottom: '20px', height: '250px'}}>
+            <Card title="Redis" style={{marginBottom: '16px', height: '250px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}

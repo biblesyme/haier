@@ -33,6 +33,20 @@ const formItemLayout4 = {
   }
 }
 
+const adminMap = {
+  confirmed: '待通过',
+  passed: '已通过',
+  denied: '已驳回',
+  pending: '待审批',
+}
+
+const adminState = {
+  confirmed: 'orange',
+  denied: 'red',
+  passed: 'green',
+  pending: 'orange',
+}
+
 @Form.create()
 export default class C extends React.Component {
   state = {
@@ -50,13 +64,17 @@ export default class C extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const {resource={}, filterResource={}} = this.props
+    const {role} = this.props.App
     return (
       <div>
         <Modal
           title={
             <div className="text-center">
               资源详情
-              <Tag {...getState(resource.state)} className="pull-right">{nameMap[resource.state]}</Tag>
+              {role === 'admin' ?
+                <Tag className="pull-right" color={adminState[resource.state]}>{adminMap[resource.state]}</Tag>
+                : <Tag {...getState(resource.state)} className="pull-right">{nameMap[resource.state]}</Tag>
+              }
             </div>
           }
           {...this.props}

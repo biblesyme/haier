@@ -8,6 +8,7 @@ import { withRouter } from 'react-router'
 import FormMapping from '@/components/FormMapping'
 import replace from 'utils/replace'
 import New from './New'
+import nameMap from 'utils/nameMap'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -119,6 +120,8 @@ class NewResource extends React.Component {
         link: 'resources',
       },
     })
+    this.props.selfDispatch({type: 'findProject'})
+    this.props.selfDispatch({type: 'findResource'})
   }
 
   render(){
@@ -133,7 +136,7 @@ class NewResource extends React.Component {
     return (
     <div>
       <section className="page-section">
-        <label>应用归属：</label>
+        <label>应用归属：海尔</label>
       </section>
       <section className="page-section">
         <label>应用信息:</label>
@@ -198,7 +201,13 @@ class NewResource extends React.Component {
         <div>
           <section className="page-section">
             <Row gutter={24}>
-              <Col key={'paas'} span={6}><Item resource={paas} project={record}/></Col>
+              <Col key={'paas'} span={6}>
+                <Item resource={paas}
+                      project={record}
+                      allProjects={this.props.reduxState.allProjects}
+                      allResource={this.props.reduxState.allResource}
+                />
+              </Col>
             </Row>
           </section>
 
@@ -207,7 +216,12 @@ class NewResource extends React.Component {
               {middleware.map(m => (
                 <Col key={m.id} span={6}><Item resource={m} project={record}/></Col>
               ))}
-              <Col span={6}><New project={record}></New></Col>
+              <Col span={6}>
+                <New project={record}
+                     allProjects={this.props.reduxState.allProjects}
+                     allResource={this.props.reduxState.allResource}
+                />
+              </Col>
             </Row>
           </section>
         </div>
