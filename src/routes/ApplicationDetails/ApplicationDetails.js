@@ -166,7 +166,6 @@ class ApplicationDetail extends React.Component {
     ) || {}
     const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
-    console.log(record)
     return (
     <div>
       <section className="page-section">

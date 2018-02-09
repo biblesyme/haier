@@ -12,7 +12,7 @@ import renderRoutes from 'react-router-config/renderRoutes'
 
 import convertRelativeRoute from './utils/convert-relative-route'
 
-const routes = require('./index')
+const routes = require('./router')
 
 convertRelativeRoute(routes)
 

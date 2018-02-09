@@ -105,9 +105,8 @@ class Approval extends React.Component {
       title: '项目名称',
       render: (record) => {
         let selector = projects.filter(p => p.id === record.projectId)[0] || {}
-        const {name} = (selector.data && selector.data.data) || {}
         if (selector) {
-          return <span>{name}</span>
+          return <span>{selector.name}</span>
         } else {
           return <span></span>
         }

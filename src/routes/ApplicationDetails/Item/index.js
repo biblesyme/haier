@@ -150,13 +150,6 @@ export default class C extends React.Component {
                   >
                    {`${parseInt(data.memory) / 1024 || ''}G`}
                   </FormItem>
-                  {/* <FormItem
-                    {...formItemLayout3}
-                    label="硬盘"
-                    hasFeedback
-                  >
-                   {`${data.diskSize || ''}G`}
-                  </FormItem> */}
                 </Form>
               </Card>
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Table, Row, Col, Input, Button, Select, Tag} from 'antd'
+import {Table, Row, Col, Input, Select, Tag} from 'antd'
 import Detail from './Detail'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
@@ -118,9 +118,8 @@ class MySubmit extends React.Component {
       title: '项目名称',
       render: (record) => {
         let selector = projects.filter(p => p.id === record.projectId)[0] || {}
-        const {name} = (selector.data && selector.data.data) || {}
         if (selector) {
-          return <span>{name}</span>
+          return <span>{selector.name}</span>
         } else {
           return <span></span>
         }

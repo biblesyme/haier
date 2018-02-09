@@ -18,8 +18,6 @@
 
 ### 2. TODO
 ```
-RabbitMQ消费者创建参数：
-
-producerApplicationName(dropdown)
-exchangeName(dropdown)
+spin in table
+Tooltip in domain
 ```

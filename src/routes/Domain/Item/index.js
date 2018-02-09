@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, Icon} from 'antd'
+import {Card, Icon, Tooltip} from 'antd'
 import Edit from './Edit'
 import Detail from './Detail'
 import { connect } from 'utils/ecos'
@@ -53,7 +53,7 @@ class Item extends React.Component {
       <div className="inline-block mg-lr10 mg-b10">
         <Card className={styles["area-card"]}
               title={resource.name}
-              extra={<Icon type="edit" onClick={this.showModal('visibleEdit')} style={{cursor: 'pointer'}}/>}
+              extra={<Tooltip title="修改"><Icon type="edit" onClick={this.showModal('visibleEdit')} style={{cursor: 'pointer'}}/></Tooltip> }
               style={{ width: 300, height: 200 }}
         >
 
@@ -62,11 +62,15 @@ class Item extends React.Component {
             {domainAdmins.length > 0 && domainAdmins}
           </div>
           {domainAdmins.length > 0 && (
-            <div><Icon onClick={this.showModal('visibleDetail')}
-                       className="pull-right"
-                       type="ellipsis"
-                       style={{cursor: 'pointer'}}
-                  /></div>
+            <div>
+             <Tooltip title="详情">
+               <Icon onClick={this.showModal('visibleDetail')}
+                        className="pull-right"
+                        type="ellipsis"
+                        style={{cursor: 'pointer'}}
+                   />
+             </Tooltip>
+            </div>
           )}
 
         </Card>

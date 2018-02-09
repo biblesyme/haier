@@ -56,7 +56,6 @@ class Application extends React.Component {
   }
 
   handleOk = (e) => {
-    console.log(e);
     this.setState({
       visibleAdd: false,
       visibleEdit: false,
@@ -64,7 +63,6 @@ class Application extends React.Component {
     });
   }
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visibleAdd: false,
       visibleEdit: false,
@@ -91,7 +89,6 @@ class Application extends React.Component {
     }, {
       title: '应用名称',
       dataIndex: 'name',
-      // sorter: (a, b) => a.name.length - b.name.length,
     }, {
       title: '应用告警数',
       dataIndex: 'health',
@@ -101,16 +98,6 @@ class Application extends React.Component {
     }, {
       title: '资源种类',
       dataIndex: 'resourceUsage',
-      // render() {
-      //   return (
-      //     <div>
-      //       <Tag>M</Tag>
-      //       <Tag>P</Tag>
-      //       <Tag>R</Tag>
-      //       <Tag>MQ</Tag>
-      //     </div>
-      //   )
-      // }
     },
     {
       title: '状态',
@@ -134,19 +121,6 @@ class Application extends React.Component {
       }
     }];
 
-    // const members = this.state.members.map(m => {
-    //   return (
-    //     <p key={m.accout}>
-    //       {`${m.name} ${m.accout}`}
-    //       <Icon className="mg-l10"
-    //             type="delete"
-    //             style={{cursor: 'pointer'}}
-    //             onClick={e => this.deleteMember(e, m.accout)}
-    //       />
-    //     </p>
-    //   )
-    // })
-
     const boxes = projects.filter(a => {
       const {filter} = this.state
       if (!filter) {
@@ -163,14 +137,14 @@ class Application extends React.Component {
         <h3>应用列表</h3>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
-            <Select style={{ width: 200 }}
+            {/* <Select style={{ width: 200 }}
                     value={this.state.domainSelect}
                     onChange={domainSelect => this.setState({domainSelect})}
             >
               <Option key="all">全部</Option>
               <Option key="PSI">PSI</Option>
               <Option key="众创汇">众创汇</Option>
-            </Select>
+            </Select> */}
           </Col>
           <Col>
             <Search
@@ -183,44 +157,6 @@ class Application extends React.Component {
         <Table pagination={{showQuickJumper: true}} columns={columns} dataSource={boxes} rowKey="id"/>
       </div>
 
-      {/* <Modal
-        title="成员管理"
-        visible={this.state.visibleEdit}
-        okText="提交"
-        cancelText="取消"
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem
-            {...formItemLayout}
-            label="当前应用"
-          >
-            大数据
-          </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="成员"
-          >
-          </FormItem>
-        </Form>
-        <h3>查询</h3>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem
-            {...formItemLayout}
-            label="账号"
-          >
-
-              <Search />
-          </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="用户信息"
-          >
-            <p>张三  12123124231</p>
-          </FormItem>
-        </Form>
-      </Modal> */}
       {this.state.visibleEdit && (
         <Edit
           visible={this.state.visibleEdit}

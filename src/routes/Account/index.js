@@ -1,7 +1,7 @@
 module.exports = {
-  path: '/user',
-  name: 'User',
-  component: require('./User'),
+  path: '/accounts',
+  name: 'Account',
+  component: require('./Account'),
   routes: [
     require('./List'),
   ],

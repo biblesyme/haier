@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
 import nameMap from 'utils/nameMap'
-
 import { Menu, Icon, Button, Select } from 'antd';
+import config from './config'
+
 const SubMenu = Menu.SubMenu;
 const {Option} = Select
 
@@ -75,44 +76,18 @@ export default class MainPage extends React.Component {
             >
               {['internal', 'manager', 'admin', 'domainAdmin', 'developer'].includes(role) && (
                 <Menu.ItemGroup title="资源管理">
-                  {['internal', 'manager', 'admin', 'domainAdmin'].includes(role) && (
-                    <Menu.Item key="1">
-                      <Link to="/">
-                        <Icon type="app"></Icon>
-                        <span>应用创建</span>
-                      </Link>
-                    </Menu.Item>
-                  )}
-                  {['admin'].includes(role) && (
-                    <Menu.Item key="2">
-                      <Link to="/information">
-                        <span>
-                          <Icon type="desktop" />
-                          <span>
-                            信息中心
-                          </span>
-                        </span>
-                      </Link>
-                    </Menu.Item>
-                  )}
-                  {['developer', 'manager', 'domainAdmin', 'admin'].includes(role) && (
-                    <Menu.Item key="3">
-                      <Link to="/application">
-                        <span>
-                          <Icon type="appstore" />
-                          <span>应用列表</span>
-                        </span>
-                      </Link>
-                    </Menu.Item>
-                  )}
-                  {['admin'].includes(role) && (
-                    <Menu.Item key="4">
-                      <Link to="/resource">
-                        <Icon type="resource"></Icon>
-                        <span>资源列表</span>
-                      </Link>
-                    </Menu.Item>
-                  )}
+                  {config.resources.map(r => {
+                    if (r.roles.includes(role)) {
+                      return (
+                        <Menu.Item key={r.key}>
+                          <Link to={r.path}>
+                            <Icon type={r.icon}></Icon>
+                            <span>{r.title}</span>
+                          </Link>
+                        </Menu.Item>
+                      )
+                    }
+                  })}
                 </Menu.ItemGroup>
               )}
 
@@ -142,7 +117,7 @@ export default class MainPage extends React.Component {
               {role === 'admin' && (
                 <Menu.ItemGroup title="权限管理">
                   <Menu.Item key="7">
-                    <Link to="/user">
+                    <Link to="/accounts">
                       <span>
                         <Icon type="user" />
                         <span>
@@ -152,7 +127,7 @@ export default class MainPage extends React.Component {
                     </Link>
                   </Menu.Item>
                   <Menu.Item key="8">
-                    <Link to="/areamanage">
+                    <Link to="/domain">
                       <Icon type="area"></Icon>
                       <span>领域管理</span>
                     </Link>

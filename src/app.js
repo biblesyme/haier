@@ -12,7 +12,6 @@ import './antd.less'
 import { connect } from 'utils/ecos'
 import model from './models'
 
-import LoginForm from './components/pages/LoginForm'
 import MainPage from './components/pages/MainPage'
 
 const TabPane = Tabs.TabPane;

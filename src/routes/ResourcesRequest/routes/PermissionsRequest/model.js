@@ -47,7 +47,6 @@ export default {
       catch(e){
         yield put({type:'setState',payload: {
             findAccountStatus: LOAD_STATUS.FAIL,
-            errorMessage: e.message()
           }
         })
       }
@@ -101,7 +100,6 @@ export default {
       catch(e){
         yield put({type:'setState',payload: {
             findResourceStatus: LOAD_STATUS.FAIL,
-            errorMessage: e.message()
           }
         })
         if(callback){
