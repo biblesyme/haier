@@ -45,7 +45,6 @@ export default class C extends React.Component {
     let exchanges = resources.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
     let exchangeData = exchanges.filter(e => e.data.exchangeName === item.exchangeName)[0] || {}
     let exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
-    console.log(exchangeData)
 
     const formItemLayout4 = {
       labelCol: {
@@ -90,7 +89,7 @@ export default class C extends React.Component {
       <main>
         {item.resourceType === 'mysql' && (
           <Col {...gridLayout}>
-            <Card title="MySQL" style={{height: '290px'}}>
+            <Card title={<div><Icon type="mysql"/> MySQL</div>} style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 {machineRoomId}
                 <FormItem
@@ -159,7 +158,7 @@ export default class C extends React.Component {
 
         {item.resourceType === 'redis' && (
           <Col {...gridLayout}>
-            <Card title="Redis" style={{height: '290px'}}>
+            <Card title={<div><Icon type="redis"/> Redis</div>} style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 {machineRoomId}
                 <FormItem
@@ -207,7 +206,7 @@ export default class C extends React.Component {
 
         {item.resourceType === 'rocketMQTopic' && (
           <Col {...gridLayout}>
-            <Card title="RocketMQ" style={{height: '290px'}}>
+            <Card title={<div><Icon type="rocket"/> RocketMQ</div>} style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 {machineRoomId}
                 <FormItem
@@ -235,7 +234,7 @@ export default class C extends React.Component {
 
         {item.resourceType === 'rabbitMQProducer' && (
           <Col {...gridLayout}>
-            <Card title="RabbitMQ-生产者" style={{height: '290px'}}>
+            <Card title={<div><Icon type="RabbitMQ"/> RabbitMQ-生产者</div>} style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 {machineRoomId}
                 <FormItem
@@ -280,7 +279,7 @@ export default class C extends React.Component {
 
         {item.resourceType === 'rabbitMQConsumer' && (
           <Col {...gridLayout}>
-            <Card title="RabbitMQ-消费者" style={{height: '290px'}}>
+            <Card title={<div><Icon type="RabbitMQ"/> RabbitMQ-消费者</div>} style={{height: '290px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}

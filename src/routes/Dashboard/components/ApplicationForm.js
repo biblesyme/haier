@@ -109,7 +109,7 @@ const plainOptions = [{
 class ApplicationForm extends React.Component {
   state = {
     checkedList: [],
-    middlewareSelect: 'MySQL',
+    middlewareSelect: 'mysql',
     middlewareMappings: [],
     company: 'haier',
     location: 'qd',
@@ -421,11 +421,11 @@ class ApplicationForm extends React.Component {
                   value={this.state.middlewareSelect}
                   onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
           >
-            <Option key="mysql">MySQL</Option>
-            <Option key="redis">Redis</Option>
-            <Option key="rocketMQTopic">RocketMQ</Option>
-            <Option key="rabbitMQProducer">RabbitMQ(生产者)</Option>
-            <Option key="rabbitMQConsumer">RabbitMQ(消费者)</Option>
+            <Option key="mysql"><Icon type="mysql" style={{color: '#27ae60'}}/> MySQL</Option>
+            <Option key="redis"><Icon type="redis" style={{color: '#27ae60'}}/> Redis</Option>
+            <Option key="rocketMQTopic"><Icon type="rocket" style={{color: '#27ae60'}}/> RocketMQ</Option>
+            <Option key="rabbitMQProducer"><Icon type="RabbitMQ" style={{color: '#27ae60'}}/> RabbitMQ(生产者)</Option>
+            <Option key="rabbitMQConsumer"><Icon type="RabbitMQ" style={{color: '#27ae60'}}/> RabbitMQ(消费者)</Option>
           </Select>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>
