@@ -3,12 +3,6 @@ import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
-import Redis from './components/Redis'
-import MySQL from './components/MySQL'
-import Paas from './components/Paas'
-import RocketMQProduct from './components/RocketMQProduct'
-import RocketMQComsumer from './components/RocketMQComsumer'
-import RabbitMQ from './components/RabbitMQ'
 import { withRouter } from 'react-router'
 import Item from './Item'
 
@@ -17,42 +11,6 @@ const CardGrid = Card.Grid
 const CheckboxGroup = Checkbox.Group;
 
 import styles from './style.sass'
-
-const columns = [{
-  title: '序号',
-  dataIndex: 'key',
-}, {
-  title: '能力名称',
-  dataIndex: 'name',
-  sorter: (a, b) => a.name.length - b.name.length,
-}, {
-  title: '类型',
-  dataIndex: 'manager',
-  defaultSortOrder: 'descend',
-  sorter: (a, b) => a.manager.length - b.manager.length,
-}, {
-  title: '能力介绍',
-  dataIndex: 'health',
-}, {
-  title: '操作',
-  dataIndex: 'actions',
-  render(text, record, index){
-    return (
-      <Link to={`/application/${record.key}`}>{text}</Link>
-    )
-  }
-}];
-
-const data = [{
-  key: '1',
-  name: '大数据',
-  manager: '张三',
-  health: '50%',
-  resourceUsage: '30%',
-  middleWareHealth: '75% 80% 60%',
-  status: '待部署',
-  actions: '查看详情'
-}];
 
 const col = 12
 const formItemLayout = {
@@ -133,7 +91,13 @@ const formItemLayout4 = {
   }
 }
 
-const plainOptions = ['前端框架', '后台框架']
+const plainOptions = [{
+  label: '前端框架',
+  value: 'front',
+}, {
+  label: '后台框架',
+  value: 'back',
+}]
 
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
@@ -156,6 +120,8 @@ class ApplicationDetail extends React.Component {
         link: 'resources',
       },
     })
+    this.props.dispatch({type: 'App/findProject'})
+    this.props.dispatch({type: 'App/findResource'})
   }
   render(){
     const {record={}} = this.props.location
@@ -247,7 +213,13 @@ class ApplicationDetail extends React.Component {
           <section className="page-section">
             <Row gutter={24}>
               {middleware.map(m => (
-                <Col key={m.id} span={6}><Item resource={m} project={record}/></Col>
+                <Col key={m.id} span={6}>
+                  <Item resource={m}
+                        project={record}
+                        projects={this.props.App.projects}
+                        resources={this.props.App.resources}
+                  />
+                </Col>
               ))}
             </Row>
             <div className="text-right pd-tb10">
@@ -296,11 +268,11 @@ class ApplicationDetail extends React.Component {
       </div> */}
       <section className="page-section">
         <h3>框架</h3>
-        <CheckboxGroup options={plainOptions} value={["前端框架"]}/>
+        <CheckboxGroup options={plainOptions} value={record.frame}/>
       </section>
       <section className="page-section">
         <h3>监控功能</h3>
-        <Checkbox checked
+        <Checkbox checked={record.alert}
         >
           开启
         </Checkbox>

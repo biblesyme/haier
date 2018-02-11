@@ -334,9 +334,9 @@ class ApplicationForm extends React.Component {
                 hasFeedback
               >
                {getFieldDecorator('scode', {
-                  rules: [{ required: true, message: "请输入应用S码" }],
+                  rules: [{ required: true, message: "请输入S码" }],
                 })(
-                  <Search placeholder="请输入应用S码" enterButton="验证" onSearch={value => this.searchSCODE(value)}/>
+                  <Search placeholder="输入应用S码" enterButton="验证" onSearch={value => this.searchSCODE(value)}/>
                 )}
               </FormItem>
             </Col>
@@ -406,18 +406,6 @@ class ApplicationForm extends React.Component {
               </Col>
             </Row>
             )}
-
-
-            {/* <Row gutter={24}>
-              <Col span={24} style={{textAlign: 'right'}}>
-                <FormItem
-                  {...formItemLayout2}
-                  hasFeedback
-                >
-                  <Button>修改</Button>
-                </FormItem>
-              </Col>
-            </Row> */}
           </Form>
         </section>
 

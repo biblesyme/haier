@@ -85,7 +85,7 @@ export default class C extends React.Component {
           closable={false}
           width={800}
           >
-            <ResourceDetail resource={resource}/>
+            <ResourceDetail resource={resource} projects={this.props.projects} resources={this.props.resources}/>
         </Modal>
       </div>
 

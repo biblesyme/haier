@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
 import nameMap from 'utils/nameMap'
-import { Menu, Icon, Button, Select } from 'antd';
+import { Menu, Icon, Button, Select, Avatar } from 'antd';
 import config from './config'
 
 const SubMenu = Menu.SubMenu;

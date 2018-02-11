@@ -192,13 +192,21 @@ export default class C extends React.Component {
             {resource.state === 'denied' && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
-                <ResourceDetail resource={filterResource} approval={true}/>
+                <ResourceDetail resource={filterResource}
+                                approval={true}
+                                projects={this.props.projects}
+                                resources={this.props.resources}
+                />
               </div>
             )}
 
             {resource.state === 'pending' && (
               <div>
-                <ResourceDetail resource={filterResource} approval={true}/>
+                <ResourceDetail resource={filterResource}
+                                approval={true}
+                                projects={this.props.projects}
+                                resources={this.props.resources}
+                />
                 <br/>
                 <FormItem
                   label="驳回理由"
@@ -218,7 +226,11 @@ export default class C extends React.Component {
             )}
             {(resource.state === 'confirmed' || resource.state === 'passed') && (
               <div>
-                <ResourceDetail resource={filterResource} approval={true}/>
+                <ResourceDetail resource={filterResource}
+                                approval={true}
+                                projects={this.props.projects}
+                                resources={this.props.resources}
+                />
               </div>
             )}
         </Modal>

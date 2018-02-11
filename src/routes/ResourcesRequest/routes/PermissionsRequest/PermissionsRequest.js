@@ -175,6 +175,8 @@ class MySubmit extends React.Component {
           onCancel={this.handleCancel}
           resource={this.state.record}
           filterResource={this.state.resource}
+          projects={this.props.reduxState.projects}
+          resources={this.props.reduxState.resources}
           />
       )}
     </main>

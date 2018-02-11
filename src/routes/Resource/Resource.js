@@ -99,6 +99,8 @@ class Resource extends React.Component {
                   visible={this.state.visibleDetail}
                   onCancel={this.handleCancel}
                   resource={this.state.record}
+                  projects={this.props.reduxState.projects}
+                  resources={this.props.reduxState.resources}
             />
         )}
     </main>

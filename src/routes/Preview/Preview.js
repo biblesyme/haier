@@ -51,6 +51,10 @@ const plainOptions = [{
 }]
 
 class Preview extends React.Component {
+  componentWillMount() {
+    this.props.selfDispatch({type:'findProject'})
+    this.props.selfDispatch({type:'findResource'})
+  }
   submit = () => {
     const {form} = this.props.App
     if (!form.scode) {
@@ -245,6 +249,8 @@ class Preview extends React.Component {
                     onRemove={() => this.removeMiddlewareMapping(item.id)}
                     key={item.id}
                     item={item}
+                    projects={this.props.reduxState.projects}
+                    resources={this.props.reduxState.resources}
                     />
                 )
               })}
@@ -278,4 +284,4 @@ class Preview extends React.Component {
 
 const WrappedPreview = Form.create()(Preview);
 Object.defineProperty(WrappedPreview, "name", { value: "WrappedPreview" });
-export default withRouter(connect(null, ['App'])(WrappedPreview))
+export default withRouter(connect(require('./model'), ['App'])(WrappedPreview))

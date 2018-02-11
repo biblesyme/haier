@@ -184,7 +184,7 @@ export default class C extends React.Component {
     const {resource={}, project={}, allProjects=[], allResource=[]} = this.props
     const {containerHost, mysql, redis, rocketMQTopic, rabbitMQProducer, rabbitMQConsumer} = this.state
 
-    let projectSelect = allProjects.filter(p => rabbitMQConsumer.producerApplicationScode === p.scode)[0]
+    let projectSelect = allProjects.filter(p => rabbitMQConsumer.producerApplicationScode === p.scode)[0] || {}
     let exchanges = allResource.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
     let exchangeData = exchanges.filter(e => e.data.exchangeName === rabbitMQConsumer.exchangeName)[0] || {}
     const machineRoomId = (
@@ -432,7 +432,7 @@ export default class C extends React.Component {
                         >
                          <Select placeholder="请选择应用"
                                  value={rabbitMQConsumer.producerApplicationScode}
-                                 onChange={producerApplicationScode => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, producerApplicationScode}})}
+                                 onChange={producerApplicationScode => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, producerApplicationScode, exchangeName: ''}})}
                           >
                            {allProjects.map(p => <Option key={p.scode}>{p.name}</Option>)}
                          </Select>

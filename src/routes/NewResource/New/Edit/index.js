@@ -159,9 +159,10 @@ export default class C extends React.Component {
     const {mysql, redis, rocketMQTopic, rabbitMQProducer, rabbitMQConsumer} = this.state
     const {allProjects=[], allResource=[]} = this.props
 
-    let projectSelect = allProjects.filter(p => rabbitMQConsumer.producerApplicationScode === p.scode)[0]
+    let projectSelect = allProjects.filter(p => rabbitMQConsumer.producerApplicationScode === p.scode)[0] || {}
     let exchanges = allResource.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
     let exchangeData = exchanges.filter(e => e.data.exchangeName === rabbitMQConsumer.exchangeName)[0] || {}
+    let exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
 
     const machineRoomId = (
       <FormItem
@@ -392,7 +393,7 @@ export default class C extends React.Component {
                         >
                          <Select placeholder="请选择应用"
                                  value={rabbitMQConsumer.producerApplicationScode}
-                                 onChange={producerApplicationScode => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, producerApplicationScode}})}
+                                 onChange={producerApplicationScode => this.setState({rabbitMQConsumer: {...rabbitMQConsumer, producerApplicationScode, exchangeName: ''}})}
                           >
                            {allProjects.map(p => <Option key={p.scode}>{p.name}</Option>)}
                          </Select>
@@ -419,7 +420,7 @@ export default class C extends React.Component {
                          />
                         </FormItem>
 
-                        {exchangeData.exchangeType === 'topic' && (
+                        {exchangeType === 'topic' && (
                           <FormItem
                             {...formInputLayout}
                             label="主题名"
@@ -430,7 +431,7 @@ export default class C extends React.Component {
                            />
                           </FormItem>
                         )}
-                        {exchangeData.exchangeType === 'direct' && (
+                        {exchangeType === 'direct' && (
                           <FormItem
                             {...formInputLayout}
                             label="直连名"

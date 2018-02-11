@@ -41,9 +41,11 @@ export default class C extends React.Component {
     const {onChange, item={}, onRemove, projects=[], resources=[]} = this.props
     const { size, size2 } = this.state;
 
-    let projectSelect = projects.filter(p => item.producerApplicationScode === p.scode)[0]
+    let projectSelect = projects.filter(p => item.producerApplicationScode === p.scode)[0] || {}
     let exchanges = resources.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
     let exchangeData = exchanges.filter(e => e.data.exchangeName === item.exchangeName)[0] || {}
+    let exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
+    console.log(exchangeData)
 
     const formItemLayout4 = {
       labelCol: {
@@ -287,7 +289,7 @@ export default class C extends React.Component {
                 >
                  <Select placeholder="请选择应用"
                          value={item.producerApplicationScode}
-                         onChange={producerApplicationScode => onChange({...item, producerApplicationScode})}
+                         onChange={producerApplicationScode => onChange({...item, producerApplicationScode, exchangeName: ''})}
                   >
                    {projects.map(p => <Option key={p.scode}>{p.name}</Option>)}
                  </Select>
@@ -314,7 +316,7 @@ export default class C extends React.Component {
                  />
                 </FormItem>
 
-                {exchangeData.exchangeType === 'topic' && (
+                {exchangeType === 'topic' && (
                   <FormItem
                     {...formInputLayout}
                     label="主题名"
@@ -325,7 +327,7 @@ export default class C extends React.Component {
                    />
                   </FormItem>
                 )}
-                {exchangeData.exchangeType === 'direct' && (
+                {exchangeType === 'direct' && (
                   <FormItem
                     {...formInputLayout}
                     label="直连名"

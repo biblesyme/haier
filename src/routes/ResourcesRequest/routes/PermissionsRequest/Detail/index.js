@@ -93,7 +93,10 @@ export default class C extends React.Component {
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
               </div>
             )}
-            <ResourceDetail resource={filterResource}/>
+            <ResourceDetail resource={filterResource}
+                            projects={this.props.projects}
+                            resources={this.props.resources}
+            />
         </Modal>
       </div>
 

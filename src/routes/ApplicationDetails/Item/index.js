@@ -119,11 +119,20 @@ export default class C extends React.Component {
   }
 
   render() {
-    const {resource={}} = this.props
+    const {resource={}, projects=[], resources=[]} = this.props
     const {data={}} = resource
     const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
+    let projectSelect = {}
+    let exchangeType
+    if (resource.resourceType === 'rabbitMQConsumer') {
+      projectSelect = projects.filter(p => resource.data.producerApplicationScode === p.scode)[0] || {}
+      let exchanges = resources.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
+      let exchangeData = exchanges.filter(e => e.data.exchangeName === resource.data.exchangeName)[0] || {}
+      exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
+    }
+
     return (
       <main>
         {resource.resourceType === 'containerHost' && (
@@ -332,8 +341,7 @@ export default class C extends React.Component {
                   label="应用"
                   hasFeedback
                 >
-                 {data.producerApplicationScode === 'S123451' && '产品中心'}
-                 {data.producerApplicationScode === 'S123450' && '鹿屋基地'}
+                 {projectSelect.name}
                 </FormItem>
                 <FormItem
                   labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
@@ -342,9 +350,7 @@ export default class C extends React.Component {
                   hasFeedback
                   style = {{marginBottom: '10px'}}
                 >
-                  {data.exchangeName === 'topic' && '主题应用'}
-                  {data.exchangeName === 'direct' && '直连应用'}
-                  {data.exchangeName === 'fanout' && '广播应用'}
+                  {data.exchangeName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -353,7 +359,7 @@ export default class C extends React.Component {
                  {data.queueName}
                 </FormItem>
 
-                {data.exchangeName === 'topic' && (
+                {exchangeType === 'topic' && (
                   <FormItem
                     {...formInputLayout}
                     label="主题名"
@@ -361,7 +367,7 @@ export default class C extends React.Component {
                    {data.topicName}
                   </FormItem>
                 )}
-                {data.exchangeName === 'direct' && (
+                {exchangeType === 'direct' && (
                   <FormItem
                     {...formInputLayout}
                     label="直连名"

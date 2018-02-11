@@ -39,9 +39,20 @@ export default class C extends React.Component {
   }
 
   render() {
-    const {onChange, item={}, onRemove} = this.props
+    const {onChange, item={}, onRemove, projects=[], resources=[]} = this.props
     const { size, size2 } = this.state;
+
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === item.machineRoomId)[0] || {}
+
+    let projectSelect = {}
+    let exchangeType
+    if (item.resourceType === 'rabbitMQConsumer') {
+      projectSelect = projects.filter(p => item.producerApplicationScode === p.scode)[0] || {}
+      let exchanges = resources.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
+      let exchangeData = exchanges.filter(e => e.data.exchangeName === item.exchangeName)[0] || {}
+      exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
+    }
+
     const formItemLayout4 = {
       labelCol: {
         xs: { span: 6 },
@@ -255,8 +266,7 @@ export default class C extends React.Component {
                   label="应用"
                   hasFeedback
                 >
-                 {item.producerApplicationScode === 'S123451' && '产品中心'}
-                 {item.producerApplicationScode === 'S123450' && '鹿屋基地'}
+                  {projectSelect.name}
                 </FormItem>
                 <FormItem
                   labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
@@ -265,9 +275,7 @@ export default class C extends React.Component {
                   hasFeedback
                   style = {{marginBottom: '10px'}}
                 >
-                  {item.exchangeName === 'topic' && '主题应用'}
-                  {item.exchangeName === 'direct' && '直连应用'}
-                  {item.exchangeName === 'fanout' && '广播应用'}
+                  {item.exchangeName}
                 </FormItem>
                 <FormItem
                   {...formInputLayout}
@@ -276,7 +284,7 @@ export default class C extends React.Component {
                  {item.queueName}
                 </FormItem>
 
-                {item.exchangeName === 'topic' && (
+                {exchangeType === 'topic' && (
                   <FormItem
                     {...formInputLayout}
                     label="主题名"
@@ -284,7 +292,7 @@ export default class C extends React.Component {
                    {item.topicName}
                   </FormItem>
                 )}
-                {item.exchangeName === 'direct' && (
+                {exchangeType === 'direct' && (
                   <FormItem
                     {...formInputLayout}
                     label="直连名"
@@ -294,7 +302,6 @@ export default class C extends React.Component {
                 )}
               </Form>
             </Card>
-
           </Col>
         )}
       </main>

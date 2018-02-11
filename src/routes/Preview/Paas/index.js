@@ -73,7 +73,7 @@ export default class C extends React.Component {
   render() {
     const locationFilter = this.state.locations.filter(l => l.id === this.state.machineRoomId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === this.state.clusterId)[0] || {}
-    const {item} = this.props
+    const {item={}} = this.props
     return (
       <main>
         <label htmlFor="">资源所在地：</label>
