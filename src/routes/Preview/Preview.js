@@ -274,7 +274,7 @@ class Preview extends React.Component {
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
-          <Button type="primary" onClick={this.goBack}>返回</Button>
+          <Button onClick={this.goBack}>返回</Button>
           <Button type="primary" style={{float: 'right'}} onClick={this.submit}>创建</Button>
         </section>
       </main>

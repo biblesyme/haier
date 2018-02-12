@@ -464,7 +464,7 @@ class ApplicationForm extends React.Component {
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
-          <Button type="primary" onClick={this.reset}>重置</Button>
+          <Button onClick={this.reset}>重置</Button>
           <Button type="primary" icon="eye" style={{float: 'right'}} onClick={this.preview}>预览</Button>
         </section>
       </div>
