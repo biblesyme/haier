@@ -19,7 +19,7 @@ export default {
       icon: 'appstore',
       path: '/application',
       key: '3',
-      roles: ['developer', 'manager', 'domainAdmin', 'admin'],
+      roles: ['developer', 'manager', 'domainAdmin'],
     },
     {
       title: '资源列表',

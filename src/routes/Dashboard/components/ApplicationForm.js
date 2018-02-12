@@ -299,7 +299,7 @@ class ApplicationForm extends React.Component {
       projectInfo: {},
       searching: LOAD_STATUS.INITIAL,
     })
-    // this.addMiddlewareMapping('mysql')
+    this.props.form.setFieldsValue({scode: ''})
   }
 
   searchSCODE = (value) => {
@@ -400,7 +400,7 @@ class ApplicationForm extends React.Component {
                   hasFeedback
                 >
                  <Select value={this.state.domainId} onChange={domainId => this.setState({domainId})}>
-                   {domains.map(d => <Option key={d.id}>{d.name}</Option>)}
+                   {domains.map(d => <Option key={d.id}><Icon type="area" style={{color: '#27ae60'}}/> {d.name}</Option>)}
                  </Select>
                 </FormItem>
               </Col>

@@ -97,7 +97,17 @@ class Application extends React.Component {
       dataIndex: 'resourceUsage1',
     }, {
       title: '资源种类',
-      dataIndex: 'resourceUsage',
+      render: (record) => {
+        let resources=[]
+        if (record.hasOwnProperty('resources')) {
+          record.resources.map(r => {
+            if (!resources.includes(r.resourceType) && r.resourceType !== 'containerHost') {
+              resources = [...resources, r.resourceType]
+            }
+          })
+        }
+        return resources.map(r => <Tag key={record.id + r} color="blue"><Icon  type={nameMap[r]}/></Tag>)
+      }
     },
     {
       title: '状态',

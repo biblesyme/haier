@@ -57,4 +57,12 @@ export default {
   // mysql: 'M',
   // RocketMQ: 'RMQ',
   // RabbitMQ: ''
+
+  // for Icon
+  containerHost: 'cluster',
+  mysql: 'mysql',
+  redis: 'redis',
+  rocketMQTopic: 'rocket',
+  rabbitMQProducer: 'RabbitMQ',
+  rabbitMQConsumer: 'RabbitMQ',
 }

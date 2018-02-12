@@ -99,10 +99,6 @@ const plainOptions = [{
   value: 'back',
 }]
 
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
-
 class ApplicationDetail extends React.Component {
   componentWillMount() {
     const {record={}} = this.props.location

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Table, Row, Col, Input, Button, Select, Tag} from 'antd'
+import {Table, Row, Col, Input, Button, Select, Tag, Icon} from 'antd'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
@@ -40,18 +40,18 @@ class Resource extends React.Component {
       dataIndex: 'id'
     }, {
       title: '类型',
-      dataIndex: 'resourceType',
+      render: (record) => <Tag key={record.id} color="blue"><Icon  type={nameMap[record.resourceType]}/></Tag>,
       // filters: [
       //   { text: '全部', value: 'all' },
       //   { text: '中间件', value: '中间件' },
-      //   { text: 'PAAS', value: 'paas' },
+      //   { text: 'PAAS', value: 'containerHost' },
       //   { text: '能力开放平台', value: 'Platform' },
       // ],
       // onFilter: (value, record) => {
       //   if (value === 'all') {
-      //     return record.type
+      //     return record.resourceType
       //   }
-      //   return record.type.includes(value)
+      //   return record.resourceType.includes(value)
       // },
       // filterMultiple: false,
     }, {
