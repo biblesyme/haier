@@ -1,10 +1,12 @@
 import { delay } from 'redux-saga'
 import apiStore from 'utils/apiStore'
+import axios from 'axios'
 
 export default {
   state: {
     project: {},
     resources: [],
+    projectInfo: {},
   },
   reducers: {
     setState(state,{payload}){
@@ -47,6 +49,15 @@ export default {
       }
       catch(e){
         if(failCB){yield call(failCB, e)}
+      }
+    },
+    *findProjectInfo({payload={}}, {call, put}) {
+      let {scode} = payload
+      try {
+        let projectInfo = yield call([axios, axios.get], `/v1/query/projects/${scode}`)
+        yield put({type: 'setState', payload: {projectInfo: projectInfo.data.data}})
+      } catch (e) {
+
       }
     },
   }

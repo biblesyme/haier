@@ -111,6 +111,7 @@ class NewResource extends React.Component {
       payload: {
         data: record,
         link: 'self',
+        successCB: (resource) => this.props.selfDispatch({type: 'findProjectInfo', payload: {scode: resource.scode}}),
       },
     })
     this.props.selfDispatch({
@@ -126,11 +127,7 @@ class NewResource extends React.Component {
 
   render(){
     const {record={}} = this.props.location
-    const {resources=[]} = this.props.reduxState
-    const projectInfo = (record &&
-      record.data &&
-      record.data.data
-    ) || {}
+    const {resources=[], projectInfo={}} = this.props.reduxState
     const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
     return (

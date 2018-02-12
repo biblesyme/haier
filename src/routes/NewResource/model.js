@@ -1,6 +1,7 @@
 import { delay } from 'redux-saga'
 import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
 import apiStore from 'utils/apiStore'
+import axios from 'axios'
 
 export default {
   state: {
@@ -8,6 +9,7 @@ export default {
     resources: [],
     allProjects: [],
     allResource: [],
+    projectInfo: {},
   },
   reducers: {
     setState(state,{payload}){
@@ -108,6 +110,15 @@ export default {
         if(callback){
           yield call(callback)
         }
+      }
+    },
+    *findProjectInfo({payload={}}, {call, put}) {
+      let {scode} = payload
+      try {
+        let projectInfo = yield call([axios, axios.get], `/v1/query/projects/${scode}`)
+        yield put({type: 'setState', payload: {projectInfo: projectInfo.data.data}})
+      } catch (e) {
+
       }
     },
   }
