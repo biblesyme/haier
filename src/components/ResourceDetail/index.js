@@ -147,14 +147,14 @@ export default class C extends React.Component {
                     label="CPU内核数"
                     hasFeedback
                   >
-                   {data.cpu}
+                   {data.cpu / 1000}
                   </FormItem>
                   <FormItem
                     {...formItemLayout3}
                     label="内存"
                     hasFeedback
                   >
-                   {`${parseInt(data.memory) / 1024 || ''}G`}
+                   {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
                   </FormItem>
                   {/* <FormItem
                     {...formItemLayout3}

@@ -263,8 +263,8 @@ class ApplicationForm extends React.Component {
     if (this.state.paas.resource === 'custome') {
       formatPaas = {
         ...this.state.paas,
-        cpu: this.state.paas.customeCPU,
-        memory: (this.state.paas.customeMemory * 1024).toString(),
+        cpu: this.state.paas.customeCPU * 1000,
+        memory: (this.state.paas.customeMemory * 1024 * 1024).toString(),
         // diskSize: this.state.paas.customeDiskSize,
         resourceType: 'containerHost',
       }

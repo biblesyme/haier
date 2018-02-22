@@ -71,7 +71,7 @@ class Preview extends React.Component {
           data: JSON.stringify({
             ...r,
             cpu: parseInt(r.cpu),
-            memory: parseInt(r.memory),
+            memory: parseInt(r.memory*1024),
             // diskSize: parseInt(r.diskSize),
           }),
           version: 1,

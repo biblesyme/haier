@@ -51,7 +51,7 @@ export default class C extends React.Component {
   state = {
     middlewareSelect: '',
     containerHost: {
-      cpu: '',
+      cpu: '0',
       memory: '',
     },
     mysql: {
@@ -101,7 +101,8 @@ export default class C extends React.Component {
     this.setState({
       containerHost: {
         ...data,
-        memory: data.memory / 1024,
+        cpu: data.cpu /1000,
+        memory: data.memory / 1024 / 1024 / 1024,
       },
       mysql: {
         ...data,
@@ -121,7 +122,8 @@ export default class C extends React.Component {
     if (resource.resourceType === 'containerHost') {
       data = {
         ...data,
-        memory: data.memory * 1024,
+        cpu: data.cpu * 1000,
+        memory: data.memory * 1024 * 1024 * 1024,
       }
     }
     if (resource.resourceType === 'mysql') {
