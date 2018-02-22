@@ -111,7 +111,7 @@ export default class C extends React.Component {
     const {resource={}, projects=[], resources=[]} = this.props
     const {data={}} = resource
     const {used={}} = this.state.clusterInfo
-    const {quota={}} = this.state.clusterInfo
+    const {request={}} = this.state.clusterInfo
 
     const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
@@ -176,14 +176,14 @@ export default class C extends React.Component {
                       label="已用CPU"
                       hasFeedback
                     >
-                     {`${used.cpu} / ${quota.cpu}`}
+                     {`${used.cpu} / ${request.cpu}`}
                     </FormItem>
                     <FormItem
                       {...formItemLayout3}
                       label="已用内存"
                       hasFeedback
                     >
-                     {`${used.memory} / ${quota.memory}`}
+                     {`${used.memory} / ${request.memory}`}
                     </FormItem>
                   </Form>
                 </section>
