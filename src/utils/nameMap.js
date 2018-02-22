@@ -15,6 +15,7 @@ export default {
   resourceReady: '已部署',
   DeployingResource: '正在部署',
   Updating: '更新中',
+  preparing:'已审批',
   deploying: '部署中',
   ready: '已就绪',
   deployError: '失败',
@@ -33,9 +34,9 @@ export default {
 
 
   // Project
-  ApplyingResource: '待部署',
+  applyingResource: '待部署',
   resourceReady: '已部署',
-  DeployingResource: '正在部署',
+  deployingResource: '正在部署',
 
   // Application
   haier: '海尔',
