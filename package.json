@@ -22,7 +22,7 @@
     "install": "^0.10.2",
     "lodash": "^4.17.4",
     "npm": "^5.6.0",
-    "rancher-api-store": "0.0.12",
+    "rancher-api-store": "git+https://github.com/n313893254/rancher-api-store.git",
     "rc-progress": "^2.2.5",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
