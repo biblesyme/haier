@@ -74,8 +74,8 @@ export default class C extends React.Component {
     const {value} = e.target
     if (value === 'height') {
       const obj = {
-        cpu: 16,
-        memory: (16*1024).toString(),
+        cpu: 16*1000,
+        memory: (16*1024*1024).toString(),
         diskSize: 1024,
         resource: value,
       }
@@ -90,8 +90,8 @@ export default class C extends React.Component {
     }
     if (value === 'middle') {
       const obj = {
-        cpu: 8,
-        memory: (16*1024).toString(),
+        cpu: 8*1000,
+        memory: (16*1024*1024).toString(),
         diskSize: 500,
         resource: value,
       }
@@ -106,8 +106,8 @@ export default class C extends React.Component {
     }
     if (value === 'low') {
       const obj = {
-        cpu: 4,
-        memory: (16*1024).toString(),
+        cpu: 4*1000,
+        memory: (16*1024*1024).toString(),
         diskSize: 256,
         resource: value,
       }
