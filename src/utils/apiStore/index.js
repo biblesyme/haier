@@ -1,4 +1,4 @@
-import {Store} from 'rancher-api-store'
+import {Store} from 'rancher-api-store-haier'
 
 let apiStore = new Store('appStore', {
   baseURL: '/v1'

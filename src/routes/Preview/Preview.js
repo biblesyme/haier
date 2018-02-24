@@ -40,6 +40,22 @@ const formItemLeft = {
   }
 };
 
+const formItemCenter = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+    push: 1
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+    push: 1
+  },
+  style: {
+    marginBottom: '10px'
+  }
+};
+
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = [{
@@ -174,6 +190,15 @@ class Preview extends React.Component {
           <label>应用信息:</label>
           <div style={{marginTop: '8px'}}></div>
           <Row gutter={24} className="scode-info">
+            <Col span={24}>
+              <FormItem
+                {...formItemCenter}
+                label="S码"
+                hasFeedback
+              >
+               {projectInfo.applicationId}
+              </FormItem>
+            </Col>
             <Col span={col}>
               <FormItem
                 {...formItemLeft}

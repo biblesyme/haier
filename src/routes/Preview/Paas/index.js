@@ -32,7 +32,6 @@ const formItemLayout3 = {
 export default class C extends React.Component {
   state = {
     resource: 'height',
-    machineRoomId: 'qd',
     locations: [],
     clusters: [],
   }
@@ -71,7 +70,7 @@ export default class C extends React.Component {
   }
 
   render() {
-    const locationFilter = this.state.locations.filter(l => l.id === this.state.machineRoomId)[0] || {}
+    const locationFilter = this.state.locations.filter(l => l.id === this.state.locationId)[0] || {}
     const clusterFilter = this.state.clusters.filter(c => c.id === this.state.clusterId)[0] || {}
     const {item={}} = this.props
     return (
