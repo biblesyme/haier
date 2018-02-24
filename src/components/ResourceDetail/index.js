@@ -66,7 +66,8 @@ export default class C extends React.Component {
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
-    if (data.resourceType === 'containerHost') {
+    console.log(this.props)
+    if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
         payload: {
@@ -125,7 +126,6 @@ export default class C extends React.Component {
       let exchangeData = exchanges.filter(e => e.data.exchangeName === data.exchangeName)[0] || {}
       exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
     }
-    console.log(projectSelect)
 
     return (
       <main>
@@ -156,13 +156,6 @@ export default class C extends React.Component {
                   >
                    {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
                   </FormItem>
-                  {/* <FormItem
-                    {...formItemLayout3}
-                    label="硬盘"
-                    hasFeedback
-                  >
-                   {`${data.diskSize || ''}G`}
-                  </FormItem> */}
                 </Form>
               </section>
               {this.props.approval && (

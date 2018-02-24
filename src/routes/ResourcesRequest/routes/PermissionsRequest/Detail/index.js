@@ -52,7 +52,31 @@ const adminState = {
 @Form.create()
 export default class C extends React.Component {
   state = {
+    resource: {},
+    status: '',
   }
+
+  componentWillMount() {
+    this.props.dispatch({
+      'type': 'App/followLink',
+      payload: {
+        data: {
+          ...this.props.resource,
+        },
+        link: 'resource',
+        successCB: (resource) => {
+          if (resource.hasOwnProperty('data')) {
+            resource = {
+              ...resource,
+              data: JSON.parse(resource.data),
+            }
+          }
+          this.setState({resource, status: 'success'})
+        }
+      },
+    })
+  }
+
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (err) return
@@ -88,12 +112,12 @@ export default class C extends React.Component {
           closable={false}
           width={800}
           >
-            {resource.state === 'denied' && (
+            {(resource.state === 'denied' && this.state.status === 'success') && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
               </div>
             )}
-            <ResourceDetail resource={filterResource}
+            <ResourceDetail resource={this.state.resource}
                             projects={this.props.projects}
                             resources={this.props.resources}
             />

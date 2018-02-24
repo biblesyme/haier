@@ -55,6 +55,7 @@ const adminState = {
 export default class C extends React.Component {
   state = {
     resource: {},
+    status: '',
   }
 
   componentWillMount() {
@@ -72,7 +73,7 @@ export default class C extends React.Component {
               data: JSON.parse(resource.data),
             }
           }
-          this.setState({resource})
+          this.setState({resource, status: 'success'})
         }
       },
     })
@@ -189,23 +190,21 @@ export default class C extends React.Component {
           closable={false}
           width={800}
           >
-            {resource.state === 'denied' && (
+            {(resource.state === 'denied' && this.state.status === 'success') && (
               <div>
                 <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
-                <ResourceDetail resource={filterResource}
+                <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}
-                                resources={this.props.resources}
                 />
               </div>
             )}
 
-            {resource.state === 'pending' && (
+            {(resource.state === 'pending'  && this.state.status === 'success') && (
               <div>
-                <ResourceDetail resource={filterResource}
+                <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}
-                                resources={this.props.resources}
                 />
                 <br/>
                 <FormItem
@@ -224,12 +223,11 @@ export default class C extends React.Component {
 
               </div>
             )}
-            {(resource.state === 'confirmed' || resource.state === 'passed') && (
+            {((resource.state === 'confirmed' || resource.state === 'passed')  && this.state.status === 'success') && (
               <div>
-                <ResourceDetail resource={filterResource}
+                <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}
-                                resources={this.props.resources}
                 />
               </div>
             )}
