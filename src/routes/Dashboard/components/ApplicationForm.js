@@ -306,7 +306,17 @@ class ApplicationForm extends React.Component {
     if (this.state.searching !== LOAD_STATUS.START) {
       this.setState({searching: LOAD_STATUS.START})
       axios.get(`/v1/query/projects/${value}`)
-        .then((res) => this.setState({projectInfo: res.data.data, searching: LOAD_STATUS.SUCCESS, domainId: res.data.data.businessDomainId}))
+        .then((res) => {
+          const {domains} = this.props.NewApplication
+          this.setState({projectInfo: res.data.data, searching: LOAD_STATUS.SUCCESS})
+          domains.forEach(element => {
+            console.log(element)
+            if(element.name === res.data.data.businessDomain){
+              this.setState({domainId:element.id})
+
+            } 
+          });
+        })
         .catch((err) => this.setState({projectInfo: null, searching: LOAD_STATUS.FAIL}))
     }
   }
