@@ -259,6 +259,10 @@ class ApplicationForm extends React.Component {
       message.warning('S码未验证')
       return
     }
+    if (this.state.domainId === ''){
+      message.warning('请选择应用所属领域')
+      return
+    }
     let formatPaas = this.state.paas
     if (this.state.paas.resource === 'custome') {
       formatPaas = {
