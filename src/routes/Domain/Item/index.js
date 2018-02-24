@@ -21,7 +21,6 @@ class Item extends React.Component {
   }
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visibleEdit: false,
       visibleDetail: false,

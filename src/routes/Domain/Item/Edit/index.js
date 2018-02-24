@@ -85,7 +85,6 @@ export default class C extends React.Component {
   }
 
   deleteMember = (e, externalId) => {
-    console.log(e)
     let payload = {
       data: {
         externalId,

@@ -4,7 +4,7 @@ import apiStore from 'utils/apiStore'
 
 export default {
   state: {
-    findResourcelStatus: LOAD_STATUS.INITIAL,
+    findResourceStatus: LOAD_STATUS.INITIAL,
 		findProjectStatus: LOAD_STATUS.INITIAL,
 		resources: [],
     projects: [],
@@ -37,7 +37,7 @@ export default {
           }
         })
 				yield put({type:'setState',payload: {resources: fomatResources}})
-				yield put({type:'setState',payload: {findResourcelStatus: LOAD_STATUS.SUCCESS} })
+				yield put({type:'setState',payload: {findResourceStatus: LOAD_STATUS.SUCCESS} })
         if(callback){
           yield call(callback)
         }

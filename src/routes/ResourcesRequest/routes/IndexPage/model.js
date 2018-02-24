@@ -95,7 +95,7 @@ export default {
           }
         })
         yield put({type:'setState',payload: {resources: fomatResources}})
-        yield put({type:'setState',payload: {findResourcelStatus: LOAD_STATUS.SUCCESS} })
+        yield put({type:'setState',payload: {findResourceStatus: LOAD_STATUS.SUCCESS} })
         if(callback){
           yield call(callback)
         }
