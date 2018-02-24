@@ -164,6 +164,7 @@ class Preview extends React.Component {
     const {history} = this.props
     const {form={}} = this.props.App
     const {projectInfo={}, middlewareMappings=[]} = form
+    const {domainName=''} = form
     return (
       <main>
         <section className="page-section">
@@ -225,7 +226,7 @@ class Preview extends React.Component {
                 label="应用领域"
                 hasFeedback
               >
-               {projectInfo.businessDomain}
+               {domainName}
               </FormItem>
             </Col>
           </Row>

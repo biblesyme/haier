@@ -116,6 +116,7 @@ class ApplicationForm extends React.Component {
     projectInfo: null,
     searching: LOAD_STATUS.INITIAL,
     domainId: '',
+    domainName:'',
     paas: {
       locationId: '',
       clusterName: '',
@@ -254,6 +255,15 @@ class ApplicationForm extends React.Component {
     this.addMiddlewareMapping(middlewareSelect)
   }
 
+  onDomainSelect = (domainId) =>{
+    const {domains} = this.props.NewApplication
+    domains.forEach(domain =>{
+      if(domain.id === domainId){
+        this.setState({domainId:domain.id,domainName:domain.name})
+      }
+    })
+  }
+
   preview = () => {
     if (this.state.searching !== LOAD_STATUS.SUCCESS) {
       message.warning('S码未验证')
@@ -314,10 +324,8 @@ class ApplicationForm extends React.Component {
           const {domains} = this.props.NewApplication
           this.setState({projectInfo: res.data.data, searching: LOAD_STATUS.SUCCESS})
           domains.forEach(element => {
-            console.log(element)
             if(element.name === res.data.data.businessDomain){
-              this.setState({domainId:element.id})
-
+              this.setState({domainId:element.id,domainName:element.name})
             } 
           });
         })
@@ -413,7 +421,7 @@ class ApplicationForm extends React.Component {
                   label="应用领域"
                   hasFeedback
                 >
-                 <Select value={this.state.domainId} onChange={domainId => this.setState({domainId})}>
+                 <Select value={this.state.domainId} onChange={domainId => this.onDomainSelect(domainId)}>
                    {domains.map(d => <Option key={d.id}><Icon type="area" style={{color: '#27ae60'}}/> {d.name}</Option>)}
                  </Select>
                 </FormItem>
