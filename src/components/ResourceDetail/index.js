@@ -166,17 +166,17 @@ export default class C extends React.Component {
                   <Form className={styles["card-body"]}>
                     <FormItem
                       {...formItemLayout3}
-                      label="已用CPU"
+                      label="可用CPU"
                       hasFeedback
                     >
-                     {`${used.cpu} / ${request.cpu}`}
+                     {`${request.cpu - used.cpu}`}
                     </FormItem>
                     <FormItem
                       {...formItemLayout3}
-                      label="已用内存"
+                      label="可用内存"
                       hasFeedback
                     >
-                     {`${used.memory} / ${request.memory}`}
+                     {`${request.memory - used.memory}`}
                     </FormItem>
                   </Form>
                 </section>
@@ -185,7 +185,7 @@ export default class C extends React.Component {
         )}
         {data.resourceType === 'mysql' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="MySQL" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="MySQL" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -244,7 +244,7 @@ export default class C extends React.Component {
         )}
         {data.resourceType === 'redis' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="Redis" style={{width: '216px', marginBottom: '20px'}}>
+            <Card title="Redis" style={{width: '270px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -284,7 +284,7 @@ export default class C extends React.Component {
         )}
         {data.resourceType === 'rocketMQTopic' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="RocketMQ" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="RocketMQ" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formItemLayout4}
@@ -313,7 +313,7 @@ export default class C extends React.Component {
         )}
         {data.resourceType === 'rabbitMQProducer' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
@@ -353,7 +353,7 @@ export default class C extends React.Component {
         )}
         {data.resourceType === 'rabbitMQConsumer' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '216px'}}>
+            <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
                 <FormItem
                   {...formInputLayout}
