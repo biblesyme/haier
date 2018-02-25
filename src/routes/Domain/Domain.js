@@ -9,11 +9,6 @@ import { connect } from 'utils/ecos'
 
 import styles from "./style.sass"
 
-function onSelect(suggestion) {
-  console.log('onSelect', suggestion);
-}
-
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -54,18 +49,6 @@ class AreaManage extends React.Component {
         [visible]: true,
       });
     }
-  }
-  handleOk = (e) => {
-    console.log(e);
-    this.setState({
-      visibleAdd: false,
-    });
-  }
-  handleCancel = (e) => {
-    console.log(e);
-    this.setState({
-      visibleAdd: false,
-    });
   }
 
   saveAdd = (values) => {

@@ -91,7 +91,6 @@ export default class C extends React.Component {
     const { getFieldDecorator } = this.props.form
     const {resource={}, filterResource={}} = this.props
     const {role} = this.props.App
-    console.log(this.state.resource)
     return (
       <div>
         <Modal

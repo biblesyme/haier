@@ -143,7 +143,6 @@ export default {
 				let record  = yield call([apiStore,apiStore.find], findRecord.type, findRecord.id, {forceReload: true})
 				let afterLink = yield call([record,record.followLink], 'self')
 				let afterActionRecord = yield call([afterLink,afterLink.doAction], action, {data})
-				console.log(afterActionRecord)
 				if(successCB){
 					yield call(successCB,afterActionRecord)
 				}

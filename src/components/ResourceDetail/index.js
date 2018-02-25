@@ -66,7 +66,6 @@ export default class C extends React.Component {
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
-    console.log(this.state)
     if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
