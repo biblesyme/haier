@@ -44,12 +44,12 @@ const formItemCenter = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 5 },
-    push: 1
+    push: 2
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 12 },
-    push: 1
+    push: 0
   },
   style: {
     marginBottom: '10px'
@@ -190,15 +190,17 @@ class Preview extends React.Component {
           <label>应用信息:</label>
           <div style={{marginTop: '8px'}}></div>
           <Row gutter={24} className="scode-info">
-            <Col span={24}>
+            <Col span={col}>
               <FormItem
-                {...formItemCenter}
+                {...formItemLeft}
                 label="S码"
                 hasFeedback
               >
                {projectInfo.applicationId}
               </FormItem>
             </Col>
+          </Row>
+          <Row gutter={24} className="scode-info">
             <Col span={col}>
               <FormItem
                 {...formItemLeft}

@@ -192,7 +192,7 @@ export default class C extends React.Component {
           >
             {(resource.state === 'denied' && this.state.status === 'success') && (
               <div>
-                <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
+                <p style={{color: '#ffa940'}}>驳回理由: {resource.deniedMessages}</p>
                 <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}

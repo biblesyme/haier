@@ -91,6 +91,7 @@ export default class C extends React.Component {
     const { getFieldDecorator } = this.props.form
     const {resource={}, filterResource={}} = this.props
     const {role} = this.props.App
+    console.log(this.state.resource)
     return (
       <div>
         <Modal
@@ -114,13 +115,14 @@ export default class C extends React.Component {
           >
             {(resource.state === 'denied' && this.state.status === 'success') && (
               <div>
-                <p style={{color: '#ffa940'}}>驳回理由: 资源申请超过项目需求</p>
+                <p style={{color: '#ffa940'}}>驳回理由: {resource.deniedMessages}</p>
               </div>
             )}
-            <ResourceDetail resource={this.state.resource}
-                            projects={this.props.projects}
-                            resources={this.props.resources}
-            />
+            {this.state.status === 'success' && (
+              <ResourceDetail resource={this.state.resource}
+                              projects={this.props.projects}
+              />
+            )}
         </Modal>
       </div>
 
