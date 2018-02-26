@@ -155,7 +155,7 @@ export default {
 			const {failCB, successCB, id} = payload
 			try{
 				let accounts = yield call([apiStore,apiStore.find], 'account', id, {forceReload: true})
-				yield put({type:'setState',payload: {user: accounts}})
+				yield put({type:'setState',payload: {user: accounts || {} }})
 				if(successCB){yield call(successCB)}
 			}
 			catch(e){

@@ -401,9 +401,18 @@ class ApplicationForm extends React.Component {
                 </FormItem>
               </Col>
               <Col span={col}>
-
                 <FormItem
                   {...formItemLayout}
+                  label="技术负责人"
+                  hasFeedback
+                >
+                {}
+                </FormItem>
+              </Col>
+              <Col span={col}>
+
+                <FormItem
+                  {...formItemLeft}
                   label="归属部门"
                   hasFeedback
                 >
@@ -412,7 +421,7 @@ class ApplicationForm extends React.Component {
               </Col>
               <Col span={col}>
                 <FormItem
-                  {...formItemLeft}
+                  {...formItemLayout}
                   label="应用属性"
                   hasFeedback
                 >
@@ -421,7 +430,7 @@ class ApplicationForm extends React.Component {
               </Col>
               <Col span={col}>
                 <FormItem
-                  {...formItemLayout}
+                  {...formItemLeft}
                   label="应用领域"
                   hasFeedback
                 >
