@@ -51,6 +51,17 @@ class AreaManage extends React.Component {
     }
   }
 
+  handleOk = (e) => {
+    this.setState({
+      visibleAdd: false,
+     });
+   }
+   handleCancel = (e) => {
+     this.setState({
+       visibleAdd: false,
+     });
+   }
+
   saveAdd = (values) => {
     let payload = {
       data: {
