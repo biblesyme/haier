@@ -129,6 +129,7 @@ class ApplicationForm extends React.Component {
     frame: [],
     alert: false,
     locations: [],
+    codeManaged: '',
   }
 
   componentWillMount() {
@@ -312,6 +313,9 @@ class ApplicationForm extends React.Component {
       }],
       projectInfo: {},
       searching: LOAD_STATUS.INITIAL,
+      codeManaged: '',
+      alert: '',
+      frame: [],
     })
     this.props.form.setFieldsValue({scode: ''})
   }
@@ -326,7 +330,7 @@ class ApplicationForm extends React.Component {
           domains.forEach(element => {
             if(element.name === res.data.data.businessDomain){
               this.setState({domainId:element.id,domainName:element.name})
-            } 
+            }
           });
         })
         .catch((err) => this.setState({projectInfo: null, searching: LOAD_STATUS.FAIL}))
@@ -476,11 +480,16 @@ class ApplicationForm extends React.Component {
           <CheckboxGroup options={plainOptions} value={this.state.frame} onChange={frame => this.setState({frame})}/>
         </section>
         <section className="page-section">
-          <h3>监控功能</h3>
+          <h3>推荐服务</h3>
           <Checkbox checked={this.state.alert}
                     onChange={e => this.setState({alert: e.target.checked})}
           >
-            开启
+            监控功能
+          </Checkbox>
+          <Checkbox checked={this.state.codeManaged}
+                    onChange={e => this.setState({codeManaged: e.target.checked})}
+          >
+            代码托管
           </Checkbox>
         </section>
         <div style={{paddingBottom: '60px'}}></div>

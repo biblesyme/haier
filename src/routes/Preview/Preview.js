@@ -293,16 +293,20 @@ class Preview extends React.Component {
           <CheckboxGroup options={plainOptions} value={form.frame}/>
         </section>
         <section className="page-section">
-          <h3>监控功能</h3>
+          <h3>服务</h3>
           <Checkbox checked={form.alert}
           >
-            开启
+            监控功能
+          </Checkbox>
+          <Checkbox checked={form.codeManaged}
+          >
+            代码托管
           </Checkbox>
         </section>
         <div style={{paddingBottom: '60px'}}></div>
 
         <section className="page-section bottom-actions">
-          <Button onClick={this.goBack}>返回</Button>
+          <Button onClick={this.goBack}>返回修改</Button>
           <Button type="primary" style={{float: 'right'}} onClick={this.submit}>创建</Button>
         </section>
       </main>

@@ -264,10 +264,14 @@ class ApplicationDetail extends React.Component {
         <CheckboxGroup options={plainOptions} value={record.frame}/>
       </section>
       <section className="page-section">
-        <h3>监控功能</h3>
+        <h3>服务</h3>
         <Checkbox checked={record.alert}
         >
-          开启
+          监控功能
+        </Checkbox>
+        <Checkbox checked={record.codeManaged}
+        >
+          代码托管
         </Checkbox>
       </section>
       <div style={{paddingBottom: '60px'}}></div>
