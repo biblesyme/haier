@@ -46,7 +46,8 @@ module.exports = Object.assign(baseConfig, {
       compress: {
         warnings: false,
         drop_console: false,
-      }
+      },
+      mangle: false,
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // compile time plugins
