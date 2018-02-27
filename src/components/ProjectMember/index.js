@@ -208,7 +208,7 @@ export default class C extends React.Component {
                 <Col span={12}>
                   <FormItem
                     {...formItemLayout}
-                    label="开发者"
+                    label="项目成员"
                   >
                     {developers}
                   </FormItem>
@@ -222,7 +222,7 @@ export default class C extends React.Component {
               <FormItem {...formItemLayout} label="类型">
                 <Radio.Group value={this.state.participantType} onChange={e=> this.setState({participantType: e.target.value})}>
                   <Radio.Button value="manager">项目经理</Radio.Button>
-                  <Radio.Button value="developer">开发者</Radio.Button>
+                  <Radio.Button value="developer">项目成员</Radio.Button>
                 </Radio.Group>
               </FormItem>
               <FormItem

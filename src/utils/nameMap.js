@@ -27,7 +27,7 @@ export default {
   internal: '内部员工',
   external: '外部员工',
   manager: '项目经理',
-  developer: '开发者',
+  developer: '项目成员',
   domainAdmin: '团队长',
   admin: '管理员',
 
