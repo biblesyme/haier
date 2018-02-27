@@ -13,6 +13,7 @@ module.exports = [
 			require('./routes/Resource'),
 			require('./routes/Account'),
 			require('./routes/Preview'),
+			require('./routes/ApplicationCenter'),
 		]
 	},
 ]

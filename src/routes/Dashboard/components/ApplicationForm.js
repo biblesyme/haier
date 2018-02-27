@@ -129,7 +129,7 @@ class ApplicationForm extends React.Component {
     frame: [],
     alert: false,
     locations: [],
-    codeManaged: '',
+    codeManaged: false,
   }
 
   componentWillMount() {

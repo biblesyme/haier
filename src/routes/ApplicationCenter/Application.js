@@ -25,7 +25,7 @@ const formItemLayout = {
   }
 };
 
-class Application extends React.Component {
+class ApplicationCenter extends React.Component {
   state = {
     visibleAdd: false,
     visibleEdit: false,
@@ -37,15 +37,14 @@ class Application extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'App/setState', payload: {loading: true}})
-    this.props.selfDispatch({
-      type: 'findProject',
+    this.props.dispatch({
+      type: 'App/findProject',
       payload: {
         callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
-        account: this.props.App.user,
       }
     })
     this.props.selfDispatch({type: 'findAccount'})
-    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['3']}})
+    this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['9']}})
   }
 
   showModal = (visible) => {
@@ -82,7 +81,8 @@ class Application extends React.Component {
   }
 
   render(){
-    const {projects=[], accounts=[]} = this.props.reduxState
+    const {accounts=[]} = this.props.reduxState
+    const {projects=[]} = this.props.App
     const columns = [{
       title: 'ID',
       dataIndex: 'id',
@@ -182,5 +182,5 @@ class Application extends React.Component {
       )
   }
 }
-Object.defineProperty(Application, "name", { value: "Application" });
-export default modelConnect(require('./model'), ['App'])(Application)
+Object.defineProperty(ApplicationCenter, "name", { value: "ApplicationCenter" });
+export default modelConnect(require('./model'), ['App'])(ApplicationCenter)

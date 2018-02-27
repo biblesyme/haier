@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    // document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
+    document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
     this.props.selfDispatch({
       type: 'setState',
       payload: {login: false}

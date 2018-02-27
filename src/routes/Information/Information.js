@@ -4,7 +4,7 @@ import { Circle, Line } from 'rc-progress';
 import MyProgress from '@/components/MyProgress'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
-import Edit from './Edit'
+import ProjectMember from '@/components/ProjectMember'
 import getState from 'utils/getState'
 import { Link } from 'react-router-dom'
 
@@ -25,10 +25,15 @@ class Information extends React.Component {
     record: {},
   }
   componentWillMount() {
-    this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['2']}})
     this.props.selfDispatch({type: 'findAccount'})
-    this.props.dispatch({type: 'App/findProject'})
+    this.props.dispatch({
+      type: 'App/findProject',
+      payload: {
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+      }
+    })
   }
   showModal = (visible) => {
     return ()=>{this.setState({
@@ -75,6 +80,8 @@ class Information extends React.Component {
     }, {
       title: '应用告警数',
       dataIndex: 'health',
+    }, {
+      title: '应用健康度',
     }, {
       title: '资源占用率',
       dataIndex: 'resourceUsage1',
@@ -134,23 +141,6 @@ class Information extends React.Component {
                   <div>项目总数</div>
                 </CardGrid>
                 <CardGrid style={{width: '15%', height: stateHeight}} className="text-center">
-                  {/* <Progress type="dashboard"
-                            percent={75}
-                            width={85}
-                            format={percent => `
-                              ${percent}%`}
-                  /> */}
-                  {/* <div className="ant-progress ant-progress-line ant-progress-status-normal ant-progress-show-info ant-progress-default">
-                    <div style={{marginTop: '30px'}}>
-                      <Line percent="45"
-                            strokeWidth="15"
-                            trailWidth="15"
-                            strokeColor="#389e0d"
-                            strokeLinecap="butt"
-                      />
-                      <span className="ant-progress-text">45%</span>
-                    </div>
-                  </div> */}
                   <MyProgress percent="45"
                               width="85px"
                   />
@@ -210,7 +200,7 @@ class Information extends React.Component {
           </div>
 
           {this.state.visibleEdit && (
-            <Edit
+            <ProjectMember
               visible={this.state.visibleEdit}
               onOk={(newData) => {this.updateDomain(newData)}}
               onCancel={this.handleCancel}
