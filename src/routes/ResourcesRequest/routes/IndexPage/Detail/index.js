@@ -104,7 +104,13 @@ export default class C extends React.Component {
         },
         action: 'deny',
         successCB: () => {
-          this.props.dispatch({'type': 'Approval/findApproval'})
+          this.props.dispatch({
+            'type': 'App/findApproval',
+            payload: {
+              account: this.props.App.user,
+            }
+          })
+          message.success('驳回成功')
           this.props.onCancel()
         },
         failCB: () => {
@@ -124,7 +130,12 @@ export default class C extends React.Component {
       },
       action: 'pass',
       successCB: () => {
-        this.props.dispatch({'type': 'Approval/findApproval'})
+        this.props.dispatch({
+          'type': 'App/findApproval',
+          payload: {
+            account: this.props.App.user,
+          }
+        })
         if (this.props.App.role === 'domainAdmin') {
           message.success('确认成功')
         }

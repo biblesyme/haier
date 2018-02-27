@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin, message } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin, message, Tag } from 'antd';
 import { connect } from 'utils/ecos'
 import FormMapping from '@/components/FormMapping'
 import FormResource from '@/components/FormResource'
@@ -415,7 +415,7 @@ class ApplicationForm extends React.Component {
                       label="技术负责人"
                       hasFeedback
                     >
-                    {}
+                    {this.state.operationManagers.join()}
                     </FormItem>
                   </Col>
                   <Col span={col} push={2}>

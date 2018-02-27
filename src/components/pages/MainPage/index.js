@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
 import nameMap from 'utils/nameMap'
-import { Menu, Icon, Button, Select, Avatar } from 'antd';
+import { Menu, Icon, Button, Select, Avatar, Badge } from 'antd';
 import config from './config'
 
 const SubMenu = Menu.SubMenu;
@@ -15,6 +15,7 @@ import styles from './style.sass'
 export default class MainPage extends React.Component {
   state = {
     collapsed: false,
+    findApproval: 'init',
   }
   toggleCollapsed = () => {
     this.setState({
@@ -41,6 +42,13 @@ export default class MainPage extends React.Component {
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
     }
     this.props.dispatch({type: 'App/findLocation'})
+    this.props.dispatch({
+      type: 'App/findApproval',
+      payload: {
+        account: user,
+        successCB: () => this.setState({findApproval: 'success'})
+      }
+    })
     // this.props.dispatch({type: 'App/findDomain'})
   }
   render() {
@@ -97,7 +105,12 @@ export default class MainPage extends React.Component {
                     <Menu.Item key="5">
                       <Link to="/resourcesRequest">
                         <Icon type="approval1"></Icon>
-                        <span>资源审批</span>
+                        <span>
+                          资源审批
+                          {this.state.findApproval === 'success' && (
+                            <Badge count={this.props.App.approvals.length} style={{marginLeft: '10px'}}/>
+                          )}
+                        </span>
                       </Link>
                     </Menu.Item>
                   )}

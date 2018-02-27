@@ -20,6 +20,7 @@ export default {
 		locations: [],
 		projects: [],
 		resources: [],
+		approvals: [],
 	},
 	reducers: {
 		setState(state,{payload}){
@@ -220,6 +221,22 @@ export default {
 				if(callback){
 					yield call(callback)
 				}
+			}
+		},
+		*findApproval({payload={}},{call, put}){
+			let {successCB, account, failCB, callback} = payload
+			try{
+				let approval = yield call([account,account.followLink], 'approvals')
+				yield put({type:'setState',payload: {approvals: approval.content}})
+				if(successCB){
+					yield call(successCB)
+				}
+				if (callback){yield call(callback)}
+			} catch(e) {
+				if(failCB){
+					yield call(failCB)
+				}
+				if (callback){yield call(callback)}
 			}
 		},
 	}

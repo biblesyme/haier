@@ -36,8 +36,8 @@ class Approval extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'App/setState', payload: {loading: true}})
-    this.props.selfDispatch({
-      type: 'findApproval',
+    this.props.dispatch({
+      type: 'App/findApproval',
       payload: {
         callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
         account: this.props.App.user,
@@ -57,8 +57,8 @@ class Approval extends React.Component {
 
   render() {
     let { filteredInfo, } = this.state;
-    const {approvals=[], accounts=[], projects=[], resources=[],} = this.props.reduxState
-    const {role} = this.props.App
+    const {accounts=[], projects=[], resources=[],} = this.props.reduxState
+    const {role, approvals=[],} = this.props.App
     let roleFilter = []
     if (role === 'admin') {
       roleFilter = approvals.filter(d => d.state !== 'pendding')
