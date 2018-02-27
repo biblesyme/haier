@@ -30,8 +30,8 @@ ecos.router(Routers)
 // 4. Start
 const Ecos = ecos.start('#app')
 
-if(process.env.NODE_ENV !== 'production'){
+// if(process.env.NODE_ENV !== 'production'){
   window.ecos = ecos;
-}
+// }
 exports.default = Ecos
 exports.createStoreProvider = ecos.createStoreProvider
