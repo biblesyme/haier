@@ -3,7 +3,7 @@ import renderRoutes from 'utils/renderRoutes'
 import {Link} from 'react-router-dom'
 import { Tabs, Button,Menu, Spin, message } from 'antd';
 import Spinner from './components/Spinner'
-import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
+import {getCookieItem, b64DecodeUnicode, removeItem} from 'utils/cookies'
 import apiStore from 'utils/apiStore'
 
 import styles from './app.sass'
@@ -23,7 +23,9 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
+    if(process.env.NODE_ENV !== 'production'){
+      document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
+    }
     this.props.selfDispatch({
       type: 'setState',
       payload: {login: false}
@@ -71,10 +73,12 @@ class App extends React.Component {
     }
   }
   exit = ()=>{
+    removeItem('csid')
     this.props.selfDispatch({
       type: 'setState',
       payload: {login: false}
     })
+    window.location.href=`http://t.c.haier.net/login?url=${url}`
   }
 
   updateLoading = (loading) => {

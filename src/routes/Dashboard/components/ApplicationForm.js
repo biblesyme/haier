@@ -130,6 +130,9 @@ class ApplicationForm extends React.Component {
     alert: false,
     locations: [],
     codeManaged: false,
+    editProjectInfo: false,
+    businessManagers: [],
+    operationManagers: [],
   }
 
   componentWillMount() {
@@ -326,7 +329,11 @@ class ApplicationForm extends React.Component {
       axios.get(`/v1/query/projects/${value}`)
         .then((res) => {
           const {domains} = this.props.NewApplication
-          this.setState({projectInfo: res.data.data, searching: LOAD_STATUS.SUCCESS})
+          this.setState({
+            projectInfo: res.data.data,
+            searching: LOAD_STATUS.SUCCESS,
+            businessManagers: [res.data.data.ownerUser,]
+          })
           domains.forEach(element => {
             if(element.name === res.data.data.businessDomain){
               this.setState({domainId:element.id,domainName:element.name})
@@ -345,6 +352,7 @@ class ApplicationForm extends React.Component {
     const { projectInfo } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {domains} = this.props.NewApplication
+    console.log(projectInfo)
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -371,75 +379,129 @@ class ApplicationForm extends React.Component {
             {(this.state.searching === LOAD_STATUS.FAIL) && (
                <div className="text-center">S码不存在</div>
             )}
-            {this.state.searching === LOAD_STATUS.SUCCESS && (
-            <Row gutter={24}  className="scode-info">
-              <Col span={col}>
-                <FormItem
-                  {...formItemLeft}
-                  label="应用名称"
-                  hasFeedback
-                >
-                 {projectInfo.name}
-                </FormItem>
-              </Col>
-              <Col span={col}>
-                <FormItem
-                  {...formItemLayout}
-                  label="申请日期"
-                  hasFeedback
-                >
-                 {new Date(projectInfo.createdAt).toLocaleString()}
-                </FormItem>
-              </Col>
-              <Col span={col}>
-                <FormItem
-                  {...formItemLeft}
-                  label="业务负责人"
-                  hasFeedback
-                >
-                {projectInfo.ownerUser}
-                </FormItem>
-              </Col>
-              <Col span={col}>
-                <FormItem
-                  {...formItemLayout}
-                  label="技术负责人"
-                  hasFeedback
-                >
-                {}
-                </FormItem>
-              </Col>
-              <Col span={col}>
-
-                <FormItem
-                  {...formItemLeft}
-                  label="归属部门"
-                  hasFeedback
-                >
-                 {projectInfo.ownerUserDp}
-                </FormItem>
-              </Col>
-              <Col span={col}>
-                <FormItem
-                  {...formItemLayout}
-                  label="应用属性"
-                  hasFeedback
-                >
-                 {projectInfo.applicationType}
-                </FormItem>
-              </Col>
-              <Col span={col}>
-                <FormItem
-                  {...formItemLeft}
-                  label="应用领域"
-                  hasFeedback
-                >
-                 <Select value={this.state.domainId} onChange={domainId => this.onDomainSelect(domainId)}>
-                   {domains.map(d => <Option key={d.id}><Icon type="area" style={{color: '#27ae60'}}/> {d.name}</Option>)}
-                 </Select>
-                </FormItem>
-              </Col>
-            </Row>
+            {(this.state.searching === LOAD_STATUS.SUCCESS && !this.state.editProjectInfo) && (
+              <div>
+                <Row gutter={24}  className="scode-info">
+                  <Col span={col} push={2}>
+                    <FormItem
+                      {...formItemLeft}
+                      label="应用名称"
+                      hasFeedback
+                    >
+                     {projectInfo.name}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={1}>
+                    <FormItem
+                      {...formItemLayout}
+                      label="申请日期"
+                      hasFeedback
+                    >
+                     {new Date(projectInfo.createdAt).toLocaleString()}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={2}>
+                    <FormItem
+                      {...formItemLeft}
+                      label="业务负责人"
+                      hasFeedback
+                    >
+                    {this.state.businessManagers.join()}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={1}>
+                    <FormItem
+                      {...formItemLayout}
+                      label="技术负责人"
+                      hasFeedback
+                    >
+                    {}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={2}>
+                    <FormItem
+                      {...formItemLeft}
+                      label="归属部门"
+                      hasFeedback
+                    >
+                     {this.state.domainName}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={1}>
+                    <FormItem
+                      {...formItemLayout}
+                      label="应用属性"
+                      hasFeedback
+                    >
+                     {projectInfo.applicationType}
+                    </FormItem>
+                  </Col>
+                </Row>
+                <div className="text-center"><Button icon="edit" onClick={(e) => this.setState({editProjectInfo: true})}>编辑</Button></div>
+              </div>
+            )}
+            {this.state.editProjectInfo && (
+              <div>
+                <Row gutter={24}  className="scode-info">
+                  <Col span={col} push={2}>
+                    <FormItem
+                      {...formItemLeft}
+                      label="应用名称"
+                      hasFeedback
+                    >
+                     {projectInfo.name}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={1}>
+                    <FormItem
+                      {...formItemLayout}
+                      label="申请日期"
+                      hasFeedback
+                    >
+                     {new Date(projectInfo.createdAt).toLocaleString()}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={2}>
+                    <FormItem
+                      {...formItemLeft}
+                      label="业务负责人"
+                      hasFeedback
+                    >
+                    {projectInfo.ownerUser}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={1}>
+                    <FormItem
+                      {...formItemLayout}
+                      label="技术负责人"
+                      hasFeedback
+                    >
+                    {}
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={2}>
+                    <FormItem
+                      {...formItemLeft}
+                      label="归属部门"
+                      hasFeedback
+                    >
+                     <Select value={this.state.domainId} onChange={domainId => this.onDomainSelect(domainId)}>
+                       {domains.map(d => <Option key={d.id}><Icon type="area" style={{color: '#27ae60'}}/> {d.name}</Option>)}
+                     </Select>
+                    </FormItem>
+                  </Col>
+                  <Col span={col} push={1}>
+                    <FormItem
+                      {...formItemLayout}
+                      label="应用属性"
+                      hasFeedback
+                    >
+                     {projectInfo.applicationType}
+                    </FormItem>
+                  </Col>
+                </Row>
+                <div className="text-center"><Button type="primary" onClick={(e) => this.setState({editProjectInfo: false})}>保存</Button></div>
+              </div>
             )}
           </Form>
         </section>
