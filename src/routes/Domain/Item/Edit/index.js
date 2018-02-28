@@ -52,17 +52,14 @@ export default class C extends React.Component {
     members: [],
     searchName: '',
     searchAccount: '',
+    domainNameInput: false,
+    name: '',
   }
 
-  // componentWillMount() {
-  //   let payload = {
-  //     data: {
-  //       ...this.props.resource,
-  //     },
-  //     link: 'admins'
-  //   }
-  //   this.props.dispatch({'type': 'App/followLink', payload})
-  // }
+  componentWillMount() {
+    const {resource, domainAdmins = [], accounts = [], } = this.props
+    this.setState({name: resource.name})
+  }
 
   addMember = () => {
     this.props.form.validateFields((err, values) => {
@@ -128,6 +125,24 @@ export default class C extends React.Component {
     }
   }
 
+  domianNameUpdate = () => {
+    // this.setState({name: e.target.value})
+    let payload = {
+      data: {
+        ...this.props.resource,
+        name: this.state.name,
+      },
+      action: 'update',
+      failCB: () => message.error('领域名修改失败'),
+      successCB: () => {
+        this.props.dispatch({'type': 'AreaManage/findDomain'})
+        message.success('领域名修改成功')
+        this.setState({domainNameInput: false})
+      },
+    }
+    this.props.dispatch({'type': 'App/doAction', payload})
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
     const {resource, domainAdmins = [], accounts = [], } = this.props
@@ -158,12 +173,31 @@ export default class C extends React.Component {
             </div>
           }
           >
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
               <FormItem
                 {...formItemLayout}
                 label="当前领域"
               >
-                {resource.name}
+                {!this.state.domainNameInput ? (
+                  <p>
+                    {this.state.name}
+                    <Icon className="mg-l10"
+                          type="edit"
+                          style={{cursor: 'pointer'}}
+                          onClick={e => this.setState({domainNameInput: true})}
+                    />
+                  </p>
+                ) : (
+                  <p>
+                    <Input style={{width: '70%'}}
+                           value={this.state.name}
+                           onChange={(e) => this.setState({name: e.target.value})}
+                    />
+                    <Button onClick={e => this.domianNameUpdate()}
+                            type="primary"
+                    >更新</Button>
+                  </p>
+                )}
               </FormItem>
               <FormItem
                 {...formItemLayout}
@@ -174,7 +208,7 @@ export default class C extends React.Component {
             </Form>
             <Divider dashed></Divider>
             <h3>新增团队长</h3>
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
               <FormItem
                 {...formItemLayout}
                 label="账号"
