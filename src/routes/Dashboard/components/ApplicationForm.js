@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin, message, Tag } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Spin, message, Tag, Collapse } from 'antd';
 import { connect } from 'utils/ecos'
 import FormMapping from '@/components/FormMapping'
 import FormResource from '@/components/FormResource'
@@ -8,8 +8,15 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
+import Detail from './Detail'
+import MysqlPanelDetail from './MysqlPanelDetail'
+import RedisPanelDetail from './RedisPanelDetail'
+import RocketPanelDetail from './RocketPanelDetail'
+import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
+import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 
 const CheckboxGroup = Checkbox.Group;
+const Panel = Collapse.Panel
 
 const {SubMenu} = Menu;
 const {Option} = Select;
@@ -133,11 +140,11 @@ class ApplicationForm extends React.Component {
     editProjectInfo: false,
     businessManagers: [],
     operationManagers: [],
+    mysql: [],
   }
 
   componentWillMount() {
     this.props.dispatch({type: 'App/setState', payload: {loading: false}})
-    this.addMiddlewareMapping('mysql')
     this.props.dispatch({type:'NewApplication/findDomain'})
     this.props.dispatch({type:'NewApplication/findProject'})
     this.props.dispatch({type:'NewApplication/findResource'})
@@ -183,6 +190,20 @@ class ApplicationForm extends React.Component {
       })
       this.searchSCODE(form.scode)
     }
+  }
+
+  handleCancel = (e) => {
+    this.setState({
+      visibleDetail: false,
+    });
+  }
+
+  handleOK = (e) => {
+    console.log(e, 'poi')
+    this.setState({
+      middlewareMappings: [...this.state.middlewareMappings, {...e, id: this.middlewareMappingId++,}],
+      visibleDetail: false,
+    })
   }
 
   toggleCollapsed = () => {
@@ -240,6 +261,24 @@ class ApplicationForm extends React.Component {
     }
     const {middlewareMappings} = this.state
     this.setState({middlewareMappings: [...middlewareMappings, defaultMiddlewareMapping]})
+  }
+
+  addMysqlMapping = (item) => {
+    let defaultMiddlewareMapping = {
+      id: this.middlewareMappingId++,
+      deployMode: '0',
+      masterSlaveOption: '0',
+      mycatClusterManagerNodeCount: 0,
+      mycatClusterDataNodeCount: 0,
+      backup: 'false',
+    }
+    const {mysql} = this.state
+    this.setState({mysql: [...mysql, defaultMiddlewareMapping]})
+  }
+  mysqlMappingChange = (newItem) => {
+    const {mysql} = this.state
+    const nextAry = replace(mysql, newItem)
+    this.setState({mysql: nextAry})
   }
 
   removeMiddlewareMapping = (id) => {
@@ -352,7 +391,7 @@ class ApplicationForm extends React.Component {
     const { projectInfo } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {domains} = this.props.NewApplication
-    console.log(projectInfo)
+    console.log(this.state.middlewareMappings, 'middlewareMappings')
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -511,9 +550,12 @@ class ApplicationForm extends React.Component {
         </section>
 
         <section className="page-section">
-          <h3>中间件申请</h3>
+          <h3>
+            中间件申请:
+            <Button icon="plus" style={{marginLeft: '30px'}} onClick={e => this.setState({visibleDetail: true})}>添加</Button>
+          </h3>
           <div style={{padding: '10px'}}></div>
-          <label htmlFor="">添加中间件：</label>
+          {/* <label htmlFor="">添加中间件：</label>
           <Select style={{width: '170px', marginLeft: '20px'}}
                   value={this.state.middlewareSelect}
                   onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
@@ -526,9 +568,9 @@ class ApplicationForm extends React.Component {
           </Select>
           <div style={{padding: '10px'}}></div>
           <label htmlFor="">推荐中间件：</label>
-          <div style={{padding: '10px'}}></div>
+          <div style={{padding: '10px'}}></div> */}
 
-          <Row>
+          {/* <Row>
             {this.state.middlewareMappings.map(item => {
               return (
                 <FormMapping
@@ -541,7 +583,64 @@ class ApplicationForm extends React.Component {
                   />
               )
             })}
-          </Row>
+          </Row> */}
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="mysql"/> MySQL</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
+                               removeMiddlewareMapping={this.removeMiddlewareMapping}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="redis"/> Redis</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RedisPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                    removeMiddlewareMapping={this.removeMiddlewareMapping}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="rocket"/> RocketMQ</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RocketPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                     removeMiddlewareMapping={this.removeMiddlewareMapping}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="rocket"/> RabbitMQ-生产者</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RabbitMQProducerPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="rocket"/> RabbitMQ-消费者</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RabbitMQConsumerPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                               projects={this.props.NewApplication.projects}
+                                               resources={this.props.NewApplication.resources}
+                  />
+                </div>
+            </section>
 
 
         </section>
@@ -569,6 +668,16 @@ class ApplicationForm extends React.Component {
           <Button onClick={this.reset}>重置</Button>
           <Button type="primary" icon="eye" style={{float: 'right'}} onClick={this.preview}>预览</Button>
         </section>
+
+        {this.state.visibleDetail && (
+          <Detail
+                  visible={this.state.visibleDetail}
+                  onCancel={this.handleCancel}
+                  onOk={this.handleOK}
+                  projects={this.props.NewApplication.projects}
+                  resources={this.props.NewApplication.resources}
+            />
+        )}
       </div>
     );
   }

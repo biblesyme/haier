@@ -16,8 +16,6 @@
 }
 ```
 
-### 2. TODO
-```
-spin in table
-Tooltip in domain
-```
+
+### 2. poi
+1. 中间件信息，编辑和删除按钮无法放在title栏上 

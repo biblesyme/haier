@@ -16,6 +16,7 @@ class User extends React.Component {
   state = {
     tableSelect: 'staff',
     filter: null,
+    projects: [],
   }
 
   componentWillMount() {
@@ -80,7 +81,9 @@ class User extends React.Component {
         let formatter = record.roles.map(r => nameMap[r])
         return <span>{formatter.join(',')}</span>
       }
-    },{
+    }, {
+      title: '所属应用',
+    }, {
       title: '部门/公司',
       // render: (record) => {
       //   let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
@@ -92,7 +95,9 @@ class User extends React.Component {
       // }
     }, {
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
+      fixed: 'right',
+      width: 100,
     }, {
       title: '操作',
       render: (record) => {
@@ -102,7 +107,9 @@ class User extends React.Component {
         if (record.state === 'inactive') {
           return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
-      }
+      },
+      fixed: 'right',
+      width: 100,
     },];
 
     const columnDeveloper = [{
@@ -133,7 +140,9 @@ class User extends React.Component {
       title: '资源',
     },{
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
+      fixed: 'right',
+      width: 100,
     }, {
       title: '操作',
       render: (record) => {
@@ -143,7 +152,9 @@ class User extends React.Component {
         if (record.state === 'inactive') {
           return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
-      }
+      },
+      fixed: 'right',
+      width: 100,
     },];
 
     const columnAdmin = [{
@@ -156,7 +167,9 @@ class User extends React.Component {
       key: 'name',
     }, {
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
+      fixed: 'right',
+      width: 100,
     }, {
       title: '操作',
       render: (record) => {
@@ -166,7 +179,9 @@ class User extends React.Component {
         if (record.state === 'inactive') {
           return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
-      }
+      },
+      fixed: 'right',
+      width: 100,
     },];
 
     let selector = []
@@ -206,6 +221,18 @@ class User extends React.Component {
       const fieldsToFilter = [a.name || '', a.externalId || ''].join()
       return reg.test(fieldsToFilter)
     })
+
+    const expandedRowRender = (record) => {
+      this.props.dispatch({
+        type: 'App/followLink',
+        payload: {
+          link: 'projects',
+          data: record,
+          successCB: (value) => console.log(value, '888888'),
+        }
+      })
+      return <p>hello</p>
+    }
     return (
       <main className="page-section">
         <h3>用户列表</h3>
@@ -219,8 +246,8 @@ class User extends React.Component {
                         value={this.state.tableSelect}
                         onChange={e => this.setState({tableSelect: e.target.value})}
             >
-              <RadioButton value='staff'>员工</RadioButton>
-              <RadioButton value="developer">供应商</RadioButton>
+              <RadioButton value='staff'>项目经理</RadioButton>
+              <RadioButton value="developer">项目成员</RadioButton>
               <RadioButton value="admin">管理层</RadioButton>
             </RadioGroup>
           </Col>
@@ -240,6 +267,9 @@ class User extends React.Component {
               columns={columnStaff}
               rowKey="id"
               pagination={{showQuickJumper: true}}
+              scroll={{x: 1300}}
+              expandedRowRender={expandedRowRender}
+              expandRowByClick={true}
             />
           )}
           {this.state.tableSelect === 'developer' && (
@@ -248,6 +278,7 @@ class User extends React.Component {
               columns={columnDeveloper}
               rowKey="id"
               pagination={{showQuickJumper: true}}
+              scroll={{x: 1300}}
             />
           )}
           {this.state.tableSelect === 'admin' && (
@@ -256,6 +287,7 @@ class User extends React.Component {
               columns={columnAdmin}
               rowKey="externalId"
               pagination={{showQuickJumper: true}}
+              scroll={{x: 1300}}
             />
           )}
         </Col>
