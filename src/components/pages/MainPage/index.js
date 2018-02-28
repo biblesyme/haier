@@ -42,14 +42,16 @@ export default class MainPage extends React.Component {
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
     }
     this.props.dispatch({type: 'App/findLocation'})
-    this.props.dispatch({
-      type: 'App/findApproval',
-      payload: {
-        account: user,
-        successCB: () => this.setState({findApproval: 'success'})
-      }
-    })
-    // this.props.dispatch({type: 'App/findDomain'})
+    
+    if (user.roles.includes('admin') || user.roles.includes('domainAdmin')) {
+      this.props.dispatch({
+        type: 'App/findApproval',
+        payload: {
+          account: user,
+          successCB: () => this.setState({findApproval: 'success'})
+        }
+      })
+    }
   }
   render() {
     const {user= {}, role} = this.props.App

@@ -78,7 +78,7 @@ class App extends React.Component {
       type: 'setState',
       payload: {login: false}
     })
-    window.location.href=`http://t.c.haier.net/login?url=${url}`
+    window.location.href=`http://t.c.haier.net/logout?source=${url}`
   }
 
   updateLoading = (loading) => {

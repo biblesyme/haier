@@ -159,11 +159,19 @@ class Preview extends React.Component {
         },
         successCB: () => {
           message.success('应用创建成功')
-          if (this.props.App.role !== 'admin') {
+          if (this.props.App.role !== 'admin' && this.props.App.role !== 'domainAdmin') {
             this.props.history.push({pathname: '/application'})
-          } else {
+          } else if (this.props.App.role === 'admin'){
             this.props.history.push({pathname: '/information'})
+          } else if (this.props.App.role === 'domainAdmin') {
+            this.props.history.push({pathname: '/applicationCenter'})
           }
+          this.props.dispatch({
+            type: 'App/findApproval',
+            payload: {
+              account: this.props.App.user,
+            }
+          })
         },
         failCB: () => {
           message.error('应用创建失败')
