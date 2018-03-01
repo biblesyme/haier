@@ -22,15 +22,21 @@ export default {
   },
   effects: {
     *findAccount({payload={}},{call, put}){
-      let {callback} = payload
+      let {callback, successCB} = payload
       yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
       try{
         let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
+        // let record = accounts.content.map(a => {
+        //   let afterLink = yield call([apiStore,accounts.importLink], 'projectParticipants')
+        //   console.log(afterLink, 'afterLink')
+        // })
+        // let afterImport = yield call([apiStore,accounts.importLink], 'projectParticipants')
         yield put({type:'setState',payload: {accounts: accounts.content}})
         yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
         if(callback){
           yield call(callback)
         }
+        if(successCB){yield call(successCB, accounts.content)}
       }
       catch(e){
         yield put({type:'setState',payload: {
@@ -66,6 +72,16 @@ export default {
             errorMessage: e.message()
           }
         })
+      }
+    },
+    *followLink({payload={}}, {call, put}){
+      let {record, link, successCB,failCB} = payload
+      try{
+        let afterLink = yield call([record,record.followLink], link)
+        if(successCB){yield call(successCB,afterLink)}
+      }
+      catch(e){
+        if(failCB){yield call(failCB, e)}
       }
     },
   }

@@ -1,10 +1,11 @@
 import React from 'react'
-import {Table, Row, Col, Input, Radio, Button, Tag, message} from 'antd'
+import {Table, Row, Col, Input, Radio, Button, Tag, message, Checkbox} from 'antd'
 import userActions from './userActions'
 import ActionDropdown from '../../../components/ActionDropdown'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
+import replace from 'utils/replace'
 
 const {Search} = Input
 const RadioButton = Radio.Button
@@ -17,6 +18,7 @@ class User extends React.Component {
     tableSelect: 'staff',
     filter: null,
     projects: [],
+    projectparticipants: [],
   }
 
   componentWillMount() {
@@ -24,7 +26,21 @@ class User extends React.Component {
     this.props.selfDispatch({
       type: 'findAccount',
       payload: {
-        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}})
+        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        successCB: (accounts) => {
+          accounts.map(a => {
+            this.props.selfDispatch({
+              type: 'followLink',
+              payload: {
+                record: a,
+                link: 'projectparticipants',
+                successCB: (record) => {
+                  this.setState({projectparticipants: [...this.state.projectparticipants, {id: a.id, record: record.content}]})
+                }
+              }
+            })
+          })
+        }
       }
     })
     this.props.selfDispatch({type: 'findProject'})
@@ -65,8 +81,64 @@ class User extends React.Component {
     this.props.dispatch({'type': 'App/doAction', payload})
   }
 
+  handleBelongTo = (belong, account) => {
+    if (belong.state === 'active') {
+      this.props.dispatch({
+        type: 'App/doAction',
+        payload: {
+          data: belong,
+          action: 'forbid',
+          successCB: () => {
+            message.success('取消关联成功')
+            this.props.selfDispatch({
+              type: 'followLink',
+              payload: {
+                record: account,
+                link: 'projectparticipants',
+                successCB: (record) => {
+                  const {projectparticipants} = this.state
+                  const nextAry = replace(projectparticipants, {id: account.id, record: record.content})
+                  this.setState({
+                    projectparticipants: nextAry
+                  })
+                }
+              }
+            })
+          },
+          failCB: () => message.error('取消关联失败'),
+        }})
+    }
+    if (belong.state === 'forbidden') {
+      this.props.dispatch({
+        type: 'App/doAction',
+        payload: {
+          data: belong,
+          action: 'restore',
+          successCB: () => {
+            message.success('启用关联成功')
+            this.props.selfDispatch({
+              type: 'followLink',
+              payload: {
+                record: account,
+                link: 'projectparticipants',
+                successCB: (record) => {
+                  const {projectparticipants} = this.state
+                  const nextAry = replace(projectparticipants, {id: account.id, record: record.content})
+                  this.setState({
+                    projectparticipants: nextAry
+                  })
+                }
+              }
+            })
+          },
+          failCB: () => message.error('启用关联失败'),
+        }})
+    }
+  }
+
   render() {
     const {accounts=[], projects=[],} = this.props.reduxState
+    console.log(this.state.projectparticipants)
     const columnStaff = [{
       title: '用户名',
       dataIndex: 'externalId',
@@ -96,8 +168,6 @@ class User extends React.Component {
     }, {
       title: '状态',
       render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
-      fixed: 'right',
-      width: 100,
     }, {
       title: '操作',
       render: (record) => {
@@ -108,8 +178,6 @@ class User extends React.Component {
           return <a record={record} onClick={() => this.activate(record)}>启用</a>
         }
       },
-      fixed: 'right',
-      width: 100,
     },];
 
     const columnDeveloper = [{
@@ -223,15 +291,24 @@ class User extends React.Component {
     })
 
     const expandedRowRender = (record) => {
-      this.props.dispatch({
-        type: 'App/followLink',
-        payload: {
-          link: 'projects',
-          data: record,
-          successCB: (value) => console.log(value, '888888'),
-        }
-      })
-      return <p>hello</p>
+      let filter = this.state.projectparticipants.filter(p => p.id === record.id)[0] || {}
+      if (filter.record.length > 0) {
+        return (
+          <div>
+            <Row>
+              {filter.record.map(p => (
+                <Col span={6} key={p.id}>
+                  <Checkbox checked={p.state === 'active' ? true : false} onChange={() => this.handleBelongTo(p, record)}>
+                    {p.projectName}
+                  </Checkbox>
+                </Col>
+              ))}
+            </Row>
+          </div>)
+      } else {
+        return <p>无所属应用</p>
+      }
+
     }
     return (
       <main className="page-section">
@@ -267,7 +344,7 @@ class User extends React.Component {
               columns={columnStaff}
               rowKey="id"
               pagination={{showQuickJumper: true}}
-              scroll={{x: 1300}}
+              // scroll={{x: 1300}}
               expandedRowRender={expandedRowRender}
               expandRowByClick={true}
             />
