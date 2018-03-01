@@ -1,11 +1,16 @@
 import React from 'react'
-import {Button, Row, Col, Form, Select, Checkbox, message} from 'antd'
+import {Button, Row, Col, Form, Select, Checkbox, message, Icon} from 'antd'
 import { withRouter } from 'react-router'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import Paas from './Paas'
 import FormMapping from './FormMapping'
 import apiStore from 'utils/apiStore'
+import MysqlPanelDetail from './MysqlPanelDetail'
+import RedisPanelDetail from './RedisPanelDetail'
+import RocketPanelDetail from './RocketPanelDetail'
+import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
+import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 
 import styles from './style.sass'
 
@@ -277,7 +282,7 @@ class Preview extends React.Component {
               <label htmlFor="">中间件：</label>
               <div style={{padding: '10px'}}></div>
             </Col>
-            <Row>
+            {/* <Row>
               {middlewareMappings.map(item => {
                 return (
                   <FormMapping
@@ -290,7 +295,68 @@ class Preview extends React.Component {
                     />
                 )
               })}
-            </Row>
+            </Row> */}
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="mysql"/> MySQL</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <MysqlPanelDetail middlewareMappings={middlewareMappings}
+                               removeMiddlewareMapping={this.removeMiddlewareMapping}
+                               onEdit={editId => this.setState({visibleEdit: true, editId})}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="redis"/> Redis</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RedisPanelDetail middlewareMappings={middlewareMappings}
+                                    removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                    onEdit={editId => this.setState({visibleEdit: true, editId})}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="rocket"/> RocketMQ</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RocketPanelDetail middlewareMappings={middlewareMappings}
+                                     removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                     onEdit={editId => this.setState({visibleEdit: true, editId})}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="rocket"/> RabbitMQ-生产者</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RabbitMQProducerPanelDetail middlewareMappings={middlewareMappings}
+                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
+                  />
+                </div>
+            </section>
+
+            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              <div className={styles["card-header"]}>
+                <div><Icon type="rocket"/> RabbitMQ-消费者</div>
+              </div>
+                <div style={{height: '280px', overflowY: 'auto'}}>
+                  <RabbitMQConsumerPanelDetail middlewareMappings={middlewareMappings}
+                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                               projects={this.props.reduxState.projects || []}
+                                               resources={this.props.reduxState.resources}
+                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
+                  />
+                </div>
+            </section>
             <Col span={24}>
             </Col>
           </Row>
