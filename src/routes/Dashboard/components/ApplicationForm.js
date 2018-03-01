@@ -14,6 +14,7 @@ import RedisPanelDetail from './RedisPanelDetail'
 import RocketPanelDetail from './RocketPanelDetail'
 import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
 import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
+import Edit from './Edit'
 
 const CheckboxGroup = Checkbox.Group;
 const Panel = Collapse.Panel
@@ -141,6 +142,8 @@ class ApplicationForm extends React.Component {
     businessManagers: [],
     operationManagers: [],
     mysql: [],
+    visibleEdit: false,
+    editId: '',
   }
 
   componentWillMount() {
@@ -195,6 +198,7 @@ class ApplicationForm extends React.Component {
   handleCancel = (e) => {
     this.setState({
       visibleDetail: false,
+      visibleEdit: false,
     });
   }
 
@@ -203,6 +207,15 @@ class ApplicationForm extends React.Component {
     this.setState({
       middlewareMappings: [...this.state.middlewareMappings, {...e, id: this.middlewareMappingId++,}],
       visibleDetail: false,
+    })
+  }
+
+  handleEditOK = (data) => {
+    const {middlewareMappings} = this.state
+    const nextAry = replace(middlewareMappings, data)
+    this.setState({
+      visibleEdit: false,
+      middlewareMappings: nextAry
     })
   }
 
@@ -555,36 +568,6 @@ class ApplicationForm extends React.Component {
             <Button icon="plus" style={{marginLeft: '30px'}} onClick={e => this.setState({visibleDetail: true})}>添加</Button>
           </h3>
           <div style={{padding: '10px'}}></div>
-          {/* <label htmlFor="">添加中间件：</label>
-          <Select style={{width: '170px', marginLeft: '20px'}}
-                  value={this.state.middlewareSelect}
-                  onSelect={middlewareSelect => this.onMiddlewareSelect(middlewareSelect)}
-          >
-            <Option key="mysql"><Icon type="mysql" style={{color: '#27ae60'}}/> MySQL</Option>
-            <Option key="redis"><Icon type="redis" style={{color: '#27ae60'}}/> Redis</Option>
-            <Option key="rocketMQTopic"><Icon type="rocket" style={{color: '#27ae60'}}/> RocketMQ</Option>
-            <Option key="rabbitMQProducer"><Icon type="RabbitMQ" style={{color: '#27ae60'}}/> RabbitMQ(生产者)</Option>
-            <Option key="rabbitMQConsumer"><Icon type="RabbitMQ" style={{color: '#27ae60'}}/> RabbitMQ(消费者)</Option>
-          </Select>
-          <div style={{padding: '10px'}}></div>
-          <label htmlFor="">推荐中间件：</label>
-          <div style={{padding: '10px'}}></div> */}
-
-          {/* <Row>
-            {this.state.middlewareMappings.map(item => {
-              return (
-                <FormMapping
-                  onChange={(item) => this.middlewareMappingChange(item)}
-                  onRemove={() => this.removeMiddlewareMapping(item.id)}
-                  key={item.id}
-                  item={item}
-                  projects={this.props.NewApplication.projects}
-                  resources={this.props.NewApplication.resources}
-                  />
-              )
-            })}
-          </Row> */}
-
             <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
               <div className={styles["card-header"]}>
                 <div><Icon type="mysql"/> MySQL</div>
@@ -592,6 +575,7 @@ class ApplicationForm extends React.Component {
                 <div style={{height: '280px', overflowY: 'auto'}}>
                   <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
                                removeMiddlewareMapping={this.removeMiddlewareMapping}
+                               onEdit={editId => this.setState({visibleEdit: true, editId})}
                   />
                 </div>
             </section>
@@ -603,6 +587,7 @@ class ApplicationForm extends React.Component {
                 <div style={{height: '280px', overflowY: 'auto'}}>
                   <RedisPanelDetail middlewareMappings={this.state.middlewareMappings}
                                     removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                    onEdit={editId => this.setState({visibleEdit: true, editId})}
                   />
                 </div>
             </section>
@@ -614,6 +599,7 @@ class ApplicationForm extends React.Component {
                 <div style={{height: '280px', overflowY: 'auto'}}>
                   <RocketPanelDetail middlewareMappings={this.state.middlewareMappings}
                                      removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                     onEdit={editId => this.setState({visibleEdit: true, editId})}
                   />
                 </div>
             </section>
@@ -625,6 +611,7 @@ class ApplicationForm extends React.Component {
                 <div style={{height: '280px', overflowY: 'auto'}}>
                   <RabbitMQProducerPanelDetail middlewareMappings={this.state.middlewareMappings}
                                                removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
                   />
                 </div>
             </section>
@@ -638,6 +625,7 @@ class ApplicationForm extends React.Component {
                                                removeMiddlewareMapping={this.removeMiddlewareMapping}
                                                projects={this.props.NewApplication.projects}
                                                resources={this.props.NewApplication.resources}
+                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
                   />
                 </div>
             </section>
@@ -676,6 +664,16 @@ class ApplicationForm extends React.Component {
                   onOk={this.handleOK}
                   projects={this.props.NewApplication.projects}
                   resources={this.props.NewApplication.resources}
+            />
+        )}
+        {this.state.visibleEdit && (
+          <Edit visible={this.state.visibleEdit}
+                onCancel={this.handleCancel}
+                onOk={this.handleEditOK}
+                projects={this.props.NewApplication.projects}
+                resources={this.props.NewApplication.resources}
+                editId={this.state.editId}
+                middlewareMappings={this.state.middlewareMappings}
             />
         )}
       </div>

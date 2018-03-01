@@ -94,7 +94,7 @@ export default class C extends React.Component {
                   </Col>
                 </Row>
                 <Row style={{marginTop: '10px'}}>
-                  <Col span={12}><Button onClick={() => console.log('poi')} style={{width: '100%'}} icon="edit"></Button></Col>
+                  <Col span={12}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
                   <Col span={12}><Button onClick={() => this.props.removeMiddlewareMapping(m.id)} style={{width: '100%'}} icon="delete"></Button></Col>
                 </Row>
               </Panel>
@@ -112,7 +112,7 @@ export default class C extends React.Component {
                   </Col>
                 </Row>
                 <Row style={{marginTop: '10px'}}>
-                  <Col span={12}><Button onClick={() => console.log('poi')} style={{width: '100%'}} icon="edit"></Button></Col>
+                  <Col span={12}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
                   <Col span={12}><Button onClick={() => this.props.removeMiddlewareMapping(m.id)} style={{width: '100%'}} icon="delete"></Button></Col>
                 </Row>
               </Panel>
