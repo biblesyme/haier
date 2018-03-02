@@ -56,8 +56,8 @@ export default class C extends React.Component {
               successCB: (res) => {
                 this.setState({
                   clusters: res.data.data,
-                  clusterId: res.data.data[0].id,
-                  clusterName: res.data.data[0].name
+                  // clusterId: res.data.data[0].id,
+                  // clusterName: res.data.data[0].name
                 })
               },
             }
@@ -160,10 +160,10 @@ export default class C extends React.Component {
           <Select value={this.state.locationId} onChange={this.locationChange} style={{width: '200px'}}>
             {this.state.locations.map(l => <Option key={l.id}><Icon type="location" style={{color: '#27ae60'}}/> {l.name}</Option>)}
           </Select>
-          <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
+          {/* <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
             <Select value={this.state.clusterId} onChange={value => this.onChange(value, 'clusterId')} style={{width: '200px'}}>
               {this.state.clusters.map(c => <Option key={c.id}><Icon type="cluster" style={{color: '#27ae60'}}/> {c.name}</Option>)}
-            </Select>
+            </Select> */}
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源配置：</label>
         <div style={{padding: '10px'}}></div>

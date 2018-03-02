@@ -21,6 +21,7 @@ export default {
 		projects: [],
 		resources: [],
 		approvals: [],
+		domains: [],
 	},
 	reducers: {
 		setState(state,{payload}){
@@ -237,6 +238,21 @@ export default {
 					yield call(failCB)
 				}
 				if (callback){yield call(callback)}
+			}
+		},
+		*findDomain({payload={}},{call, put}){
+			let {callback} = payload
+			try{
+				let domain = yield call([apiStore,apiStore.find], 'domain', null, {forceReload: true})
+				yield put({type:'setState',payload: {domains: domain.content.filter(d => d.state !== 'removed')}})
+				if(callback){
+					yield call(callback)
+				}
+			}
+			catch(e){
+				if(callback){
+					yield call(callback)
+				}
 			}
 		},
 	}

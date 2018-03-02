@@ -61,6 +61,7 @@ export default class C extends React.Component {
     locations: [],
     clusters: [],
     clusterInfo: {},
+    clusterId: '',
   }
 
   componentWillMount() {
@@ -79,7 +80,13 @@ export default class C extends React.Component {
           data: {
             id: data.locationId,
           },
-          successCB: (res) => this.setState({clusters: res.data.data || []}),
+          successCB: (res) => {
+            this.setState({
+              clusters: res.data.data || [],
+              clusterId: res.data.data[0].id,
+            })
+            this.props.onChange(res.data.data[0].id)
+          },
         }
       })
       this.props.dispatch({
@@ -105,6 +112,20 @@ export default class C extends React.Component {
       ...this.props.item,
     })
     // this.props.dispatch({type: 'App/findLocation'})
+  }
+
+  onClusterChange = (clusterId) => {
+    this.setState({clusterId})
+    this.props.onChange(clusterId)
+    this.props.dispatch({
+      type: 'App/followClusterDetail',
+      payload: {
+        data: {
+          id: clusterId,
+        },
+        successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+      }
+    })
   }
 
   render() {
@@ -133,9 +154,15 @@ export default class C extends React.Component {
             <label htmlFor="">资源所在地：</label>
               {locationFilter.name}
             <div style={{padding: '10px'}}></div>
-            <label htmlFor="">已选集群：</label>
-              {clusterFilter.name}
-            <div style={{padding: '10px'}}></div>
+            {this.props.approval && (
+              <div>
+                <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
+                  <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '200px'}}>
+                    {this.state.clusters.map(c => <Option key={c.id}><Icon type="cluster" style={{color: '#27ae60'}}/> {c.name}</Option>)}
+                  </Select>
+                <div style={{padding: '10px'}}></div>
+              </div>
+            )}
               <section className={styles["card-form"]}>
                 <div className={styles["card-header"]}>
                   {nameMap[this.state.resource]}

@@ -203,9 +203,9 @@ class Preview extends React.Component {
           <label>应用信息:</label>
           <div style={{marginTop: '8px'}}></div>
           <Row gutter={24} className="scode-info">
-            <Col span={col}>
+            <Col span={col} push={12}>
               <FormItem
-                {...formItemLeft}
+                {...formItemLayout}
                 label="S码"
                 hasFeedback
               >
@@ -238,35 +238,34 @@ class Preview extends React.Component {
                 label="业务负责人"
                 hasFeedback
               >
-               {projectInfo.ownerUser}
+               {form.businessManagers.join('、 ')}
               </FormItem>
             </Col>
             <Col span={col}>
-
               <FormItem
                 {...formItemLayout}
-                label="归属部门"
+                label="技术负责人"
                 hasFeedback
               >
-               {projectInfo.ownerUserDp}
+               {form.operationManagers.join('、 ')}
               </FormItem>
             </Col>
             <Col span={col}>
               <FormItem
                 {...formItemLeft}
-                label="应用属性"
+                label="归属部门"
                 hasFeedback
               >
-               {projectInfo.applicationType}
+               {form.domainName}
               </FormItem>
             </Col>
             <Col span={col}>
               <FormItem
                 {...formItemLayout}
-                label="应用领域"
+                label="应用属性"
                 hasFeedback
               >
-               {domainName}
+               {projectInfo.applicationType}
               </FormItem>
             </Col>
           </Row>

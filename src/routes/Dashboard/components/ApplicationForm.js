@@ -16,6 +16,7 @@ import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
 import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 import Edit from './Edit'
 import NewManager from './NewManager'
+import NewOperationManager from './NewOperationManager'
 
 const CheckboxGroup = Checkbox.Group;
 const Panel = Collapse.Panel
@@ -147,6 +148,7 @@ class ApplicationForm extends React.Component {
     editId: '',
     projectInfoEdit: {},
     visibleAddManager: false,
+    visibleAddOperationManager: false,
   }
 
   componentWillMount() {
@@ -195,7 +197,6 @@ class ApplicationForm extends React.Component {
       this.props.form.setFieldsValue({
         scode: form.scode,
       })
-      this.searchSCODE(form.scode)
     }
   }
 
@@ -561,7 +562,7 @@ class ApplicationForm extends React.Component {
                                  onClose={() => this.state.projectInfoEdit.operationManagers.splice(index, 1)}
                             >{m}</Tag>)
                         })}
-                        <Tag onClick={() => this.setState({visibleAddManager: true})}>添加 <Icon type="plus" /></Tag>
+                        <Tag onClick={() => this.setState({visibleAddOperationManager: true})}>添加 <Icon type="plus" /></Tag>
                       </Row>
                     </FormItem>
                   </Col>
@@ -730,24 +731,22 @@ class ApplicationForm extends React.Component {
             }}
             onCancel={this.handleCancel}
             accounts={accounts}
-            type="business"
             />
         )}
-        {this.state.visibleAddManager && (
-          <NewManager
-            visible={this.state.visibleAddManager}
+        {this.state.visibleAddOperationManager && (
+          <NewOperationManager
+            visible={this.state.visibleAddOperationManager}
             onOk={(newData) => {
               this.setState({
                 projectInfoEdit: {
                   ...this.state.projectInfoEdit,
                   operationManagers: [...this.state.projectInfoEdit.operationManagers, newData],
                 },
-                visibleAddManager: false,
+                visibleAddOperationManager: false,
               })
             }}
             onCancel={this.handleCancel}
             accounts={accounts}
-            type="opertation"
             />
         )}
       </div>

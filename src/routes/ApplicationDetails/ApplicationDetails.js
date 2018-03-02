@@ -119,12 +119,15 @@ class ApplicationDetail extends React.Component {
     })
     this.props.dispatch({type: 'App/findProject'})
     this.props.dispatch({type: 'App/findResource'})
+    this.props.dispatch({type: 'App/findDomain'})
   }
   render(){
     const {record={}} = this.props.location
     const {resources=[], projectInfo={}} = this.props.reduxState
     const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
+    const {operationManagers=[], businessManagers=[]} = record
+    const domain = this.props.App.domains.filter(d => d.id === record.domainId)[0] || {}
     return (
     <div>
       <section className="page-section">
@@ -132,6 +135,17 @@ class ApplicationDetail extends React.Component {
       </section>
       <section className="page-section">
         <label>应用信息:</label>
+        <Row gutter={24} className="scode-info">
+          <Col span={col} push={12}>
+            <FormItem
+              {...formItemLayout}
+              label="应用S码"
+              hasFeedback
+            >
+             {record.scode}
+            </FormItem>
+          </Col>
+        </Row>
         <Row gutter={24} className="scode-info">
           <Col span={col}>
             <FormItem
@@ -155,35 +169,34 @@ class ApplicationDetail extends React.Component {
               label="业务负责人"
               hasFeedback
             >
-              {projectInfo.ownerUser}
+              {businessManagers.join('、 ')}
             </FormItem>
           </Col>
           <Col span={col}>
-
             <FormItem
               {...formItemLayout}
-              label="归属部门"
+              label="技术负责人"
               hasFeedback
             >
-             {projectInfo.ownerUserDp}
+              {operationManagers.join('、 ')}
             </FormItem>
           </Col>
           <Col span={col}>
             <FormItem
               {...formItemLeft}
-              label="应用属性"
+              label="归属部门"
               hasFeedback
             >
-             {projectInfo.applicationType}
+             {domain.name}
             </FormItem>
           </Col>
           <Col span={col}>
             <FormItem
               {...formItemLayout}
-              label="应用领域"
+              label="应用属性"
               hasFeedback
             >
-              {projectInfo.businessDomain}
+             {projectInfo.applicationType}
             </FormItem>
           </Col>
         </Row>
@@ -222,43 +235,6 @@ class ApplicationDetail extends React.Component {
         </div>
       )}
 
-      {/* <section className="page-section">
-        <label>资源所在地: 青岛</label>
-        <div style={{padding: '10px'}}></div>
-        <label htmlFor="">应用资源：</label>
-        <div style={{padding: '10px'}}></div>
-        <Paas></Paas>
-
-      </section> */}
-
-    {/* <section className="page-section">
-      <Row>
-        <Col>
-          <label htmlFor="">中间件：</label>
-          <div style={{padding: '10px'}}></div>
-        </Col>
-
-        <Redis></Redis>
-        <MySQL></MySQL>
-        <RocketMQComsumer></RocketMQComsumer>
-        <RabbitMQ></RabbitMQ>
-        <br/>
-        <Col span={24}>
-
-        </Col>
-      </Row>
-    </section> */}
-      {/* <div className="page-section">
-        <h3>已选框架</h3>
-        <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
-      </div>
-      <div className="page-section">
-        <h3>已选能力<span className="pull-right mg-l10">已使用能力：2个</span> <span className="pull-right">已发布能力：3个</span></h3>
-        <Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往能力开放平台</Button>
-        </div>
-      </div> */}
       <section className="page-section">
         <h3>框架</h3>
         <CheckboxGroup options={plainOptions} value={record.frame}/>

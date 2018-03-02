@@ -5,7 +5,6 @@ import {
   Form,
   Input,
   Select,
-  message,
 } from 'antd'
 const FormItem = Form.Item
 
@@ -67,7 +66,7 @@ export default class C extends React.Component {
         <Modal
           title={
             <div className="text-center">
-              添加业务负责人
+              {type === 'business' ? '添加业务负责人' : '添加技术负责人'}
             </div>
           }
           {...this.props}

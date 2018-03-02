@@ -56,6 +56,7 @@ export default class C extends React.Component {
   state = {
     resource: {},
     status: '',
+    clusterId: '',
   }
 
   componentWillMount() {
@@ -127,6 +128,7 @@ export default class C extends React.Component {
       data: {
         ...this.props.resource,
         externalId: this.props.App.user.externalId,
+        clusterId: this.state.clusterId,
       },
       action: 'pass',
       successCB: () => {
@@ -216,6 +218,8 @@ export default class C extends React.Component {
                 <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}
+                                clusterId={this.state.clusterId}
+                                onChange={(clusterId) => this.setState({clusterId})}
                 />
                 <br/>
                 <FormItem
