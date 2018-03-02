@@ -15,6 +15,7 @@ import RocketPanelDetail from './RocketPanelDetail'
 import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
 import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 import Edit from './Edit'
+import NewManager from './NewManager'
 
 const CheckboxGroup = Checkbox.Group;
 const Panel = Collapse.Panel
@@ -144,6 +145,8 @@ class ApplicationForm extends React.Component {
     mysql: [],
     visibleEdit: false,
     editId: '',
+    projectInfoEdit: {},
+    visibleAddManager: false,
   }
 
   componentWillMount() {
@@ -152,6 +155,7 @@ class ApplicationForm extends React.Component {
     this.props.dispatch({type:'NewApplication/findProject'})
     this.props.dispatch({type:'NewApplication/findResource'})
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['1']}})
+    this.props.dispatch({type: 'NewApplication/findAccount'})
     this.props.dispatch({
       type: 'App/findLocation',
       payload: {
@@ -199,6 +203,7 @@ class ApplicationForm extends React.Component {
     this.setState({
       visibleDetail: false,
       visibleEdit: false,
+      visibleAddManager: false,
     });
   }
 
@@ -311,15 +316,6 @@ class ApplicationForm extends React.Component {
     this.addMiddlewareMapping(middlewareSelect)
   }
 
-  onDomainSelect = (domainId) =>{
-    const {domains} = this.props.NewApplication
-    domains.forEach(domain =>{
-      if(domain.id === domainId){
-        this.setState({domainId:domain.id,domainName:domain.name})
-      }
-    })
-  }
-
   preview = () => {
     if (this.state.searching !== LOAD_STATUS.SUCCESS) {
       message.warning('S码未验证')
@@ -383,8 +379,13 @@ class ApplicationForm extends React.Component {
           const {domains} = this.props.NewApplication
           this.setState({
             projectInfo: res.data.data,
+            projectInfoEdit: {
+              ...res.data.data,
+              businessManagers: [res.data.data.ownerUser,],
+              operationManagers: [],
+            },
             searching: LOAD_STATUS.SUCCESS,
-            businessManagers: [res.data.data.ownerUser,]
+            businessManagers: [res.data.data.ownerUser,],
           })
           domains.forEach(element => {
             if(element.name === res.data.data.businessDomain){
@@ -400,11 +401,22 @@ class ApplicationForm extends React.Component {
     this.setState({paas})
   }
 
+  saveProjectInfo = () => {
+    const {domains} = this.props.NewApplication
+    let domainFilter = domains.filter(d => d.id === this.state.projectInfoEdit.domainId)[0] || {}
+    this.setState({
+      editProjectInfo: false,
+      domainId: domainFilter.id,
+      domainName: domainFilter.name,
+      operationManagers: this.state.projectInfoEdit.operationManagers || [],
+      businessManagers: this.state.projectInfoEdit.businessManagers || [],
+    })
+  }
+
   render() {
     const { projectInfo } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const {domains} = this.props.NewApplication
-    console.log(this.state.middlewareMappings, 'middlewareMappings')
+    const {domains=[], accounts=[]} = this.props.NewApplication
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -458,7 +470,7 @@ class ApplicationForm extends React.Component {
                       label="业务负责人"
                       hasFeedback
                     >
-                    {this.state.businessManagers.join()}
+                    {this.state.businessManagers.join('、 ')}
                     </FormItem>
                   </Col>
                   <Col span={col} push={1}>
@@ -467,7 +479,7 @@ class ApplicationForm extends React.Component {
                       label="技术负责人"
                       hasFeedback
                     >
-                    {this.state.operationManagers.join()}
+                    {this.state.operationManagers.join('、 ')}
                     </FormItem>
                   </Col>
                   <Col span={col} push={2}>
@@ -489,7 +501,9 @@ class ApplicationForm extends React.Component {
                     </FormItem>
                   </Col>
                 </Row>
-                <div className="text-center"><Button icon="edit" onClick={(e) => this.setState({editProjectInfo: true})}>编辑</Button></div>
+                <div className="text-center" style={{marginTop: '20px'}}>
+                  <Button icon="edit" onClick={(e) => this.setState({editProjectInfo: true})}>编辑</Button>
+                </div>
               </div>
             )}
             {this.state.editProjectInfo && (
@@ -513,13 +527,24 @@ class ApplicationForm extends React.Component {
                      {new Date(projectInfo.createdAt).toLocaleString()}
                     </FormItem>
                   </Col>
+                </Row>
+                <Row gutter={24}  className="scode-info">
                   <Col span={col} push={2}>
                     <FormItem
                       {...formItemLeft}
                       label="业务负责人"
                       hasFeedback
                     >
-                    {projectInfo.ownerUser}
+                     <Row>
+                       {this.state.projectInfoEdit.businessManagers.map((m, index) => {
+                         return (
+                           <Tag key={index}
+                                closable
+                                onClose={() => this.state.projectInfoEdit.businessManagers.splice(index, 1)}
+                           >{m}</Tag>)
+                       })}
+                       <Tag onClick={() => this.setState({visibleAddManager: true})}>添加 <Icon type="plus" /></Tag>
+                     </Row>
                     </FormItem>
                   </Col>
                   <Col span={col} push={1}>
@@ -528,16 +553,28 @@ class ApplicationForm extends React.Component {
                       label="技术负责人"
                       hasFeedback
                     >
-                    {}
+                      <Row>
+                        {this.state.projectInfoEdit.operationManagers.map((m, index) => {
+                          return (
+                            <Tag key={index}
+                                 closable
+                                 onClose={() => this.state.projectInfoEdit.operationManagers.splice(index, 1)}
+                            >{m}</Tag>)
+                        })}
+                        <Tag onClick={() => this.setState({visibleAddManager: true})}>添加 <Icon type="plus" /></Tag>
+                      </Row>
                     </FormItem>
                   </Col>
+                </Row>
+                <Row gutter={24}  className="scode-info">
                   <Col span={col} push={2}>
                     <FormItem
                       {...formItemLeft}
                       label="归属部门"
                       hasFeedback
                     >
-                     <Select value={this.state.domainId} onChange={domainId => this.onDomainSelect(domainId)}>
+                     <Select value={this.state.projectInfoEdit.domainId}
+                             onChange={domainId => this.setState({projectInfoEdit: {...this.state.projectInfoEdit, domainId}})}>
                        {domains.map(d => <Option key={d.id}><Icon type="area" style={{color: '#27ae60'}}/> {d.name}</Option>)}
                      </Select>
                     </FormItem>
@@ -552,7 +589,10 @@ class ApplicationForm extends React.Component {
                     </FormItem>
                   </Col>
                 </Row>
-                <div className="text-center"><Button type="primary" onClick={(e) => this.setState({editProjectInfo: false})}>保存</Button></div>
+                <div className="text-center" style={{marginTop: '20px'}}>
+                  <Button type="primary" onClick={(e) => this.saveProjectInfo()}>保存</Button>
+                  <Button style={{marginLeft: '20px'}} onClick={(e) => this.setState({editProjectInfo: false})}>取消</Button>
+                </div>
               </div>
             )}
           </Form>
@@ -674,6 +714,40 @@ class ApplicationForm extends React.Component {
                 resources={this.props.NewApplication.resources}
                 editId={this.state.editId}
                 middlewareMappings={this.state.middlewareMappings}
+            />
+        )}
+        {this.state.visibleAddManager && (
+          <NewManager
+            visible={this.state.visibleAddManager}
+            onOk={(newData) => {
+              this.setState({
+                projectInfoEdit: {
+                  ...this.state.projectInfoEdit,
+                  businessManagers: [...this.state.projectInfoEdit.businessManagers, newData],
+                },
+                visibleAddManager: false,
+              })
+            }}
+            onCancel={this.handleCancel}
+            accounts={accounts}
+            type="business"
+            />
+        )}
+        {this.state.visibleAddManager && (
+          <NewManager
+            visible={this.state.visibleAddManager}
+            onOk={(newData) => {
+              this.setState({
+                projectInfoEdit: {
+                  ...this.state.projectInfoEdit,
+                  operationManagers: [...this.state.projectInfoEdit.operationManagers, newData],
+                },
+                visibleAddManager: false,
+              })
+            }}
+            onCancel={this.handleCancel}
+            accounts={accounts}
+            type="opertation"
             />
         )}
       </div>

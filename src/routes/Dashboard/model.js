@@ -111,5 +111,20 @@ export default {
 				}
 			}
 		},
+		*findAccount({payload},{call, put}){
+			yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.START} })
+			try{
+				let accounts = yield call([apiStore,apiStore.find], 'account', null, {forceReload: true})
+				yield put({type:'setState',payload: {accounts: accounts.content.filter(a => a.state !== 'removed')}})
+				yield put({type:'setState',payload: {findAccountStatus: LOAD_STATUS.SUCCESS} })
+			}
+			catch(e){
+				yield put({type:'setState',payload: {
+						findAccountStatus: LOAD_STATUS.FAIL,
+						errorMessage: e.message()
+					}
+				})
+			}
+		},
 	}
 }
