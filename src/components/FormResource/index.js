@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, InputNumber } from 'antd';
 import { connect } from 'utils/ecos'
 
 const SubMenu = Menu.SubMenu;
@@ -32,8 +32,8 @@ export default class C extends React.Component {
   state = {
     resource: 'height',
     locationId: '',
-    customeCPU: '1',
-    customeMemory: '2',
+    customeCPU: 1,
+    customeMemory: 2,
     customeDiskSize: '256',
     clusters: [],
     locations: [],
@@ -160,10 +160,6 @@ export default class C extends React.Component {
           <Select value={this.state.locationId} onChange={this.locationChange} style={{width: '200px'}}>
             {this.state.locations.map(l => <Option key={l.id}><Icon type="location" style={{color: '#27ae60'}}/> {l.name}</Option>)}
           </Select>
-          {/* <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
-            <Select value={this.state.clusterId} onChange={value => this.onChange(value, 'clusterId')} style={{width: '200px'}}>
-              {this.state.clusters.map(c => <Option key={c.id}><Icon type="cluster" style={{color: '#27ae60'}}/> {c.name}</Option>)}
-            </Select> */}
         <div style={{padding: '10px'}}></div>
         <label htmlFor="">应用资源配置：</label>
         <div style={{padding: '10px'}}></div>
@@ -189,13 +185,6 @@ export default class C extends React.Component {
               >
                16G
               </FormItem>
-              {/* <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               1024G
-              </FormItem> */}
             </Form>
           </section>
 
@@ -220,13 +209,6 @@ export default class C extends React.Component {
               >
                16G
               </FormItem>
-              {/* <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               500G
-              </FormItem> */}
             </Form>
           </section>
 
@@ -251,13 +233,6 @@ export default class C extends React.Component {
               >
                16G
               </FormItem>
-              {/* <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               256G
-              </FormItem> */}
             </Form>
           </section>
 
@@ -273,39 +248,25 @@ export default class C extends React.Component {
                 label="CPU内核数"
                 hasFeedback
               >
-               <Input disabled={this.state.resource !== 'custome'}
-                      placeholder="1-16"
-                      value={this.state.customeCPU}
-                      onChange={e => this.onChange(e.target.value, 'customeCPU')}
-                      type="number"
-                ></Input>
+                <InputNumber onChange={value => this.onChange(value, 'customeCPU')}
+                             min={1}
+                             value={this.state.customeCPU}
+                             disabled={this.state.resource !== 'custome'}
+                />
               </FormItem>
               <FormItem
                 {...formItemLayout3}
                 label="内存"
                 hasFeedback
               >
-               <Input disabled={this.state.resource !== 'custome'}
-                      placeholder="2-32"
-                      value={this.state.customeMemory}
-                      onChange={e => this.onChange(e.target.value, 'customeMemory')}
-                      type="number"
-                      addonAfter="G"
-                ></Input>
+                <InputNumber onChange={value => this.onChange(value, 'customeMemory')}
+                             min={2}
+                             value={this.state.customeMemory}
+                             disabled={this.state.resource !== 'custome'}
+                             style={{width: '70%'}}
+                />
+                <span>G</span>
               </FormItem>
-              {/* <FormItem
-                {...formItemLayout3}
-                label="硬盘"
-                hasFeedback
-              >
-               <Input disabled={this.state.resource !== 'custome'}
-                      placeholder="256-1024"
-                      value={this.state.customeDiskSize}
-                      onChange={e => this.onChange(e.target.value, 'customeDiskSize')}
-                      type="number"
-                      addonAfter="G"
-                ></Input>
-              </FormItem> */}
             </Form>
           </section>
         </RadioGroup>

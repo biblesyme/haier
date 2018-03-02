@@ -377,6 +377,10 @@ class ApplicationForm extends React.Component {
       this.setState({searching: LOAD_STATUS.START})
       axios.get(`/v1/query/projects/${value}`)
         .then((res) => {
+          if (res.status === 401) {
+            // this.setState({})
+          }
+          console.log(res, 'res')
           const {domains} = this.props.NewApplication
           this.setState({
             projectInfo: res.data.data,
@@ -394,7 +398,13 @@ class ApplicationForm extends React.Component {
             }
           });
         })
-        .catch((err) => this.setState({projectInfo: null, searching: LOAD_STATUS.FAIL}))
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.setState({projectInfo: null, searching: '401'})
+            return
+          }
+          this.setState({projectInfo: null, searching: LOAD_STATUS.FAIL})
+        })
     }
   }
 
@@ -443,6 +453,9 @@ class ApplicationForm extends React.Component {
             {this.state.searching === LOAD_STATUS.START && <div className="text-center"><Icon type="loading" style={{ fontSize: 24 }} spin /></div>}
             {(this.state.searching === LOAD_STATUS.FAIL) && (
                <div className="text-center">S码不存在</div>
+            )}
+            {(this.state.searching === '401') && (
+               <div className="text-center">token失效 请重新登录</div>
             )}
             {(this.state.searching === LOAD_STATUS.SUCCESS && !this.state.editProjectInfo) && (
               <div>

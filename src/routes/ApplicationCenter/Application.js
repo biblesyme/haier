@@ -33,6 +33,7 @@ class ApplicationCenter extends React.Component {
     domainSelect: 'all',
     filter: null,
     record: {},
+    currentPage: 1,
   }
 
   componentWillMount() {
@@ -84,13 +85,20 @@ class ApplicationCenter extends React.Component {
     const {accounts=[]} = this.props.reduxState
     const {projects=[]} = this.props.App
     const columns = [{
-      title: 'ID',
+      title: '序号',
       dataIndex: 'id',
+      render: (text, record, index) => {
+        return <span>{(this.state.currentPage - 1) * 10 + index + 1}</span>
+      }
     }, {
       title: '应用名称',
       dataIndex: 'name',
     }, {
       title: '技术负责人',
+      render: (record) => {
+        const {operationManagers=[]} = record
+        return <span>{operationManagers.join('、 ')}</span>
+      }
     }, {
       title: '应用告警数',
       dataIndex: 'health',
@@ -109,10 +117,6 @@ class ApplicationCenter extends React.Component {
         }
         return resources.map(r => <Tag key={record.id + r} color="blue"><Icon  type={nameMap[r]}/></Tag>)
       }
-    },
-    {
-      title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
     }, {
       title: <div className="text-center">操作</div>,
       render: (record, index) => {
@@ -146,6 +150,11 @@ class ApplicationCenter extends React.Component {
     <div>
       <div className="page-section">
         <h3>应用列表</h3>
+        <Row style={{fontSize: '18px', marginTop: '20px'}}>
+          <Col span={4}>应用总数 <span style={{color: 'blue', marginLeft: '5px'}}>{projects.length}</span></Col>
+          <Col span={4}>健康应用 <span style={{color: 'green', marginLeft: '5px'}}>302</span></Col>
+          <Col span={4}>告警应用 <span style={{color: 'red', marginLeft: '5px'}}>23</span></Col>
+        </Row>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
             {/* <Select style={{ width: 200 }}
@@ -165,7 +174,14 @@ class ApplicationCenter extends React.Component {
             />
           </Col>
         </Row>
-        <Table pagination={{showQuickJumper: true}} columns={columns} dataSource={boxes} rowKey="id"/>
+        <Table columns={columns}
+               dataSource={boxes}
+               rowKey="id"
+               pagination={{
+                 showQuickJumper: true,
+                 onChange: (currentPage) => this.setState({currentPage}),
+               }}
+        />
       </div>
 
       {this.state.visibleEdit && (

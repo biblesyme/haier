@@ -23,6 +23,7 @@ class Information extends React.Component {
     domainSelect: 'all',
     filter: null,
     record: {},
+    currentPage: 1,
   }
   componentWillMount() {
     this.props.dispatch({type: 'App/setState', payload: {loading: true}})
@@ -68,23 +69,32 @@ class Information extends React.Component {
     })
   }
   render() {
-    const {projects=[]} = this.props.App
+    const {projects=[], domains=[]} = this.props.App
     const {accounts=[]} = this.props.reduxState
 
     const columns = [{
-      title: 'ID',
+      title: '序号',
       dataIndex: 'id',
+      render: (text, record, index) => {
+        return <span>{(this.state.currentPage - 1) * 10 + index + 1}</span>
+      }
     }, {
       title: '应用名称',
       dataIndex: 'name',
     }, {
-      title: '应用告警数',
-      dataIndex: 'health',
+      title: '项目经理',
+      render: (record) => {
+        const {businessManagers=[]} = record
+        return <span>{businessManagers.join('、 ')}</span>
+      }
     }, {
+      title: '所属部门',
+      render: (record) => {
+        const filter = domains.filter(d => d.id === record.domainId)[0] || {}
+        return <span>{filter.name}</span>
+      }
+    },{
       title: '应用健康度',
-    }, {
-      title: '资源占用率',
-      dataIndex: 'resourceUsage1',
     }, {
       title: '资源种类',
       render: (record) => {
@@ -98,10 +108,9 @@ class Information extends React.Component {
         }
         return resources.map(r => <Tag key={record.id + r} color="blue"><Icon  type={nameMap[r]}/></Tag>)
       }
-    },
-    {
-      title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+    }, {
+      title: '应用告警数',
+      dataIndex: 'health',
     }, {
       title: <div className="text-center">操作</div>,
       render: (record, index) => {
@@ -110,7 +119,9 @@ class Information extends React.Component {
             <a className="mg-l10" onClick={() => this.detail(record)}>查看详情</a>
           </div>
         )
-      }
+      },
+      // fixed: 'right',
+      // width: 100,
     }];
 
     const boxes = projects.filter(a => {
@@ -125,50 +136,13 @@ class Information extends React.Component {
     return (
       <div className="page-wrap">
         <section className="page-section">
-          <Row>
-            <Col>
-              <Card bordered={false}>
-                <CardGrid style={{width: '15%', height: stateHeight}} className="text-center">
-                  <div style={{fontSize: '4em', color: '#389e0d'}}>{projects.length}</div>
-                  <div>项目总数</div>
-                </CardGrid>
-                <CardGrid style={{width: '15%', height: stateHeight}} className="text-center">
-                  <MyProgress percent="45"
-                              width="85px"
-                  />
-                  <div style={{marginTop: '8px'}}>PAAS使用率</div>
-                </CardGrid>
-                <CardGrid style={{width: '70%', height: stateHeight}} className="text-center">
-                  <Row gutter={64}>
-                    <Col span={8}>
-                      <span style={{marginRight: '24px'}}>MySQL</span>
-                      <MyProgress percent="75"
-                                  width="85px"
-
-                      />
-                    </Col>
-                    <Col span={8}>
-                      <span style={{marginRight: '24px'}}>Redis</span>
-                      <MyProgress percent="30"
-                                  width="85px"
-                      />
-                    </Col>
-                    <Col span={8}>
-                      <span style={{marginRight: '24px'}}>RabbitMQ</span>
-                      <MyProgress percent="90"
-                                  width="85px"
-                      />
-                    </Col>
-                  </Row>
-                  <div style={{marginTop: '16px'}}>中间件使用率(共享资源)</div>
-                </CardGrid>
-              </Card>
-            </Col>
-          </Row>
-        </section>
-        <section className="page-section">
           <div className="page-section">
             <h3>应用列表</h3>
+            <Row style={{fontSize: '18px', marginTop: '20px'}}>
+              <Col span={4}>应用总数 <span style={{color: 'blue', marginLeft: '5px'}}>{projects.length}</span></Col>
+              <Col span={4}>健康应用 <span style={{color: 'green', marginLeft: '5px'}}>302</span></Col>
+              <Col span={4}>告警应用 <span style={{color: 'red', marginLeft: '5px'}}>23</span></Col>
+            </Row>
             <Row type="flex" justify="space-between" className={styles.tableListForm}>
               <Col>
                 {/* <Select style={{ width: 200 }}
@@ -188,7 +162,15 @@ class Information extends React.Component {
                 />
               </Col>
             </Row>
-            <Table pagination={{showQuickJumper: true}} columns={columns} dataSource={boxes} rowKey="id"/>
+            <Table columns={columns}
+                   dataSource={boxes}
+                   rowKey="id"
+                   scroll={{x: 1300}}
+                   pagination={{
+                     showQuickJumper: true,
+                     onChange: (currentPage) => this.setState({currentPage}),
+                   }}
+            />
           </div>
 
           {this.state.visibleEdit && (

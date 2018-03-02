@@ -154,7 +154,7 @@ export default class C extends React.Component {
             <label htmlFor="">资源所在地：</label>
               {locationFilter.name}
             <div style={{padding: '10px'}}></div>
-            {this.props.approval && (
+            {(this.props.approval && this.props.App.role === 'admin') && (
               <div>
                 <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
                   <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '200px'}}>
@@ -165,7 +165,7 @@ export default class C extends React.Component {
             )}
               <section className={styles["card-form"]}>
                 <div className={styles["card-header"]}>
-                  {nameMap[this.state.resource]}
+                  资源配置
                 </div>
                 <Form className={styles["card-body"]}>
                   <FormItem
@@ -242,14 +242,14 @@ export default class C extends React.Component {
                   <div>
                     <FormItem
                       {...formInputLayout}
-                      label="管理节点数量"
+                      label="mycat数量"
                       hasFeedback
                     >
                      {data.mycatClusterManagerNodeCount}
                     </FormItem>
                     <FormItem
                       {...formInputLayout}
-                      label="数据节点数量"
+                      label="mysql数量"
                       hasFeedback
                     >
                      {data.mycatClusterDataNodeCount}

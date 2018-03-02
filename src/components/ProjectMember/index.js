@@ -145,19 +145,19 @@ export default class C extends React.Component {
     const { getFieldDecorator } = this.props.form
     const {resource={}, accounts = [], } = this.props
     const {particpants} = this.state
-    const managers = particpants.filter(p => p.participantType === 'manager').map(p => {
+    const managers = particpants.filter(p => p.participantType === 'manager' && p.state === 'active').map(p => {
       return (
-        <p key={p.id}>
+        <Col key={p.id} span={6}>
           {`${p.accountName} ${p.accountExternalId}`}
           <Icon className="mg-l10"
                 type="delete"
                 style={{cursor: 'pointer'}}
                 onClick={e => this.deleteMember(e, p.accountId)}
           />
-        </p>
+        </Col>
       )
     })
-    const developers = particpants.filter(p => p.participantType === 'developer').map(p => {
+    const developers = particpants.filter(p => p.participantType === 'developer' && p.state === 'active').map(p => {
       return (
         <p key={p.id}>
           {`${p.accountName} ${p.accountExternalId}`}
@@ -173,7 +173,11 @@ export default class C extends React.Component {
     return (
       <div>
         <Modal
-          title="成员管理"
+          title={
+            <div className="text-center">
+              成员管理
+            </div>
+          }
           {...this.props}
           onOk={this.submit}
           destroyOnClose={true}
@@ -185,12 +189,32 @@ export default class C extends React.Component {
           }
           width={800}
           >
-            <Form onSubmit={this.handleSubmit}>
+            <Row>
+              <Col span={4} push={1}>所属应用:</Col>
+              <Col span={20}>{resource.name}</Col>
+            </Row>
+            <Row style={{marginTop: '20px'}}>
+              <Col span={4} push={1} >项目经理:</Col>
+              <Col span={20}>
+                <Row>
+                  {managers}
+                </Row>
+              </Col>
+            </Row>
+            <Row style={{marginTop: '20px'}}>
+              <Col span={4} push={1} >项目成员:</Col>
+              <Col span={20}>
+                <Row>
+                  {developers}
+                </Row>
+              </Col>
+            </Row>
+            {/* <Form>
               <Row>
                 <Col span={12} push={2}>
                   <FormItem
                     {...formItemLayout}
-                    label="应用"
+                    label="所属应用"
                   >
                     {resource.name}
                   </FormItem>
@@ -215,10 +239,10 @@ export default class C extends React.Component {
                 </Col>
               </Row>
 
-            </Form>
+            </Form> */}
             <Divider dashed></Divider>
             <h3>新增项目成员</h3>
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
               <FormItem {...formItemLayout} label="类型">
                 <Radio.Group value={this.state.participantType} onChange={e=> this.setState({participantType: e.target.value})}>
                   <Radio.Button value="manager">项目经理</Radio.Button>

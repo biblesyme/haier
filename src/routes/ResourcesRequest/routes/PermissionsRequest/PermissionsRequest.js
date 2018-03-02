@@ -31,6 +31,7 @@ class MySubmit extends React.Component {
     record: {},
     filter: null,
     Selected: 'all',
+    currentPage: 1,
   };
 
   componentWillMount() {
@@ -69,53 +70,23 @@ class MySubmit extends React.Component {
       return reg.test(fieldsToFilter)
     })
     const columns = [{
-      title: 'ID',
-      dataIndex: 'id'
-    },
-    // {
-      // title: '类型',
-      // dataIndex: 'type23',
-      // key: 'type23',
-      // filters: [
-      //   { text: '全部', value: 'all' },
-      //   { text: '中间件', value: '中间件' },
-      //   { text: 'PAAS', value: 'paas' },
-      //   { text: '能力开放平台', value: 'Platform' },
-      // ],
-      // onFilter: (value, record) => {
-      //   if (value === 'all') {
-      //     return record.type
-      //   }
-      //   return record.type.includes(value)
-      // },
-      // filterMultiple: false,
-    // },
-     {
-      title: '申请人',
+      title: '序号',
+      dataIndex: 'id',
+      render: (text, record, index) => {
+        return <span>{(this.state.currentPage - 1) * 10 + index + 1}</span>
+      }
+    }, {
+      title: '资源信息',
       render: (record) => {
-        let selector = accounts.filter(a => a.id === record.requesterId)[0] || {}
-        if (selector) {
-          return <span>{selector.name}</span>
+        let selector = resources.filter(r => r.id === record.resourceId)[0] || {}
+        if (selector.resourceType === 'containerHost') {
+          return <span>容器</span>
         } else {
-          return <span></span>
+          return <span>{selector.resourceType}</span>
         }
       }
     }, {
-      title: '部门',
-      render: (record) => {
-        let selector = projects.filter(p => p.id === record.projectId)[0] || {}
-        const {businessDomain} = (selector.data && selector.data.data) || {}
-        if (selector) {
-          return <span>{businessDomain}</span>
-        } else {
-          return <span></span>
-        }
-      }
-    }, {
-      title: '申请时间',
-      render: (record) => <span>{new Date(record.requestTimestamp * 1000).toLocaleString()}</span>
-    }, {
-      title: '项目名称',
+      title: '所属应用',
       render: (record) => {
         let selector = projects.filter(p => p.id === record.projectId)[0] || {}
         if (selector) {
@@ -123,6 +94,30 @@ class MySubmit extends React.Component {
         } else {
           return <span></span>
         }
+      }
+    }, {
+      title: '描述',
+      render: (record) => {
+        let selector = resources.filter(r => r.id === record.resourceId)[0] || {}
+        const {data={}} = selector
+        if (selector.resourceType === 'containerHost') {
+          return <span>{`容器-${data.cpu / 1000}核-${data.memory / 1024 / 1024 / 1024}G`}</span>
+        }
+        if (selector.resourceType === 'mysql') {
+          if (data.deployMode === 0) return <span>{`MySQL-单机`}</span>
+          if (data.deployMode === 1) return <span>{`MySQL-主从`}</span>
+          if (data.deployMode === 2) return <span>{`MySQL-集群`}</span>
+        }
+        if (selector.resourceType === 'redis') {
+          if (data.clusterType === 'one') return <span>{`Redis-${data.memorySize}M-单例`}</span>
+          if (data.clusterType === 'masterSlave') return <span>{`Redis-${data.memorySize}M-主从`}</span>
+          if (data.clusterType === 'shared') return <span>{`Redis-${data.memorySize}M-分片`}</span>
+        }
+        if (selector.resourceType === 'rocketMQTopic') {
+          if (data.clusterType === 'standalone') return <span>{`RocketMQ-单机`}</span>
+          if (data.clusterType === 'cluster') return <span>{`RocketMQ-集群`}</span>
+        }
+        return <span>{selector.resourceType}</span>
       }
     }, {
       title: '状态',
@@ -164,7 +159,11 @@ class MySubmit extends React.Component {
             dataSource={boxes}
             columns={columns}
             rowKey="id"
-            pagination={{showQuickJumper: true}}
+            pagination={{
+              showQuickJumper: true,
+              onChange: (currentPage) => this.setState({currentPage}),
+            }}
+            scroll={{x: 1300}}
           />
         </Col>
       </Row>

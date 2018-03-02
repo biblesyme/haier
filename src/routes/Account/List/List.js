@@ -1,5 +1,5 @@
 import React from 'react'
-import {Table, Row, Col, Input, Radio, Button, Tag, message, Checkbox} from 'antd'
+import {Table, Row, Col, Input, Radio, Button, Tag, message, Checkbox, Icon} from 'antd'
 import userActions from './userActions'
 import ActionDropdown from '../../../components/ActionDropdown'
 import { connect } from 'utils/ecos'
@@ -23,6 +23,7 @@ class User extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.props.dispatch({type: 'App/findDomain'})
     this.props.selfDispatch({
       type: 'findAccount',
       payload: {
@@ -138,7 +139,8 @@ class User extends React.Component {
 
   render() {
     const {accounts=[], projects=[],} = this.props.reduxState
-    console.log(this.state.projectparticipants)
+    const {projectparticipants=[]} = this.state
+    const {domains=[]} = this.props.App
     const columnStaff = [{
       title: '用户名',
       dataIndex: 'externalId',
@@ -155,16 +157,25 @@ class User extends React.Component {
       }
     }, {
       title: '所属应用',
+      render: (record) => {
+        const filter = projectparticipants.filter(p => p.id === record.id)[0] || {}
+        const records = filter.record || []
+        const recordFilter = records.filter(r => r.state === 'active')
+        if (recordFilter.length > 1) {
+          return <span>{`${recordFilter[0].projectName}... (${recordFilter.length})`}</span>
+        }
+        if (recordFilter.length === 1) {
+          return <span>{`${recordFilter[0].projectName} (${recordFilter.length})`}</span>
+        }
+        return <span>无</span>
+      }
     }, {
       title: '部门/公司',
-      // render: (record) => {
-      //   let selector = projects.filter(p => p.creatorId === record.id)[0] || ''
-      //   if (selector) {
-      //     return <span>{selector.data.data.businessDomain}</span>
-      //   } else {
-      //     return <span></span>
-      //   }
-      // }
+      render: (record) => {
+        const project = projects.filter(p => p.creatorId === record.id)[0] || {}
+        const domain = domains.filter(d => d.id === project.domainId)[0] || {}
+        return <span>{domain.name}</span>
+      }
     }, {
       title: '状态',
       render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,

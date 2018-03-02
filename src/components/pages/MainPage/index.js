@@ -28,8 +28,16 @@ export default class MainPage extends React.Component {
   }
 
   roleChange = (role) => {
+    const {user= {},} = this.props.App
     document.cookie = `currentRole=${role};`
     this.props.dispatch({type:'App/setState',payload: {role}})
+    this.props.dispatch({
+      type: 'App/findApproval',
+      payload: {
+        account: user,
+        successCB: () => this.setState({findApproval: 'success'})
+      }
+    })
   }
 
   componentWillMount(){
@@ -42,7 +50,7 @@ export default class MainPage extends React.Component {
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
     }
     this.props.dispatch({type: 'App/findLocation'})
-    
+
     if (user.roles.includes('admin') || user.roles.includes('domainAdmin')) {
       this.props.dispatch({
         type: 'App/findApproval',

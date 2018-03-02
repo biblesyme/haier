@@ -12,6 +12,7 @@ import {
   message,
   Input,
   Radio,
+  InputNumber,
 } from 'antd'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
@@ -217,18 +218,20 @@ export default class C extends React.Component {
                           label="MyCAT节点数量"
                           hasFeedback
                         >
-                         <Input placeholder="MyCAT节点数量" type="number" value={this.state.mysql.mycatClusterManagerNodeCount}
-                                onChange={e => this.onMysqlChange(e.target.value, 'mycatClusterManagerNodeCount')}
-                          ></Input>
+                          <InputNumber value={this.state.mysql.mycatClusterManagerNodeCount}
+                                       onChange={value => this.onMysqlChange(value, 'mycatClusterManagerNodeCount')}
+                                       min={0}
+                          />
                         </FormItem>
                         <FormItem
                           {...formInputLayout}
                           label="MySQL数量"
                           hasFeedback
                         >
-                         <Input placeholder="请输入MySQL数量" type="number" value={this.state.mysql.mycatClusterDataNodeCount}
-                                onChange={e => this.onMysqlChange(e.target.value, 'mycatClusterDataNodeCount')}
-                          ></Input>
+                          <InputNumber value={this.state.mysql.mycatClusterDataNodeCount}
+                                       onChange={value => this.onMysqlChange(value, 'mycatClusterDataNodeCount')}
+                                       min={0}
+                          />
                         </FormItem>
                       </div>
                     )}
@@ -257,12 +260,13 @@ export default class C extends React.Component {
                         label="内存"
                         hasFeedback
                       >
-                        <Input placeholder="请输入内存大小"
-                               type="number"
-                               addonAfter="M"
-                               value={this.state.redis.memorySize}
-                               onChange={e => this.onRedisChange(e.target.value, 'memorySize')}
+                        <InputNumber value={this.state.redis.memorySize}
+                                     onChange={value => this.onRedisChange(e.target.value, 'memorySize')}
+                                     min={0}
+                                     style={{width: '70%'}}
+                                     defaultValue={100}
                         />
+                        <span>M</span>
                       </FormItem>
                       <FormItem
                         {...formItemLayout4}
@@ -282,10 +286,9 @@ export default class C extends React.Component {
                           label="分片数量"
                           hasFeedback
                         >
-                          <Input placeholder="请输入分片数量"
-                                 type="number"
-                                 value={this.state.redis.sharedCount}
-                                 onChange={e => this.onRedisChange(e.target.value, 'sharedCount')}
+                          <InputNumber value={this.state.redis.sharedCount}
+                                       onChange={value => this.onRedisChange(e.target.value, 'sharedCount')}
+                                       min={0}
                           />
                         </FormItem>
                       )}
@@ -329,10 +332,9 @@ export default class C extends React.Component {
                         label="最大消息吞吐量"
                         hasFeedback
                       >
-                       <Input placeholder="请输入"
-                              type="number"
-                              value={this.state[middlewareSelect].maxIO}
-                              onChange={e => this.onChange(e.target.value, 'maxIO', middlewareSelect)}
+                        <InputNumber value={this.state[middlewareSelect].maxIO}
+                                     onChange={value => this.onChange(value, 'maxIO', middlewareSelect)}
+                                     min={0}
                         />
                       </FormItem>
                       <FormItem

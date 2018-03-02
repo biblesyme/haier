@@ -91,6 +91,10 @@ class Application extends React.Component {
       dataIndex: 'name',
     }, {
       title: '技术负责人',
+      render: (record) => {
+        const {operationManagers=[]} = record
+        return <span>{operationManagers.join('、 ')}</span>
+      }
     }, {
       title: '应用告警数',
       dataIndex: 'health',
