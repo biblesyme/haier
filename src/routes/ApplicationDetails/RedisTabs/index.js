@@ -101,7 +101,7 @@ export default class C extends React.Component {
         </Row>
 
         <Row style={{marginTop: '20px'}}>
-          <Col span={24} push={1}>
+          <Col span={22} push={1}>
             <Tabs>
               {items.map((item, index) => {
                 const {data={}} = item

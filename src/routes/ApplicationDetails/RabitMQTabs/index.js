@@ -94,7 +94,7 @@ export default class C extends React.Component {
         </Row>
 
         <Row style={{marginTop: '20px'}}>
-          <Col span={24} push={1}>
+          <Col span={22} push={1}>
             <Tabs>
               {items.map((item, index) => {
                 const {data={}} = item
@@ -144,7 +144,6 @@ export default class C extends React.Component {
                   let exchangeType
                   projectSelect = projects.filter(p => data.producerApplicationScode === p.scode)[0] || {}
                   let exchanges = resources.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
-                  console.log(projectSelect)
                   let exchangeData = exchanges.filter(e => e.data.exchangeName === data.exchangeName)[0] || {}
                   exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
                   return (

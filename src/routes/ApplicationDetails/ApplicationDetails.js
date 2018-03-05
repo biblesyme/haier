@@ -9,6 +9,7 @@ import MysqlTabs from './MysqlTabs'
 import RedisTabs from './RedisTabs'
 import RocketMQTabs from './RocketMQTabs'
 import RabitMQTabs from './RabitMQTabs'
+import MiddlewareList from './MiddlewareList'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -104,6 +105,9 @@ const plainOptions = [{
 }]
 
 class ApplicationDetail extends React.Component {
+  state = {
+    list: false,
+  }
   componentWillMount() {
     const {record={}} = this.props.location
     this.props.selfDispatch({
@@ -124,6 +128,7 @@ class ApplicationDetail extends React.Component {
     this.props.dispatch({type: 'App/findProject'})
     this.props.dispatch({type: 'App/findResource'})
     this.props.dispatch({type: 'App/findDomain'})
+    this.props.dispatch({type: 'App/setState', payload: {list: false}})
   }
   render(){
     const {record={}} = this.props.location
@@ -222,38 +227,59 @@ class ApplicationDetail extends React.Component {
 
           <section className="page-section">
             <Row style={{marginBottom: '20px'}}>
-              <Col>中间件资源: </Col>
+              <Col span={22}>中间件资源: </Col>
+              {this.props.App.role === 'admin' && (
+                <Col span={2}>
+                  <Icon type="appstore" style={this.props.App.list ? {fontSize: '2em', cursor: 'pointer'} : {fontSize: '2em', color: '#005aab', cursor: 'pointer'}}
+                                        onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: false}})}
+                  />
+                  <Icon type="bars" style={this.props.App.list ? {fontSize: '2em', color: '#005aab', cursor: 'pointer'} : {fontSize: '2em', cursor: 'pointer'}}
+                                    className="mg-l10"
+                                    onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: true}})}
+                  />
+                </Col>
+              )}
             </Row>
-            {middleware.filter(r => r.resourceType === 'mysql').length > 0 && (
+            {!this.props.App.list && (
               <div>
-                <MysqlTabs items={middleware.filter(r => r.resourceType === 'mysql')}
-                />
-                <Divider></Divider>
+                {middleware.filter(r => r.resourceType === 'mysql').length > 0 && (
+                  <div>
+                    <MysqlTabs items={middleware.filter(r => r.resourceType === 'mysql')}
+                    />
+                    <Divider></Divider>
+                  </div>
+                )}
+                {middleware.filter(r => r.resourceType === 'redis').length > 0 && (
+                  <div>
+                    <RedisTabs items={middleware.filter(r => r.resourceType === 'redis')}
+                    />
+                    <Divider></Divider>
+                  </div>
+                )}
+                {middleware.filter(r => r.resourceType === 'rocketMQTopic').length > 0 && (
+                  <div>
+                    <RocketMQTabs items={middleware.filter(r => r.resourceType === 'rocketMQTopic')}
+                    />
+                    <Divider></Divider>
+                  </div>
+                )}
+                {middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer')).length > 0 && (
+                  <div>
+                    <RabitMQTabs items={middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer'))}
+                                 projects={this.props.App.projects}
+                                 resources={this.props.App.resources}
+                    />
+                    <Divider></Divider>
+                  </div>
+                )}
               </div>
             )}
-            {middleware.filter(r => r.resourceType === 'redis').length > 0 && (
-              <div>
-                <RedisTabs items={middleware.filter(r => r.resourceType === 'redis')}
-                />
-                <Divider></Divider>
-              </div>
+
+            {this.props.App.list && (
+              <MiddlewareList middlewareMappings={middleware}
+              />
             )}
-            {middleware.filter(r => r.resourceType === 'rocketMQTopic').length > 0 && (
-              <div>
-                <RocketMQTabs items={middleware.filter(r => r.resourceType === 'rocketMQTopic')}
-                />
-                <Divider></Divider>
-              </div>
-            )}
-            {middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer')).length > 0 && (
-              <div>
-                <RabitMQTabs items={middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer'))}
-                             projects={this.props.App.projects}
-                             resources={this.props.App.resources}
-                />
-                <Divider></Divider>
-              </div>
-            )}
+
 
             <div className="text-right pd-tb10">
               <Button type="primary">前往中间件平台</Button>

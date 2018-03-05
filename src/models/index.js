@@ -22,6 +22,7 @@ export default {
 		resources: [],
 		approvals: [],
 		domains: [],
+		list: false,
 	},
 	reducers: {
 		setState(state,{payload}){

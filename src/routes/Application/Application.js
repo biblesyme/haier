@@ -33,6 +33,7 @@ class Application extends React.Component {
     domainSelect: 'all',
     filter: null,
     record: {},
+    currentPage: 1,
   }
 
   componentWillMount() {
@@ -84,8 +85,11 @@ class Application extends React.Component {
   render(){
     const {projects=[], accounts=[]} = this.props.reduxState
     const columns = [{
-      title: 'ID',
+      title: '序号',
       dataIndex: 'id',
+      render: (text, record, index) => {
+        return <span>{(this.state.currentPage - 1) * 10 + index + 1}</span>
+      }
     }, {
       title: '应用名称',
       dataIndex: 'name',
@@ -95,9 +99,6 @@ class Application extends React.Component {
         const {operationManagers=[]} = record
         return <span>{operationManagers.join('、 ')}</span>
       }
-    }, {
-      title: '应用告警数',
-      dataIndex: 'health',
     }, {
       title: '应用健康度',
     }, {
@@ -113,10 +114,9 @@ class Application extends React.Component {
         }
         return resources.map(r => <Tag key={record.id + r} color="blue"><Icon  type={nameMap[r]}/></Tag>)
       }
-    },
-    {
-      title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>
+    }, {
+      title: '应用告警数',
+      dataIndex: 'health',
     }, {
       title: <div className="text-center">操作</div>,
       render: (record, index) => {
@@ -169,7 +169,15 @@ class Application extends React.Component {
             />
           </Col>
         </Row>
-        <Table pagination={{showQuickJumper: true}} columns={columns} dataSource={boxes} rowKey="id"/>
+        <Table columns={columns}
+               dataSource={boxes}
+               rowKey="id"
+               scroll={{x: 1300}}
+               pagination={{
+                 showQuickJumper: true,
+                 onChange: (currentPage) => this.setState({currentPage}),
+               }}
+        />
       </div>
 
       {this.state.visibleEdit && (
