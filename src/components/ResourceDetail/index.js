@@ -213,57 +213,32 @@ export default class C extends React.Component {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="MySQL" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formItemLayout4}
-                  label="地点"
-                  hasFeedback
-                >
-                  {machineRoomFilter.roomName}
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="部署模式"
-                  hasFeedback
-                >
-                 {deployModeEnum(data.deployMode)}
-                </FormItem>
-
-                {data.deployMode === 1 && (
-                  <FormItem
-                    {...formItemLayout4}
-                    label="主从"
-                    hasFeedback
-                  >
-                   {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
-                  </FormItem>
-                )}
-
-                {data.deployMode === 2 && (
-                  <div>
-                    <FormItem
-                      {...formInputLayout}
-                      label="mycat数量"
-                      hasFeedback
-                    >
-                     {data.mycatClusterManagerNodeCount}
-                    </FormItem>
-                    <FormItem
-                      {...formInputLayout}
-                      label="mysql数量"
-                      hasFeedback
-                    >
-                     {data.mycatClusterDataNodeCount}
-                    </FormItem>
-                  </div>
-                )}
-
-                <FormItem
-                  {...formItemLayout4}
-                  label="备份"
-                  hasFeedback
-                >
-                  {nameMap[data.backup]}
-                </FormItem>
+                <Row gutter={24}>
+                  <Col span={12} push={1}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} push={1}>模式: &nbsp;{deployModeEnum(data.deployMode)}</Col>
+                  {data.deployMode === 1 && (
+                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                      主从: &nbsp;
+                      {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
+                    </Col>
+                  )}
+                  {data.deployMode === 2 && (
+                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                      mycat数量: &nbsp;
+                      {data.mycatClusterManagerNodeCount}
+                    </Col>
+                  )}
+                  {data.deployMode === 2 && (
+                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                      mysql数量: &nbsp;
+                      {data.mycatClusterDataNodeCount}
+                    </Col>
+                  )}
+                  <Col span={12} push={1} style={{marginTop: '10px'}}>
+                    备份: &nbsp;
+                    {data.backup === 'true' ? '是' : '否'}
+                  </Col>
+                </Row>
               </Form>
             </Card>
           </div>
@@ -272,38 +247,26 @@ export default class C extends React.Component {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="Redis" style={{width: '270px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formItemLayout4}
-                  label="地点"
-                  hasFeedback
-                >
-                  {machineRoomFilter.roomName}
-                </FormItem>
-                <FormItem
-                  {...formInputLayout}
-                  label="内存"
-                  hasFeedback
-                >
-                  {`${data.memorySize}M`}
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="集群类型"
-                  hasFeedback
-                >
-                  {data.clusterType === 'one' && '单例'}
-                  {data.clusterType === 'masterSlave' && '主从'}
-                  {data.clusterType === 'shared' && '分片'}
-                </FormItem>
-                {data.clusterType === 'shared' && (
-                  <FormItem
-                    {...formInputLayout}
-                    label="分片数量"
-                    hasFeedback
-                  >
-                    {data.sharedCount}
-                  </FormItem>
-                )}
+                <Row gutter={24}>
+                  <Col span={12} push={1}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} push={1}>
+                    类型: &nbsp;
+                    {data.clusterType === 'one' && '单例'}
+                    {data.clusterType === 'masterSlave' && '主从'}
+                    {data.clusterType === 'shared' && '分片'}
+                  </Col>
+                  <Col span={12} push={1} style={{marginTop: '10px'}}>
+                    内存: &nbsp;
+                    {`${data.memorySize}M`}
+                  </Col>
+                  {data.clusterType === 'shared' && (
+                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                      分片数量: &nbsp;
+                      {data.sharedCount}
+                    </Col>
+                  )}
+                </Row>
+
               </Form>
             </Card>
           </div>
@@ -312,27 +275,17 @@ export default class C extends React.Component {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RocketMQ" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formItemLayout4}
-                  label="地点"
-                  hasFeedback
-                >
-                 {machineRoomFilter.roomName}
-                </FormItem>
-                <FormItem
-                  {...formItemLayout4}
-                  label="集群类型"
-                  hasFeedback
-                >
-                 {data.clusterType === 'standalone' ? '单机' : '集群'}
-                </FormItem>
-                <FormItem
-                  {...formInputLayout}
-                  label="主题名称"
-                  hasFeedback
-                >
-                 {data.topicName}
-                </FormItem>
+                <Row gutter={24}>
+                  <Col span={12} push={1}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} push={1}>
+                    类型: &nbsp;
+                    {data.clusterType === 'standalone' ? '单机' : '集群'}
+                  </Col>
+                  <Col span={24} push={1} style={{marginTop: '10px'}}>
+                    主题名称: &nbsp;
+                    {`${data.topicName}`}
+                  </Col>
+                </Row>
               </Form>
             </Card>
           </div>
@@ -341,38 +294,20 @@ export default class C extends React.Component {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formInputLayout}
-                  label="地点"
-                  hasFeedback
-                >
-                 {machineRoomFilter.roomName}
-                </FormItem>
-                <FormItem
-                  {...formInputLayout}
-                  label="最大消息吞吐量"
-                  hasFeedback
-                >
-                 {data.maxIO}
-                </FormItem>
-                <FormItem
-                  {...formInputLayout}
-                  label="Exchange名称"
-                  hasFeedback
-                >
-                 {data.exchangeName}
-                </FormItem>
-                <FormItem
-                  labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
-                  wrapperCol={{xs: { span: 14 }, sm: { span: 14 }, push: 0}}
-                  style = {{marginBottom: '10px'}}
-                  label="Exchange类型"
-                  hasFeedback
-                >
-                  {data.exchangeType === 'fanout' && '广播'}
-                  {data.exchangeType === 'topic' && '主题'}
-                  {data.exchangeType === 'direct' && '直连'}
-                </FormItem>
+                <Row gutter={24}>
+                  <Col span={12} push={2}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} push={2}>消息吞吐: &nbsp;{data.maxIO}</Col>
+                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                    Exchange名称: &nbsp;
+                    {`${data.exchangeName}`}
+                  </Col>
+                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                    Exchange类型: &nbsp;
+                    {data.exchangeType === 'fanout' && '广播'}
+                    {data.exchangeType === 'topic' && '主题'}
+                    {data.exchangeType === 'direct' && '直连'}
+                  </Col>
+                </Row>
               </Form>
             </Card>
           </div>
@@ -381,45 +316,29 @@ export default class C extends React.Component {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
-                <FormItem
-                  {...formInputLayout}
-                  label="应用"
-                  hasFeedback
-                >
-                 {projectSelect.name}
-                </FormItem>
-                <FormItem
-                  labelCol={{xs: { span: 10 }, sm: { span: 10 }, pull: 0}}
-                  wrapperCol={{xs: { span: 14 }, sm: { span: 14 }, push: 0}}
-                  label="Exchange名称"
-                  hasFeedback
-                  style = {{marginBottom: '10px'}}
-                >
-                  {data.exchangeName}
-                </FormItem>
-                <FormItem
-                  {...formInputLayout}
-                  label="队列名"
-                >
-                 {data.queueName}
-                </FormItem>
-
-                {exchangeType === 'topic' && (
-                  <FormItem
-                    {...formInputLayout}
-                    label="主题名"
-                  >
-                   {data.topicName}
-                  </FormItem>
-                )}
-                {exchangeType === 'direct' && (
-                  <FormItem
-                    {...formInputLayout}
-                    label="直连名"
-                  >
-                   {data.RouteKey}
-                  </FormItem>
-                )}
+                <Row gutter={24}>
+                  <Col span={24} push={2}>应用: &nbsp;{projectSelect.name}</Col>
+                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                    Exchange名称: &nbsp;
+                    {`${data.exchangeName}`}
+                  </Col>
+                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                    队列名: &nbsp;
+                    {data.queueName}
+                  </Col>
+                  {exchangeType === 'topic' && (
+                    <Col span={24} push={2} style={{marginTop: '10px'}}>
+                      主题名: &nbsp;
+                      {data.topicName}
+                    </Col>
+                  )}
+                  {exchangeType === 'direct' && (
+                    <Col span={24} push={2} style={{marginTop: '10px'}}>
+                      直连名: &nbsp;
+                      {data.RouteKey}
+                    </Col>
+                  )}
+                </Row>
               </Form>
             </Card>
           </div>

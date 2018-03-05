@@ -137,7 +137,7 @@ class Information extends React.Component {
       <div className="page-wrap">
         <section className="page-section">
           <div className="page-section">
-            <h3>应用列表</h3>
+            <h3>信息中心</h3>
             <Row style={{fontSize: '18px', marginTop: '20px'}}>
               <Col span={4}>应用总数 <span style={{color: 'blue', marginLeft: '5px'}}>{projects.length}</span></Col>
               <Col span={4}>健康应用 <span style={{color: 'green', marginLeft: '5px'}}>302</span></Col>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Progress } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {deployModeEnum} from 'utils/enum'
@@ -8,6 +8,7 @@ const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const CardGrid = Card.Grid
 
 import styles from './style.sass'
 
@@ -137,31 +138,76 @@ export default class C extends React.Component {
       <main>
         {resource.resourceType === 'containerHost' && (
           <div >
-            <label htmlFor="">资源所在地：</label>
-              {locationFilter.name}
-            <div style={{padding: '10px'}}></div>
-            <label htmlFor="">已选集群：</label>
-              {clusterFilter.name}
-            <div style={{padding: '10px'}}></div>
-              <Card title={nameMap[this.state.resource]}>
-                <Form className={styles["card-body"]}>
-                  <FormItem
-                    {...formItemLayout3}
-                    label="CPU内核数"
-                    hasFeedback
-                  >
-                   {data.cpu/1000}
-                  </FormItem>
-                  <FormItem
-                    {...formItemLayout3}
-                    label="内存"
-                    hasFeedback
-                  >
-                   {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
-                  </FormItem>
-                </Form>
-              </Card>
-
+            <Row>
+              <Col span={6}>资源类型: 容器</Col>
+              <Col span={18}>
+                <label htmlFor="" style={{marginLeft: '32px'}}>资源所在地：</label>
+                  {locationFilter.name}
+                <label style={{marginLeft: '30px'}}>集群：</label>
+                  {clusterFilter.name}
+                <div style={{padding: '10px'}}></div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={6} style={{marginTop: '24px'}}>
+                <Card title={'配置资源'}>
+                  <Form className={styles["card-body"]}>
+                    <FormItem
+                      {...formItemLayout3}
+                      label="CPU内核数"
+                      hasFeedback
+                    >
+                     {data.cpu/1000}
+                    </FormItem>
+                    <FormItem
+                      {...formItemLayout3}
+                      label="内存"
+                      hasFeedback
+                    >
+                     {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
+                    </FormItem>
+                  </Form>
+                </Card>
+              </Col>
+              <Col span={18}>
+                <Card bordered={false} style={{height: '250px'}}>
+                  <CardGrid style={{width: '34%'}}>
+                    资源使用率
+                    <Row>
+                      <Col span={12} style={{fontSize: '12px'}}>
+                        <div style={{marginTop: '80px'}}>使用: 1024M</div>
+                        <div>总共: 10240M</div>
+                      </Col>
+                      <Col span={12}>
+                        <Progress type="dashboard"
+                                  percent={30}
+                                  width={120}
+                                  format={percent => `
+                                    ${percent}%`}
+                        />
+                      </Col>
+                    </Row>
+                  </CardGrid>
+                  <CardGrid style={{width: '34%'}}>
+                    健康实例率
+                    <Row>
+                      <Col span={12} style={{fontSize: '12px'}}>
+                        <div style={{marginTop: '80px'}}>健康: 3</div>
+                        <div>总共: 10</div>
+                      </Col>
+                      <Col span={12}>
+                        <Progress type="circle"
+                                  percent={30}
+                                  width={120}
+                                  format={percent => `
+                                    ${percent}%`}
+                        />
+                      </Col>
+                    </Row>
+                  </CardGrid>
+                </Card>
+              </Col>
+            </Row>
           </div>
         )}
         {resource.resourceType === 'mysql' && (
@@ -177,7 +223,7 @@ export default class C extends React.Component {
                 </FormItem>
                 <FormItem
                   {...formItemLayout4}
-                  label="部署模式"
+                  label="模式"
                   hasFeedback
                 >
                  {deployModeEnum(data.deployMode)}

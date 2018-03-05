@@ -89,18 +89,17 @@ export default class C extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const {resource={}, filterResource={}} = this.props
+    const {resource={}, filterResource={}, projects=[]} = this.props
     const {role} = this.props.App
+
+    let projectSelector = projects.filter(p => p.id === resource.projectId)[0] || {}
+
     return (
       <div>
         <Modal
           title={
             <div className="text-center">
-              资源详情
-              {role === 'admin' ?
-                <Tag className="pull-right" color={adminState[resource.state]}>{adminMap[resource.state]}</Tag>
-                : <Tag {...getState(resource.state)} className="pull-right">{nameMap[resource.state]}</Tag>
-              }
+              审批详情
             </div>
           }
           {...this.props}
@@ -112,10 +111,33 @@ export default class C extends React.Component {
           closable={false}
           width={800}
           >
+            <Row>
+              <Col span={12} push={9}>审批状态:</Col>
+              <Col span={12}>
+                {role === 'admin' ?
+                  <Tag color={adminState[resource.state]}>{adminMap[resource.state]}</Tag>
+                  : <Tag {...getState(resource.state)}>{nameMap[resource.state]}</Tag>
+                }
+              </Col>
+            </Row>
+            <Row style={{marginTop: '20px'}}>
+              <Col span={12} push={9}>申请时间:</Col>
+              <Col span={12}>{new Date(resource.requestTimestamp * 1000).toLocaleString()}</Col>
+            </Row>
+
+            <Row style={{marginTop: '20px', marginBottom: '30px'}}>
+              <Col span={12} push={9}>所属应用:</Col>
+              <Col span={12}>
+                {projectSelector.name}
+              </Col>
+            </Row>
             {(resource.state === 'denied' && this.state.status === 'success') && (
-              <div>
-                <p style={{color: '#ffa940'}}>驳回理由: {resource.deniedMessages}</p>
-              </div>
+              <Row style={{marginTop: '20px', marginBottom: '30px'}}>
+                <Col span={12} push={9}>驳回理由: </Col>
+                <Col span={12}>
+                  {resource.deniedMessages}
+                </Col>
+              </Row>
             )}
             {this.state.status === 'success' && (
               <ResourceDetail resource={this.state.resource}

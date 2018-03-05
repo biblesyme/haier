@@ -1,10 +1,14 @@
-import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox } from 'antd';
+import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox, Tabs, Divider } from 'antd';
 import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 import { withRouter } from 'react-router'
 import Item from './Item'
+import MysqlTabs from './MysqlTabs'
+import RedisTabs from './RedisTabs'
+import RocketMQTabs from './RocketMQTabs'
+import RabitMQTabs from './RabitMQTabs'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -209,7 +213,7 @@ class ApplicationDetail extends React.Component {
         <div>
           <section className="page-section">
             <Row gutter={24}>
-              <Col key={'paas'} span={6}><Item resource={paas} project={record}/></Col>
+              <Col key={'paas'}><Item resource={paas} project={record}/></Col>
             </Row>
             <div className="text-right pd-tb10">
               <Button type="primary">前往容器云</Button>
@@ -217,17 +221,40 @@ class ApplicationDetail extends React.Component {
           </section>
 
           <section className="page-section">
-            <Row gutter={24}>
-              {middleware.map(m => (
-                <Col key={m.id} span={6}>
-                  <Item resource={m}
-                        project={record}
-                        projects={this.props.App.projects}
-                        resources={this.props.App.resources}
-                  />
-                </Col>
-              ))}
+            <Row style={{marginBottom: '20px'}}>
+              <Col>中间件资源: </Col>
             </Row>
+            {middleware.filter(r => r.resourceType === 'mysql').length > 0 && (
+              <div>
+                <MysqlTabs items={middleware.filter(r => r.resourceType === 'mysql')}
+                />
+                <Divider></Divider>
+              </div>
+            )}
+            {middleware.filter(r => r.resourceType === 'redis').length > 0 && (
+              <div>
+                <RedisTabs items={middleware.filter(r => r.resourceType === 'redis')}
+                />
+                <Divider></Divider>
+              </div>
+            )}
+            {middleware.filter(r => r.resourceType === 'rocketMQTopic').length > 0 && (
+              <div>
+                <RocketMQTabs items={middleware.filter(r => r.resourceType === 'rocketMQTopic')}
+                />
+                <Divider></Divider>
+              </div>
+            )}
+            {middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer')).length > 0 && (
+              <div>
+                <RabitMQTabs items={middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer'))}
+                             projects={this.props.App.projects}
+                             resources={this.props.App.resources}
+                />
+                <Divider></Divider>
+              </div>
+            )}
+
             <div className="text-right pd-tb10">
               <Button type="primary">前往中间件平台</Button>
             </div>

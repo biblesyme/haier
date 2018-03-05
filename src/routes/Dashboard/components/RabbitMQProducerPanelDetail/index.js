@@ -92,7 +92,7 @@ export default class C extends React.Component {
                     Exchange名称: &nbsp;
                     {`${m.exchangeName}`}
                   </Col>
-                  <Col span={12} push={2} style={{marginTop: '10px'}}>
+                  <Col span={24} push={2} style={{marginTop: '10px'}}>
                     Exchange类型: &nbsp;
                     {m.exchangeType === 'fanout' && '广播'}
                     {m.exchangeType === 'topic' && '主题'}

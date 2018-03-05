@@ -226,7 +226,12 @@ export default class C extends React.Component {
 
             {(resource.state === 'denied' && this.state.status === 'success') && (
               <div>
-                <p style={{color: '#ffa940'}}>驳回理由: {resource.deniedMessages}</p>
+                <Row style={{marginTop: '20px', marginBottom: '30px'}}>
+                  <Col span={12} push={9}>驳回理由: </Col>
+                  <Col span={12}>
+                    {resource.deniedMessages}
+                  </Col>
+                </Row>
                 <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}

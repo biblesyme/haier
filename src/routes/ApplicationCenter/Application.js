@@ -94,10 +94,10 @@ class ApplicationCenter extends React.Component {
       title: '应用名称',
       dataIndex: 'name',
     }, {
-      title: '技术负责人',
+      title: '项目经理',
       render: (record) => {
-        const {operationManagers=[]} = record
-        return <span>{operationManagers.join('、 ')}</span>
+        const {businessManagers=[]} = record
+        return <span>{businessManagers.join('、 ')}</span>
       }
     }, {
       title: '应用告警数',
