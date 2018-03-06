@@ -91,6 +91,7 @@ export default class C extends React.Component {
 
     const mysqlColumns = [{
       title: '中间件名称',
+      key: 'id',
       render: (text, record, index) => {
         const {data={}} = record
         return <span>MySQL - {deployModeEnum(data.deployMode)}-{index + 1}</span>
@@ -114,6 +115,7 @@ export default class C extends React.Component {
 
     const redisColumns = [{
       title: '中间件名称',
+      key: 'id',
       render: (text, record, index) => {
         const {data={}} = record
         return <span>Redis - {clusterTypeEnum(data.clusterType)}-{index + 1}</span>
@@ -134,6 +136,7 @@ export default class C extends React.Component {
 
     const rocketMQColumns = [{
       title: '中间件名称',
+      key: 'id',
       render: (text, record, index) => {
         const {data={}} = record
         return <span>RocketMQ - {clusterTypeEnum(data.clusterType)}-{index + 1}</span>
@@ -157,6 +160,7 @@ export default class C extends React.Component {
 
     const rabbitMQColumns = [{
       title: '中间件名称',
+      key: 'id',
       render: (text, record, index) => {
         if (record.resourceType === 'rabbitMQProducer') {
           return <span>RabbitMQ - 生产者- {index + 1}</span>

@@ -119,8 +119,11 @@ export default class MainPage extends React.Component {
                         <Icon type="approval1"></Icon>
                         <span>
                           资源审批
-                          {this.state.findApproval === 'success' && (
-                            <Badge count={this.props.App.approvals.length} style={{marginLeft: '10px'}}/>
+                          {(this.state.findApproval === 'success' && role === 'admin') && (
+                            <Badge count={this.props.App.approvals.filter(a => a.state === 'confirmed').length} style={{marginLeft: '10px'}}/>
+                          )}
+                          {(this.state.findApproval === 'success' && role === 'domainAdmin') && (
+                            <Badge count={this.props.App.approvals.filter(a => a.state === 'pending').length} style={{marginLeft: '10px'}}/>
                           )}
                         </span>
                       </Link>

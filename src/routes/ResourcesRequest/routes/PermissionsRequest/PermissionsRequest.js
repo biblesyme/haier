@@ -147,7 +147,7 @@ class MySubmit extends React.Component {
                     onChange={Selected => this.setState({Selected, filter: Selected,})}
             >
               <Option key='all'>全部</Option>
-              <Option key="pendding">待审批</Option>
+              <Option key="pending">待审批</Option>
               <Option key="confirmed">已审批</Option>
               <Option key="denied">已驳回</Option>
             </Select>

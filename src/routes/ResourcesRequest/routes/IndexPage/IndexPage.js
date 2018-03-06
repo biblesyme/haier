@@ -65,7 +65,7 @@ class Approval extends React.Component {
     let roleFilter = []
     let count = 1
     if (role === 'admin') {
-      roleFilter = approvals.filter(d => d.state !== 'pendding')
+      roleFilter = approvals.filter(d => d.state !== 'pending')
     } else {
       roleFilter = approvals
     }
@@ -280,7 +280,7 @@ class Approval extends React.Component {
                       onChange={Selected => this.setState({Selected, filter: Selected,})}
               >
                 <Option key='all'>全部</Option>
-                <Option key="confirmed">待审批</Option>
+                <Option key="confirmed">待通过</Option>
                 <Option key="passed">已通过</Option>
                 <Option key="denied">已驳回</Option>
               </Select>
@@ -291,7 +291,7 @@ class Approval extends React.Component {
                       onChange={Selected => this.setState({Selected, filter: Selected,})}
               >
                 <Option key='all'>全部</Option>
-                <Option key="pendding">待审批</Option>
+                <Option key="pending">待审批</Option>
                 <Option key="confirmed">已同意</Option>
                 <Option key="passed">已通过</Option>
                 <Option key="denied">已驳回</Option>

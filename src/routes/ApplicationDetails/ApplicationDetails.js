@@ -1,5 +1,4 @@
-import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox, Tabs, Divider } from 'antd';
-import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
+import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox, Tabs, Divider, Tooltip } from 'antd';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
@@ -230,13 +229,17 @@ class ApplicationDetail extends React.Component {
               <Col span={22}>中间件资源: </Col>
               {this.props.App.role === 'admin' && (
                 <Col span={2}>
-                  <Icon type="appstore" style={this.props.App.list ? {fontSize: '2em', cursor: 'pointer'} : {fontSize: '2em', color: '#005aab', cursor: 'pointer'}}
-                                        onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: false}})}
-                  />
-                  <Icon type="bars" style={this.props.App.list ? {fontSize: '2em', color: '#005aab', cursor: 'pointer'} : {fontSize: '2em', cursor: 'pointer'}}
-                                    className="mg-l10"
-                                    onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: true}})}
-                  />
+                  <Tooltip title="图表视图">
+                    <Icon type="appstore" style={this.props.App.list ? {fontSize: '2em', cursor: 'pointer'} : {fontSize: '2em', color: '#005aab', cursor: 'pointer'}}
+                                          onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: false}})}
+                    />
+                  </Tooltip>
+                  <Tooltip title="列表视图">
+                    <Icon type="bars" style={this.props.App.list ? {fontSize: '2em', color: '#005aab', cursor: 'pointer'} : {fontSize: '2em', cursor: 'pointer'}}
+                                      className="mg-l10"
+                                      onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: true}})}
+                    />
+                  </Tooltip>
                 </Col>
               )}
             </Row>

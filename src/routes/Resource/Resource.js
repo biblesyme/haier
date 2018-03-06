@@ -13,6 +13,7 @@ class Resource extends React.Component {
   state = {
     visibleDetail: false,
     record: {},
+    currentPage: 1,
   }
 
   componentWillMount() {
@@ -36,8 +37,11 @@ class Resource extends React.Component {
   render() {
     const {resources=[], projects=[]} = this.props.reduxState
     const columns = [{
-      title: 'ID',
-      dataIndex: 'id'
+      title: '序号',
+      dataIndex: 'id',
+      render: (text, record, index) => {
+        return <span>{(this.state.currentPage - 1) * 10 + index + 1}</span>
+      }
     }, {
       title: '类型',
       render: (record) => <Tag key={record.id} color="blue"><Icon  type={nameMap[record.resourceType]}/></Tag>,
@@ -90,7 +94,11 @@ class Resource extends React.Component {
               dataSource={boxes}
               columns={columns}
               rowKey="id"
-              pagination={{showQuickJumper: true}}
+              scroll={{x: 1300}}
+              pagination={{
+                showQuickJumper: true,
+                onChange: (currentPage) => this.setState({currentPage}),
+              }}
             />
           </Col>
         </Row>
