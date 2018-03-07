@@ -1,4 +1,4 @@
-import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox } from 'antd';
+import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox, message} from 'antd';
 import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -8,7 +8,13 @@ import { withRouter } from 'react-router'
 import FormMapping from '@/components/FormMapping'
 import replace from 'utils/replace'
 import New from './New'
+import Edit from './Edit'
 import nameMap from 'utils/nameMap'
+import MysqlPanelDetail from './MysqlPanelDetail'
+import RedisPanelDetail from './RedisPanelDetail'
+import RocketPanelDetail from './RocketPanelDetail'
+import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
+import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -102,6 +108,8 @@ class NewResource extends React.Component {
   state = {
     middlewareMappings: [],
     middlewareSelect: 'mysql',
+    visibleEdit: false,
+    editId: '',
   }
 
   componentWillMount() {
@@ -125,11 +133,59 @@ class NewResource extends React.Component {
     this.props.selfDispatch({type: 'findResource'})
   }
 
+  handleCancel = (e) => {
+    this.setState({
+      visibleEdit: false,
+    });
+  }
+
+  handleEditOK = (data) => {
+    const {record={}} = this.props.location
+    const {resource={}} = this.props
+    this.props.dispatch({
+      type: 'App/doSelfAction',
+      payload: {
+        data: {
+          data: JSON.stringify(data),
+          projectId: record.id,
+          id: resource.id,
+          resourceType: data.resourceType,
+          // resourceTypeId: '1',
+          version: data.version,
+          // state: 'pending',
+        },
+        successCB: () => {
+          message.success('资源申请成功')
+          this.props.dispatch({
+            type: 'NewResource/followResourceLink',
+            payload: {
+              data: record,
+              link: 'resources',
+            }
+          })
+          this.setState({
+            visibleEdit: false,
+          })
+        },
+        failCB: () => {
+          message.error('资源申请失败')
+        },
+        action: 'applyResource',
+        findRecord: {
+          id: record.id,
+          type: 'project',
+        }
+      }
+   })
+  }
+
   render(){
     const {record={}} = this.props.location
     const {resources=[], projectInfo={}} = this.props.reduxState
     const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
+    const {operationManagers=[], businessManagers=[]} = record
+    const domain = this.props.App.domains.filter(d => d.id === record.domainId)[0] || {}
     return (
     <div>
       <section className="page-section">
@@ -137,6 +193,17 @@ class NewResource extends React.Component {
       </section>
       <section className="page-section">
         <label>应用信息:</label>
+        <Row gutter={24} className="scode-info">
+          <Col span={col} push={12}>
+            <FormItem
+              {...formItemLayout}
+              label="应用S码"
+              hasFeedback
+            >
+             {record.scode}
+            </FormItem>
+          </Col>
+        </Row>
         <Row gutter={24} className="scode-info">
           <Col span={col}>
             <FormItem
@@ -160,35 +227,34 @@ class NewResource extends React.Component {
               label="业务负责人"
               hasFeedback
             >
-              {projectInfo.ownerUser}
+              {businessManagers.join('、 ')}
             </FormItem>
           </Col>
           <Col span={col}>
-
             <FormItem
               {...formItemLayout}
-              label="归属部门"
+              label="技术负责人"
               hasFeedback
             >
-             {projectInfo.ownerUserDp}
+              {operationManagers.join('、 ')}
             </FormItem>
           </Col>
           <Col span={col}>
             <FormItem
               {...formItemLeft}
-              label="应用属性"
+              label="归属部门"
               hasFeedback
             >
-             {projectInfo.applicationType}
+             {domain.name}
             </FormItem>
           </Col>
           <Col span={col}>
             <FormItem
               {...formItemLayout}
-              label="应用领域"
+              label="应用属性"
               hasFeedback
             >
-              {projectInfo.businessDomain}
+             {projectInfo.applicationType}
             </FormItem>
           </Col>
         </Row>
@@ -208,7 +274,7 @@ class NewResource extends React.Component {
             </Row>
           </section>
 
-          <section className="page-section">
+          {/* <section className="page-section">
             <Row gutter={24}>
               {middleware.map(m => (
                 <Col key={m.id} span={6}><Item resource={m} project={record}/></Col>
@@ -220,22 +286,79 @@ class NewResource extends React.Component {
                 />
               </Col>
             </Row>
+          </section> */}
+
+          <section className="page-section">
+            <Row>
+              <Col>
+                <New project={record}
+                     allProjects={this.props.reduxState.allProjects}
+                     allResource={this.props.reduxState.allResource}
+                />
+                <div style={{padding: '10px'}}></div>
+              </Col>
+              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+                <div className={styles["card-header"]}>
+                  <div><Icon type="mysql"/> MySQL</div>
+                </div>
+                  <div style={{height: '280px', overflowY: 'auto'}}>
+                    <MysqlPanelDetail middlewareMappings={middleware}
+                                 onEdit={editId => this.setState({visibleEdit: true, editId})}
+                    />
+                  </div>
+              </section>
+
+              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+                <div className={styles["card-header"]}>
+                  <div><Icon type="redis"/> Redis</div>
+                </div>
+                  <div style={{height: '280px', overflowY: 'auto'}}>
+                    <RedisPanelDetail middlewareMappings={middleware}
+                                      onEdit={editId => this.setState({visibleEdit: true, editId})}
+                    />
+                  </div>
+              </section>
+
+              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+                <div className={styles["card-header"]}>
+                  <div><Icon type="rocket"/> RocketMQ</div>
+                </div>
+                  <div style={{height: '280px', overflowY: 'auto'}}>
+                    <RocketPanelDetail middlewareMappings={middleware}
+                                       onEdit={editId => this.setState({visibleEdit: true, editId})}
+                    />
+                  </div>
+              </section>
+
+              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+                <div className={styles["card-header"]}>
+                  <div><Icon type="rocket"/> RabbitMQ-生产者</div>
+                </div>
+                  <div style={{height: '280px', overflowY: 'auto'}}>
+                    <RabbitMQProducerPanelDetail middlewareMappings={middleware}
+                                                 onEdit={editId => this.setState({visibleEdit: true, editId})}
+                    />
+                  </div>
+              </section>
+
+              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+                <div className={styles["card-header"]}>
+                  <div><Icon type="rocket"/> RabbitMQ-消费者</div>
+                </div>
+                  <div style={{height: '280px', overflowY: 'auto'}}>
+                    <RabbitMQConsumerPanelDetail middlewareMappings={middleware}
+                                                 projects={this.props.reduxState.projects || []}
+                                                 resources={this.props.reduxState.resources}
+                                                 onEdit={editId => this.setState({visibleEdit: true, editId})}
+                    />
+                  </div>
+              </section>
+              <Col span={24}>
+              </Col>
+            </Row>
           </section>
         </div>
       )}
-
-
-      {/* <section className="page-section">
-        <h3>框架</h3>
-        <CheckboxGroup options={plainOptions} value={["前端框架"]}/>
-      </section>
-      <section className="page-section">
-        <h3>监控功能</h3>
-        <Checkbox checked
-        >
-          开启
-        </Checkbox>
-      </section> */}
 
       <section className="page-section text-center">
         <Button onClick={() => {
@@ -245,6 +368,17 @@ class NewResource extends React.Component {
           返回
         </Button>
       </section>
+
+      {this.state.visibleEdit && (
+        <Edit visible={this.state.visibleEdit}
+              onCancel={this.handleCancel}
+              onOk={this.handleEditOK}
+              projects={this.props.reduxState.allProjects}
+              resources={this.props.reduxState.allResource}
+              editId={this.state.editId}
+              middlewareMappings={middleware}
+          />
+      )}
     </div>
       )
   }

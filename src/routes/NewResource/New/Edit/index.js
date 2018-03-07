@@ -12,6 +12,7 @@ import {
   Radio,
   Input,
   message,
+  InputNumber,
 } from 'antd'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
@@ -46,13 +47,12 @@ const formInputLayout = {
 }
 
 @connect(null,['App'])
-// @Form.create()
 export default class C extends React.Component {
   state = {
-    middlewareSelect: '',
+    middlewareSelect: 'mysql',
     mysql: {
-      deployMode: '0',
-      masterSlaveOption: '0',
+      deployMode: 0,
+      masterSlaveOption: 0,
       mycatClusterManagerNodeCount: 0,
       mycatClusterDataNodeCount: 0,
       backup: 'false',
@@ -93,34 +93,9 @@ export default class C extends React.Component {
   }
 
   submit = () => {
-    if (this.state.middlewareSelect === '') {
-      message.warning('请选择中间件类型')
-      return
-    }
     let data = {
       ...this.state[this.state.middlewareSelect],
       machineRoomId: this.state.machineRoomId,
-    }
-    if (this.state.middlewareSelect === 'mysql') {
-      data = {
-        ...this.state.mysql,
-        deployMode: parseInt(this.state.mysql.deployMode),
-        masterSlaveOption: parseInt(this.state.mysql.masterSlaveOption),
-        mycatClusterManagerNodeCount: parseInt(this.state.mysql.mycatClusterManagerNodeCount),
-        mycatClusterDataNodeCount: parseInt(this.state.mysql.mycatClusterDataNodeCount),
-      }
-    }
-    if (this.state.middlewareSelect === 'redis') {
-      data = {
-        ...this.state.redis,
-        sharedCount: parseInt(this.state.mysql.sharedCount),
-      }
-    }
-    if (this.state.middlewareSelect === 'rabbitMQProducer') {
-      data = {
-        ...this.state.rabbitMQProducer,
-        maxIO: parseInt(this.state.mysql.maxIO),
-      }
     }
     this.props.dispatch({
       type: 'App/doSelfAction',
@@ -196,7 +171,7 @@ export default class C extends React.Component {
             <div className="text-center">
               中间件类型：
               <Select style={{width: '170px', marginLeft: '16px', marginBottom: '16px'}}
-                      // value={this.state.middlewareSelect}
+                      value={this.state.middlewareSelect}
                       onSelect={middlewareSelect => this.setState({middlewareSelect})}
                       placeholder="请选择中间件类型"
               >
@@ -218,44 +193,44 @@ export default class C extends React.Component {
                           hasFeedback
                         >
                          <Radio.Group value={mysql.deployMode} onChange={e => this.setState({mysql: {...mysql, deployMode: e.target.value}})}>
-                           <Radio.Button value="0">单机</Radio.Button>
-                           <Radio.Button value="1">主从</Radio.Button>
-                           <Radio.Button value="2">集群</Radio.Button>
+                           <Radio.Button value={0}>单机</Radio.Button>
+                           <Radio.Button value={1}>主从</Radio.Button>
+                           <Radio.Button value={2}>集群</Radio.Button>
                          </Radio.Group>
                         </FormItem>
 
-                        {mysql.deployMode === '1' && (
+                        {mysql.deployMode === 1 && (
                           <FormItem
                             {...formItemLayout4}
                             label="主从"
                             hasFeedback
                           >
                            <Radio.Group value={mysql.masterSlaveOption} onChange={e => this.setState({mysql: {...mysql, masterSlaveOption: e.target.value}})}>
-                              <Radio.Button value="0">一主一从</Radio.Button>
-                              <Radio.Button value="1">一主两从</Radio.Button>
+                              <Radio.Button value={0}>一主一从</Radio.Button>
+                              <Radio.Button value={1}>一主两从</Radio.Button>
                             </Radio.Group>
                           </FormItem>
                         )}
 
-                        {mysql.deployMode === '2' && (
+                        {mysql.deployMode === 2 && (
                           <div>
                             <FormItem
                               {...formInputLayout}
                               label="管理节点数量"
                               hasFeedback
                             >
-                             <Input placeholder="请输入管理节点数量" type="number" value={mysql.mycatClusterManagerNodeCount}
-                                    onChange={e => this.setState({mysql: {...mysql, mycatClusterManagerNodeCount: e.target.value}})}
-                              ></Input>
+                              <InputNumber value={mysql.mycatClusterManagerNodeCount}
+                                           onChange={mycatClusterManagerNodeCount => this.setState({mysql: {...mysql, mycatClusterManagerNodeCount}})}
+                              />
                             </FormItem>
                             <FormItem
                               {...formInputLayout}
                               label="数据节点数量"
                               hasFeedback
                             >
-                             <Input placeholder="请输入数据节点数量" type="number" value={mysql.mycatClusterDataNodeCount}
-                                    onChange={e => this.setState({mysql: {...mysql, mycatClusterDataNodeCount: e.target.value}})}
-                              ></Input>
+                              <InputNumber value={mysql.mycatClusterDataNodeCount}
+                                           onChange={mycatClusterDataNodeCount => this.setState({mysql: {...mysql, mycatClusterDataNodeCount}})}
+                              />
                             </FormItem>
                           </div>
                         )}
@@ -283,12 +258,11 @@ export default class C extends React.Component {
                             label="内存"
                             hasFeedback
                           >
-                            <Input placeholder="请输入内存大小"
-                                   type="number"
-                                   addonAfter="M"
-                                   value={redis.memorySize}
-                                   onChange={e => this.setState({redis: {...redis, memorySize: e.target.value}})}
+                            <InputNumber value={redis.memorySize}
+                                         onChange={memorySize => this.setState({redis: {...redis, memorySize}})}
+                                         style={{width: '70%'}}
                             />
+                            M
                           </FormItem>
                           <FormItem
                             {...formItemLayout4}
@@ -308,10 +282,8 @@ export default class C extends React.Component {
                               label="分片数量"
                               hasFeedback
                             >
-                              <Input placeholder="请输入分片数量"
-                                     type="number"
-                                     value={redis.sharedCount}
-                                     onChange={e => this.setState({redis: {...redis, sharedCount: e.target.value}})}
+                              <InputNumber value={redis.sharedCount}
+                                           onChange={sharedCount => this.setState({redis: {...redis, sharedCount}})}
                               />
                             </FormItem>
                           )}
@@ -351,10 +323,8 @@ export default class C extends React.Component {
                           label="最大消息吞吐量"
                           hasFeedback
                         >
-                         <Input placeholder="请输入"
-                                type="number"
-                                value={rabbitMQProducer.maxIO}
-                                onChange={e => this.setState({rabbitMQProducer: {...rabbitMQProducer, maxIO: e.target.value}})}
+                          <InputNumber value={rabbitMQProducer.maxIO}
+                                       onChange={maxIO => this.setState({rabbitMQProducer: {...rabbitMQProducer, maxIO}})}
                           />
                         </FormItem>
                         <FormItem

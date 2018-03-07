@@ -12,6 +12,7 @@ import {
   Radio,
   Input,
   message,
+  InputNumber,
 } from 'antd'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
@@ -229,22 +230,20 @@ export default class C extends React.Component {
                           label="CPU内核数"
                           hasFeedback
                         >
-                         <Input value={containerHost.cpu}
-                                onChange={e => this.setState({containerHost: {...containerHost, cpu: e.target.value}})}
-                                type="number"
-                          ></Input>
+                          <InputNumber value={containerHost.cpu}
+                                       onChange={cpu => this.setState({containerHost: {...containerHost, cpu}})}
+                          />
                         </FormItem>
                         <FormItem
                           {...formInputLayout}
                           label="内存"
                           hasFeedback
                         >
-                         <Input
-                                value={containerHost.memory}
-                                onChange={e => this.setState({containerHost: {...containerHost, memory: e.target.value}})}
-                                type="number"
-                                addonAfter="G"
-                          ></Input>
+                          <InputNumber value={containerHost.memory}
+                                       onChange={memory => this.setState({containerHost: {...containerHost, memory}})}
+                                       style={{width: '70%'}}
+                          />
+                          G
                         </FormItem>
                       </Form>
                     </Card>

@@ -236,6 +236,7 @@ export default class C extends React.Component {
                                 approval={true}
                                 projects={this.props.projects}
                                 onChange={(clusterId) => this.setState({clusterId})}
+                                approval={resource}
                 />
               </div>
             )}
@@ -246,6 +247,7 @@ export default class C extends React.Component {
                                 approval={true}
                                 projects={this.props.projects}
                                 onChange={(clusterId) => this.setState({clusterId})}
+                                approval={resource}
                 />
                 <br/>
                 <FormItem
@@ -271,6 +273,7 @@ export default class C extends React.Component {
                                 projects={this.props.projects}
                                 clusterId={this.state.clusterId}
                                 onChange={(clusterId) => this.setState({clusterId})}
+                                approval={resource}
                 />
               </div>
             )}

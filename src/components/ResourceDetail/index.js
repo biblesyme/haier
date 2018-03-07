@@ -67,6 +67,7 @@ export default class C extends React.Component {
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
+    console.log(resource)
     if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
@@ -129,7 +130,7 @@ export default class C extends React.Component {
   }
 
   render() {
-    const {resource={}, projects=[], resources=[]} = this.props
+    const {resource={}, projects=[], resources=[], approval={}} = this.props
     const {data={}} = resource
     const {used={}} = this.state.clusterInfo
     const {request={}} = this.state.clusterInfo
@@ -149,12 +150,15 @@ export default class C extends React.Component {
 
     return (
       <main>
-        {data.resourceType === 'containerHost' && (
+        {resource.resourceType === 'containerHost' && (
           <div className="text-center">
             <label htmlFor="">资源所在地：</label>
               {locationFilter.name}
+              {approval.state === 'passed' && (
+                <label style={{marginLeft: '20px'}}>集群：{clusterFilter.name}</label>
+              )}
             <div style={{padding: '10px'}}></div>
-            {(this.props.approval && this.props.App.role === 'admin') && (
+            {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') && (
               <div>
                 <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
                   <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '200px'}}>
@@ -209,7 +213,7 @@ export default class C extends React.Component {
               )}
           </div>
         )}
-        {data.resourceType === 'mysql' && (
+        {resource.resourceType === 'mysql' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="MySQL" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
@@ -243,7 +247,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'redis' && (
+        {resource.resourceType === 'redis' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="Redis" style={{width: '270px', marginBottom: '20px'}}>
               <Form className={styles["card-body"]}>
@@ -271,7 +275,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'rocketMQTopic' && (
+        {resource.resourceType === 'rocketMQTopic' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RocketMQ" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
@@ -290,7 +294,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'rabbitMQProducer' && (
+        {resource.resourceType === 'rabbitMQProducer' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>
@@ -312,7 +316,7 @@ export default class C extends React.Component {
             </Card>
           </div>
         )}
-        {data.resourceType === 'rabbitMQConsumer' && (
+        {resource.resourceType === 'rabbitMQConsumer' && (
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '270px'}}>
               <Form className={styles["card-body"]}>

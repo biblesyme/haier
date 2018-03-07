@@ -126,9 +126,13 @@ export default class C extends React.Component {
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
     return (
       <main>
-        <Button type="dashed" style={{width: '100%', height: '280px'}} onClick={() => this.setState({visibleEdit: true})}>
-          <Icon type="plus" /> 添加中间件
-        </Button>
+        <h3>
+          中间件申请:
+          <Button onClick={() => this.setState({visibleEdit: true})} style={{marginLeft: '30px'}}>
+            <Icon type="plus" /> 添加
+          </Button>
+        </h3>
+
         {this.state.visibleEdit && (
           <Edit
             visible={this.state.visibleEdit}

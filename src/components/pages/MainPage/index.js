@@ -118,12 +118,19 @@ export default class MainPage extends React.Component {
                       <Link to="/resourcesRequest">
                         <Icon type="approval1"></Icon>
                         <span>
-                          资源审批
                           {(this.state.findApproval === 'success' && role === 'admin') && (
-                            <Badge count={this.props.App.approvals.filter(a => a.state === 'confirmed').length} style={{marginLeft: '10px'}}/>
+                            <Badge count={this.props.App.approvals.filter(a => a.state === 'confirmed').length}
+                                   offset={this.props.App.approvals.filter(a => a.state === 'confirmed').length > 10 ? [-2, 20] : [-2, 10]}
+                            >
+                              资源审批
+                            </Badge>
                           )}
                           {(this.state.findApproval === 'success' && role === 'domainAdmin') && (
-                            <Badge count={this.props.App.approvals.filter(a => a.state === 'pending').length} style={{marginLeft: '10px'}}/>
+                            <Badge count={this.props.App.approvals.filter(a => a.state === 'pending').length}
+                                   offset={this.props.App.approvals.filter(a => a.state === 'pending').length > 10 ? [-2, 15] : [-2, 10]}
+                            >
+                              资源审批
+                            </Badge>
                           )}
                         </span>
                       </Link>
