@@ -1,7 +1,9 @@
 import React from 'react'
 import renderRoutes from 'utils/renderRoutes'
 import {Link} from 'react-router-dom'
-import { Tabs, Button,Menu, Spin, message } from 'antd';
+import { Tabs, Button,Menu, Spin, message, LocaleProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
 import Spinner from './components/Spinner'
 import {getCookieItem, b64DecodeUnicode, removeItem} from 'utils/cookies'
 import apiStore from 'utils/apiStore'
@@ -89,20 +91,22 @@ class App extends React.Component {
     // console.log(this.props, '=========')
 
     return (
-      <div className="page-wrap">
-        {
-          this.props.reduxState.login === true ?
-          (
-                <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}
-                  <Spin spinning={this.props.reduxState.loading}
-                        tip="加载中..."
-                        size="large"
-                        style={{position: 'absolute', top: '50%', left: '50%'}}
-                  />
-                </MainPage>
-          ) : <p>验证中</p>
-        }
-      </div>
+      <LocaleProvider locale={zh_CN}>
+        <div className="page-wrap">
+          {
+            this.props.reduxState.login === true ?
+            (
+                  <MainPage init={this.init} exit={this.exit}>{renderRoutes(this.props.route.routes, {app: this.props.app})}
+                    <Spin spinning={this.props.reduxState.loading}
+                          tip="加载中..."
+                          size="large"
+                          style={{position: 'absolute', top: '50%', left: '50%'}}
+                    />
+                  </MainPage>
+            ) : <p>验证中</p>
+          }
+        </div>
+      </LocaleProvider>
     );
   }
 }
