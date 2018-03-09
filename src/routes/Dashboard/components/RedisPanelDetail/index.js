@@ -84,7 +84,7 @@ export default class C extends React.Component {
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === m.machineRoomId)[0] || {}
           if (m.clusterType === 'one') {
             return (
-              <Panel header={`Redis - ${m.memorySize}M 单例`} key={m.id} showArrow={false}>
+              <Panel header={`Redis - ${m.memorySize}M 单例`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;单例</Col>
@@ -102,7 +102,7 @@ export default class C extends React.Component {
           }
           if (m.clusterType === 'masterSlave') {
             return (
-              <Panel header={`Redis - ${m.memorySize}M 主从`} key={m.id} showArrow={false}>
+              <Panel header={`Redis - ${m.memorySize}M 主从`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;主从</Col>
@@ -120,7 +120,7 @@ export default class C extends React.Component {
           }
           if (m.clusterType === 'shared') {
             return (
-              <Panel header={`Redis - ${m.memorySize}M 分片`} key={m.id} showArrow={false}>
+              <Panel header={`Redis - ${m.memorySize}M 分片`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;分片</Col>

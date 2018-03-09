@@ -24,6 +24,7 @@
     "npm": "^5.6.0",
     "rancher-api-store-haier": "^0.1.0",
     "rc-progress": "^2.2.5",
+    "rc-table": "^6.1.7",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.4",

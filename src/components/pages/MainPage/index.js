@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
 import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
 import nameMap from 'utils/nameMap'
-import { Menu, Icon, Button, Select, Avatar, Badge, Layout, Breadcrumb } from 'antd';
+import { Menu, Icon, Button, Select, Avatar, Badge, Layout, Divider } from 'antd';
 import config from './config'
 
 const SubMenu = Menu.SubMenu;
@@ -162,12 +162,14 @@ export default class MainPage extends React.Component {
           <Header style={{ background: '#fff', padding: 0 }} className={styles["page-header"]}>
              <div className="user-info" style={{float: 'right'}}>
                当前登录： {user.name}
+               <Divider type="vertical" />
                <Select value={role}
                        onSelect={this.roleChange}
                        style={{marginLeft: '20px'}}
               >
                 {user.roles.map(r => <Option key={r}>{nameMap[r]}</Option>)}
               </Select>
+              <Divider type="vertical" />
               <span className={styles.logout} onClick={this.props.exit} style={{marginRight: '20px'}}><Icon type="logout"></Icon>&nbsp;退出</span>
             </div>
           </Header>

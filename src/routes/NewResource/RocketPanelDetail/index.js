@@ -85,7 +85,7 @@ export default class C extends React.Component {
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === data.machineRoomId)[0] || {}
           if (data.clusterType === 'standalone') {
             return (
-              <Panel header={`Redis - 单机`} key={m.id} showArrow={false}>
+              <Panel header={`Redis - 单机`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;单机</Col>
@@ -102,7 +102,7 @@ export default class C extends React.Component {
           }
           if (data.clusterType === 'cluster') {
             return (
-              <Panel header={`Redis - 集群`} key={m.id} showArrow={false}>
+              <Panel header={`Redis - 集群`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;集群</Col>

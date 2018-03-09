@@ -91,7 +91,7 @@ export default class C extends React.Component {
           let exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
 
             return (
-              <Panel header={`RabbitMQ - 消费者-${count++}`} key={m.id} showArrow={false}>
+              <Panel header={`RabbitMQ - 消费者-${count++}`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={24} push={2}>应用: &nbsp;{projectSelect.name}</Col>
                   <Col span={24} push={2} style={{marginTop: '10px'}}>

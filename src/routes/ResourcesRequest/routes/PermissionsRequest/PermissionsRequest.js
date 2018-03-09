@@ -1,5 +1,5 @@
 import React from 'react'
-import {Table, Row, Col, Input, Select, Tag} from 'antd'
+import {Table, Row, Col, Input, Select, Tag, Button} from 'antd'
 import Detail from './Detail'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
@@ -32,14 +32,15 @@ class MySubmit extends React.Component {
     filter: null,
     Selected: 'all',
     currentPage: 1,
+    loading: null,
   };
 
   componentWillMount() {
-    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.setState({loading: true})
     this.props.selfDispatch({
       type: 'findApproval',
       payload: {
-        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        callback: () => this.setState({loading: false}),
         account: this.props.App.user,
       }
     })
@@ -69,6 +70,14 @@ class MySubmit extends React.Component {
       const fieldsToFilter = [d.state || '',].join()
       return reg.test(fieldsToFilter)
     })
+    const itemRender = (current, type, originalElement) => {
+      if (type === 'prev') {
+        return <Button>上一页</Button>;
+      } else if (type === 'next') {
+        return <Button>下一页</Button>;
+      }
+      return originalElement;
+    }
     const columns = [{
       title: '序号',
       dataIndex: 'id',
@@ -162,8 +171,10 @@ class MySubmit extends React.Component {
             pagination={{
               showQuickJumper: true,
               onChange: (currentPage) => this.setState({currentPage}),
+              itemRender: itemRender,
             }}
             scroll={{x: 1300}}
+            loading={this.state.loading}
           />
         </Col>
       </Row>

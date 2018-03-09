@@ -1,6 +1,5 @@
 import React from 'react'
 import { Circle, Line } from 'rc-progress';
-import styles from './styles.scss'
 
 class C extends React.Component {
   render() {

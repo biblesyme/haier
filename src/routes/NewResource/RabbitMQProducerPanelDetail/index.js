@@ -85,7 +85,7 @@ export default class C extends React.Component {
           const {data={}} = m
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === data.machineRoomId)[0] || {}
             return (
-              <Panel header={`RabbitMQ - 生产者-${count++}`} key={m.id} showArrow={false}>
+              <Panel header={`RabbitMQ - 生产者-${count++}`} key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>消息吞吐: &nbsp;{data.maxIO}</Col>

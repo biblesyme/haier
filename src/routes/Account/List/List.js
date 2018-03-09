@@ -6,6 +6,7 @@ import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
 import replace from 'utils/replace'
+import RcTable from 'rc-table'
 
 const {Search} = Input
 const RadioButton = Radio.Button
@@ -19,15 +20,18 @@ class User extends React.Component {
     filter: null,
     projects: [],
     projectparticipants: [],
+    loading: null,
   }
 
   componentWillMount() {
-    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    // this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.setState({loading: true})
     this.props.dispatch({type: 'App/findDomain'})
     this.props.selfDispatch({
       type: 'findAccount',
       payload: {
-        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        // callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        callback: () => this.setState({loading: false}),
         successCB: (accounts) => {
           accounts.map(a => {
             this.props.selfDispatch({
@@ -308,11 +312,13 @@ class User extends React.Component {
           <div>
             <Row>
               {filter.record.map(p => (
-                <Col span={6} key={p.id}>
-                  <Checkbox checked={p.state === 'active' ? true : false} onChange={() => this.handleBelongTo(p, record)}>
-                    {p.projectName}
-                  </Checkbox>
-                </Col>
+                <Checkbox key={p.id}
+                          checked={p.state === 'active' ? true : false}
+                          onChange={() => this.handleBelongTo(p, record)}
+                          style={{margin: '0 10px'}}
+                >
+                  {p.projectName}
+                </Checkbox>
               ))}
             </Row>
           </div>)
@@ -358,6 +364,7 @@ class User extends React.Component {
               // scroll={{x: 1300}}
               expandedRowRender={expandedRowRender}
               expandRowByClick={true}
+              loading={this.state.loading}
             />
           )}
           {this.state.tableSelect === 'developer' && (
@@ -367,6 +374,7 @@ class User extends React.Component {
               rowKey="id"
               pagination={{showQuickJumper: true}}
               scroll={{x: 1300}}
+              loading={this.state.loading}
             />
           )}
           {this.state.tableSelect === 'admin' && (
@@ -376,10 +384,16 @@ class User extends React.Component {
               rowKey="externalId"
               pagination={{showQuickJumper: true}}
               scroll={{x: 1300}}
+              loading={this.state.loading}
             />
           )}
         </Col>
       </Row>
+
+      <RcTable columns={columnStaff}
+               data={boxes}
+      />
+
     </main>
     )
   }

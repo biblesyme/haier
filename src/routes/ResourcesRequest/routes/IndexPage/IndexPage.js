@@ -33,14 +33,15 @@ class Approval extends React.Component {
     Selected: 'all',
     resource: {},
     currentPage: 1,
+    loading: null,
   };
 
   componentWillMount() {
-    this.props.dispatch({type: 'App/setState', payload: {loading: true}})
+    this.setState({loading: true})
     this.props.dispatch({
       type: 'App/findApproval',
       payload: {
-        callback: () => this.props.dispatch({type: 'App/setState', payload: {loading: false}}),
+        callback: () => this.setState({loading: false}),
         account: this.props.App.user,
       }
     })
@@ -310,6 +311,7 @@ class Approval extends React.Component {
               onChange: (currentPage) => this.setState({currentPage}),
             }}
             scroll={{x: 1300}}
+            loading={this.state.loading}
           />
         </Col>
       </Row>

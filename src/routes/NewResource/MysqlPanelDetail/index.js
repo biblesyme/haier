@@ -85,7 +85,7 @@ export default class C extends React.Component {
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === data.machineRoomId)[0] || {}
           if (data.deployMode === 0) {
             return (
-              <Panel header="MySQL - 单机" key={m.id} showArrow={false}>
+              <Panel header="MySQL - 单机" key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>模式: &nbsp;单机</Col>
@@ -102,7 +102,7 @@ export default class C extends React.Component {
           }
           if (data.deployMode === 1) {
             return (
-              <Panel header="MySQL - 主从" key={m.id} showArrow={false}>
+              <Panel header="MySQL - 主从" key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>模式: &nbsp;主从</Col>
@@ -123,7 +123,7 @@ export default class C extends React.Component {
           }
           if (data.deployMode === 2) {
             return (
-              <Panel header="MySQL - 集群" key={m.id} showArrow={false}>
+              <Panel header="MySQL - 集群" key={m.id} >
                 <Row gutter={24}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>模式: &nbsp;集群</Col>

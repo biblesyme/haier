@@ -10,6 +10,7 @@ import apiStore from 'utils/apiStore'
 
 import styles from './app.sass'
 import './antd.less'
+import "@/components/base/rcTable.less"
 
 import { connect } from 'utils/ecos'
 import model from './models'
