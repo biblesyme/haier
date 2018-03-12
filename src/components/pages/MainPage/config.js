@@ -5,7 +5,7 @@ export default {
       icon: 'app',
       path: '/',
       key: '1',
-      roles: ['internal', 'manager', 'admin', 'domainAdmin'],
+      roles: ['internal', 'manager'],
     },
     {
       title: '信息中心',
@@ -19,7 +19,7 @@ export default {
       icon: 'appstore',
       path: '/application',
       key: '3',
-      roles: ['developer', 'manager'],
+      roles: [ 'manager'],
     },
     {
       title: '资源列表',
