@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Divider, InputNumber } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import Edit from './Edit'
@@ -9,6 +9,7 @@ const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button
 
 import styles from './style.sass'
 
@@ -62,12 +63,15 @@ export default class C extends React.Component {
     clusters: [],
     visibleEdit: false,
     record: {},
+    paasChange: 'false',
+    cpu: null,
+    memory: null,
   }
 
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
-    if (data.resourceType === 'containerHost') {
+    if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
         payload: {
@@ -102,9 +106,12 @@ export default class C extends React.Component {
         }
       })
     }
-    this.setState({
-      ...this.props.item,
-    })
+    if (resource.resourceType === 'containerHost') {
+      this.setState({
+        cpu: data.cpu / 1000,
+        memory: data.memory / 1024 / 1024 / 1024,
+      })
+    }
   }
 
   handleCancel = (e) => {
@@ -119,6 +126,17 @@ export default class C extends React.Component {
     })
   }
 
+  onChange = (value, field) => {
+    const nextState = {
+      ...this.state,
+      [field]: value,
+    }
+    this.props.onChange(nextState)
+    this.setState({
+      [field]: value,
+    })
+  }
+
   render() {
     const {resource={}} = this.props
     const {data={}} = resource
@@ -129,31 +147,60 @@ export default class C extends React.Component {
       <main>
         {resource.resourceType === 'containerHost' && (
           <div >
-            <label htmlFor="">资源所在地：</label>
-              {locationFilter.name}
-            <div style={{padding: '10px'}}></div>
-            <label htmlFor="">已选集群：</label>
-              {clusterFilter.name}
-            <div style={{padding: '10px'}}></div>
-              <Card title={nameMap[this.state.resource]}>
-                <Form className={styles["card-body"]}>
-                  <FormItem
-                    {...formItemLayout3}
-                    label="CPU内核数"
-                    hasFeedback
-                  >
-                   {data.cpu/1000}
-                  </FormItem>
-                  <FormItem
-                    {...formItemLayout3}
-                    label="内存"
-                    hasFeedback
-                  >
-                   {`${parseInt(data.memory) / 1024/1024/1024 || ''}G`}
-                  </FormItem>
-                </Form>
-              </Card>
-              <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
+            <Row>
+              <Col span={4}>资源类型: 容器</Col>
+              <Col span={4}>资源所在地: {locationFilter.name}</Col>
+              <Col span={4}>集群: {clusterFilter.name}</Col>
+            </Row>
+            <div style={{padding: '5px'}}></div>
+            <Row>
+              <Col span={4}>CPU内核数: {data.cpu/1000}</Col>
+              <Col span={4}>内存: {`${parseInt(data.memory) / 1024/1024/1024 || ''}G`}</Col>
+            </Row>
+            {/* <Row>
+              <Col span={6}>
+                <Button style={{width: '100%', marginTop: '2px', marginBottom: '20px'}} onClick={() => this.setState({visibleEdit: true})}><Icon type="edit" /></Button>
+              </Col>
+            </Row> */}
+            <Divider></Divider>
+            <Row className={styles["radioButton"]}>
+              <Col>
+                变更应用资源配置:
+                <RadioGroup style={{ marginLeft: 20 }}
+                            value={this.state.paasChange}
+                            onChange={e => this.onChange(e.target.value, 'paasChange')}
+                >
+                  <RadioButton value='true'>是</RadioButton>
+                  <RadioButton value="false">否</RadioButton>
+                </RadioGroup>
+              </Col>
+            </Row>
+            {this.state.paasChange === 'true' && (
+              <div>
+                <Row>
+                  <Col span={4}>资源类型: 容器</Col>
+                  <Col span={4}>资源所在地: {locationFilter.name}</Col>
+                  <Col span={4}>集群: {clusterFilter.name}</Col>
+                </Row>
+                <div style={{padding: '5px'}}></div>
+                <Row>
+                  <Col span={4}>
+                    CPU内核数:
+                    <InputNumber style={{ marginLeft: 20, marginRight: 5 }}
+                                 onChange={(cpu) => this.onChange(cpu, 'cpu')}
+                                 value={this.state.cpu}
+                    />核
+                  </Col>
+                  <Col span={4}>
+                    内存:
+                    <InputNumber style={{ marginLeft: 20, marginRight: 5 }}
+                                 onChange={(memory) => this.onChange(memory, 'memory')}
+                                 value={this.state.memory}
+                    />G
+                  </Col>
+                </Row>
+              </div>
+            )}
           </div>
         )}
         {resource.resourceType === 'mysql' && (

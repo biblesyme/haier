@@ -127,7 +127,7 @@ export default class C extends React.Component {
     return (
       <main>
         <h3>
-          中间件申请:
+          中间件资源配置:
           <Button onClick={() => this.setState({visibleEdit: true})} style={{marginLeft: '30px'}}>
             <Icon type="plus" /> 添加
           </Button>

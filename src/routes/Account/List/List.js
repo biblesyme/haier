@@ -12,7 +12,7 @@ const {Search} = Input
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 class User extends React.Component {
   state = {
@@ -330,13 +330,9 @@ class User extends React.Component {
     return (
       <main className="page-section">
         <h3>用户列表</h3>
-        <Row type="flex" justify="space-between" className={styles.tableListForm}>
+        <Row type="flex" justify="space-between" className={styles["radioButton"]}>
           <Col>
-            {/* <Button type="primary">
-              新建角色
-            </Button> */}
             <RadioGroup style={{ marginRight: 20 }}
-                        size="large"
                         value={this.state.tableSelect}
                         onChange={e => this.setState({tableSelect: e.target.value})}
             >
@@ -390,9 +386,9 @@ class User extends React.Component {
         </Col>
       </Row>
 
-      <RcTable columns={columnStaff}
+      {/* <RcTable columns={columnStaff}
                data={boxes}
-      />
+      /> */}
 
     </main>
     )

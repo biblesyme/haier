@@ -1,4 +1,4 @@
-import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox, message} from 'antd';
+import { Table, Icon, Pagination, Button, Row, Col, Form, Select, Input, Card, Progress, Checkbox, message, Radio, Divider} from 'antd';
 import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -110,10 +110,23 @@ class NewResource extends React.Component {
     middlewareSelect: 'mysql',
     visibleEdit: false,
     editId: '',
+    paas: {
+      cpu: null,
+      memory: null,
+      isChange: null,
+    },
+    frame: [],
+    alert: null,
+    codeManaged: null,
   }
 
   componentWillMount() {
     const {record={}} = this.props.location
+    this.setState({
+      frame: record.frame || [],
+      alert: record.alert,
+      codeManaged: record.codeManaged,
+    })
     this.props.selfDispatch({
       type: 'followProjectLink',
       payload: {
@@ -179,8 +192,29 @@ class NewResource extends React.Component {
    })
   }
 
+  submit = () => {
+    console.log(this.state)
+    let submitResources = []
+    if (this.state.paas.isChange === 'true') {
+      submitResources = [...submitResources, this.state.paas]
+    }
+    console.log(submitResources)
+  }
+
+  onPaasChange = (state) => {
+    this.setState({
+      paas: {
+        ...this.state.paas,
+        cpu: state.cpu,
+        memory: state.memory,
+        isChange: state.paasChange,
+      }
+    })
+  }
+
   render(){
     const {record={}} = this.props.location
+    const {frame=[]} = record
     const {resources=[], projectInfo={}} = this.props.reduxState
     const paas = resources.filter(r => r.resourceType === 'containerHost')[0]
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
@@ -263,15 +297,14 @@ class NewResource extends React.Component {
       {resources.length > 0 && (
         <div>
           <section className="page-section">
-            <Row gutter={24}>
-              <Col key={'paas'} span={6}>
-                <Item resource={paas}
-                      project={record}
-                      allProjects={this.props.reduxState.allProjects}
-                      allResource={this.props.reduxState.allResource}
-                />
-              </Col>
-            </Row>
+            <p>当前应用资源配置:</p>
+            <Item resource={paas}
+                  project={record}
+                  allProjects={this.props.reduxState.allProjects}
+                  allResource={this.props.reduxState.allResource}
+                  key={'paas'}
+                  onChange={state => this.onPaasChange(state)}
+            />
           </section>
 
           {/* <section className="page-section">
@@ -360,12 +393,67 @@ class NewResource extends React.Component {
         </div>
       )}
 
-      <section className="page-section text-center">
+      <section className="page-section">
+        <Row>
+          <Col>
+            已选框架:
+            {frame.map(f => <span key={f} style={{marginLeft: 42}}>{f === 'front' ? '前端框架' : '后台框架'}</span>)}
+          </Col>
+        </Row>
+        <Divider></Divider>
+        <Row>
+          <Col>
+            变更框架:
+            <CheckboxGroup options={plainOptions}
+                           value={this.state.frame}
+                           onChange={frame => this.setState({frame})}
+                           style={{marginLeft: 20}}
+            />
+          </Col>
+        </Row>
+      </section>
+      <section className="page-section">
+        <Row>
+          <Col>
+            已选服务:
+            {record.alert && (
+              <span style={{marginLeft: 42}}>监控功能</span>
+            )}
+            {record.codeManaged && (
+              <span style={{marginLeft: 42}}>代码托管</span>
+            )}
+          </Col>
+        </Row>
+        <Divider></Divider>
+        <Row>
+          <Col>
+            变更服务:
+            <Checkbox checked={this.state.alert}
+                      onChange={e => this.setState({alert: e.target.checked})}
+                      style={{marginLeft: 20}}
+            >
+              监控功能
+            </Checkbox>
+            <Checkbox checked={this.state.codeManaged}
+                      onChange={e => this.setState({codeManaged: e.target.checked})}
+            >
+              代码托管
+            </Checkbox>
+          </Col>
+        </Row>
+      </section>
+      <div style={{paddingBottom: '60px'}}></div>
+
+      <section className="page-section bottom-actions">
         <Button onClick={() => {
-                  this.props.selfDispatch({type:'setState',payload: {resources: []}})
-                  this.props.history.goBack()}
-                }>
-          返回
+                  this.props.history.goBack()
+        }}>
+          取消
+        </Button>
+        <Button type="primary" style={{float: 'right'}}
+                onClick={() => this.submit()}
+        >
+          提交申请
         </Button>
       </section>
 
