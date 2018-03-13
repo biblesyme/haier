@@ -8,8 +8,8 @@ import Spinner from './components/Spinner'
 import {getCookieItem, b64DecodeUnicode, removeItem} from 'utils/cookies'
 import apiStore from 'utils/apiStore'
 
-import styles from './app.sass'
 import './antd.less'
+import styles from './app.sass'
 import "@/components/base/rcTable.less"
 import "@/components/base/rcTabs/index.less"
 

@@ -7,6 +7,7 @@ import {deployModeEnum} from 'utils/enum'
 import Tabs, { TabPane } from 'rc-tabs';
 import TabContent from 'rc-tabs/lib/TabContent';
 import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
+import replace from 'utils/replace'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -27,9 +28,12 @@ export default class C extends React.Component {
     clusters: [],
     clusterInfo: {},
     machineRooms: [],
+    middlewareMappings: [],
   }
 
   componentWillMount() {
+    const {middlewareMappings=[]} = this.props
+    this.setState({middlewareMappings})
     this.props.dispatch({
       type: 'App/findMachineRoom',
       payload: {
@@ -46,13 +50,32 @@ export default class C extends React.Component {
   }
 
   save = (record) => {
-    record.editable = false
-    this.props.onChange(record)
+    const newItem = {
+      ...record,
+      data: record._data,
+      editable: false,
+    }
+    this.props.onChange(newItem)
   }
 
   cancel = (record) => {
-    record.editable = false
-    this.props.onChange(record)
+    const oldItem = {
+      ...record,
+      _data: record.data,
+      editable: false,
+    }
+    this.props.onChange(oldItem)
+  }
+
+  stateChange = (record, value, field) => {
+    let newItem = {
+      ...record,
+      _data: {
+        ...record._data,
+        [field]: value,
+      }
+    }
+    this.props.onChange(newItem)
   }
 
   render() {
@@ -112,23 +135,51 @@ export default class C extends React.Component {
       className: 'text-center',
       render: (record) => {
         if (record.editable) {
-          return <InputNumber />
+          return (
+            <InputNumber style={{ margin: '-5px 0' }}
+                         value={record._data.mycatClusterManagerNodeCount}
+                         onChange={value => this.stateChange(record, value, 'mycatClusterManagerNodeCount')}
+                         min={0}
+            />
+          )
         }
         return <span>{record.data.mycatClusterManagerNodeCount}</span>
       }
     }, {
       title: <div className="text-center">mysql数量</div>,
       className: 'text-center',
-      render: (record) => <span>{record.data.mycatClusterDataNodeCount}</span>
+      render: (record) => {
+        if (record.editable) {
+          return (
+            <InputNumber style={{ margin: '-5px 0' }}
+                         value={record._data.mycatClusterDataNodeCount}
+                         onChange={value => this.stateChange(record, value, 'mycatClusterDataNodeCount')}
+                         min={0}
+            />
+          )
+        }
+        return <span>{record.data.mycatClusterDataNodeCount}</span>
+      }
     }, {
       title: <div className="text-center">备份服务</div>,
       className: 'text-center',
-      render: (record) => <span>{record.data.backup === 'true' ? '是' : '否'}</span>
+      render: (record) => {
+        if (record.editable) {
+          return (
+            <Radio.Group style={{ margin: '-5px 0' }}
+                         value={record._data.backup}
+                         onChange={e => this.stateChange(record, e.target.value, 'backup')}>
+              <Radio.Button value="true">是</Radio.Button>
+              <Radio.Button value="false">否</Radio.Button>
+            </Radio.Group>
+          )
+        }
+        return <span>{record.data.backup === 'true' ? '是' : '否'}</span>
+      }
     }, {
       title: <div className="text-center">操作</div>,
       className: 'text-center',
       render: (text, record, index) => {
-        console.log(record.editable)
         if (record.editable) {
           return (
             <div>
@@ -161,76 +212,6 @@ export default class C extends React.Component {
           </TabPane>
         </Tabs>
       </div>
-
-      // <Collapse accordion className="detail">
-      //   {middlewareMappings.filter(m => m.resourceType === 'mysql').map(m => {
-      //     const {data={}} = m
-      //     const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === data.machineRoomId)[0] || {}
-      //     if (data.deployMode === 0) {
-      //       return (
-      //         <Panel header="MySQL - 单机" key={m.id} >
-      //           <Row gutter={24}>
-      //             <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
-      //             <Col span={12} push={2}>模式: &nbsp;单机</Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               备份: &nbsp;
-      //               {data.backup === 'true' ? '是' : '否'}
-      //             </Col>
-      //           </Row>
-      //           <Row style={{marginTop: '10px'}}>
-      //             <Col span={24}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-      //           </Row>
-      //         </Panel>
-      //       )
-      //     }
-      //     if (data.deployMode === 1) {
-      //       return (
-      //         <Panel header="MySQL - 主从" key={m.id} >
-      //           <Row gutter={24}>
-      //             <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
-      //             <Col span={12} push={2}>模式: &nbsp;主从</Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               主从: &nbsp;
-      //               {data.masterSlaveOption === '0' ? '一主一从' : '一主两从'}
-      //             </Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               备份: &nbsp;
-      //               {data.backup === 'true' ? '是' : '否'}
-      //             </Col>
-      //           </Row>
-      //           <Row style={{marginTop: '10px'}}>
-      //             <Col span={24}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-      //           </Row>
-      //         </Panel>
-      //       )
-      //     }
-      //     if (data.deployMode === 2) {
-      //       return (
-      //         <Panel header="MySQL - 集群" key={m.id} >
-      //           <Row gutter={24}>
-      //             <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
-      //             <Col span={12} push={2}>模式: &nbsp;集群</Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               mycat数量: &nbsp;
-      //               {data.mycatClusterManagerNodeCount}
-      //             </Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               mysql数量: &nbsp;
-      //               {data.mycatClusterDataNodeCount}
-      //             </Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               备份: &nbsp;
-      //               {data.backup === 'true' ? '是' : '否'}
-      //             </Col>
-      //           </Row>
-      //           <Row style={{marginTop: '10px'}}>
-      //             <Col span={24}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-      //           </Row>
-      //         </Panel>
-      //       )
-      //     }
-      //   })}
-      // </Collapse>
     )
   }
 }

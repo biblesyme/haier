@@ -42,6 +42,7 @@ export default {
             return {
               ...r,
               data: JSON.parse(r.data),
+              _data: JSON.parse(r.data),
             }
           } else {
             return r

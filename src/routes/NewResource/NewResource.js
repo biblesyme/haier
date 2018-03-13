@@ -120,6 +120,7 @@ class NewResource extends React.Component {
     frame: [],
     alert: null,
     codeManaged: null,
+    followResourceStatus: 'init',
   }
 
   componentWillMount() {
@@ -142,7 +143,7 @@ class NewResource extends React.Component {
       payload: {
         data: record,
         link: 'resources',
-        successCB: (middlewareMappings) => this.setState({middlewareMappings})
+        successCB: (middlewareMappings) => this.setState({middlewareMappings, followResourceStatus: 'success'})
       },
     })
     this.props.selfDispatch({type: 'findProject'})
@@ -219,6 +220,7 @@ class NewResource extends React.Component {
   addMiddlewareMapping = (newData) => {
     let newMiddleware = {
       data: newData,
+      _data: newData,
       resourceType: newData.resourceType,
       flag: 'new',
       id: 'new' + this.indexId++,
@@ -352,11 +354,12 @@ class NewResource extends React.Component {
                 />
                 <div style={{padding: '10px'}}></div>
               </Col>
-              <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
-                                onEdit={editId => this.setState({visibleEdit: true, editId})}
-                                onChange={(item) => this.middlewareMappingChange(item) }
-              />
-
+              {this.state.followResourceStatus === 'success' && (
+                <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                  onEdit={editId => this.onEdit()}
+                                  onChange={(item) => this.middlewareMappingChange(item) }
+                />
+              )}
               {/* <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
                 <div className={styles["card-header"]}>
                   <div><Icon type="redis"/> Redis</div>
