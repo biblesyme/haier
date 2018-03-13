@@ -118,6 +118,10 @@ export default class C extends React.Component {
     })
   }
 
+  saveAdd = (newData) => {
+    this.props.onOk(newData)
+  }
+
   render() {
     const {resource={}} = this.props
     const {data={}} = resource
@@ -126,12 +130,14 @@ export default class C extends React.Component {
     const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
     return (
       <main>
-        <h3>
-          中间件资源配置:
-          <Button onClick={() => this.setState({visibleEdit: true})} style={{marginLeft: '30px'}}>
+        <div>
+          <span style={{fontSize: 16, color: '#333'}}>中间件资源配置:</span>
+          <Button onClick={() => this.setState({visibleEdit: true})}
+                  style={{float: 'right', marginRight: 32, fontSize: 12}}
+                  type="primary">
             <Icon type="plus" /> 添加
           </Button>
-        </h3>
+        </div>
 
         {this.state.visibleEdit && (
           <Edit

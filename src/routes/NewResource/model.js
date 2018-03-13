@@ -47,8 +47,8 @@ export default {
             return r
           }
         })
-        yield put({type:'setState',payload: {resources: fomatResources}})
-        if(successCB){yield call(successCB,afterLink)}
+        yield put({type:'setState',payload: {resources: fomatResources || []}})
+        if(successCB){yield call(successCB,fomatResources)}
       }
       catch(e){
         if(failCB){yield call(failCB, e)}

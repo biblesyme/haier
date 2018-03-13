@@ -16,10 +16,12 @@ import RocketPanelDetail from './RocketPanelDetail'
 import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
 import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 
+
 const FormItem = Form.Item
 const CardGrid = Card.Grid
 const CheckboxGroup = Checkbox.Group;
 const {Option} = Select;
+// const TabPane = Tabs.TabPane
 
 import styles from './style.sass'
 
@@ -140,6 +142,7 @@ class NewResource extends React.Component {
       payload: {
         data: record,
         link: 'resources',
+        successCB: (middlewareMappings) => this.setState({middlewareMappings})
       },
     })
     this.props.selfDispatch({type: 'findProject'})
@@ -212,6 +215,23 @@ class NewResource extends React.Component {
     })
   }
 
+  indexId = 0
+  addMiddlewareMapping = (newData) => {
+    let newMiddleware = {
+      data: newData,
+      resourceType: newData.resourceType,
+      flag: 'new',
+      id: 'new' + this.indexId++,
+    }
+    this.setState({middlewareMappings: [...this.state.middlewareMappings, newMiddleware]})
+  }
+
+  middlewareMappingChange = (newItem) => {
+    const {middlewareMappings} = this.state
+    const nextAry = replace(middlewareMappings, newItem)
+    this.setState({middlewareMappings: nextAry})
+  }
+
   render(){
     const {record={}} = this.props.location
     const {frame=[]} = record
@@ -220,6 +240,7 @@ class NewResource extends React.Component {
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
     const {operationManagers=[], businessManagers=[]} = record
     const domain = this.props.App.domains.filter(d => d.id === record.domainId)[0] || {}
+    console.log(this.state.middlewareMappings)
     return (
     <div>
       <section className="page-section">
@@ -327,21 +348,16 @@ class NewResource extends React.Component {
                 <New project={record}
                      allProjects={this.props.reduxState.allProjects}
                      allResource={this.props.reduxState.allResource}
+                     onOk={(newData) => this.addMiddlewareMapping(newData)}
                 />
                 <div style={{padding: '10px'}}></div>
               </Col>
-              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-                <div className={styles["card-header"]}>
-                  <div><Icon type="mysql"/> MySQL</div>
-                </div>
-                  <div style={{height: '280px', overflowY: 'auto'}}>
-                    <MysqlPanelDetail middlewareMappings={middleware}
-                                 onEdit={editId => this.setState({visibleEdit: true, editId})}
-                    />
-                  </div>
-              </section>
+              <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                onEdit={editId => this.setState({visibleEdit: true, editId})}
+                                onChange={(item) => this.middlewareMappingChange(item) }
+              />
 
-              <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
+              {/* <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
                 <div className={styles["card-header"]}>
                   <div><Icon type="redis"/> Redis</div>
                 </div>
@@ -385,7 +401,7 @@ class NewResource extends React.Component {
                                                  onEdit={editId => this.setState({visibleEdit: true, editId})}
                     />
                   </div>
-              </section>
+              </section> */}
               <Col span={24}>
               </Col>
             </Row>
@@ -442,9 +458,8 @@ class NewResource extends React.Component {
           </Col>
         </Row>
       </section>
-      <div style={{paddingBottom: '60px'}}></div>
 
-      <section className="page-section bottom-actions">
+      <section className="page-section">
         <Button onClick={() => {
                   this.props.history.goBack()
         }}>

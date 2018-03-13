@@ -96,38 +96,41 @@ export default class C extends React.Component {
     let data = {
       ...this.state[this.state.middlewareSelect],
       machineRoomId: this.state.machineRoomId,
+      resourceType: this.state.middlewareSelect,
     }
-    this.props.dispatch({
-      type: 'App/doSelfAction',
-      payload: {
-        data: {
-          data: JSON.stringify(data),
-          projectId: this.props.project.id,
-          // id: resource.id,
-          resourceType: this.state.middlewareSelect,
-          // version: 1,
-        },
-        successCB: () => {
-          message.success('资源申请成功')
-          this.props.dispatch({
-            type: 'NewResource/followResourceLink',
-            payload: {
-              data: this.props.project,
-              link: 'resources',
-            }
-          })
-          this.props.onCancel()
-        },
-        failCB: () => {
-          message.error('资源申请失败')
-        },
-        action: 'applyResource',
-        findRecord: {
-          id: this.props.project.id,
-          type: 'project',
-        }
-      }
-   })
+    this.props.onOk(data)
+    this.props.onCancel()
+  //   this.props.dispatch({
+  //     type: 'App/doSelfAction',
+  //     payload: {
+  //       data: {
+  //         data: JSON.stringify(data),
+  //         projectId: this.props.project.id,
+  //         // id: resource.id,
+  //         resourceType: this.state.middlewareSelect,
+  //         // version: 1,
+  //       },
+  //       successCB: () => {
+  //         message.success('资源申请成功')
+  //         this.props.dispatch({
+  //           type: 'NewResource/followResourceLink',
+  //           payload: {
+  //             data: this.props.project,
+  //             link: 'resources',
+  //           }
+  //         })
+  //         this.props.onCancel()
+  //       },
+  //       failCB: () => {
+  //         message.error('资源申请失败')
+  //       },
+  //       action: 'applyResource',
+  //       findRecord: {
+  //         id: this.props.project.id,
+  //         type: 'project',
+  //       }
+  //     }
+  //  })
   }
 
   render() {
