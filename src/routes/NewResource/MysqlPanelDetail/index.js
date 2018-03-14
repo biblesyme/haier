@@ -101,9 +101,6 @@ export default class C extends React.Component {
         return 0
       }
     )
-    const oneLength = boxes.filter(b => (b.data.deployMode === 0 && b.flag !== 'new')).length
-    const masterLength = boxes.filter(b => b.data.deployMode === 1 && b.flag !== 'new').length
-    const clusterLength = boxes.filter(b => b.data.deployMode === 2 && b.flag !== 'new').length
 
     const mysqlColumns = [{
       title: <div style={{marginLeft: 100 - 16}}>中间件名称</div>,
