@@ -366,7 +366,7 @@ class NewResource extends React.Component {
                                     onChange={(item) => this.middlewareMappingChange(item)}
                   />
               )}
-              {(this.state.followResourceStatus === 'success' && this.state.middlewareMappings.filter(m => m.resourceType !== 'mysql' && m.resourceType !== 'redis').length > 0)
+              {(this.state.followResourceStatus === 'success' && this.state.middlewareMappings.filter(m => m.resourceType !== 'mysql' && m.resourceType !== 'redis' && m.resourceType !== 'containerHost').length > 0)
                 && (
                   <RocketPanelDetail middlewareMappings={this.state.middlewareMappings}
                                      onChange={(item) => this.middlewareMappingChange(item)}
