@@ -174,7 +174,7 @@ export default class MainPage extends React.Component {
             </div>
           </Header>
           <Content style={{background: '#ebebeb'}}>
-            <div style={{ padding: 24, background: '#ebebeb', minHeight: 360 }} >
+            <div style={{ padding: '24px 20px', background: '#ebebeb', minHeight: 360 }} >
               {this.props.children}
             </div>
           </Content>

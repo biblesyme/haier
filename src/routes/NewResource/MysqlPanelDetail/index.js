@@ -7,7 +7,6 @@ import {deployModeEnum} from 'utils/enum'
 import Tabs, { TabPane } from 'rc-tabs';
 import TabContent from 'rc-tabs/lib/TabContent';
 import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
-import replace from 'utils/replace'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -82,14 +81,22 @@ export default class C extends React.Component {
     const {onChange, item={}, onRemove, projects=[], resources=[], middlewareMappings=[]} = this.props
     let boxes = middlewareMappings.filter(m => m.resourceType === 'mysql').sort(
       (a, b) => {
-        if (a.flag || b.flag) {
+        if (a.flag === 'new' && b.flag === 'new') {
           return 0
         }
-        if (a.data.deployMode < b.data.deployMode ) {
+        if (a.flag === 'new' && b.flag !== 'new') {
+          return 1
+        }
+        if (a.flag !== 'new' && b.flag === 'new') {
           return -1
         }
-        if (a.data.deployMode > b.data.deployMode) {
-          return 1
+        if (!a.flag && !b.flag) {
+          if (a.data.deployMode < b.data.deployMode ) {
+            return -1
+          }
+          if (a.data.deployMode > b.data.deployMode) {
+            return 1
+          }
         }
         return 0
       }
@@ -99,32 +106,19 @@ export default class C extends React.Component {
     const clusterLength = boxes.filter(b => b.data.deployMode === 2 && b.flag !== 'new').length
 
     const mysqlColumns = [{
-      title: <div className="text-center">中间件名称</div>,
+      title: <div style={{marginLeft: 100 - 16}}>中间件名称</div>,
       key: 'id',
-      className: 'text-center',
       render: (text, record, index) => {
         const {data={}} = record
-        if (record.flag !== 'new') {
-          if (data.deployMode === 0) {
-            return <span>MySQL - {deployModeEnum(data.deployMode)}-{(index) + 1}</span>
-          }
-          if (data.deployMode === 1) {
-            return <span>MySQL - {deployModeEnum(data.deployMode)}-{(index - oneLength) + 1}</span>
-          }
-          if (data.deployMode === 2) {
-            return <span>MySQL - {deployModeEnum(data.deployMode)}-{(index - masterLength - oneLength) + 1}</span>
-          }
-        } else {
-          if (data.deployMode === 0) {
-            return <span>MySQL - {deployModeEnum(data.deployMode)}-{boxes.slice(0, index).filter(b => b.data.deployMode === 0).length + 1}</span>
-          }
-          if (data.deployMode === 1) {
-            return <span>MySQL - {deployModeEnum(data.deployMode)}-{boxes.slice(0, index).filter(b => b.data.deployMode === 1).length + 1}</span>
-          }
-          if (data.deployMode === 2) {
-            return <span>MySQL - {deployModeEnum(data.deployMode)}-{boxes.slice(0, index).filter(b => b.data.deployMode === 2).length + 1}</span>
-          }
-        }
+        return (
+          <span style={{marginLeft: 21}}>
+            {`MySQL - ${deployModeEnum(data.deployMode)} -
+            ${boxes.slice(0, index).filter(b => b.data.deployMode === data.deployMode).length + 1 > 9 ?
+              boxes.slice(0, index).filter(b => b.data.deployMode === data.deployMode).length + 1 :
+              '0' + (boxes.slice(0, index).filter(b => b.data.deployMode === data.deployMode).length + 1)
+            }`}
+          </span>
+        )
       }
     }, {
       title: <div className="text-center">模式</div>,
@@ -194,14 +188,14 @@ export default class C extends React.Component {
     }]
 
     return (
-      <div className="middleware">
+      <div className="middleware" style={{marginBottom: 38}}>
         <Tabs
           renderTabBar={()=><ScrollableInkTabBar />}
           renderTabContent={()=><TabContent />}
         >
           <TabPane tab={<div ><Icon type="mysql" style={{marginRight: 12, fontSize: 14}}/><span>MySQL</span></div>} key="1">
             <div>
-              <Table scroll={{x: 1300}}
+              <Table scroll={{x: 1125}}
                      dataSource={boxes}
                      columns={mysqlColumns}
                      rowKey="id"

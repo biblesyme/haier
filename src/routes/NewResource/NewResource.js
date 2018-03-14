@@ -354,12 +354,19 @@ class NewResource extends React.Component {
                 />
                 <div style={{padding: '10px'}}></div>
               </Col>
-              {this.state.followResourceStatus === 'success' && (
+              {(this.state.followResourceStatus === 'success' && this.state.middlewareMappings.filter(m => m.resourceType === 'mysql').length > 0)
+                && (
                 <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
-                                  onEdit={editId => this.onEdit()}
-                                  onChange={(item) => this.middlewareMappingChange(item) }
+                                  onChange={(item) => this.middlewareMappingChange(item)}
                 />
               )}
+              {(this.state.followResourceStatus === 'success' && this.state.middlewareMappings.filter(m => m.resourceType === 'redis').length > 0)
+                && (
+                  <RedisPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                    onChange={(item) => this.middlewareMappingChange(item)}
+                  />
+              )}
+
               {/* <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
                 <div className={styles["card-header"]}>
                   <div><Icon type="redis"/> Redis</div>
