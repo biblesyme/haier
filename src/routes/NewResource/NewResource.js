@@ -15,6 +15,7 @@ import RedisPanelDetail from './RedisPanelDetail'
 import RocketPanelDetail from './RocketPanelDetail'
 import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
 import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
+import apiStore from 'utils/apiStore'
 
 
 const FormItem = Form.Item
@@ -197,12 +198,122 @@ class NewResource extends React.Component {
   }
 
   submit = () => {
+    const {record={}} = this.props.location
+    const {allResource=[], projectInfo={}} = this.props.reduxState
     console.log(this.state)
     let submitResources = []
+    const prevPaas = this.state.middlewareMappings.filter(m => m.resourceType === 'containerHost')[0] || {}
     if (this.state.paas.isChange === 'true') {
-      submitResources = [...submitResources, this.state.paas]
+      submitResources = [...submitResources, apiStore.createRecord({
+        data: JSON.stringify({
+          ...prevPaas.data,
+          cpu: this.state.paas.cpu * 1000,
+          memory: this.state.paas.memory * 1024 * 1024 * 1024
+        }),
+        id: prevPaas.id,
+        resourceType: 'containerHost',
+        type: 'resource',
+      })]
     }
+    if (this.state.paas.cpu * 1000 === prevPaas.data.cpu && this.state.paas.memory * 1024 * 1024 * 1024 === prevPaas.data.memory) {
+      message.warning('容器资源无变化')
+      return
+    }
+    const newMiddlewares = this.state.middlewareMappings.filter(m => m.flag === 'new')
+                                 .map(m => {
+                                   return apiStore.createRecord({
+                                     data: JSON.stringify(m.data),
+                                    //  version: 1,
+                                     resourceType: m.resourceType,
+                                     type: 'resource',
+                                   })
+                                 })
+    const editMysql = this.state.middlewareMappings.filter(m => m.flag !== 'new' && m.resourceType === 'mysql')
+                                                   .filter(m => {
+                                                     const prev = allResource.filter(r => r.id === m.id)[0] || {}
+                                                     const prevData = prev.data || {}
+                                                     console.log(prevData)
+                                                     if (prevData.backup !== m.data.backup
+                                                         || prevData.mycatClusterManagerNodeCount !== m.data.mycatClusterManagerNodeCount
+                                                         || prevData.mycatClusterDataNodeCount !== m.data.mycatClusterDataNodeCount)
+                                                     {
+                                                       return true
+                                                     } else {
+                                                       return false
+                                                     }
+                                                   })
+                                                   .map(m => {
+                                                     return apiStore.createRecord({
+                                                       data: JSON.stringify(m.data),
+                                                      //  version: 1,
+                                                       resourceType: m.resourceType,
+                                                       type: 'resource',
+                                                       id: m.id,
+                                                     })
+                                                   })
+    const editRedis = this.state.middlewareMappings.filter(m => m.flag !== 'new' && m.resourceType === 'redis')
+                                                   .filter(m => {
+                                                     const prev = allResource.filter(r => r.id === m.id)[0] || {}
+                                                     const prevData = prev.data || {}
+                                                     if (prevData.memorySize !== m.data.memorySize)
+                                                     {
+                                                       return true
+                                                     } else {
+                                                       return false
+                                                     }
+                                                   })
+                                                   .map(m => {
+                                                     return apiStore.createRecord({
+                                                       data: JSON.stringify(m.data),
+                                                      //  version: 1,
+                                                       resourceType: m.resourceType,
+                                                       type: 'resource',
+                                                       id: m.id,
+                                                     })
+                                                   })
+    submitResources = [...submitResources, ...newMiddlewares, ...editMysql, ...editRedis]
     console.log(submitResources)
+    if (submitResources.length === 0) {
+      message.warning('资源无变化')
+      return
+    }
+    this.props.dispatch({
+      type: 'App/doSelfAction',
+      payload: {
+        // data: {
+        //   data: JSON.stringify(data),
+        //   projectId: record.id,
+        //   id: resource.id,
+        //   resourceType: data.resourceType,
+        //   // resourceTypeId: '1',
+        //   version: data.version,
+        //   // state: 'pending',
+        // },
+        data: submitResources,
+        successCB: () => {
+          message.success('资源申请成功')
+          this.props.dispatch({
+            type: 'NewResource/followResourceLink',
+            payload: {
+              data: record,
+              link: 'resources',
+            }
+          })
+          this.setState({
+            visibleEdit: false,
+          })
+          this.props.history.goBack()
+        },
+        failCB: () => {
+          message.error('资源申请失败')
+        },
+        action: 'applyResource',
+        findRecord: {
+          id: record.id,
+          type: 'project',
+        }
+      }
+   })
   }
 
   onPaasChange = (state) => {
@@ -370,6 +481,8 @@ class NewResource extends React.Component {
                 && (
                   <RocketPanelDetail middlewareMappings={this.state.middlewareMappings}
                                      onChange={(item) => this.middlewareMappingChange(item)}
+                                     projects={this.props.reduxState.allProjects || []}
+                                     resources={this.props.reduxState.allResource}
                   />
               )}
 

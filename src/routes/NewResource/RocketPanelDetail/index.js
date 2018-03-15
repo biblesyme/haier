@@ -3,7 +3,7 @@ import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Car
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import { withRouter } from 'react-router'
-import {clusterTypeEnum} from 'utils/enum'
+import {clusterTypeEnum, exchangeTypeEnum} from 'utils/enum'
 import Tabs, { TabPane } from 'rc-tabs';
 import TabContent from 'rc-tabs/lib/TabContent';
 import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
@@ -54,17 +54,17 @@ export default class C extends React.Component {
         }
         if (!a.flag && !b.flag) {
           if (a.resourceType < b.resourceType) {
-            return -1
+            return 1
           }
           if (a.resourceType > b.resourceType) {
-            return 1
+            return -1
           }
           if (a. resourceType === 'rocketMQTopic') {
             if (a.data.clusterType < b.data.clusterType ) {
-              return -1
+              return 1
             }
             if (a.data.clusterType > b.data.clusterType) {
-              return 1
+              return -1
             }
           }
         }
@@ -80,7 +80,7 @@ export default class C extends React.Component {
         if (record.resourceType === 'rocketMQTopic') {
           return (
             <span style={{marginLeft: 21}}>
-              {`Rocket - ${clusterTypeEnum(data.clusterType)} -
+              {`RocketMQ - ${clusterTypeEnum(data.clusterType)} -
               ${boxes.slice(0, index).filter(b => b.data.clusterType === data.clusterType).length + 1 > 9 ?
                 boxes.slice(0, index).filter(b => b.data.clusterType === data.clusterType).length + 1 :
                 '0' + (boxes.slice(0, index).filter(b => b.data.clusterType === data.clusterType).length + 1)
@@ -90,7 +90,7 @@ export default class C extends React.Component {
         }
         return (
           <span style={{marginLeft: 21}}>
-            {`${record.resourceType === 'rabbitMQConsumer' ? '消费者' : '生产者'} -
+            {`${record.resourceType === 'rabbitMQConsumer' ? 'RabbitMQ - 消费者' : 'RabbitMQ - 生产者'} -
             ${boxes.slice(0, index).filter(b => b.resourceType === record.resourceType).length + 1 > 9 ?
               boxes.slice(0, index).filter(b => b.resourceType === record.resourceType).length + 1 :
               '0' + (boxes.slice(0, index).filter(b => b.resourceType === record.resourceType).length + 1)
@@ -99,9 +99,30 @@ export default class C extends React.Component {
         )
       }
     }, {
-      title: <div className="text-center">配置描述</div>,
-      className: 'text-center',
-      render: (record) => <span>{clusterTypeEnum(record.data.clusterType)}</span>
+      title: <div style={{marginLeft: 100}}>配置描述</div>,
+      render: (record) => {
+        if (record.resourceType === 'rocketMQTopic') {
+          return <span>{`集群类型-${clusterTypeEnum(record.data.clusterType)} / 主题名称:${record.data.topicName}`}</span>
+        }
+        if (record.resourceType === 'rabbitMQProducer') {
+          return <span>{`最大消息吞吐量: ${record.data.maxIO} / Exchange名称:${record.data.exchangeName} / Exchange类型: ${exchangeTypeEnum(record.data.exchangeType)}`}</span>
+        }
+        if (record.resourceType === 'rabbitMQConsumer') {
+          const {data={}} = record
+          let projectSelect = projects.filter(p => data.producerApplicationScode === p.scode)[0] || {}
+          let exchanges = resources.filter(r => (r.resourceType === 'rabbitMQProducer' && r.projectId === projectSelect.id))
+          let exchangeData = exchanges.filter(e => e.data.exchangeName === data.exchangeName)[0] || {}
+          let exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
+          if (exchangeType === 'direct') {
+            return <span>{`应用: ${projectSelect.name} / Exchange名称:${data.exchangeName} / 队列名: ${data.queueName} / 直连名: ${data.RouteKey}`}</span>
+          }
+          if (exchangeType === 'topic') {
+            return <span>{`应用: ${projectSelect.name} / Exchange名称:${data.exchangeName} / 队列名: ${data.queueName} / 主题名: ${data.topicName}`}</span>
+          }
+          return <span>{`应用: ${projectSelect.name} / Exchange名称:${data.exchangeName} / 队列名: ${data.queueName}`}</span>
+        }
+        return <span></span>
+      }
     }]
 
     return (
@@ -123,46 +144,6 @@ export default class C extends React.Component {
           </TabPane>
         </Tabs>
       </div>
-      // <Collapse accordion className="detail">
-      //   {middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic').map(m => {
-      //     const {data={}} = m
-      //     const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === data.machineRoomId)[0] || {}
-      //     if (data.clusterType === 'standalone') {
-      //       return (
-      //         <Panel header={`Redis - 单机`} key={m.id} >
-      //           <Row gutter={24}>
-      //             <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
-      //             <Col span={12} push={2}>类型: &nbsp;单机</Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               主题名称: &nbsp;
-      //               {`${data.topicName}`}
-      //             </Col>
-      //           </Row>
-      //           <Row style={{marginTop: '10px'}}>
-      //             <Col span={24}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-      //           </Row>
-      //         </Panel>
-      //       )
-      //     }
-      //     if (data.clusterType === 'cluster') {
-      //       return (
-      //         <Panel header={`Redis - 集群`} key={m.id} >
-      //           <Row gutter={24}>
-      //             <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
-      //             <Col span={12} push={2}>类型: &nbsp;集群</Col>
-      //             <Col span={12} push={2} style={{marginTop: '10px'}}>
-      //               内存: &nbsp;
-      //               {`${data.topicName}`}
-      //             </Col>
-      //           </Row>
-      //           <Row style={{marginTop: '10px'}}>
-      //             <Col span={24}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-      //           </Row>
-      //         </Panel>
-      //       )
-      //     }
-      //   })}
-      // </Collapse>
     )
   }
 }
