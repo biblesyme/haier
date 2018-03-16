@@ -68,10 +68,10 @@ export default class MainPage extends React.Component {
     const {user= {}, role} = this.props.App
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider style={{color: 'white'}}
+        <Sider style={{color: 'white'}} width="215"
         >
-          <div style={{height: '32px', margin: '16px'}} className="text-center">
-            海尔产品整合PORTAL
+          <div style={{height: '50px', padding: '18px 35px 18px 36px'}} >
+           <span>海尔产品整合PORTAL</span>
           </div>
           <Menu
             selectedKeys={this.props.App.selectedKeys}
@@ -81,7 +81,7 @@ export default class MainPage extends React.Component {
             inlineCollapsed={this.state.collapsed}
             style={{ marginTop: '10px' }}
             onSelect={this.select}
-            style={{borderTop: '1px solid #fff'}}
+            style={{borderTop: '1px solid #374353'}}
           >
             {['internal', 'manager', 'admin', 'domainAdmin', 'developer'].includes(role) && (
               <Menu.ItemGroup title="资源管理">
@@ -159,9 +159,11 @@ export default class MainPage extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }} className={styles["page-header"]}>
-             <div className="user-info" style={{float: 'right'}}>
-               当前登录： {user.name}
+          <Header style={{ background: '#fff', padding: 0, height: 50 }} className={styles["page-header"]}>
+             <div  style={{float: 'right', height: 50}}
+                  //  className="user-info"
+             >
+               <span className={styles['user']}>当前登录: {user.name}</span>
                <Divider type="vertical" />
                <Select value={role}
                        onSelect={this.roleChange}
@@ -170,7 +172,7 @@ export default class MainPage extends React.Component {
                 {user.roles.map(r => <Option key={r}>{nameMap[r]}</Option>)}
               </Select>
               <Divider type="vertical" />
-              <span className={styles.logout} onClick={this.props.exit} style={{marginRight: '20px'}}><Icon type="logout"></Icon>&nbsp;退出</span>
+              <span className={styles.logout} onClick={this.props.exit} style={{margin: '19px 30px 19px 20px'}}><Icon type="logout"></Icon>&nbsp;退出</span>
             </div>
           </Header>
           <Content style={{background: '#ebebeb'}}>
@@ -183,28 +185,6 @@ export default class MainPage extends React.Component {
           </Footer>
         </Layout>
       </Layout>
-      // <div className={styles["page-wrap"]}>
-      //   <div className={styles["page-header"]}>
-      //     <div style={{float: "left"}}>
-      //       海尔产品整合PORTAL
-      //     </div>
-      //     <div className="user-info">
-      //       当前登录： {user.name}
-      //       <Select value={role}
-      //               onSelect={this.roleChange}
-      //       >
-      //         {user.roles.map(r => <Option key={r}>{nameMap[r]}</Option>)}
-      //       </Select>
-      //       <span className={styles.logout} onClick={this.props.exit}><Icon type="logout"></Icon>&nbsp;退出</span>
-      //     </div>
-      //   </div>
-      //   <div className={styles["page-navigation"]}>
-      //       <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16,display:"none" }}>
-      //         <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
-      //       </Button>
-      //   </div>
-      //   <div className={styles["page-body"]}>{this.props.children}</div>
-      // </div>
     );
   }
 }

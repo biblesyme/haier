@@ -1,7 +1,7 @@
 export default {
   // state
-  active: '可用',
-  inactive: '停用',
+  active: '使用中',
+  inactive: '已停用',
   activating: '启用中',
   deactivating: '停用中',
   creating: '创建中',

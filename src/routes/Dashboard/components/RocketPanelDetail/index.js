@@ -3,7 +3,7 @@ import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Car
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import { withRouter } from 'react-router'
-import {deployModeEnum} from 'utils/enum'
+import {clusterTypeEnum} from 'utils/enum'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -76,16 +76,41 @@ export default class C extends React.Component {
     })
   }
 
+  onEdit = (id, e) => {
+    e.stopPropagation()
+    this.props.onEdit(id)
+  }
+
+  onDelete = (id ,e) => {
+    e.stopPropagation()
+    this.props.removeMiddlewareMapping(id)
+  }
+
   render() {
     const {onChange, item={}, onRemove, projects=[], resources=[], middlewareMappings=[]} = this.props
+    const header = (record) => {
+      if (this.state.panelIndex === record.id.toString()) {
+        return (
+          <div>
+            <span>{`RocketMQ - ${clusterTypeEnum(record.clusterType)}`}</span>
+            <div style={{float: 'right'}}>
+              <Icon onClick={(e) => this.onEdit(record.id, e)} type="edit" style={{marginRight: 10}}></Icon>
+              <Icon onClick={(e) => this.onDelete(record.id, e)} type="delete" style={{marginRight: 21}}></Icon>
+            </div>
+          </div>
+        )
+      } else {
+        return <span>{`RocketMQ - ${clusterTypeEnum(record.clusterType)}`}</span>
+      }
+    }
     return (
-      <Collapse accordion className="detail">
+      <Collapse accordion className="detail" onChange={(panelIndex) => this.setState({panelIndex})}>
         {middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic').map(m => {
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === m.machineRoomId)[0] || {}
           if (m.clusterType === 'standalone') {
             return (
-              <Panel header={`Redis - 单机`} key={m.id} >
-                <Row gutter={24}>
+              <Panel header={header(m)} key={m.id} >
+                <Row gutter={24} style={{paddingBottom: 19}}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;单机</Col>
                   <Col span={12} push={2} style={{marginTop: '10px'}}>
@@ -93,27 +118,19 @@ export default class C extends React.Component {
                     {`${m.topicName}`}
                   </Col>
                 </Row>
-                <Row style={{marginTop: '10px'}}>
-                  <Col span={12}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-                  <Col span={12}><Button onClick={() => this.props.removeMiddlewareMapping(m.id)} style={{width: '100%'}} icon="delete"></Button></Col>
-                </Row>
               </Panel>
             )
           }
           if (m.clusterType === 'cluster') {
             return (
-              <Panel header={`Redis - 集群`} key={m.id} >
-                <Row gutter={24}>
+              <Panel header={header(m)} key={m.id} >
+                <Row gutter={24} style={{paddingBottom: 19}}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>类型: &nbsp;集群</Col>
                   <Col span={12} push={2} style={{marginTop: '10px'}}>
                     内存: &nbsp;
                     {`${m.topicName}`}
                   </Col>
-                </Row>
-                <Row style={{marginTop: '10px'}}>
-                  <Col span={12}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-                  <Col span={12}><Button onClick={() => this.props.removeMiddlewareMapping(m.id)} style={{width: '100%'}} icon="delete"></Button></Col>
                 </Row>
               </Panel>
             )

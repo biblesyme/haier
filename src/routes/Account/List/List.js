@@ -21,6 +21,7 @@ class User extends React.Component {
     projects: [],
     projectparticipants: [],
     loading: null,
+    expandedRowKeys: [],
   }
 
   componentWillMount() {
@@ -146,45 +147,80 @@ class User extends React.Component {
     const {projectparticipants=[]} = this.state
     const {domains=[]} = this.props.App
     const columnStaff = [{
-      title: '用户名',
+      title: <div className="text-center">用户名</div>,
       dataIndex: 'externalId',
       key: 'externalId',
+      className: 'text-center',
     }, {
-      title: '姓名',
+      title: <div className="text-center">姓名</div>,
       dataIndex: 'name',
       key: 'name',
+      className: 'text-center',
     }, {
-      title: '角色',
+      title: <div className="text-center">角色</div>,
+      className: 'text-center',
       render: (record) => {
         let formatter = record.roles.map(r => nameMap[r])
         return <span>{formatter.join(',')}</span>
       }
     }, {
-      title: '所属应用',
+      title: <div className="text-center">所属应用</div>,
+      className: 'text-center',
       render: (record) => {
         const filter = projectparticipants.filter(p => p.id === record.id)[0] || {}
         const records = filter.record || []
         const recordFilter = records.filter(r => r.state === 'active')
         if (recordFilter.length > 1) {
-          return <span>{`${recordFilter[0].projectName}... (${recordFilter.length})`}</span>
+          return (
+            <span onClick={() => {
+                    if (record.id === this.state.expandedRowKeys[0]) {
+                      this.setState({expandedRowKeys: []})
+                      return
+                    }
+                    this.setState({expandedRowKeys: [record.id]})}
+                  }
+                  className="cursor">
+              {`${recordFilter[0].projectName}... (${recordFilter.length})`}
+              <Icon type={this.state.expandedRowKeys[0] !== record.id ? 'caret-down' : 'caret-up'}
+                    style={{fontSize: 3, marginLeft: 5}}
+              />
+            </span>
+          )
         }
         if (recordFilter.length === 1) {
-          return <span>{`${recordFilter[0].projectName} (${recordFilter.length})`}</span>
+          return (
+            <span onClick={() => {
+                    if (record.id === this.state.expandedRowKeys[0]) {
+                      this.setState({expandedRowKeys: []})
+                      return
+                    }
+                    this.setState({expandedRowKeys: [record.id]})}
+                  }
+                  className="cursor">
+              {`${recordFilter[0].projectName} (${recordFilter.length})`}
+              <Icon type={this.state.expandedRowKeys[0] !== record.id ? 'caret-down' : 'caret-up'}
+                    style={{fontSize: 3, marginLeft: 5}}
+              />
+            </span>
+          )
         }
         return <span>无</span>
-      }
+      },
     }, {
-      title: '部门/公司',
+      title: <div className="text-center">部门/公司</div>,
+      className: 'text-center',
       render: (record) => {
         const project = projects.filter(p => p.creatorId === record.id)[0] || {}
         const domain = domains.filter(d => d.id === project.domainId)[0] || {}
         return <span>{domain.name}</span>
       }
     }, {
-      title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
+      title: <div className="text-center">状态</div>,
+      className: 'text-center',
+      render: (record) => <span style={{...getState(record.state)}}>{nameMap[record.state]}</span>,
     }, {
-      title: '操作',
+      title: <div className="text-center">操作</div>,
+      className: 'text-center',
       render: (record) => {
         if (record.state === 'active') {
           return <a record={record}  onClick={() => this.deactivate(record)}>停用</a>
@@ -329,7 +365,7 @@ class User extends React.Component {
     }
     return (
       <main className="page-section">
-        <h3>用户列表</h3>
+        <h3>用户列表:</h3>
         <Row type="flex" justify="space-between" className={styles["radioButton"]}>
           <Col>
             <RadioGroup style={{ marginRight: 20 }}
@@ -357,10 +393,12 @@ class User extends React.Component {
               columns={columnStaff}
               rowKey="id"
               pagination={{showQuickJumper: true}}
-              // scroll={{x: 1300}}
+              scroll={{x: 1125}}
               expandedRowRender={expandedRowRender}
-              expandRowByClick={true}
               loading={this.state.loading}
+              expandedRowKeys={this.state.expandedRowKeys}
+              expandIconColumnIndex={10}
+              expandIconAsCell={false}
             />
           )}
           {this.state.tableSelect === 'developer' && (
@@ -369,7 +407,7 @@ class User extends React.Component {
               columns={columnDeveloper}
               rowKey="id"
               pagination={{showQuickJumper: true}}
-              scroll={{x: 1300}}
+              scroll={{x: 1125}}
               loading={this.state.loading}
             />
           )}
@@ -379,7 +417,7 @@ class User extends React.Component {
               columns={columnAdmin}
               rowKey="externalId"
               pagination={{showQuickJumper: true}}
-              scroll={{x: 1300}}
+              scroll={{x: 1125}}
               loading={this.state.loading}
             />
           )}

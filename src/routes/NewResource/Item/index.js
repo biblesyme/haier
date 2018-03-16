@@ -189,6 +189,7 @@ export default class C extends React.Component {
                     <InputNumber style={{ marginLeft: 20, marginRight: 5 }}
                                  onChange={(cpu) => this.onChange(cpu, 'cpu')}
                                  value={this.state.cpu}
+                                 min={0}
                     />核
                   </Col>
                   <Col span={4}>
@@ -196,6 +197,7 @@ export default class C extends React.Component {
                     <InputNumber style={{ marginLeft: 20, marginRight: 5 }}
                                  onChange={(memory) => this.onChange(memory, 'memory')}
                                  value={this.state.memory}
+                                 min={0}
                     />G
                   </Col>
                 </Row>

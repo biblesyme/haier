@@ -580,16 +580,21 @@ class NewResource extends React.Component {
       </section>
 
       <section className="page-section">
-        <Button onClick={() => {
-                  this.props.history.goBack()
-        }}>
-          取消
-        </Button>
-        <Button type="primary" style={{float: 'right'}}
-                onClick={() => this.submit()}
-        >
-          提交申请
-        </Button>
+        <Row type="flex" justify="end">
+          <Col>
+            <Button onClick={() => {this.props.history.goBack()}}
+                    type="primary"
+            >
+              取消
+            </Button>
+            <Button type="primary"
+                    onClick={() => this.submit()}
+                    style={{marginLeft: 10}}
+            >
+              提交申请
+            </Button>
+          </Col>
+        </Row>
       </section>
 
       {this.state.visibleEdit && (

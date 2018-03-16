@@ -76,16 +76,41 @@ export default class C extends React.Component {
     })
   }
 
+  onEdit = (id, e) => {
+    e.stopPropagation()
+    this.props.onEdit(id)
+  }
+
+  onDelete = (id ,e) => {
+    e.stopPropagation()
+    this.props.removeMiddlewareMapping(id)
+  }
+
   render() {
     const {onChange, item={}, onRemove, projects=[], resources=[], middlewareMappings=[]} = this.props
     let count = 1
+    const header = (record) => {
+      if (this.state.panelIndex === record.id.toString()) {
+        return (
+          <div>
+            <span>{`RabbitMQ - 生产者-${count++}`}</span>
+            <div style={{float: 'right'}}>
+              <Icon onClick={(e) => this.onEdit(record.id, e)} type="edit" style={{marginRight: 10}}></Icon>
+              <Icon onClick={(e) => this.onDelete(record.id, e)} type="delete" style={{marginRight: 21}}></Icon>
+            </div>
+          </div>
+        )
+      } else {
+        return <span>{`RabbitMQ - 生产者-${count++}`}</span>
+      }
+    }
     return (
-      <Collapse accordion className="detail">
+      <Collapse accordion className="detail" onChange={(panelIndex) => this.setState({panelIndex})}>
         {middlewareMappings.filter(m => m.resourceType === 'rabbitMQProducer').map(m => {
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === m.machineRoomId)[0] || {}
             return (
-              <Panel header={`RabbitMQ - 生产者-${count++}`} key={m.id} >
-                <Row gutter={24}>
+              <Panel header={header(m)} key={m.id} >
+                <Row gutter={24} style={{paddingBottom: 19}}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>消息吞吐: &nbsp;{m.maxIO}</Col>
                   <Col span={24} push={2} style={{marginTop: '10px'}}>
@@ -98,10 +123,6 @@ export default class C extends React.Component {
                     {m.exchangeType === 'topic' && '主题'}
                     {m.exchangeType === 'direct' && '直连'}
                   </Col>
-                </Row>
-                <Row style={{marginTop: '10px'}}>
-                  <Col span={12}><Button onClick={() => this.props.onEdit(m.id)} style={{width: '100%'}} icon="edit"></Button></Col>
-                  <Col span={12}><Button onClick={() => this.props.removeMiddlewareMapping(m.id)} style={{width: '100%'}} icon="delete"></Button></Col>
                 </Row>
               </Panel>
             )

@@ -1,9 +1,9 @@
 const defaultStateMap = {
   active: {
-    color: 'green',
+    color: '#149718',
   },
   inactive: {
-    color: 'red',
+    color: '#de2c3e',
   },
   removed: {
     color: 'red',

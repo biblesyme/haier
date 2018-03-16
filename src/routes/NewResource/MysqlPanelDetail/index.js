@@ -125,7 +125,7 @@ export default class C extends React.Component {
       title: <div className="text-center">mycat数量</div>,
       className: 'text-center',
       render: (record) => {
-        if (record.editable) {
+        if (record.editable && record.data.deployMode === 2) {
           return (
             <InputNumber style={{ margin: '-5px 0' }}
                          value={record._data.mycatClusterManagerNodeCount}
@@ -140,7 +140,7 @@ export default class C extends React.Component {
       title: <div className="text-center">mysql数量</div>,
       className: 'text-center',
       render: (record) => {
-        if (record.editable) {
+        if (record.editable && record.data.deployMode === 2) {
           return (
             <InputNumber style={{ margin: '-5px 0' }}
                          value={record._data.mycatClusterDataNodeCount}
