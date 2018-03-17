@@ -17,6 +17,7 @@ import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
 import Edit from './Edit'
 import NewManager from './NewManager'
 import NewOperationManager from './NewOperationManager'
+import moment from 'moment'
 
 const CheckboxGroup = Checkbox.Group;
 const Panel = Collapse.Panel
@@ -30,14 +31,8 @@ import styles from './style.sass'
 
 
 const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
+  labelCol: { span: 7},
+  wrapperCol: {span: 17},
   style: {
     marginBottom: '10px'
   }
@@ -47,12 +42,11 @@ const formItemCenter = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 5 },
-    push: 1
+    xl: {span: 4},
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 12 },
-    push: 1
   },
   style: {
     marginBottom: '10px'
@@ -60,16 +54,8 @@ const formItemCenter = {
 };
 
 const formItemLeft = {
-  labelCol: {
-    xs: { span: 20 },
-    sm: { span: 5 },
-    push: 4,
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-    push: 4,
-  },
+  labelCol: { span: 7},
+  wrapperCol: {span: 17},
   style: {
     marginBottom: '10px'
   }
@@ -107,7 +93,7 @@ const formItemLayout4 = {
     marginBottom: '10px'
   }
 }
-const col = 12
+const col = 7
 const plainOptions = [{
   label: '前端框架',
   value: 'front',
@@ -205,6 +191,7 @@ class ApplicationForm extends React.Component {
       visibleDetail: false,
       visibleEdit: false,
       visibleAddManager: false,
+      visibleAddOperationManager: false,
     });
   }
 
@@ -435,17 +422,19 @@ class ApplicationForm extends React.Component {
         </section>
         <section className="page-section">
           <Form>
-            <Row gutter={24}>
-            <Col span={24}>
+            <Row gutter={24} className="scode-info">
+            <Col span={12}>
               <FormItem
                 {...formItemCenter}
                 label="S码验证"
-                hasFeedback
               >
                {getFieldDecorator('scode', {
                   rules: [{ required: true, message: "请输入S码" }],
                 })(
-                  <Search placeholder="输入应用S码" enterButton="验证" onSearch={value => this.searchSCODE(value)}/>
+                  <Search placeholder="输入应用S码"
+                          enterButton="验证"
+                          onSearch={value => this.searchSCODE(value)}
+                          style={{width: 394}}/>
                 )}
               </FormItem>
             </Col>
@@ -459,8 +448,8 @@ class ApplicationForm extends React.Component {
             )}
             {(this.state.searching === LOAD_STATUS.SUCCESS && !this.state.editProjectInfo) && (
               <div>
-                <Row gutter={24}  className="scode-info">
-                  <Col span={col} push={2}>
+                <Row gutter={24} className="scode-info">
+                  <Col span={col}>
                     <FormItem
                       {...formItemLeft}
                       label="应用名称"
@@ -469,16 +458,18 @@ class ApplicationForm extends React.Component {
                      {projectInfo.name}
                     </FormItem>
                   </Col>
-                  <Col span={col} push={1}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLayout}
                       label="申请日期"
                       hasFeedback
                     >
-                     {new Date(projectInfo.createdAt).toLocaleString()}
+                     {moment(projectInfo.createdAt).format('YYYY[年]MMMDo')}
                     </FormItem>
                   </Col>
-                  <Col span={col} push={2}>
+                </Row>
+                <Row gutter={24} className="scode-info">
+                  <Col span={col}>
                     <FormItem
                       {...formItemLeft}
                       label="业务负责人"
@@ -487,7 +478,7 @@ class ApplicationForm extends React.Component {
                     {this.state.businessManagers.join('、 ')}
                     </FormItem>
                   </Col>
-                  <Col span={col} push={1}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLayout}
                       label="技术负责人"
@@ -496,7 +487,9 @@ class ApplicationForm extends React.Component {
                     {this.state.operationManagers.join('、 ')}
                     </FormItem>
                   </Col>
-                  <Col span={col} push={2}>
+                </Row>
+                <Row gutter={24} className="scode-info">
+                  <Col span={col}>
                     <FormItem
                       {...formItemLeft}
                       label="归属部门"
@@ -505,7 +498,7 @@ class ApplicationForm extends React.Component {
                      {this.state.domainName}
                     </FormItem>
                   </Col>
-                  <Col span={col} push={1}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLayout}
                       label="应用属性"
@@ -522,8 +515,8 @@ class ApplicationForm extends React.Component {
             )}
             {this.state.editProjectInfo && (
               <div>
-                <Row gutter={24}  className="scode-info">
-                  <Col span={col} push={2}>
+                <Row gutter={24} className="scode-info">
+                  <Col span={col}>
                     <FormItem
                       {...formItemLeft}
                       label="应用名称"
@@ -532,56 +525,60 @@ class ApplicationForm extends React.Component {
                      {projectInfo.name}
                     </FormItem>
                   </Col>
-                  <Col span={col} push={1}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLayout}
                       label="申请日期"
                       hasFeedback
                     >
-                     {new Date(projectInfo.createdAt).toLocaleString()}
+                     {moment(projectInfo.createdAt).format('YYYY[年]MMMDo')}
                     </FormItem>
                   </Col>
                 </Row>
-                <Row gutter={24}  className="scode-info">
-                  <Col span={col} push={2}>
+                <Row gutter={24} className="scode-info">
+                  <Col span={col}>
                     <FormItem
                       {...formItemLeft}
                       label="业务负责人"
                       hasFeedback
                     >
                      <Row>
-                       {this.state.projectInfoEdit.businessManagers.map((m, index) => {
-                         return (
-                           <Tag key={index}
-                                closable
-                                onClose={() => this.state.projectInfoEdit.businessManagers.splice(index, 1)}
-                           >{m}</Tag>)
-                       })}
-                       <Tag onClick={() => this.setState({visibleAddManager: true})}>添加 <Icon type="plus" /></Tag>
+                       <Col>
+                         {this.state.projectInfoEdit.businessManagers.map((m, index) => {
+                           return (
+                             <Tag key={index}
+                                  closable
+                                  onClose={() => this.state.projectInfoEdit.businessManagers.splice(index, 1)}
+                             >{m}</Tag>)
+                         })}
+                         <Tag onClick={() => this.setState({visibleAddManager: true})}>添加 <Icon type="plus" /></Tag>
+                       </Col>
                      </Row>
                     </FormItem>
                   </Col>
-                  <Col span={col} push={1}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLayout}
                       label="技术负责人"
                       hasFeedback
                     >
                       <Row>
-                        {this.state.projectInfoEdit.operationManagers.map((m, index) => {
-                          return (
-                            <Tag key={index}
-                                 closable
-                                 onClose={() => this.state.projectInfoEdit.operationManagers.splice(index, 1)}
-                            >{m}</Tag>)
-                        })}
-                        <Tag onClick={() => this.setState({visibleAddOperationManager: true})}>添加 <Icon type="plus" /></Tag>
+                        <Col>
+                          {this.state.projectInfoEdit.operationManagers.map((m, index) => {
+                            return (
+                              <Tag key={index}
+                                   closable
+                                   onClose={() => this.state.projectInfoEdit.operationManagers.splice(index, 1)}
+                              >{m}</Tag>)
+                          })}
+                          <Tag onClick={() => this.setState({visibleAddOperationManager: true})}>添加 <Icon type="plus" /></Tag>
+                        </Col>
                       </Row>
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={24}  className="scode-info">
-                  <Col span={col} push={2}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLeft}
                       label="归属部门"
@@ -593,7 +590,7 @@ class ApplicationForm extends React.Component {
                      </Select>
                     </FormItem>
                   </Col>
-                  <Col span={col} push={1}>
+                  <Col span={col}>
                     <FormItem
                       {...formItemLayout}
                       label="应用属性"

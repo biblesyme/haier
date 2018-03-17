@@ -160,19 +160,19 @@ export default class MainPage extends React.Component {
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0, height: 50 }} className={styles["page-header"]}>
-             <div  style={{float: 'right', height: 50}}
+             <div  style={{float: 'right', height: 50, display: 'flex', alignItems: 'center'}}
                   //  className="user-info"
              >
                <span className={styles['user']}>当前登录: {user.name}</span>
-               <Divider type="vertical" />
+               <Divider type="vertical" style={{marginLeft: 20, marginRight: 20}}/>
                <Select value={role}
                        onSelect={this.roleChange}
-                       style={{marginLeft: '20px'}}
+                       className={styles['user_select']}
               >
                 {user.roles.map(r => <Option key={r}>{nameMap[r]}</Option>)}
               </Select>
-              <Divider type="vertical" />
-              <span className={styles.logout} onClick={this.props.exit} style={{margin: '19px 30px 19px 20px'}}><Icon type="logout"></Icon>&nbsp;退出</span>
+              <Divider type="vertical" style={{marginLeft: 20, marginRight: 20}}/>
+              <span className={styles.logout} onClick={this.props.exit} style={{margin: '19px 30px 19px 0px'}}><Icon type="logout"></Icon>&nbsp;退出</span>
             </div>
           </Header>
           <Content style={{background: '#ebebeb'}}>
