@@ -182,7 +182,7 @@ class User extends React.Component {
                   className="cursor">
               {`${recordFilter[0].projectName}... (${recordFilter.length})`}
               <Icon type={this.state.expandedRowKeys[0] !== record.id ? 'caret-down' : 'caret-up'}
-                    style={{fontSize: 3, marginLeft: 5}}
+                    style={{fontSize: 12, marginLeft: 5}}
               />
             </span>
           )
@@ -199,7 +199,7 @@ class User extends React.Component {
                   className="cursor">
               {`${recordFilter[0].projectName} (${recordFilter.length})`}
               <Icon type={this.state.expandedRowKeys[0] !== record.id ? 'caret-down' : 'caret-up'}
-                    style={{fontSize: 3, marginLeft: 5}}
+                    style={{fontSize: 12, marginLeft: 5}}
               />
             </span>
           )
