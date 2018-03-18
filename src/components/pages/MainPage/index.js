@@ -31,6 +31,7 @@ export default class MainPage extends React.Component {
   roleChange = (role) => {
     const {user= {},} = this.props.App
     document.cookie = `currentRole=${role};`
+    localStorage.setItem('role', role)
     this.props.dispatch({
       type:'App/setState',
       payload: {role, list: false}})
@@ -47,10 +48,13 @@ export default class MainPage extends React.Component {
     this.props.init();
     const {user= {},} = this.props.App
     // document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
-
-    if (user.hasOwnProperty('roles')) {
+    if (user.hasOwnProperty('roles') && !localStorage.getItem('role')) {
       document.cookie = `currentRole=${user.roles[0]};`
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
+    } else {
+      const role = localStorage.getItem('role')
+      document.cookie = `currentRole=${role};`
+      this.props.dispatch({type:'App/setState',payload: {role: role}})
     }
     this.props.dispatch({type: 'App/findLocation'})
 
