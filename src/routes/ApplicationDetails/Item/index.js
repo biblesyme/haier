@@ -1,8 +1,9 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Progress } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Progress, Divider, Badge } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {deployModeEnum} from 'utils/enum'
+import MyProgress from '@/components/MyProgress'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -51,6 +52,14 @@ const formInputLayout = {
   wrapperCol: {xs: { span: 14 }, sm: { span: 14 }, push: 0},
   style: {marginBottom: '10px'},
 }
+
+const formItemLayout = {
+  labelCol: { span: 8},
+  wrapperCol: {span: 16},
+  style: {
+    marginBottom: '5px'
+  }
+};
 
 @connect(null,['App'])
 export default class C extends React.Component {
@@ -139,74 +148,80 @@ export default class C extends React.Component {
         {resource.resourceType === 'containerHost' && (
           <div >
             <Row>
-              <Col span={6}>资源类型: 容器</Col>
-              <Col span={18}>
-                <label htmlFor="" style={{marginLeft: '32px'}}>资源所在地：</label>
-                  {locationFilter.name}
-                <label style={{marginLeft: '30px'}}>集群：</label>
-                  {clusterFilter.name}
-                <div style={{padding: '10px'}}></div>
-              </Col>
+              <Col span={7} style={{width: 300}}>
+               <span className="label">资源类型: </span>
+               <span style={{fontSize: '16px', marginLeft: '10px'}}>容器</span>
+             </Col>
+              <Col span={7} style={{width: 300, marginLeft: 145}}>
+               <span className="label">资源所在地: </span>
+               <span style={{fontSize: '16px', marginLeft: '10px'}}>{locationFilter.name}</span>
+               <span className="label" style={{marginLeft: '64px'}}>集群: </span>
+               <span style={{fontSize: '16px', marginLeft: '10px'}}>{clusterFilter.name}</span>
+             </Col>
             </Row>
             <Row>
-              <Col span={6} style={{marginTop: '24px'}}>
-                <Card title={'配置资源'}>
-                  <Form className={styles["card-body"]}>
-                    <FormItem
-                      {...formItemLayout3}
-                      label="CPU内核数"
-                      hasFeedback
-                    >
-                     {data.cpu/1000}
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout3}
-                      label="内存"
-                      hasFeedback
-                    >
-                     {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
-                    </FormItem>
-                  </Form>
-                </Card>
-              </Col>
-              <Col span={18}>
-                <Card bordered={false} style={{height: '250px'}}>
-                  <CardGrid style={{width: '34%'}}>
-                    资源使用率
-                    <Row>
-                      <Col span={12} style={{fontSize: '12px'}}>
-                        <div style={{marginTop: '80px'}}>使用: 1024M</div>
-                        <div>总共: 10240M</div>
-                      </Col>
+              <Col span={7} style={{width: 300}}>
+               <div className="label" style={{marginBottom: '30px'}}>应用资源配置: </div>
+               <Card title={'配置资源'} className={styles['my-card']}>
+                 <Form className={styles["card-body"]}>
+                   <FormItem
+                     {...formItemLayout3}
+                     label="CPU内核数"
+                     hasFeedback
+                   >
+                    {data.cpu/1000}
+                   </FormItem>
+                   <Divider style={{margin: '0px 0px'}}></Divider>
+                   <FormItem
+                     {...formItemLayout3}
+                     label="内存"
+                     hasFeedback
+                   >
+                    {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
+                   </FormItem>
+                 </Form>
+               </Card>
+             </Col>
+              <Col span={7} style={{marginLeft: 145, width: '600px', marginTop: '44px'}}>
+                <Card bordered={false} className={styles['graph-card']}>
+                  <CardGrid style={{width: '50%'}}>
+                    <span style={{color: '#000'}}>资源使用率</span>
+                    <Row className={styles['blue-progress']}>
                       <Col span={12}>
-                        <Progress type="dashboard"
-                                  percent={30}
-                                  width={120}
-                                  format={percent => `
-                                    ${percent}%`}
-                        />
+                        <div style={{marginTop: '80px'}}>
+                          <Badge status="success" text={`使用: 1024M`}/>
+                        </div>
+                        <div><Badge status="default" text={`总共: 1024M`} /></div>
                       </Col>
-                    </Row>
-                  </CardGrid>
-                  <CardGrid style={{width: '34%'}}>
-                    健康实例率
-                    <Row>
-                      <Col span={12} style={{fontSize: '12px'}}>
-                        <div style={{marginTop: '80px'}}>健康: 3</div>
-                        <div>总共: 10</div>
-                      </Col>
-                      <Col span={12}>
+                      <Col span={12} >
                         <Progress type="circle"
                                   percent={30}
                                   width={120}
-                                  format={percent => `
-                                    ${percent}%`}
+                                  format={percent => <span style={{fontSize: 21}}><span style={{fontSize: 32, marginRight: 3, color: '#000', marginLeft: 10}}>{percent}</span>%</span>}
+                        />
+                      </Col>
+                    </Row>
+                  </CardGrid>
+                  <CardGrid style={{width: '50%'}}>
+                    <span style={{color: '#000'}}>健康实例率</span>
+                    <Row className={styles['green-progress']}>
+                      <Col span={12}>
+                        <div style={{marginTop: '80px'}}>
+                          <Badge status="success" text={`健康: 3`}/>
+                        </div>
+                        <div><Badge text={`总共: 10`} status="default"/></div>
+                      </Col>
+                      <Col span={12} >
+                        <Progress type="circle"
+                                  percent={30}
+                                  width={120}
+                                  format={percent => <span style={{fontSize: 21}}><span style={{fontSize: 32, marginRight: 3, color: '#000', marginLeft: 10}}>{percent}</span>%</span>}
                         />
                       </Col>
                     </Row>
                   </CardGrid>
                 </Card>
-              </Col>
+             </Col>
             </Row>
           </div>
         )}

@@ -57,17 +57,24 @@
     margin-right: 10px
   .mg-b10
     margin-bottom: 10px
+
+  // table
   .table-header
     background: #dcebfa
     text-align: center
   .ant-table-thead > tr > th
     background: #dcebfa
+    text-align: center
   .ant-table-tbody > tr > td:first-child
     border-left: 1px solid #e8e8e8
   .ant-table-tbody > tr > td:last-child
     border-right: 1px solid #e8e8e8
   .ant-table-tbody > tr:nth-child(even)
     background: #f7fbff
+  .ant-table-thead > tr > th.ant-table-column-sort
+    background: #dcebfa
+
+  // radio
   .ant-radio-button-wrapper:first-child
     border-left: 1px solid $primary
   .ant-radio-button-wrapper
@@ -76,14 +83,18 @@
   .ant-radio-button-wrapper-checked
     background: $primary
     color: white
+
   .cursor
     cursor: pointer
   .label
-  	height: 16px
-  	fontFamily: "PingFangSC-Semibold"
-  	fontSize: 16px
-  	lineHeight: 40px
+  	font-size: 16px
+  	line-height: 40px
   	color: #333333
+  .number
+  	font-size: 24px
+  	line-height: 40px
+  .inline
+    display: inline-block
 
   // menu
   .ant-menu-item-group-list
@@ -102,3 +113,11 @@
   // Checkbox
   .ant-checkbox-group-item.ant-checkbox-wrapper
     margin-right: 40px
+
+  // pagination
+  .ant-pagination-item-active
+    background: #005aaa
+  .ant-pagination-item-active a,
+  .ant-pagination-item-active:focus a,
+  .ant-pagination-item-active:hover a
+    color: #fff

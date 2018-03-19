@@ -9,6 +9,7 @@ import RedisTabs from './RedisTabs'
 import RocketMQTabs from './RocketMQTabs'
 import RabitMQTabs from './RabitMQTabs'
 import MiddlewareList from './MiddlewareList'
+import moment from 'moment'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -16,84 +17,15 @@ const CheckboxGroup = Checkbox.Group;
 
 import styles from './style.sass'
 
-const col = 12
 const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
+  labelCol: { span: 8},
+  wrapperCol: {span: 16},
   style: {
-    marginBottom: '10px'
+    marginBottom: '5px'
   }
 };
 
-const formItemLeft = {
-  labelCol: {
-    xs: { span: 20 },
-    sm: { span: 5 },
-    push: 4,
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-    push: 4,
-  },
-  style: {
-    marginBottom: '10px'
-  }
-};
-
-const formItemLayout2 = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-  },
-  style: {
-    marginBottom: '0'
-  }
-}
-
-const formItemLayout3 = {
-  labelCol: {
-    xs: { span: 10 },
-    sm: { span: 10 },
-        pull: 0,
-
-  },
-  wrapperCol: {
-    xs: { span: 14 },
-    sm: { span: 14 },
-        push: 0,
-
-  },
-  style: {
-    marginBottom: '10px'
-  }
-}
-
-const formItemLayout4 = {
-  labelCol: {
-    xs: { span: 6 },
-    sm: { span: 6 },
-    pull: 0,
-  },
-  wrapperCol: {
-    xs: { span: 18 },
-    sm: { span: 18 },
-    push: 0
-  },
-  style: {
-    marginBottom: '10px'
-  }
-}
+const col = 7
 
 const plainOptions = [{
   label: '前端框架',
@@ -139,78 +71,90 @@ class ApplicationDetail extends React.Component {
     return (
     <div>
       <section className="page-section">
-        <label>应用归属：海尔</label>
+        <label className="label">应用归属：</label>
+      <span style={{fontSize: '16px', marginLeft: '10px'}}>海尔</span>
       </section>
       <section className="page-section">
-        <label>应用信息:</label>
-        <Row gutter={24} className="scode-info">
-          <Col span={col} push={12}>
-            <FormItem
-              {...formItemLayout}
-              label="应用S码"
-              hasFeedback
-            >
-             {record.scode}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={24} className="scode-info">
-          <Col span={col}>
-            <FormItem
-              {...formItemLeft}
-              label="应用名称"
-            >
-             {record.name}
-            </FormItem>
-          </Col>
-          <Col span={col}>
-            <FormItem
-              {...formItemLayout}
-              label="申请日期"
-            >
-             {new Date(record.createDate * 1000).toLocaleString()}
-            </FormItem>
-          </Col>
-          <Col span={col}>
-            <FormItem
-              {...formItemLeft}
-              label="业务负责人"
-              hasFeedback
-            >
+        <Form>
+          <Row gutter={24} className="scode-info">
+            <Col span={col} style={{width: 300}}>
+              <FormItem
+                {...formItemLayout}
+                label="应用信息"
+              >
+              </FormItem>
+            </Col>
+            <Col span={col} style={{width: 300, marginLeft: 145}}>
+              <FormItem
+                {...formItemLayout}
+                label="应用S码"
+              >
+                {record.scode}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={24} className="scode-info">
+            <Col span={col} style={{width: 300}}>
+              <FormItem
+                {...formItemLayout}
+                label="应用名称"
+                hasFeedback
+              >
+               {projectInfo.name}
+              </FormItem>
+            </Col>
+            <Col span={col} style={{width: 300, marginLeft: 145}}>
+              <FormItem
+                {...formItemLayout}
+                label="申请日期"
+                hasFeedback
+              >
+               {moment(projectInfo.createdAt).format('YYYY[年]MMMDo')}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={24} className="scode-info">
+            <Col span={col} style={{width: 300}}>
+              <FormItem
+                {...formItemLayout}
+                label="业务负责人"
+                hasFeedback
+              >
               {businessManagers.join('、 ')}
-            </FormItem>
-          </Col>
-          <Col span={col}>
-            <FormItem
-              {...formItemLayout}
-              label="技术负责人"
-              hasFeedback
-            >
+              </FormItem>
+            </Col>
+            <Col span={col} style={{width: 300, marginLeft: 145}}>
+              <FormItem
+                {...formItemLayout}
+                label="技术负责人"
+                hasFeedback
+              >
               {operationManagers.join('、 ')}
-            </FormItem>
-          </Col>
-          <Col span={col}>
-            <FormItem
-              {...formItemLeft}
-              label="归属部门"
-              hasFeedback
-            >
-             {domain.name}
-            </FormItem>
-          </Col>
-          <Col span={col}>
-            <FormItem
-              {...formItemLayout}
-              label="应用属性"
-              hasFeedback
-            >
-             {projectInfo.applicationType}
-            </FormItem>
-          </Col>
-        </Row>
-        <div className="text-right pd-tb10">
-          <Button type="primary">前往监控平台</Button>
-        </div>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={24} className="scode-info">
+            <Col span={col} style={{width: 300}}>
+              <FormItem
+                {...formItemLayout}
+                label="归属部门"
+                hasFeedback
+              >
+               {domain.name}
+              </FormItem>
+            </Col>
+            <Col span={col} style={{width: 300, marginLeft: 145}}>
+              <FormItem
+                {...formItemLayout}
+                label="应用属性"
+                hasFeedback
+              >
+               {projectInfo.applicationType}
+              </FormItem>
+            </Col>
+            <Button type="primary" style={{position: 'relative', top: '-132px', left: '250px', width: 112}}>前往监控平台</Button>
+          </Row>
+        </Form>
       </section>
 
       {resources.length > 0 && (
@@ -219,27 +163,32 @@ class ApplicationDetail extends React.Component {
             <Row gutter={24}>
               <Col key={'paas'}><Item resource={paas} project={record}/></Col>
             </Row>
-            <div className="text-right pd-tb10">
-              <Button type="primary">前往容器云</Button>
-            </div>
+            <Button type="primary" style={{position: 'relative', top: '-272px', left: '980px', width: 112}}>前往容器云</Button>
           </section>
 
           <section className="page-section">
             <Row style={{marginBottom: '20px'}}>
-              <Col span={22}>中间件资源: </Col>
+              <Col span={18} style={{fontSize: 16, color: '#000'}}>中间件资源: </Col>
               {this.props.App.role === 'admin' && (
-                <Col span={2}>
-                  <Tooltip title="图表视图">
-                    <Icon type="appstore" style={this.props.App.list ? {fontSize: '2em', cursor: 'pointer'} : {fontSize: '2em', color: '#005aab', cursor: 'pointer'}}
-                                          onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: false}})}
-                    />
-                  </Tooltip>
-                  <Tooltip title="列表视图">
-                    <Icon type="bars" style={this.props.App.list ? {fontSize: '2em', color: '#005aab', cursor: 'pointer'} : {fontSize: '2em', cursor: 'pointer'}}
-                                      className="mg-l10"
-                                      onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: true}})}
-                    />
-                  </Tooltip>
+                <Col span={6}>
+                  <Row type="flex" justify="end" align="middle">
+                    <Col >
+                      <Tooltip title="图表视图">
+                        <Icon type="appstore" style={this.props.App.list ? {fontSize: '2em', cursor: 'pointer'} : {fontSize: '2em', color: '#005aab', cursor: 'pointer'}}
+                                              onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: false}})}
+                        />
+                      </Tooltip>
+                    </Col>
+                    <Col style={{marginLeft: 10}}>
+                      <Tooltip title="列表视图">
+                        <Icon type="bars" style={this.props.App.list ? {fontSize: '2em', color: '#005aab', cursor: 'pointer'} : {fontSize: '2em', cursor: 'pointer'}}
+                                          className="mg-l10"
+                                          onClick={() => this.props.dispatch({type: 'App/setState', payload: {list: true}})}
+                        />
+                      </Tooltip>
+                    </Col>
+                    <Col style={{marginLeft: 30}}><Button type="primary">前往中间件平台</Button></Col>
+                  </Row>
                 </Col>
               )}
             </Row>

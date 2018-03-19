@@ -31,3 +31,15 @@ export function exchangeTypeEnum(key) {
   }
   return exchangeType[key]
 }
+
+export function resourceTypeEnum(key) {
+  const resourceType = {
+    containerHost: '容器',
+    mysql: 'MySQL',
+    redis: 'Redis',
+    rocketMQTopic: 'MQ',
+    rabbitMQProducer: 'MQ',
+    rabbitMQConsumer: 'MQ',
+  }
+  return resourceType[key]
+}

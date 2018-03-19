@@ -204,7 +204,7 @@ class User extends React.Component {
             </span>
           )
         }
-        return <span>无</span>
+        return (<span>无</span>)
       },
     }, {
       title: <div className="text-center">部门/公司</div>,

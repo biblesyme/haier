@@ -315,21 +315,23 @@ class ApplicationForm extends React.Component {
     this.setState({
       company: 'haier',
       location: (this.props.App.locations[0] && this.props.App.locations[0].id) || '',
-      middlewareMappings: [{
-        locationId: 'qd',
-        deployMode: '0',
-        masterSlaveOption: '0',
-        mycatClusterManagerNodeCount: 0,
-        mycatClusterDataNodeCount: 0,
-        backup: 'false',
-        id: this.middlewareMappingId++,
-        resourceType: 'mysql',
-      }],
+      middlewareMappings: [],
       projectInfo: {},
       searching: LOAD_STATUS.INITIAL,
       codeManaged: '',
       alert: '',
       frame: [],
+      paas: {
+        locationId: '',
+        clusterName: '',
+        clusterId: '',
+        cpu: (16*1000).toString(),
+        memory: (16 * 1024 * 1024).toString(),
+        // diskSize: '1024',
+        resourceType: 'containerHost',
+        resource: 'height',
+      },
+
     })
     this.props.form.setFieldsValue({scode: ''})
   }
@@ -694,7 +696,7 @@ class ApplicationForm extends React.Component {
           </Checkbox>
         </section>
 
-        <section className="page-section">
+        <section className="page-section" style={{paddingBottom: 22, paddingTop: 22}}>
           <Row type="flex" justify="end">
             <Col>
               <Button onClick={this.reset} type="primary" style={{width: 83}}>重置</Button>

@@ -98,6 +98,7 @@ class Resource extends React.Component {
               pagination={{
                 showQuickJumper: true,
                 onChange: (currentPage) => this.setState({currentPage}),
+                showLessItems: true,
               }}
             />
           </Col>
