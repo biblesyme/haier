@@ -31,8 +31,8 @@ import styles from './style.sass'
 
 
 const formItemLayout = {
-  labelCol: { span: 7},
-  wrapperCol: {span: 17},
+  labelCol: { span: 8},
+  wrapperCol: {span: 16},
   style: {
     marginBottom: '10px'
   }
@@ -54,45 +54,20 @@ const formItemCenter = {
 };
 
 const formItemLeft = {
-  labelCol: { span: 7},
-  wrapperCol: {span: 17},
+  labelCol: { span: 8},
+  wrapperCol: {span: 16},
+  style: {
+    marginBottom: '10px'
+  }
+};
+const formItemEdit = {
+  labelCol: { span: 6},
+  wrapperCol: {span: 16},
   style: {
     marginBottom: '10px'
   }
 };
 
-const formItemLayout3 = {
-  labelCol: {
-    xs: { span: 10 },
-    sm: { span: 10 },
-        pull: 0,
-
-  },
-  wrapperCol: {
-    xs: { span: 14 },
-    sm: { span: 14 },
-        push: 0,
-  },
-  style: {
-    marginBottom: '10px'
-  }
-}
-
-const formItemLayout4 = {
-  labelCol: {
-    xs: { span: 6 },
-    sm: { span: 6 },
-    pull: 0,
-  },
-  wrapperCol: {
-    xs: { span: 18 },
-    sm: { span: 18 },
-    push: 0
-  },
-  style: {
-    marginBottom: '10px'
-  }
-}
 const col = 7
 const plainOptions = [{
   label: '前端框架',
@@ -418,12 +393,12 @@ class ApplicationForm extends React.Component {
     return (
       <div className="page-wrap">
         <section className="page-section">
-          <label>应用归属：海尔</label>
+          <label><span className="label">应用归属：</span>海尔</label>
         </section>
         <section className="page-section">
           <Form>
             <Row gutter={24} className="scode-info">
-            <Col span={12}>
+            <Col span={12} style={{width: 500}}>
               <FormItem
                 {...formItemCenter}
                 label="S码验证"
@@ -449,7 +424,7 @@ class ApplicationForm extends React.Component {
             {(this.state.searching === LOAD_STATUS.SUCCESS && !this.state.editProjectInfo) && (
               <div>
                 <Row gutter={24} className="scode-info">
-                  <Col span={col}>
+                  <Col span={col} style={{width: 300}}>
                     <FormItem
                       {...formItemLeft}
                       label="应用名称"
@@ -458,7 +433,7 @@ class ApplicationForm extends React.Component {
                      {projectInfo.name}
                     </FormItem>
                   </Col>
-                  <Col span={col}>
+                  <Col span={col} style={{width: 300}}>
                     <FormItem
                       {...formItemLayout}
                       label="申请日期"
@@ -467,9 +442,14 @@ class ApplicationForm extends React.Component {
                      {moment(projectInfo.createdAt).format('YYYY[年]MMMDo')}
                     </FormItem>
                   </Col>
+                  <Col style={{display: 'flex', alignItems: 'center', height: 39}}>
+                    <span className="cursor" onClick={(e) => this.setState({editProjectInfo: true})}>
+                      <Icon type="edit" style={{marginRight: 6}}/>修改
+                    </span>
+                  </Col>
                 </Row>
                 <Row gutter={24} className="scode-info">
-                  <Col span={col}>
+                  <Col span={col} style={{width: 300}}>
                     <FormItem
                       {...formItemLeft}
                       label="业务负责人"
@@ -478,7 +458,7 @@ class ApplicationForm extends React.Component {
                     {this.state.businessManagers.join('、 ')}
                     </FormItem>
                   </Col>
-                  <Col span={col}>
+                  <Col span={col} style={{width: 300}}>
                     <FormItem
                       {...formItemLayout}
                       label="技术负责人"
@@ -489,7 +469,7 @@ class ApplicationForm extends React.Component {
                   </Col>
                 </Row>
                 <Row gutter={24} className="scode-info">
-                  <Col span={col}>
+                  <Col span={col} style={{width: 300}}>
                     <FormItem
                       {...formItemLeft}
                       label="归属部门"
@@ -498,7 +478,7 @@ class ApplicationForm extends React.Component {
                      {this.state.domainName}
                     </FormItem>
                   </Col>
-                  <Col span={col}>
+                  <Col span={col} style={{width: 300}}>
                     <FormItem
                       {...formItemLayout}
                       label="应用属性"
@@ -508,26 +488,23 @@ class ApplicationForm extends React.Component {
                     </FormItem>
                   </Col>
                 </Row>
-                <div className="text-center" style={{marginTop: '20px'}}>
-                  <Button icon="edit" onClick={(e) => this.setState({editProjectInfo: true})}>编辑</Button>
-                </div>
               </div>
             )}
             {this.state.editProjectInfo && (
               <div>
                 <Row gutter={24} className="scode-info">
-                  <Col span={col}>
+                  <Col span={col} style={{width: 410}}>
                     <FormItem
-                      {...formItemLeft}
+                      {...formItemEdit}
                       label="应用名称"
                       hasFeedback
                     >
                      {projectInfo.name}
                     </FormItem>
                   </Col>
-                  <Col span={col}>
+                  <Col span={col} style={{width: 410}}>
                     <FormItem
-                      {...formItemLayout}
+                      {...formItemEdit}
                       label="申请日期"
                       hasFeedback
                     >
@@ -536,9 +513,9 @@ class ApplicationForm extends React.Component {
                   </Col>
                 </Row>
                 <Row gutter={24} className="scode-info">
-                  <Col span={col}>
+                  <Col span={col} style={{width: 410}}>
                     <FormItem
-                      {...formItemLeft}
+                      {...formItemEdit}
                       label="业务负责人"
                       hasFeedback
                     >
@@ -556,9 +533,9 @@ class ApplicationForm extends React.Component {
                      </Row>
                     </FormItem>
                   </Col>
-                  <Col span={col}>
+                  <Col span={col} style={{width: 410}}>
                     <FormItem
-                      {...formItemLayout}
+                      {...formItemEdit}
                       label="技术负责人"
                       hasFeedback
                     >
@@ -578,9 +555,9 @@ class ApplicationForm extends React.Component {
                   </Col>
                 </Row>
                 <Row gutter={24}  className="scode-info">
-                  <Col span={col}>
+                  <Col span={col} style={{width: 410}}>
                     <FormItem
-                      {...formItemLeft}
+                      {...formItemEdit}
                       label="归属部门"
                       hasFeedback
                     >
@@ -590,9 +567,9 @@ class ApplicationForm extends React.Component {
                      </Select>
                     </FormItem>
                   </Col>
-                  <Col span={col}>
+                  <Col span={col} style={{width: 410}}>
                     <FormItem
-                      {...formItemLayout}
+                      {...formItemEdit}
                       label="应用属性"
                       hasFeedback
                     >
@@ -600,7 +577,7 @@ class ApplicationForm extends React.Component {
                     </FormItem>
                   </Col>
                 </Row>
-                <div className="text-center" style={{marginTop: '20px'}}>
+                <div style={{marginTop: '20px', marginLeft: 92}}>
                   <Button type="primary" onClick={(e) => this.saveProjectInfo()}>保存</Button>
                   <Button style={{marginLeft: '20px'}} onClick={(e) => this.setState({editProjectInfo: false})}>取消</Button>
                 </div>
@@ -614,84 +591,99 @@ class ApplicationForm extends React.Component {
         </section>
 
         <section className="page-section">
-          <h3>
-            中间件申请:
-            <Button icon="plus" style={{marginLeft: '30px'}} onClick={e => this.setState({visibleDetail: true})}>添加</Button>
-          </h3>
-          <div style={{padding: '10px'}}></div>
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="mysql"/> MySQL</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
-                               removeMiddlewareMapping={this.removeMiddlewareMapping}
-                               onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="redis"/> Redis</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RedisPanelDetail middlewareMappings={this.state.middlewareMappings}
-                                    removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                    onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="rocket"/> RocketMQ</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RocketPanelDetail middlewareMappings={this.state.middlewareMappings}
-                                     removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                     onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="rocket"/> RabbitMQ-生产者</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RabbitMQProducerPanelDetail middlewareMappings={this.state.middlewareMappings}
-                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="rocket"/> RabbitMQ-消费者</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RabbitMQConsumerPanelDetail middlewareMappings={this.state.middlewareMappings}
-                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                               projects={this.props.NewApplication.projects}
-                                               resources={this.props.NewApplication.resources}
-                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-
+          <Row type="flex" justify="space-between" align="middle">
+            <Col>
+              <label className="label">中间件资源申请:</label>
+            </Col>
+            <Col>
+              <Button onClick={e => this.setState({visibleDetail: true})}
+                      type="primary">
+                <Icon type="plus" /> 添加
+              </Button>
+            </Col>
+          </Row>
+          {this.state.middlewareMappings.length > 0 && (
+            <div style={{marginTop: 23}}>
+              {this.state.middlewareMappings.filter(m => m.resourceType === 'mysql').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="mysql"/> MySQL</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <MysqlPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                   removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                   onEdit={editId => this.setState({visibleEdit: true, editId})}
+                      />
+                    </div>
+                </section>
+              )}
+              {this.state.middlewareMappings.filter(m => m.resourceType === 'redis').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="redis"/> Redis</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RedisPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                        removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                        onEdit={editId => this.setState({visibleEdit: true, editId})}
+                      />
+                    </div>
+                </section>
+              )}
+              {this.state.middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="rocket"/> RocketMQ</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RocketPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                         removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                         onEdit={editId => this.setState({visibleEdit: true, editId})}
+                      />
+                    </div>
+                </section>
+              )}
+              {this.state.middlewareMappings.filter(m => m.resourceType === 'rabbitMQProducer').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="rocket"/> RabbitMQ-生产者</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RabbitMQProducerPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                                   removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                                   onEdit={editId => this.setState({visibleEdit: true, editId})}
+                      />
+                    </div>
+                </section>
+              )}
+              {this.state.middlewareMappings.filter(m => m.resourceType === 'rabbitMQConsumer').length > 0 && (
+                <section className={styles["card-form-m"]} style={{marginLeft: 20, marginRight: 20}}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="rocket"/> RabbitMQ-消费者</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RabbitMQConsumerPanelDetail middlewareMappings={this.state.middlewareMappings}
+                                                   removeMiddlewareMapping={this.removeMiddlewareMapping}
+                                                   projects={this.props.NewApplication.projects}
+                                                   resources={this.props.NewApplication.resources}
+                                                   onEdit={editId => this.setState({visibleEdit: true, editId})}
+                      />
+                    </div>
+                </section>
+              )}
+            </div>
+          )}
         </section>
 
         <section className="page-section">
-          <h3>选择框架</h3>
+          <label className="label" style={{marginRight: 52}}>选择框架</label>
           <CheckboxGroup options={plainOptions} value={this.state.frame} onChange={frame => this.setState({frame})}/>
         </section>
         <section className="page-section">
-          <h3>推荐服务</h3>
+          <label className="label" style={{marginRight: 52}}>推荐服务</label>
           <Checkbox checked={this.state.alert}
                     onChange={e => this.setState({alert: e.target.checked})}
+                    style={{marginRight: 32}}
           >
             监控功能
           </Checkbox>
@@ -701,11 +693,14 @@ class ApplicationForm extends React.Component {
             代码托管
           </Checkbox>
         </section>
-        <div style={{paddingBottom: '60px'}}></div>
 
-        <section className="page-section bottom-actions">
-          <Button onClick={this.reset}>重置</Button>
-          <Button type="primary" icon="eye" style={{float: 'right'}} onClick={this.preview}>预览</Button>
+        <section className="page-section">
+          <Row type="flex" justify="end">
+            <Col>
+              <Button onClick={this.reset} type="primary" style={{width: 83}}>重置</Button>
+              <Button type="primary" icon="eye" style={{marginLeft: 10, width: 83}} onClick={this.preview}>预览</Button>
+            </Col>
+          </Row>
         </section>
 
         {this.state.visibleDetail && (

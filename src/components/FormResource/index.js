@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, InputNumber } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, InputNumber, Divider } from 'antd';
 import { connect } from 'utils/ecos'
 
 const SubMenu = Menu.SubMenu;
@@ -23,7 +23,8 @@ const formItemLayout3 = {
 
   },
   style: {
-    marginBottom: '10px'
+    padding: '0px 20px',
+    marginBottom: '0px',
   }
 }
 
@@ -156,19 +157,19 @@ export default class C extends React.Component {
   render() {
     return (
       <main>
-        <label htmlFor="">资源所在地：</label>
-          <Select value={this.state.locationId} onChange={this.locationChange} style={{width: '200px'}}>
-            {this.state.locations.map(l => <Option key={l.id}><Icon type="location" style={{color: '#27ae60'}}/> {l.name}</Option>)}
+        <label className="label">资源所在地：</label>
+          <Select value={this.state.locationId} onChange={this.locationChange} style={{width: '161px', marginLeft: 10}}>
+            {this.state.locations.map(l => <Option key={l.id}>{l.name}</Option>)}
           </Select>
         <div style={{padding: '10px'}}></div>
-        <label htmlFor="">应用资源配置：</label>
-        <div style={{padding: '10px'}}></div>
+        <label className="label">应用资源配置：</label>
+        <div style={{padding: '15px'}}></div>
         <RadioGroup name="radiogroup" value={this.state.resource} onChange={this.resourceSelect}>
           <section className={this.state.resource !== 'height' ? styles["card-disabled"] : styles["card-form"]}>
             <div className={styles["card-header"]}>
               <Radio value='height'>
               </Radio>
-              高配置资源
+              <span>高配置资源</span>
             </div>
             <Form className={styles["card-body"]}>
               <FormItem
@@ -178,6 +179,7 @@ export default class C extends React.Component {
               >
                16
               </FormItem>
+              <Divider style={{margin: '0px 0px'}}></Divider>
               <FormItem
                 {...formItemLayout3}
                 label="内存"
@@ -202,6 +204,7 @@ export default class C extends React.Component {
               >
                8
               </FormItem>
+              <Divider style={{margin: '0px 0px'}}></Divider>
               <FormItem
                 {...formItemLayout3}
                 label="内存"
@@ -226,6 +229,7 @@ export default class C extends React.Component {
               >
                4
               </FormItem>
+              <Divider style={{margin: '0px 0px'}}></Divider>
               <FormItem
                 {...formItemLayout3}
                 label="内存"
@@ -247,6 +251,7 @@ export default class C extends React.Component {
                 {...formItemLayout3}
                 label="CPU内核数"
                 hasFeedback
+                wrapperCol={{span: 13}}
               >
                 <InputNumber onChange={value => this.onChange(value, 'customeCPU')}
                              min={1}
@@ -254,6 +259,7 @@ export default class C extends React.Component {
                              disabled={this.state.resource !== 'custome'}
                 />
               </FormItem>
+              <Divider style={{margin: '0px 0px'}}></Divider>
               <FormItem
                 {...formItemLayout3}
                 label="内存"
