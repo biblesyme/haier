@@ -191,7 +191,7 @@ export default class C extends React.Component {
                         <div style={{marginTop: '80px'}}>
                           <Badge status="success" text={`使用: 1024M`}/>
                         </div>
-                        <div><Badge status="default" text={`总共: 1024M`} /></div>
+                        <div style={{marginTop: 9}}><Badge status="default" text={`总共: 1024M`} /></div>
                       </Col>
                       <Col span={12} >
                         <Progress type="circle"
@@ -209,7 +209,7 @@ export default class C extends React.Component {
                         <div style={{marginTop: '80px'}}>
                           <Badge status="success" text={`健康: 3`}/>
                         </div>
-                        <div><Badge text={`总共: 10`} status="default"/></div>
+                        <div style={{marginTop: 9}}><Badge text={`总共: 10`} status="default"/></div>
                       </Col>
                       <Col span={12} >
                         <Progress type="circle"

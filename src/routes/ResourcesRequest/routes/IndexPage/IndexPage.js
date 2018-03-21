@@ -94,7 +94,7 @@ class Approval extends React.Component {
         } else {
           return <span>中间件</span>
         }
-       }
+      },
     }, {
       title: '资源信息',
       render: (record) => {
@@ -104,9 +104,14 @@ class Approval extends React.Component {
         } else {
           return <span>{selector.resourceType}</span>
         }
+      },
+      sorter: (a, b) => {
+        const _a = resources.filter(r => r.id === a.resourceId)[0] || {}
+        const _b = resources.filter(r => r.id === b.resourceId)[0] || {}
+        return _a.resourceType - _b.resourceType
       }
     },  {
-      title: '所属应用',
+      title: '应用',
       render: (record) => {
         let selector = projects.filter(p => p.id === record.projectId)[0] || {}
         if (selector) {
@@ -114,14 +119,26 @@ class Approval extends React.Component {
         } else {
           return <span></span>
         }
-      }
+      },
+      sorter: (a, b) => {
+        const _a = projects.filter(p => p.id === a.projectId)[0] || {}
+        const _b = projects.filter(p => p.id === b.projectId)[0] || {}
+        return _a.name - _b.name
+      },
     }, {
-      title: '所属部门',
+      title: '部门',
       render: (record) => {
         const project = projects.filter(p => p.creatorId === record.requesterId)[0] || {}
         const domain = domains.filter(d => d.id === project.domainId)[0] || {}
         return <span>{domain.name}</span>
-      }
+      },
+      sorter: (a, b) => {
+        const a_project = projects.filter(p => p.creatorId === a.requesterId)[0] || {}
+        const a_domain = domains.filter(d => d.id === a_project.domainId)[0] || {}
+        const b_project = projects.filter(p => p.creatorId === b.requesterId)[0] || {}
+        const b_domain = domains.filter(d => d.id === b_project.domainId)[0] || {}
+        return a_domain.name - b_domain.name
+      },
     }, {
       title: '申请人',
       render: (record) => {
@@ -173,7 +190,7 @@ class Approval extends React.Component {
         let resource = resources.filter(r => r.id === record.resourceId)[0]
         return (
           <div>
-            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看</a>
+            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看详情</a>
           </div>
         )
       }
@@ -193,7 +210,7 @@ class Approval extends React.Component {
         } else {
           return <span>中间件</span>
         }
-       }
+      },
     }, {
       title: '资源信息',
       render: (record) => {
@@ -265,18 +282,28 @@ class Approval extends React.Component {
         let resource = resources.filter(r => r.id === record.resourceId)[0]
         return (
           <div>
-            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看</a>
+            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看详情</a>
           </div>
         )
       }
     },];
 
+    const itemRender = (current, type, originalElement) => {
+      if (type === 'prev') {
+        return (<Button>上一页</Button>);
+      } else if (type === 'next') {
+        return (<Button>下一页</Button>);
+      }
+      return originalElement;
+    }
+
     return (
-      <main className="page-section">
+      <main>
+        <h3>审批列表</h3>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
             {this.props.App.role === 'admin' && (
-              <Select style={{width: '200px'}}
+              <Select style={{width: '161px'}}
                       value={this.state.Selected}
                       onChange={Selected => this.setState({Selected, filter: Selected,})}
               >
@@ -309,9 +336,12 @@ class Approval extends React.Component {
             pagination={{
               showQuickJumper: true,
               onChange: (currentPage) => this.setState({currentPage}),
+              showLessItems: true,
+              itemRender: itemRender,
             }}
-            scroll={{x: 1300}}
+            scroll={{x: 1125}}
             loading={this.state.loading}
+            rowClassName="text-center"
           />
         </Col>
       </Row>

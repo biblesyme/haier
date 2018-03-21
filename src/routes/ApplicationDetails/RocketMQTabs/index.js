@@ -3,6 +3,7 @@ import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Car
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {clusterTypeEnum} from 'utils/enum'
+import MyProgress from '@/components/MyProgress'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -11,7 +12,7 @@ const RadioGroup = Radio.Group;
 const CardGrid = Card.Grid
 const TabPane = Tabs.TabPane
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 @connect(null,['App'])
 export default class C extends React.Component {
@@ -93,16 +94,14 @@ export default class C extends React.Component {
     }
 
     return (
-      <main>
-        <Row>
-          <Col push={1} span={4}>
-            <div className={styles.title}>RocketMQ</div>
-          </Col>
-        </Row>
+      <main style={{marginBottom: 47}}>
+        <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+          <span className={styles.title}><Icon type="rocket" style={{marginRight: 12}}/>RocketMQ</span>
+        </div>
 
         <Row style={{marginTop: '20px'}}>
-          <Col span={22} push={1}>
-            <Tabs>
+          <Col>
+            <Tabs　type="card">
               {items.map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
@@ -111,45 +110,55 @@ export default class C extends React.Component {
                 return (
                   <TabPane key={item.id} tab={`RocketMQ - ${clusterTypeEnum(data.clusterType)}-${index + 1}`}>
                     <div>
-                      <span style={{marginLeft: '32px'}}>地点: {machineRoomFilter.roomName}</span>
-                      <span style={{marginLeft: '20px'}}>类型: {clusterTypeEnum(data.clusterType)}</span>
-                      <span style={{marginLeft: '20px'}}>
+                      <span style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</span>
+                      <span style={{width: 150}} className="inline">类型: {clusterTypeEnum(data.clusterType)}</span>
+                      <span style={{width: 150}} className="inline">
                         主题名称: &nbsp;
                         {`${data.topicName}`}
                       </span>
                     </div>
-                    <Card bordered={false} height={300}>
-                         <CardGrid style={{width: '18%', height: '168px'}}>
-                           生产者总数
-                           <div style={{fontSize: '64px', textAlign: 'right'}}>
-                             999
-                           </div>
-                         </CardGrid>
-                         <CardGrid style={{width: '18%', height: '168px'}}>
-                           生产者应用总数
-                           <div style={{fontSize: '64px', textAlign: 'right'}}>
-                             999
-                           </div>
-                         </CardGrid>
-                         <CardGrid style={{width: '18%', height: '168px'}}>
-                           消费者应用总数
-                           <div style={{fontSize: '64px', textAlign: 'right'}}>
-                             999
-                           </div>
-                         </CardGrid>
-                         <CardGrid style={{width: '18%', height: '168px'}}>
-                           消费者实例数
-                           <div style={{fontSize: '64px', textAlign: 'right'}}>
-                             999
-                           </div>
-                         </CardGrid>
-                         <CardGrid style={{width: '18%', height: '168px'}}>
-                           一个小时内的消息总数
-                           <div style={{fontSize: '64px', textAlign: 'right'}}>
-                             999
-                           </div>
-                         </CardGrid>
-                       </Card>
+                    <Row style={{marginTop: 30}}>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>生产者总数</div>
+                          <div className={styles['number']}>
+                            2334
+                          </div>
+                        </div>
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>生产者应用总数</div>
+                          <div className={styles['number']}>
+                            999
+                          </div>
+                        </div>
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>消费者应用总数</div>
+                          <div className={styles['number']}>
+                            10
+                          </div>
+                        </div>
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>消费者实例数</div>
+                          <div className={styles['number']}>
+                            99
+                          </div>
+                        </div>
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>一个小时内的消息总数</div>
+                          <div className={styles['number']}>
+                            6
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
                   </TabPane>
                 )
               })}

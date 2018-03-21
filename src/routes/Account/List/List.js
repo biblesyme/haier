@@ -266,10 +266,10 @@ class User extends React.Component {
       title: '操作',
       render: (record) => {
         if (record.state === 'active') {
-          return <a record={record}  onClick={() => this.deactivate(record)}>停用</a>
+          return (<a record={record}  onClick={() => this.deactivate(record)}>停用</a>)
         }
         if (record.state === 'inactive') {
-          return <a record={record} onClick={() => this.activate(record)}>启用</a>
+          return (<a record={record} onClick={() => this.activate(record)}>启用</a>)
         }
       },
       fixed: 'right',
@@ -359,12 +359,12 @@ class User extends React.Component {
             </Row>
           </div>)
       } else {
-        return <p>无所属应用</p>
+        return (<p>无所属应用</p>)
       }
 
     }
     return (
-      <main className="page-section">
+      <main>
         <h3>用户列表:</h3>
         <Row type="flex" justify="space-between" className={styles["radioButton"]}>
           <Col>
@@ -423,11 +423,6 @@ class User extends React.Component {
           )}
         </Col>
       </Row>
-
-      {/* <RcTable columns={columnStaff}
-               data={boxes}
-      /> */}
-
     </main>
     )
   }

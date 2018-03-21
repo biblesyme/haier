@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const CardGrid = Card.Grid
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 @connect(null,['App'])
 export default class C extends React.Component {
@@ -98,18 +98,23 @@ export default class C extends React.Component {
       }
     }, {
       title: '日慢查询数量',
+      className: 'text-center',
       render: () => <span>2334</span>
     }, {
       title: '当前连接数',
+      className: 'text-center',
       render: () => <span>2334</span>
     }, {
       title: '运行的线程个数',
+      className: 'text-center',
       render: () => <span>2334</span>
     }, {
       title: '实例大小',
+      className: 'text-center',
       render: () => <span>CPU:2 内存: 1024M 硬盘: 2G</span>
     }, {
       title: '锁定数量',
+      className: 'text-center',
       render: () => <span>2334</span>
     }]
 
@@ -122,15 +127,19 @@ export default class C extends React.Component {
       }
     }, {
       title: '资源使用率',
+      className: 'text-center',
       render: () => <span>57%</span>
     }, {
       title: '命中率',
+      className: 'text-center',
       render: () => <span>30%</span>
     }, {
       title: '日慢查询数量',
+      className: 'text-center',
       render: () => <span>2333</span>
     }, {
       title: '当前连接数',
+      className: 'text-center',
       render: () => <span>233</span>
     }]
 
@@ -143,18 +152,23 @@ export default class C extends React.Component {
       }
     }, {
       title: '生产者总数',
+      className: 'text-center',
       render: () => <span>233</span>
     }, {
       title: '生产者应用总数',
+      className: 'text-center',
       render: () => <span>999</span>
     }, {
       title: '消费者应用总数',
+      className: 'text-center',
       render: () => <span>666</span>
     }, {
       title: '消费者实例数',
+      className: 'text-center',
       render: () => <span>888</span>
     }, {
       title: '一个小时内的消息总数',
+      className: 'text-center',
       render: () => <span>1122</span>
     }]
 
@@ -170,12 +184,15 @@ export default class C extends React.Component {
       }
     }, {
       title: '消费者应用总数',
+      className: 'text-center',
       render: () => <span>233</span>
     }, {
       title: '消费者实例数',
+      className: 'text-center',
       render: () => <span>999</span>
     }, {
       title: '一个小时内的消息总数',
+      className: 'text-center',
       render: () => <span>10</span>
     }]
 
@@ -183,15 +200,13 @@ export default class C extends React.Component {
       <main>
         {middlewareMappings.filter(m => m.resourceType === 'mysql').length > 0 && (
           <div>
-            <Row>
-              <Col push={1} span={4}>
-                <div className={styles.title}>MySQL</div>
-              </Col>
-            </Row>
+            <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+              <span className={styles.title}><Icon type="mysql" style={{marginRight: 12}}/>MySQL</span>
+            </div>
 
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
-              <Col span={22} push={1}>
-                <Table scroll={{x: 1300}}
+              <Col >
+                <Table scroll={{x: 1110}}
                        dataSource={middlewareMappings.filter(m => m.resourceType === 'mysql')}
                        columns={mysqlColumns}
                        rowKey="id"
@@ -203,15 +218,13 @@ export default class C extends React.Component {
         )}
         {middlewareMappings.filter(m => m.resourceType === 'redis').length > 0 && (
           <div>
-            <Row>
-              <Col push={1} span={4}>
-                <div className={styles.title}>Redis</div>
-              </Col>
-            </Row>
+            <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+              <span className={styles.title}><Icon type="redis" style={{marginRight: 12}}/>Redis</span>
+            </div>
 
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
-              <Col span={22} push={1}>
-                <Table scroll={{x: 1300}}
+              <Col >
+                <Table scroll={{x: 1110}}
                        dataSource={middlewareMappings.filter(m => m.resourceType === 'redis')}
                        columns={redisColumns}
                        rowKey="id"
@@ -223,15 +236,13 @@ export default class C extends React.Component {
         )}
         {middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic').length > 0 && (
           <div>
-            <Row>
-              <Col push={1} span={4}>
-                <div className={styles.title}>RocketMQ</div>
-              </Col>
-            </Row>
+            <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+              <span className={styles.title}><Icon type="rocket" style={{marginRight: 12}}/>RocketMQ</span>
+            </div>
 
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
-              <Col span={22} push={1}>
-                <Table scroll={{x: 1300}}
+              <Col >
+                <Table scroll={{x: 1110}}
                        dataSource={middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic')}
                        columns={rocketMQColumns}
                        rowKey="id"
@@ -243,15 +254,13 @@ export default class C extends React.Component {
         )}
         {middlewareMappings.filter(m => (m.resourceType === 'rabbitMQProducer' || m.resourceType === 'rabbitMQConsumer')).length > 0 && (
           <div>
-            <Row>
-              <Col push={1} span={4}>
-                <div className={styles.title}>RabbitMQ</div>
-              </Col>
-            </Row>
+            <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+              <span className={styles.title}><Icon type="RabbitMQ" style={{marginRight: 12}}/>RabbitMQ</span>
+            </div>
 
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
-              <Col span={22} push={1}>
-                <Table scroll={{x: 1300}}
+              <Col >
+                <Table scroll={{x: 1110}}
                        dataSource={middlewareMappings.filter(m => (m.resourceType === 'rabbitMQProducer' || m.resourceType === 'rabbitMQConsumer'))}
                        columns={rabbitMQColumns}
                        rowKey="id"

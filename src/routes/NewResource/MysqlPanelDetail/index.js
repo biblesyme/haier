@@ -179,7 +179,7 @@ export default class C extends React.Component {
             </div>
           )
         } else {
-          return <a onClick={() => this.edit(record)}>修改</a>
+          return (<a onClick={() => this.edit(record)}>修改</a>)
         }
       }
     }]

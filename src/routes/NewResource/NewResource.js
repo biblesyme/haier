@@ -566,7 +566,7 @@ class NewResource extends React.Component {
             变更服务:
             <Checkbox checked={this.state.alert}
                       onChange={e => this.setState({alert: e.target.checked})}
-                      style={{marginLeft: 20}}
+                      style={{marginLeft: 20, marginRight: 24}}
             >
               监控功能
             </Checkbox>

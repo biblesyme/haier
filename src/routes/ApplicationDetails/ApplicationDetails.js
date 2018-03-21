@@ -152,7 +152,7 @@ class ApplicationDetail extends React.Component {
                {projectInfo.applicationType}
               </FormItem>
             </Col>
-            <Button type="primary" style={{position: 'relative', top: '-132px', left: '250px', width: 112}}>前往监控平台</Button>
+            <Button type="primary" style={{position: 'relative', top: '-132px', left: '260px', width: 112}}>前往监控平台</Button>
           </Row>
         </Form>
       </section>
@@ -163,7 +163,7 @@ class ApplicationDetail extends React.Component {
             <Row gutter={24}>
               <Col key={'paas'}><Item resource={paas} project={record}/></Col>
             </Row>
-            <Button type="primary" style={{position: 'relative', top: '-272px', left: '980px', width: 112}}>前往容器云</Button>
+            <Button type="primary" style={{position: 'relative', top: '-272px', left: '990px', width: 112}}>前往容器云</Button>
           </section>
 
           <section className="page-section">
@@ -198,21 +198,18 @@ class ApplicationDetail extends React.Component {
                   <div>
                     <MysqlTabs items={middleware.filter(r => r.resourceType === 'mysql')}
                     />
-                    <Divider></Divider>
                   </div>
                 )}
                 {middleware.filter(r => r.resourceType === 'redis').length > 0 && (
                   <div>
                     <RedisTabs items={middleware.filter(r => r.resourceType === 'redis')}
                     />
-                    <Divider></Divider>
                   </div>
                 )}
                 {middleware.filter(r => r.resourceType === 'rocketMQTopic').length > 0 && (
                   <div>
                     <RocketMQTabs items={middleware.filter(r => r.resourceType === 'rocketMQTopic')}
                     />
-                    <Divider></Divider>
                   </div>
                 )}
                 {middleware.filter(r => (r.resourceType === 'rabbitMQConsumer' || r.resourceType === 'rabbitMQProducer')).length > 0 && (
@@ -221,7 +218,6 @@ class ApplicationDetail extends React.Component {
                                  projects={this.props.App.projects}
                                  resources={this.props.App.resources}
                     />
-                    <Divider></Divider>
                   </div>
                 )}
               </div>
@@ -231,22 +227,18 @@ class ApplicationDetail extends React.Component {
               <MiddlewareList middlewareMappings={middleware}
               />
             )}
-
-
-            <div className="text-right pd-tb10">
-              <Button type="primary">前往中间件平台</Button>
-            </div>
           </section>
         </div>
       )}
 
       <section className="page-section">
-        <h3>框架</h3>
+        <label className="label" style={{marginRight: 52}}>框架：</label>
         <CheckboxGroup options={plainOptions} value={record.frame}/>
       </section>
       <section className="page-section">
-        <h3>服务</h3>
+        <label className="label" style={{marginRight: 29}}>推荐服务</label>
         <Checkbox checked={record.alert}
+                  style={{marginRight: 32}}
         >
           监控功能
         </Checkbox>
@@ -255,10 +247,17 @@ class ApplicationDetail extends React.Component {
           代码托管
         </Checkbox>
       </section>
-      <div style={{paddingBottom: '60px'}}></div>
 
-      <section className="page-section bottom-actions">
-        <Button type="primary" style={{float: 'right'}} onClick={() => this.props.history.goBack()}>返回</Button>
+      <section className="page-section">
+        <Row type="flex" justify="end">
+          <Col>
+            <Button onClick={() => {this.props.history.goBack()}}
+                    type="primary"
+            >
+              返回
+            </Button>
+          </Col>
+        </Row>
       </section>
     </div>
       )

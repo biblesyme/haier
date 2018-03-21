@@ -1,8 +1,9 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Progress, Tabs } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Progress, Tabs, Badge } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {clusterTypeEnum} from 'utils/enum'
+import MyProgress from '@/components/MyProgress'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -11,7 +12,7 @@ const RadioGroup = Radio.Group;
 const CardGrid = Card.Grid
 const TabPane = Tabs.TabPane
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 @connect(null,['App'])
 export default class C extends React.Component {
@@ -93,16 +94,13 @@ export default class C extends React.Component {
     }
 
     return (
-      <main>
-        <Row>
-          <Col push={1} span={4}>
-            <div className={styles.title}>Redis</div>
-          </Col>
-        </Row>
-
-        <Row style={{marginTop: '20px'}}>
-          <Col span={22} push={1}>
-            <Tabs>
+      <main style={{marginBottom: 47}}>
+        <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+          <span className={styles.title}><Icon type="redis" style={{marginRight: 12}}/>Redis</span>
+        </div>
+        <Row style={{marginTop: '40px'}}>
+          <Col>
+            <Tabs type="card">
               {items.map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
@@ -111,67 +109,77 @@ export default class C extends React.Component {
                 return (
                   <TabPane key={item.id} tab={`Redis - ${clusterTypeEnum(data.clusterType)}-${index + 1}`}>
                     <div>
-                      <span style={{marginLeft: '32px'}}>地点: {machineRoomFilter.roomName}</span>
-                      <span style={{marginLeft: '20px'}}>模式: {clusterTypeEnum(data.clusterType)}</span>
-                      <span style={{marginLeft: '20px'}}>
+                      <span style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</span>
+                      <span style={{width: 150}} className="inline">模式: {clusterTypeEnum(data.clusterType)}</span>
+                      <span style={{width: 150}} className="inline">
                         内存: &nbsp;
                         {`${data.memorySize}M`}
                       </span>
                       {data.clusterType === 'shared' && (
-                        <span style={{marginLeft: '20px'}}>
+                        <span style={{width: 150}} className="inline">
                           分片数量: &nbsp;
                           {data.sharedCount}
                         </span>
                       )}
                     </div>
-                    <Card bordered={false}>
-                      <CardGrid style={{width: '24%', height: '168px'}}>
-                        资源使用率
-                        <Row>
-                          <Col span={12} style={{fontSize: '12px'}}>
-                            <div style={{marginTop: '80px'}}>使用: 1024M</div>
-                            <div>总共: 10240M</div>
-                          </Col>
-                          <Col span={12}>
-                            <Progress type="dashboard"
-                                      percent={75}
-                                      width={120}
-                                      format={percent => `
-                                        ${percent}%`}
-                            />
-                          </Col>
-                        </Row>
-                      </CardGrid>
-                      <CardGrid style={{width: '24%', height: '168px'}}>
-                        命中率
-                        <Row>
-                          <Col span={12} style={{fontSize: '12px'}}>
-                            <div style={{marginTop: '80px'}}>命中: 1024</div>
-                            <div>总共: 10240</div>
-                          </Col>
-                          <Col span={12}>
-                            <Progress type="circle"
-                                      percent={30}
-                                      width={120}
-                                      format={percent => `
-                                        ${percent}%`}
-                            />
-                          </Col>
-                        </Row>
-                      </CardGrid>
-                      <CardGrid style={{width: '24%', height: '168px'}}>
-                        日慢查询数量
-                        <div style={{fontSize: '64px', textAlign: 'right'}}>
-                          2334
+                    <Row style={{marginTop: 30}}>
+                      <Col span={4} style={{width: '338px'}} className={styles['my-card']} >
+                        <div>
+                          <div className={styles['label']}>资源使用率</div>
+                          <Row className={styles['blue-progress']} style={{paddingLeft: 30}}>
+                            <Col span={12}>
+                              <div style={{marginTop: '80px'}}>
+                                <Badge status="success" text={`使用: 1024M`}/>
+                              </div>
+                              <div style={{marginTop: 9}}><Badge status="default" text={`总共: 1024M`} /></div>
+                            </Col>
+                            <Col span={12} >
+                              <Progress type="circle"
+                                        percent={30}
+                                        width={120}
+                                        format={percent => <span style={{fontSize: 21}}><span style={{fontSize: 32, marginRight: 3, color: '#000', marginLeft: 10}}>{percent}</span>%</span>}
+                              />
+                            </Col>
+                          </Row>
                         </div>
-                      </CardGrid>
-                      <CardGrid style={{width: '24%', height: '168px'}}>
-                        当前连接数
-                        <div style={{fontSize: '64px', textAlign: 'right'}}>
-                          999
+                      </Col>
+                      <Col span={4} style={{width: '338px'}} className={styles['my-card']}>
+                        <div>
+                          <div className={styles['label']}>命中率</div>
+                          <Row className={styles['green-progress']} style={{paddingLeft: 30}}>
+                            <Col span={12}>
+                              <div style={{marginTop: '80px'}}>
+                                <Badge status="success" text={`健康: 3`}/>
+                              </div>
+                              <div style={{marginTop: 9}}><Badge text={`总共: 10`} status="default"/></div>
+                            </Col>
+                            <Col span={12} >
+                              <Progress type="circle"
+                                        percent={30}
+                                        width={120}
+                                        format={percent => <span style={{fontSize: 21}}><span style={{fontSize: 32, marginRight: 3, color: '#000', marginLeft: 10}}>{percent}</span>%</span>}
+                              />
+                            </Col>
+                          </Row>
                         </div>
-                      </CardGrid>
-                    </Card>
+                      </Col>
+                      <Col span={4} style={{width: '210px'}} className={styles['my-card']}>
+                        <div>
+                          <div className={styles['label']}>日慢查询数量</div>
+                          <div className={styles['number']}>
+                            2334
+                          </div>
+                        </div>
+                      </Col>
+                      <Col span={4} style={{width: '210px'}} className={styles['my-card']}>
+                        <div>
+                          <div className={styles['label']}>当前连接数</div>
+                          <div className={styles['number']}>
+                            999
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
                   </TabPane>
                 )
               })}

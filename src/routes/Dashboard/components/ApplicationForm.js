@@ -31,23 +31,16 @@ import styles from './style.sass'
 
 
 const formItemLayout = {
-  labelCol: { span: 8},
-  wrapperCol: {span: 16},
+  labelCol: { span: 4},
+  wrapperCol: {span: 12},
   style: {
     marginBottom: '10px'
   }
 };
 
 const formItemCenter = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-    xl: {span: 4},
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
+  labelCol: { span: 5, style: {width: '93px'}},
+  wrapperCol: {span: 8},
   style: {
     marginBottom: '10px'
   }

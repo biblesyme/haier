@@ -11,7 +11,7 @@ const RadioGroup = Radio.Group;
 const CardGrid = Card.Grid
 const TabPane = Tabs.TabPane
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 @connect(null,['App'])
 export default class C extends React.Component {
@@ -86,16 +86,14 @@ export default class C extends React.Component {
 
 
     return (
-      <main>
-        <Row>
-          <Col push={1} span={4}>
-            <div className={styles.title}>RabbitMQ</div>
-          </Col>
-        </Row>
+      <main style={{marginBottom: 47}}>
+        <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+          <span className={styles.title}><Icon type="RabbitMQ" style={{marginRight: 12}}/>RabbitMQ</span>
+        </div>
 
         <Row style={{marginTop: '20px'}}>
-          <Col span={22} push={1}>
-            <Tabs>
+          <Col>
+            <Tabs type="card">
               {items.map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
@@ -105,37 +103,43 @@ export default class C extends React.Component {
                   return (
                     <TabPane key={item.id} tab={`RabbitMQ - 生产者-${index + 1}`}>
                       <div>
-                        <span style={{marginLeft: '32px'}}>地点: {machineRoomFilter.roomName}</span>
-                        <span style={{marginLeft: '20px'}}>消息吞吐: {data.maxIO}</span>
-                        <span style={{marginLeft: '20px'}}>
+                        <span style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</span>
+                        <span style={{width: 150}} className="inline">消息吞吐: {data.maxIO}</span>
+                        <span style={{width: 150}} className="inline">
                           Exchange名称: &nbsp;
                           {`${data.exchangeName}`}
                         </span>
-                        <span style={{marginLeft: '20px'}}>
+                        <span style={{width: 150}} className="inline">
                           Exchange类型: &nbsp;
                           {`${exchangeTypeEnum(data.exchangeType)}`}
                         </span>
                       </div>
-                      <Card bordered={false}>
-                        <CardGrid style={{width: '32%', height: '168px'}}>
-                          消息总数
-                          <div style={{fontSize: '64px', textAlign: 'right'}}>
-                            2334
+                      <Row style={{marginTop: 30}}>
+                        <Col span={4} style={{width: '366px'}}>
+                          <div className={styles['my-card']}>
+                            <div className={styles['label']}>消息总数</div>
+                            <div className={styles['number']}>
+                              2334
+                            </div>
                           </div>
-                        </CardGrid>
-                        <CardGrid style={{width: '32%', height: '168px'}}>
-                          已经投递的消息数
-                          <div style={{fontSize: '64px', textAlign: 'right'}}>
-                            999
+                        </Col>
+                        <Col span={4} style={{width: '366px'}}>
+                          <div className={styles['my-card']}>
+                            <div className={styles['label']}>已经投递的消息数</div>
+                            <div className={styles['number']}>
+                              999
+                            </div>
                           </div>
-                        </CardGrid>
-                        <CardGrid style={{width: '32%', height: '168px'}}>
-                          已经投递的消息数
-                          <div style={{fontSize: '64px', textAlign: 'right'}}>
-                            999
+                        </Col>
+                        <Col span={4} style={{width: '366px'}}>
+                          <div className={styles['my-card']}>
+                            <div className={styles['label']}>已经投递的消息数</div>
+                            <div className={styles['number']}>
+                              10
+                            </div>
                           </div>
-                        </CardGrid>
-                      </Card>
+                        </Col>
+                      </Row>
                     </TabPane>
                   )
                 }
@@ -149,45 +153,51 @@ export default class C extends React.Component {
                   return (
                     <TabPane key={item.id} tab={`RabbitMQ - 消费者-${index + 1}`}>
                       <div>
-                        <span style={{marginLeft: '32px'}}>应用: {projectSelect.name}</span>
-                        <span style={{marginLeft: '20px'}}>Exchange名称: {`${data.exchangeName}`}</span>
-                        <span style={{marginLeft: '20px'}}>
+                        <span style={{width: 150}} className="inline">应用: {projectSelect.name}</span>
+                        <span style={{width: 150}} className="inline">Exchange名称: {`${data.exchangeName}`}</span>
+                        <span style={{width: 150}} className="inline">
                           队列名: &nbsp;
                           {data.queueName}
                         </span>
                         {exchangeType === 'topic' && (
-                          <span style={{marginLeft: '20px'}}>
+                          <span style={{width: 150}} className="inline">
                             主题名: &nbsp;
                             {data.topicName}
                           </span>
                         )}
                         {exchangeType === 'direct' && (
-                          <span style={{marginLeft: '20px'}}>
+                          <span style={{width: 150}} className="inline">
                             直连名: &nbsp;
                             {data.RouteKey}
                           </span>
                         )}
                       </div>
-                      <Card bordered={false}>
-                        <CardGrid style={{width: '32%', height: '168px'}}>
-                          消息总数
-                          <div style={{fontSize: '64px', textAlign: 'right'}}>
-                            2334
+                      <Row style={{marginTop: 30}}>
+                        <Col span={4} style={{width: '366px'}}>
+                          <div className={styles['my-card']}>
+                            <div className={styles['label']}>消息总数</div>
+                            <div className={styles['number']}>
+                              2334
+                            </div>
                           </div>
-                        </CardGrid>
-                        <CardGrid style={{width: '32%', height: '168px'}}>
-                          已经投递的消息数
-                          <div style={{fontSize: '64px', textAlign: 'right'}}>
-                            999
+                        </Col>
+                        <Col span={4} style={{width: '366px'}}>
+                          <div className={styles['my-card']}>
+                            <div className={styles['label']}>已经投递的消息数</div>
+                            <div className={styles['number']}>
+                              999
+                            </div>
                           </div>
-                        </CardGrid>
-                        <CardGrid style={{width: '32%', height: '168px'}}>
-                          已经投递的消息数
-                          <div style={{fontSize: '64px', textAlign: 'right'}}>
-                            999
+                        </Col>
+                        <Col span={4} style={{width: '366px'}}>
+                          <div className={styles['my-card']}>
+                            <div className={styles['label']}>已经投递的消息数</div>
+                            <div className={styles['number']}>
+                              10
+                            </div>
                           </div>
-                        </CardGrid>
-                      </Card>
+                        </Col>
+                      </Row>
                     </TabPane>
                   )
                 }

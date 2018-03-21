@@ -11,7 +11,7 @@ const RadioGroup = Radio.Group;
 const CardGrid = Card.Grid
 const TabPane = Tabs.TabPane
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 @connect(null,['App'])
 export default class C extends React.Component {
@@ -92,17 +92,18 @@ export default class C extends React.Component {
       exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
     }
 
-    return (
-      <main>
-        <Row>
-          <Col push={1} span={4}>
-            <div className={styles.title}>MySQL</div>
-          </Col>
-        </Row>
+    const width = '226px'
+    const height = '180px'
 
-        <Row style={{marginTop: '20px'}}>
-          <Col span={22} push={1}>
-            <Tabs>
+    return (
+      <main style={{marginBottom: 47}}>
+        <div style={{borderBottom: '1px solid #eaedf2', paddingBottom: '10px'}}>
+          <span className={styles.title}><Icon type="mysql" style={{marginRight: 12}}/>MySQL</span>
+        </div>
+
+        <Row style={{marginTop: '40px'}}>
+          <Col>
+            <Tabs type="card">
               {items.map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
@@ -111,74 +112,73 @@ export default class C extends React.Component {
                 return (
                   <TabPane key={item.id} tab={`MySQL - ${deployModeEnum(data.deployMode)}-${index + 1}`}>
                     <div>
-                      <span style={{marginLeft: '32px'}}>地点: {machineRoomFilter.roomName}</span>
-                      <span style={{marginLeft: '20px'}}>模式: {deployModeEnum(data.deployMode)}</span>
+                      <div style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</div>
+                      <div style={{width: 150}} className="inline">模式: {deployModeEnum(data.deployMode)}</div>
                       {data.deployMode === 1 && (
-                        <span style={{marginLeft: '20px'}}>
+                        <div style={{width: 150}} className="inline">
                           主从: &nbsp;
                           {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
-                        </span>
+                        </div>
                       )}
                       {data.deployMode === 2 && (
-                        <span style={{marginLeft: '20px'}}>
+                        <div style={{width: 150}} className="inline">
                           mycat数量: &nbsp;
                           {data.mycatClusterManagerNodeCount}
-                        </span>
+                        </div>
                       )}
                       {data.deployMode === 2 && (
-                        <span style={{marginLeft: '20px'}}>
+                        <div style={{width: 150}} className="inline">
                           mysql数量: &nbsp;
                           {data.mycatClusterDataNodeCount}
-                        </span>
+                        </div>
                       )}
-                      <span style={{marginLeft: '20px'}}>
+                      <div style={{width: 150}} className="inline">
                         备份: &nbsp;
                         {data.backup === 'true' ? '是' : '否'}
-                      </span>
+                      </div>
                     </div>
-                    <Card bordered={false}>
-                      <CardGrid style={{width: '18%', height: '168px'}}>
-                        日慢查询数量
-                        <div style={{fontSize: '64px', textAlign: 'right'}}>
-                          2334
+                    <Row style={{marginTop: 30}}>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>日慢查询数量</div>
+                          <div className={styles['number']}>
+                            2334
+                          </div>
                         </div>
-                      </CardGrid>
-                      <CardGrid style={{width: '18%', height: '168px'}}>
-                        当前连接数
-                        <div style={{fontSize: '64px', textAlign: 'right'}}>
-                          999
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>当前连接数</div>
+                          <div className={styles['number']}>
+                            999
+                          </div>
                         </div>
-                      </CardGrid>
-                      <CardGrid style={{width: '18%', height: '168px'}}>
-                        运行的线程个数
-                        <div style={{fontSize: '64px', textAlign: 'right'}}>
-                          10
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>运行的线程个数</div>
+                          <div className={styles['number']}>
+                            10
+                          </div>
                         </div>
-                      </CardGrid>
-                      <CardGrid style={{width: '18%', height: '168px'}}>
-                        实例大小
-                        <div  style={{fontSize: '16px', marginTop: '5px'}}>
-                          <Row type="flex" justify="space-between">
-                            <Col span={12}>cpu:</Col>
-                            <Col span={6}>2</Col>
-                          </Row>
-                          <Row type="flex" justify="space-between">
-                            <Col span={12}>内存:</Col>
-                            <Col span={6}>1024M</Col>
-                          </Row>
-                          <Row type="flex" justify="space-between">
-                            <Col span={12}>硬盘:</Col>
-                            <Col span={6}>2G</Col>
-                          </Row>
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>实例大小</div>
+                          <Row style={{marginTop: 30, color: '#545454', paddingLeft: 30}}><Col>CPU: 2</Col></Row>
+                          <Row style={{marginTop: 14, color: '#545454', paddingLeft: 30}}><Col>内存: 1024M</Col></Row>
+                          <Row style={{marginTop: 14, color: '#545454', paddingLeft: 30}}><Col>硬盘: 2G</Col></Row>
                         </div>
-                      </CardGrid>
-                      <CardGrid style={{width: '18%', height: '168px'}}>
-                        锁定数量
-                        <div style={{fontSize: '64px', textAlign: 'right'}}>
-                          6
+                      </Col>
+                      <Col span={4} style={{width: '222px'}}>
+                        <div className={styles['my-card']}>
+                          <div className={styles['label']}>锁定数量</div>
+                          <div className={styles['number']}>
+                            6
+                          </div>
                         </div>
-                      </CardGrid>
-                    </Card>
+                      </Col>
+                    </Row>
                   </TabPane>
                 )
               })}
