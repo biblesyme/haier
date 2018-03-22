@@ -388,7 +388,7 @@ class ApplicationForm extends React.Component {
     return (
       <div className="page-wrap">
         <section className="page-section">
-          <label><span className="label">应用归属：</span>海尔</label>
+          <label style={{fontSize: 16}}><span className="label">应用归属：</span>海尔</label>
         </section>
         <section className="page-section">
           <Form>
@@ -652,7 +652,7 @@ class ApplicationForm extends React.Component {
                 </section>
               )}
               {this.state.middlewareMappings.filter(m => m.resourceType === 'rabbitMQConsumer').length > 0 && (
-                <section className={styles["card-form-m"]} style={{marginLeft: 20, marginRight: 20}}>
+                <section className={styles["card-form-m"]}>
                   <div className={styles["card-header"]}>
                     <div><Icon type="rocket"/> RabbitMQ-消费者</div>
                   </div>
@@ -678,12 +678,12 @@ class ApplicationForm extends React.Component {
           <label className="label" style={{marginRight: 52}}>推荐服务</label>
           <Checkbox checked={this.state.alert}
                     onChange={e => this.setState({alert: e.target.checked})}
-                    style={{marginRight: 32}}
           >
             监控功能
           </Checkbox>
           <Checkbox checked={this.state.codeManaged}
                     onChange={e => this.setState({codeManaged: e.target.checked})}
+                    style={{marginLeft: 32}}
           >
             代码托管
           </Checkbox>

@@ -3,6 +3,7 @@ import { Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Pro
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {deployModeEnum, clusterTypeEnum} from 'utils/enum'
+import prefixZero from 'utils/prefixZero'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -94,7 +95,17 @@ export default class C extends React.Component {
       key: 'id',
       render: (text, record, index) => {
         const {data={}} = record
-        return <span>MySQL - {deployModeEnum(data.deployMode)}-{index + 1}</span>
+        const oneCount = middlewareMappings.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 0).length
+        const masterCount = middlewareMappings.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 1).length
+        if (data.deployMode === 0) {
+          return <span>MySQL - {deployModeEnum(data.deployMode)}-{prefixZero(index + 1)}</span>
+        }
+        if (data.deployMode === 1) {
+          return <span>MySQL - {deployModeEnum(data.deployMode)}-{prefixZero(index - oneCount + 1)}</span>
+        }
+        if (data.deployMode === 2) {
+          return <span>MySQL - {deployModeEnum(data.deployMode)}-{prefixZero(index - oneCount - masterCount + 1)}</span>
+        }
       }
     }, {
       title: '日慢查询数量',
@@ -123,7 +134,17 @@ export default class C extends React.Component {
       key: 'id',
       render: (text, record, index) => {
         const {data={}} = record
-        return <span>Redis - {clusterTypeEnum(data.clusterType)}-{index + 1}</span>
+        const oneCount = middlewareMappings.filter(m => m.resourceType === 'redis' && m.data.clusterType === 'one').length
+        const masterCount = middlewareMappings.filter(m => m.resourceType === 'redis' && m.data.clusterType === 'masterSlave').length
+        if (data.clusterType === 'one') {
+          return <span>Redis - {clusterTypeEnum(data.clusterType)}-{prefixZero(index + 1)}</span>
+        }
+        if (data.clusterType === 'masterSlave') {
+          return <span>Redis - {clusterTypeEnum(data.clusterType)}-{prefixZero(index - oneCount + 1)}</span>
+        }
+        if (data.clusterType === 'shared') {
+          return <span>Redis - {clusterTypeEnum(data.clusterType)}-{prefixZero(index - oneCount - masterCount + 1)}</span>
+        }
       }
     }, {
       title: '资源使用率',
@@ -148,7 +169,13 @@ export default class C extends React.Component {
       key: 'id',
       render: (text, record, index) => {
         const {data={}} = record
-        return <span>RocketMQ - {clusterTypeEnum(data.clusterType)}-{index + 1}</span>
+        const standaloneCount = middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic' && m.data.clusterType === 'standalone').length
+        if (data.clusterType === 'standalone') {
+          return <span>RocketMQ - {clusterTypeEnum(data.clusterType)}-{prefixZero(index + 1)}</span>
+        }
+        if (data.clusterType === 'cluster') {
+          return <span>RocketMQ - {clusterTypeEnum(data.clusterType)}-{prefixZero(index - standaloneCount + 1)}</span>
+        }
       }
     }, {
       title: '生产者总数',
@@ -176,10 +203,11 @@ export default class C extends React.Component {
       title: '中间件名称',
       key: 'id',
       render: (text, record, index) => {
-        if (record.resourceType === 'rabbitMQProducer') {
-          return <span>RabbitMQ - 生产者- {index + 1}</span>
+        const consumerCount = middlewareMappings.filter(m => m.resourceType === 'rabbitMQConsumer').length
+        if (record.resourceType === 'rabbitMQConsumer') {
+          return <span>RabbitMQ - 消费者- {prefixZero(index + 1)}</span>
         } else {
-          return <span>RabbitMQ - 消费者- {index + 1}</span>
+          return <span>RabbitMQ - 生产者- {prefixZero(index + 1 - consumerCount)}</span>
         }
       }
     }, {
@@ -207,7 +235,7 @@ export default class C extends React.Component {
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
               <Col >
                 <Table scroll={{x: 1110}}
-                       dataSource={middlewareMappings.filter(m => m.resourceType === 'mysql')}
+                       dataSource={middlewareMappings.filter(m => m.resourceType === 'mysql').sort((a, b) => a.data.deployMode - b.data.deployMode)}
                        columns={mysqlColumns}
                        rowKey="id"
                        pagination={false}
@@ -225,7 +253,12 @@ export default class C extends React.Component {
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
               <Col >
                 <Table scroll={{x: 1110}}
-                       dataSource={middlewareMappings.filter(m => m.resourceType === 'redis')}
+                       dataSource={middlewareMappings.filter(m => m.resourceType === 'redis')
+                                           .sort((a, b) => {
+                                             if (a.data.clusterType > b.data.clusterType) return 1
+                                             if (a.data.clusterType < b.data.clusterType) return -1
+                                             return 0
+                       })}
                        columns={redisColumns}
                        rowKey="id"
                        pagination={false}
@@ -243,7 +276,12 @@ export default class C extends React.Component {
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
               <Col >
                 <Table scroll={{x: 1110}}
-                       dataSource={middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic')}
+                       dataSource={middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic')
+                                                     .sort((a, b) => {
+                                                       if (a.data.clusterType > b.data.clusterType) return 1
+                                                       if (a.data.clusterType < b.data.clusterType) return -1
+                                                       return 0
+                                   })}
                        columns={rocketMQColumns}
                        rowKey="id"
                        pagination={false}
@@ -261,7 +299,12 @@ export default class C extends React.Component {
             <Row style={{marginTop: '20px', marginBottom: '40px'}}>
               <Col >
                 <Table scroll={{x: 1110}}
-                       dataSource={middlewareMappings.filter(m => (m.resourceType === 'rabbitMQProducer' || m.resourceType === 'rabbitMQConsumer'))}
+                      dataSource={middlewareMappings.filter(m => m.resourceType === 'rabbitMQProducer' || m.resourceType === 'rabbitMQConsumer')
+                                                    .sort((a, b) => {
+                                                      if (a.resourceType > b.resourceType) return 1
+                                                      if (a.resourceType < b.resourceType) return -1
+                                                      return 0
+                                  })}
                        columns={rabbitMQColumns}
                        rowKey="id"
                        pagination={false}

@@ -159,12 +159,14 @@ class ApplicationDetail extends React.Component {
 
       {resources.length > 0 && (
         <div>
-          <section className="page-section">
-            <Row gutter={24}>
-              <Col key={'paas'}><Item resource={paas} project={record}/></Col>
-            </Row>
-            <Button type="primary" style={{position: 'relative', top: '-272px', left: '990px', width: 112}}>前往容器云</Button>
-          </section>
+          {resources.filter(r => r.resourceType === 'containerHost').length > 0 && (
+            <section className="page-section">
+              <Row gutter={24}>
+                <Col key={'paas'}><Item resource={paas} project={record}/></Col>
+              </Row>
+              <Button type="primary" style={{position: 'relative', top: '-272px', left: '990px', width: 112}}>前往容器云</Button>
+            </section>
+          )}
 
           <section className="page-section">
             <Row style={{marginBottom: '20px'}}>

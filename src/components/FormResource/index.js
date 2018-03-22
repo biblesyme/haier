@@ -10,12 +10,7 @@ const RadioGroup = Radio.Group;
 import styles from './style.sass'
 
 const formItemLayout3 = {
-  labelCol: {
-    xs: { span: 10 },
-    sm: { span: 10 },
-        pull: 0,
-
-  },
+  labelCol: {span: 4, style: {width: '90px'}},
   wrapperCol: {
     xs: { span: 14 },
     sm: { span: 14 },
@@ -254,9 +249,10 @@ export default class C extends React.Component {
                 wrapperCol={{span: 13}}
               >
                 <InputNumber onChange={value => this.onChange(value, 'customeCPU')}
-                             min={1}
+                             min={0}
                              value={this.state.customeCPU}
                              disabled={this.state.resource !== 'custome'}
+                             style={{marginRight: 10}}
                 />
               </FormItem>
               <Divider style={{margin: '0px 0px'}}></Divider>
@@ -266,7 +262,7 @@ export default class C extends React.Component {
                 hasFeedback
               >
                 <InputNumber onChange={value => this.onChange(value, 'customeMemory')}
-                             min={2}
+                             min={0}
                              value={this.state.customeMemory}
                              disabled={this.state.resource !== 'custome'}
                              style={{width: '70%'}}

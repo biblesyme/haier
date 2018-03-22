@@ -3,6 +3,7 @@ import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Car
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {exchangeTypeEnum} from 'utils/enum'
+import prefixZero from 'utils/prefixZero'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -94,14 +95,25 @@ export default class C extends React.Component {
         <Row style={{marginTop: '20px'}}>
           <Col>
             <Tabs type="card">
-              {items.map((item, index) => {
+              {items.sort((a, b) => {
+                if (a.resourceType > b.resourceType) return 1
+                if (a.resourceType < b.resourceType) return -1
+                return 0
+                }).map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
                 const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
                 const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
+                const consumerCount = items.filter(m => m.resourceType === 'rabbitMQConsumer').length
+                let tabIndex = index
+                if (item.resourceType === 'rabbitMQConsumer') {
+                  tabIndex = prefixZero(index + 1)
+                } else {
+                  tabIndex = prefixZero(index + 1 - consumerCount)
+                }
                 if (item.resourceType === 'rabbitMQProducer') {
                   return (
-                    <TabPane key={item.id} tab={`RabbitMQ - 生产者-${index + 1}`}>
+                    <TabPane key={item.id} tab={`RabbitMQ - 生产者-${tabIndex}`}>
                       <div>
                         <span style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</span>
                         <span style={{width: 150}} className="inline">消息吞吐: {data.maxIO}</span>
@@ -151,7 +163,7 @@ export default class C extends React.Component {
                   let exchangeData = exchanges.filter(e => e.data.exchangeName === data.exchangeName)[0] || {}
                   exchangeType = (exchangeData.data && exchangeData.data.exchangeType) || ''
                   return (
-                    <TabPane key={item.id} tab={`RabbitMQ - 消费者-${index + 1}`}>
+                    <TabPane key={item.id} tab={`RabbitMQ - 消费者-${tabIndex}`}>
                       <div>
                         <span style={{width: 150}} className="inline">应用: {projectSelect.name}</span>
                         <span style={{width: 150}} className="inline">Exchange名称: {`${data.exchangeName}`}</span>

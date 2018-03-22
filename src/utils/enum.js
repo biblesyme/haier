@@ -14,9 +14,11 @@ export function deployModeEnum(key)  {
 
 export function clusterTypeEnum(key) {
   const clusterType = {
+    // redis
     one: '单例',
     masterSlave: '主从',
     shared: '分片',
+    //rocketMQTopic
     standalone: '单机',
     cluster: '集群',
   }

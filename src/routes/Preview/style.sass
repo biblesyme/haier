@@ -19,7 +19,33 @@
       .ant-form-item-control-wrapper
         text-align: right
 
+.card-form-m
+  width: 350px
+  height: 327px
+  border: 1px solid $light-grey
+  display: inline-block
+  margin: 0 10px 20px 10px
+  .card-header
+    background-color: lighten($primary, .9)
+    border-bottom: 1px solid $light-grey
+    color: white
+    padding: 9px 0 9px 0
+    font: 1.5em
+    text-align: center
+    height: 40px
+  .card-body
+    padding: 10px
+    \:global
+      .ant-form-item-label
+        text-align: left
+      .ant-form-item-control-wrapper
+        text-align: right
+
 .scode-info
 \:global
    .scode-info .ant-form-item-label
     text-align: left
+    .ant-form label
+     font-size: 16px
+    .ant-form-item-control
+      font-size: 16px

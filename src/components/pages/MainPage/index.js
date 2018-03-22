@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'utils/ecos'
-import {getCookieItem, b64DecodeUnicode} from 'utils/cookies'
+import {getCookieItem, b64DecodeUnicode, setCookieItem} from 'utils/cookies'
 import nameMap from 'utils/nameMap'
 import { Menu, Icon, Button, Select, Avatar, Badge, Layout, Divider } from 'antd';
 import config from './config'
@@ -30,7 +30,7 @@ export default class MainPage extends React.Component {
 
   roleChange = (role) => {
     const {user= {},} = this.props.App
-    document.cookie = `currentRole=${role};`
+    setCookieItem('currentRole', role, null, '/')
     localStorage.setItem('role', role)
     this.props.dispatch({
       type:'App/setState',
@@ -170,7 +170,7 @@ export default class MainPage extends React.Component {
                <span className={styles['user']}>当前登录: {user.name}</span>
                <Divider type="vertical" style={{marginLeft: 20, marginRight: 20}}/>
                <Select value={role}
-                       onSelect={this.roleChange}
+                       onChange={(role) => this.roleChange(role)}
                        className={styles['user_select']}
               >
                 {user.roles.map(r => <Option key={r}>{nameMap[r]}</Option>)}

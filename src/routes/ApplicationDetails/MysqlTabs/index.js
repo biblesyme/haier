@@ -3,6 +3,7 @@ import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Car
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {deployModeEnum} from 'utils/enum'
+import prefixZero from 'utils/prefixZero'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -104,13 +105,25 @@ export default class C extends React.Component {
         <Row style={{marginTop: '40px'}}>
           <Col>
             <Tabs type="card">
-              {items.map((item, index) => {
+              {items.sort((a, b) => a.data.deployMode - b.data.deployMode).map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
                 const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
                 const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
+                const oneCount = items.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 0).length
+                const masterCount = items.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 1).length
+                let tabIndex = index
+                if (data.deployMode === 0) {
+                  tabIndex = prefixZero(index + 1)
+                }
+                if (data.deployMode === 1) {
+                  tabIndex = prefixZero(index - oneCount + 1)
+                }
+                if (data.deployMode === 2) {
+                  tabIndex = prefixZero(index - oneCount - masterCount + 1)
+                }
                 return (
-                  <TabPane key={item.id} tab={`MySQL - ${deployModeEnum(data.deployMode)}-${index + 1}`}>
+                  <TabPane key={item.id} tab={`MySQL - ${deployModeEnum(data.deployMode)}-${tabIndex}`}>
                     <div>
                       <div style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</div>
                       <div style={{width: 150}} className="inline">模式: {deployModeEnum(data.deployMode)}</div>

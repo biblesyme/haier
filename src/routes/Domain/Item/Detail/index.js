@@ -66,13 +66,19 @@ export default class C extends React.Component {
           {...this.props}
           footer={
             <div className="text-center">
-              <Button onClick={this.props.onCancel}>返回</Button>
+              <Button onClick={this.props.onCancel} type="primary">返回</Button>
             </div>
           }
+          width={616}
           >
             <p><label>当前领域：</label><span>{resource.name}</span></p>
             <h3>团队长：</h3>
-            <Table pagination={false} columns={columns} dataSource={boxes} size="small" rowKey="id"/>
+            <Table pagination={false}
+                   columns={columns}
+                   dataSource={boxes}
+                   rowKey="id"
+                   rowClassName="text-center"
+            />
             <div className="mg-b10"></div>
             <div className="text-center"><Pagination current={this.state.page} total={domainAdmins.length} onChange={this.onChange} /></div>
         </Modal>

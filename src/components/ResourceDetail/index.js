@@ -159,15 +159,22 @@ export default class C extends React.Component {
                 </div>
                 <Row className={styles["body-panel"]}>
                   <Col span={12} style={{width: 157}}>地点: &nbsp;{locationFilter.name}</Col>
-                  <Col span={12} style={{width: 157}}>
-                    集群: &nbsp;
-                    {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') ?
-                      (
-                        <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '110px'}}>
-                          {this.state.clusters.map(c => <Option key={c.id}>{c.name}</Option>)}
-                        </Select>
-                      ) : clusterFilter.name}
-                  </Col>
+                  {(this.props.approval && this.props.App.role === 'domainAdmin' && approval.state === 'pending') ?
+                    (
+                      <Col span={12} style={{width: 157}}>&nbsp;</Col>
+                    ) : (
+                      <Col span={12} style={{width: 157}}>
+                        集群: &nbsp;
+                        {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') ?
+                          (
+                            <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '110px'}}>
+                              {this.state.clusters.map(c => <Option key={c.id}>{c.name}</Option>)}
+                            </Select>
+                          ) : clusterFilter.name}
+                      </Col>
+                    )
+                  }
+
                   <Col span={12} style={{marginTop: '12px', width: 157}}>
                     CPU内核数: &nbsp;
                     {data.cpu / 1000}

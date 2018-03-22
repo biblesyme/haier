@@ -1,12 +1,13 @@
-import { Table, Icon, Pagination, Tag, Modal, Form, Input, Button, Select, Row, Col } from 'antd';
+import { Table, Icon, Pagination, Tag, Modal, Form, Input, Button, Select, Row, Col, Badge } from 'antd';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect as modelConnect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
 import ProjectMember from '@/components/ProjectMember'
 import getState from 'utils/getState'
+import {resourceTypeEnum} from 'utils/enum'
 
-import styles from './styles.scss'
+import styles from './styles.sass'
 
 const FormItem = Form.Item
 const {Search} = Input
@@ -85,12 +86,6 @@ class Application extends React.Component {
   render(){
     const {projects=[], accounts=[]} = this.props.reduxState
     const columns = [{
-      title: '序号',
-      dataIndex: 'id',
-      render: (text, record, index) => {
-        return <span>{(this.state.currentPage - 1) * 10 + index + 1}</span>
-      }
-    }, {
       title: '应用名称',
       dataIndex: 'name',
     }, {
@@ -101,22 +96,29 @@ class Application extends React.Component {
       }
     }, {
       title: '应用健康度',
+      render: (record) => (<span style={{color: '#149718'}}>健康-{85}分</span>)
     }, {
       title: '资源种类',
       render: (record) => {
         let resources=[]
         if (record.hasOwnProperty('resources')) {
           record.resources.map(r => {
-            if (!resources.includes(r.resourceType) && r.resourceType !== 'containerHost') {
-              resources = [...resources, r.resourceType]
+            if (!resources.includes(resourceTypeEnum(r.resourceType))) {
+              resources = [...resources, resourceTypeEnum(r.resourceType)]
             }
           })
         }
-        return resources.map(r => <Tag key={record.id + r} color="blue"><Icon  type={nameMap[r]}/></Tag>)
+        return resources.sort().reverse().join('/')
       }
     }, {
       title: '应用告警数',
-      dataIndex: 'health',
+      render: (record) => (
+        <span>
+          <Badge status="error" text="3" className={styles['badge-error']}/>
+          <Badge status="warning" text="3" style={{marginLeft: '16px'}} className={styles['badge-warning']}/>
+          <Badge status="default" text="3" style={{marginLeft: '16px'}} className={styles['badge-default']}/>
+        </span>
+      )
     }, {
       title: <div className="text-center">操作</div>,
       render: (record, index) => {
@@ -142,9 +144,18 @@ class Application extends React.Component {
         return true
       }
       const reg = new RegExp(filter, 'i')
-      const fieldsToFilter = [a.name || '', a.externalId || ''].join()
+      const fieldsToFilter = [a.name || '', a.operationManagers || ''].join()
       return reg.test(fieldsToFilter)
     })
+
+    const itemRender = (current, type, originalElement) => {
+      if (type === 'prev') {
+        return (<Button>上一页</Button>);
+      } else if (type === 'next') {
+        return (<Button>下一页</Button>);
+      }
+      return originalElement;
+    }
 
     return (
     <div>
@@ -164,19 +175,23 @@ class Application extends React.Component {
           <Col>
             <Search
               placeholder="请输入您搜索的关键词"
-              style={{ width: 200 }}
+              style={{ width: 393 }}
               onChange={e => this.setState({filter: e.target.value})}
+              enterButton="搜索"
             />
           </Col>
         </Row>
         <Table columns={columns}
                dataSource={boxes}
                rowKey="id"
-               scroll={{x: 1300}}
+               scroll={{x: 1125}}
                pagination={{
                  showQuickJumper: true,
                  onChange: (currentPage) => this.setState({currentPage}),
+                 showLessItems: true,
+                 itemRender: itemRender,
                }}
+               rowClassName="text-center"
         />
       </div>
 

@@ -94,12 +94,13 @@ class Resource extends React.Component {
               dataSource={boxes}
               columns={columns}
               rowKey="id"
-              scroll={{x: 1300}}
               pagination={{
                 showQuickJumper: true,
                 onChange: (currentPage) => this.setState({currentPage}),
                 showLessItems: true,
               }}
+              scroll={{x: 1125}}
+              rowClassName="text-center"
             />
           </Col>
         </Row>

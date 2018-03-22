@@ -11,21 +11,16 @@ import RedisPanelDetail from './RedisPanelDetail'
 import RocketPanelDetail from './RocketPanelDetail'
 import RabbitMQProducerPanelDetail from './RabbitMQProducerPanelDetail'
 import RabbitMQConsumerPanelDetail from './RabbitMQConsumerPanelDetail'
+import moment from 'moment'
 
 import styles from './style.sass'
 
 const col = 12
 const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
+  labelCol: { span: 8},
+  wrapperCol: {span: 16},
   style: {
-    marginBottom: '10px'
+    marginBottom: '5px'
   }
 };
 
@@ -192,182 +187,174 @@ class Preview extends React.Component {
   render() {
     const {history} = this.props
     const {form={}} = this.props.App
-    const {projectInfo={}, middlewareMappings=[]} = form
-    const {domainName=''} = form
+    const {projectInfo={}, middlewareMappings=[], domainName='',businessManagers=[], operationManagers=[]} = form
     return (
       <main>
         <section className="page-section">
-          <label>应用归属：海尔</label>
+          <label style={{fontSize: 16}}><span className="label">应用归属：</span>海尔</label>
         </section>
         <section className="page-section">
-          <label>应用信息:</label>
-          <div style={{marginTop: '8px'}}></div>
-          <Row gutter={24} className="scode-info">
-            <Col span={col} push={12}>
-              <FormItem
-                {...formItemLayout}
-                label="S码"
-                hasFeedback
-              >
-               {projectInfo.applicationId}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row gutter={24} className="scode-info">
-            <Col span={col}>
-              <FormItem
-                {...formItemLeft}
-                label="应用名称"
-                hasFeedback
-              >
-               {projectInfo.name}
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="申请日期"
-                hasFeedback
-              >
-               {new Date(projectInfo.createdAt).toLocaleString()}
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLeft}
-                label="业务负责人"
-                hasFeedback
-              >
-               {form.businessManagers.join('、 ')}
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="技术负责人"
-                hasFeedback
-              >
-               {form.operationManagers.join('、 ')}
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLeft}
-                label="归属部门"
-                hasFeedback
-              >
-               {form.domainName}
-              </FormItem>
-            </Col>
-            <Col span={col}>
-              <FormItem
-                {...formItemLayout}
-                label="应用属性"
-                hasFeedback
-              >
-               {projectInfo.applicationType}
-              </FormItem>
-            </Col>
-          </Row>
+          <Form>
+            <Row gutter={24} className="scode-info">
+              <Col span={col} style={{width: 300}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用信息"
+                >
+                </FormItem>
+              </Col>
+              <Col span={col} style={{width: 300, marginLeft: 145}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用S码"
+                >
+                  {projectInfo.applicationId}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row gutter={24} className="scode-info">
+              <Col span={col} style={{width: 300}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用名称"
+                  hasFeedback
+                >
+                 {projectInfo.name}
+                </FormItem>
+              </Col>
+              <Col span={col} style={{width: 300, marginLeft: 145}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="申请日期"
+                  hasFeedback
+                >
+                 {moment(projectInfo.createdAt).format('YYYY[年]MMMDo')}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row gutter={24} className="scode-info">
+              <Col span={col} style={{width: 300}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="业务负责人"
+                  hasFeedback
+                >
+                {businessManagers.join('、 ')}
+                </FormItem>
+              </Col>
+              <Col span={col} style={{width: 300, marginLeft: 145}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="技术负责人"
+                  hasFeedback
+                >
+                {operationManagers.join('、 ')}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row gutter={24} className="scode-info">
+              <Col span={col} style={{width: 300}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="归属部门"
+                  hasFeedback
+                >
+                 {form.domainName}
+                </FormItem>
+              </Col>
+              <Col span={col} style={{width: 300, marginLeft: 145}}>
+                <FormItem
+                  {...formItemLayout}
+                  label="应用属性"
+                  hasFeedback
+                >
+                 {projectInfo.applicationType}
+                </FormItem>
+              </Col>
+            </Row>
+          </Form>
         </section>
 
         <section className="page-section">
           <Paas item={form.paas}></Paas>
         </section>
-
         <section className="page-section">
-          <Row>
+          <Row type="flex" justify="space-between" align="middle">
             <Col>
-              <label htmlFor="">中间件：</label>
-              <div style={{padding: '10px'}}></div>
-            </Col>
-            {/* <Row>
-              {middlewareMappings.map(item => {
-                return (
-                  <FormMapping
-                    onChange={(item) => this.middlewareMappingChange(item)}
-                    onRemove={() => this.removeMiddlewareMapping(item.id)}
-                    key={item.id}
-                    item={item}
-                    projects={this.props.reduxState.projects}
-                    resources={this.props.reduxState.resources}
-                    />
-                )
-              })}
-            </Row> */}
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="mysql"/> MySQL</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <MysqlPanelDetail middlewareMappings={middlewareMappings}
-                               removeMiddlewareMapping={this.removeMiddlewareMapping}
-                               onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="redis"/> Redis</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RedisPanelDetail middlewareMappings={middlewareMappings}
-                                    removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                    onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="rocket"/> RocketMQ</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RocketPanelDetail middlewareMappings={middlewareMappings}
-                                     removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                     onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="rocket"/> RabbitMQ-生产者</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RabbitMQProducerPanelDetail middlewareMappings={middlewareMappings}
-                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-
-            <section className={styles["card-form"]} style={{width: '400px', height: '300px'}}>
-              <div className={styles["card-header"]}>
-                <div><Icon type="rocket"/> RabbitMQ-消费者</div>
-              </div>
-                <div style={{height: '280px', overflowY: 'auto'}}>
-                  <RabbitMQConsumerPanelDetail middlewareMappings={middlewareMappings}
-                                               removeMiddlewareMapping={this.removeMiddlewareMapping}
-                                               projects={this.props.reduxState.projects || []}
-                                               resources={this.props.reduxState.resources}
-                                               onEdit={editId => this.setState({visibleEdit: true, editId})}
-                  />
-                </div>
-            </section>
-            <Col span={24}>
+              <label className="label">中间件资源申请:</label>
             </Col>
           </Row>
+          {middlewareMappings.length > 0 && (
+            <div style={{marginTop: 23}}>
+              {middlewareMappings.filter(m => m.resourceType === 'mysql').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="mysql"/> MySQL</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <MysqlPanelDetail middlewareMappings={middlewareMappings}
+                      />
+                    </div>
+                </section>
+              )}
+              {middlewareMappings.filter(m => m.resourceType === 'redis').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="redis"/> Redis</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RedisPanelDetail middlewareMappings={middlewareMappings}
+                      />
+                    </div>
+                </section>
+              )}
+              {middlewareMappings.filter(m => m.resourceType === 'rocketMQTopic').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="rocket"/> RocketMQ</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RocketPanelDetail middlewareMappings={middlewareMappings}
+                      />
+                    </div>
+                </section>
+              )}
+              {middlewareMappings.filter(m => m.resourceType === 'rabbitMQProducer').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="rocket"/> RabbitMQ-生产者</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RabbitMQProducerPanelDetail middlewareMappings={middlewareMappings}
+                      />
+                    </div>
+                </section>
+              )}
+              {middlewareMappings.filter(m => m.resourceType === 'rabbitMQConsumer').length > 0 && (
+                <section className={styles["card-form-m"]}>
+                  <div className={styles["card-header"]}>
+                    <div><Icon type="rocket"/> RabbitMQ-消费者</div>
+                  </div>
+                    <div style={{height: '280px', overflowY: 'auto'}}>
+                      <RabbitMQConsumerPanelDetail middlewareMappings={middlewareMappings}
+                                                   projects={this.props.reduxState.projects}
+                                                   resources={this.props.reduxState.resources}
+                      />
+                    </div>
+                </section>
+              )}
+            </div>
+          )}
         </section>
 
         <section className="page-section">
-          <h3>框架</h3>
+          <label className="label" style={{marginRight: 52}}>框架：</label>
           <CheckboxGroup options={plainOptions} value={form.frame}/>
         </section>
         <section className="page-section">
-          <h3>服务</h3>
+          <label className="label" style={{marginRight: 29}}>推荐服务</label>
           <Checkbox checked={form.alert}
+                    style={{marginRight: 32}}
           >
             监控功能
           </Checkbox>
@@ -376,10 +363,9 @@ class Preview extends React.Component {
             代码托管
           </Checkbox>
         </section>
-        <div style={{paddingBottom: '60px'}}></div>
 
-        <section className="page-section bottom-actions">
-          <Button onClick={this.goBack}>返回修改</Button>
+        <section className="page-section">
+          <Button type="primary" onClick={this.goBack}>返回修改</Button>
           <Button type="primary" style={{float: 'right'}} onClick={this.submit}>创建</Button>
         </section>
       </main>

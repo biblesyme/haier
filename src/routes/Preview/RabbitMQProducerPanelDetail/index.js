@@ -76,30 +76,50 @@ export default class C extends React.Component {
     })
   }
 
+  onEdit = (id, e) => {
+    e.stopPropagation()
+    this.props.onEdit(id)
+  }
+
+  onDelete = (id ,e) => {
+    e.stopPropagation()
+    this.props.removeMiddlewareMapping(id)
+  }
+
   render() {
     const {onChange, item={}, onRemove, projects=[], resources=[], middlewareMappings=[]} = this.props
     let count = 1
+    const header = (record) => {
+      if (this.state.panelIndex === record.id.toString()) {
+        return (
+          <div>
+            <span>{`RabbitMQ - 生产者-${count++}`}</span>
+          </div>
+        )
+      } else {
+        return <span>{`RabbitMQ - 生产者-${count++}`}</span>
+      }
+    }
     return (
-      <Collapse accordion className="detail">
+      <Collapse accordion className="detail" onChange={(panelIndex) => this.setState({panelIndex})}>
         {middlewareMappings.filter(m => m.resourceType === 'rabbitMQProducer').map(m => {
           const machineRoom = this.state.machineRooms.filter(machineRooms => machineRooms.id === m.machineRoomId)[0] || {}
             return (
-              <Panel header={`RabbitMQ - 生产者-${count++}`} key={m.id} >
-                <Row gutter={24}>
+              <Panel header={header(m)} key={m.id} >
+                <Row gutter={24} style={{paddingBottom: 19}}>
                   <Col span={12} push={2}>地点: &nbsp;{machineRoom.roomName}</Col>
                   <Col span={12} push={2}>消息吞吐: &nbsp;{m.maxIO}</Col>
                   <Col span={24} push={2} style={{marginTop: '10px'}}>
                     Exchange名称: &nbsp;
                     {`${m.exchangeName}`}
                   </Col>
-                  <Col span={12} push={2} style={{marginTop: '10px'}}>
+                  <Col span={24} push={2} style={{marginTop: '10px'}}>
                     Exchange类型: &nbsp;
                     {m.exchangeType === 'fanout' && '广播'}
                     {m.exchangeType === 'topic' && '主题'}
                     {m.exchangeType === 'direct' && '直连'}
                   </Col>
                 </Row>
-                <div style={{paddingBottom: '10px'}}></div>
               </Panel>
             )
         })}

@@ -353,7 +353,6 @@ class NewResource extends React.Component {
     const middleware = resources.filter(r => r.resourceType !== 'containerHost')
     const {operationManagers=[], businessManagers=[]} = record
     const domain = this.props.App.domains.filter(d => d.id === record.domainId)[0] || {}
-    console.log(this.state.middlewareMappings)
     return (
     <div>
       <section className="page-section">

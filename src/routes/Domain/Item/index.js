@@ -53,7 +53,7 @@ class Item extends React.Component {
         <Card className={styles["area-card"]}
               title={resource.name}
               extra={<Tooltip title="修改"><Icon type="edit" onClick={this.showModal('visibleEdit')} style={{cursor: 'pointer'}}/></Tooltip> }
-              style={{ width: 300, height: 200 }}
+              style={{ width: 330, height: 200 }}
         >
 
           <h4 className="pull-left">团队长：</h4>

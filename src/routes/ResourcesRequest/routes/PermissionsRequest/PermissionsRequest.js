@@ -143,7 +143,7 @@ class MySubmit extends React.Component {
         let resource = resources.filter(r => r.id === record.resourceId)[0]
         return (
           <div>
-            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看</a>
+            <a onClick={e => this.setState({visibleDetail: true, record, resource})}>查看详情</a>
           </div>
         )
       }

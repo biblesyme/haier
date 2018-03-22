@@ -18,6 +18,8 @@ import { connect } from 'utils/ecos'
 const FormItem = Form.Item
 const {Option} = Select
 
+import styles from './styles.sass'
+
 const formItemLayout4 = {
   labelCol: {
     xs: { span: 6 },
@@ -110,6 +112,7 @@ export default class C extends React.Component {
           }
           closable={false}
           width={616}
+          className={styles['my-modal']}
           >
             <Row>
               <Col span={4} style={{width: '70px'}}>审批状态:</Col>
@@ -120,6 +123,14 @@ export default class C extends React.Component {
                 }
               </Col>
             </Row>
+            {(resource.state === 'denied' && this.state.status === 'success') && (
+              <Row style={{marginTop: '20px'}}>
+                <Col span={4} style={{width: '70px'}}>驳回理由: </Col>
+                <Col span={12}>
+                  {resource.deniedMessages}
+                </Col>
+              </Row>
+            )}
             <Row style={{marginTop: '20px'}}>
               <Col span={4} style={{width: '70px'}}>申请时间:</Col>
               <Col span={12}>{new Date(resource.requestTimestamp * 1000).toLocaleString()}</Col>
@@ -131,14 +142,6 @@ export default class C extends React.Component {
                 {projectSelector.name}
               </Col>
             </Row>
-            {(resource.state === 'denied' && this.state.status === 'success') && (
-              <Row style={{marginTop: '20px', marginBottom: '30px'}}>
-                <Col span={4} style={{width: '70px'}}>驳回理由: </Col>
-                <Col span={12}>
-                  {resource.deniedMessages}
-                </Col>
-              </Row>
-            )}
             {this.state.status === 'success' && (
               <ResourceDetail resource={this.state.resource}
                               projects={this.props.projects}

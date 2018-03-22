@@ -217,7 +217,7 @@ class User extends React.Component {
     }, {
       title: <div className="text-center">状态</div>,
       className: 'text-center',
-      render: (record) => <span style={{...getState(record.state)}}>{nameMap[record.state]}</span>,
+      render: (record) => (<span style={{...getState(record.state)}}>{nameMap[record.state]}</span>),
     }, {
       title: <div className="text-center">操作</div>,
       className: 'text-center',
@@ -259,9 +259,7 @@ class User extends React.Component {
       title: '资源',
     },{
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
-      fixed: 'right',
-      width: 100,
+      render: (record) => (<span style={{...getState(record.state)}}>{nameMap[record.state]}</span>),
     }, {
       title: '操作',
       render: (record) => {
@@ -272,8 +270,6 @@ class User extends React.Component {
           return (<a record={record} onClick={() => this.activate(record)}>启用</a>)
         }
       },
-      fixed: 'right',
-      width: 100,
     },];
 
     const columnAdmin = [{
@@ -286,21 +282,17 @@ class User extends React.Component {
       key: 'name',
     }, {
       title: '状态',
-      render: (record) => <Tag {...getState(record.state)}>{nameMap[record.state]}</Tag>,
-      fixed: 'right',
-      width: 100,
+      render: (record) => (<span style={{...getState(record.state)}}>{nameMap[record.state]}</span>),
     }, {
       title: '操作',
       render: (record) => {
         if (record.state === 'active') {
-          return <a record={record}  onClick={() => this.deactivate(record)}>停用</a>
+          return (<a record={record}  onClick={() => this.deactivate(record)}>停用</a>)
         }
         if (record.state === 'inactive') {
-          return <a record={record} onClick={() => this.activate(record)}>启用</a>
+          return (<a record={record} onClick={() => this.activate(record)}>启用</a>)
         }
       },
-      fixed: 'right',
-      width: 100,
     },];
 
     let selector = []
@@ -340,6 +332,15 @@ class User extends React.Component {
       const fieldsToFilter = [a.name || '', a.externalId || ''].join()
       return reg.test(fieldsToFilter)
     })
+
+    const itemRender = (current, type, originalElement) => {
+      if (type === 'prev') {
+        return (<Button>上一页</Button>);
+      } else if (type === 'next') {
+        return (<Button>下一页</Button>);
+      }
+      return originalElement;
+    }
 
     const expandedRowRender = (record) => {
       let filter = this.state.projectparticipants.filter(p => p.id === record.id)[0] || {}
@@ -392,7 +393,11 @@ class User extends React.Component {
               dataSource={boxes}
               columns={columnStaff}
               rowKey="id"
-              pagination={{showQuickJumper: true}}
+              pagination={{
+                showQuickJumper: true,
+                showLessItems: true,
+                itemRender: itemRender,
+              }}
               scroll={{x: 1125}}
               expandedRowRender={expandedRowRender}
               loading={this.state.loading}
@@ -406,9 +411,14 @@ class User extends React.Component {
               dataSource={boxes}
               columns={columnDeveloper}
               rowKey="id"
-              pagination={{showQuickJumper: true}}
+              pagination={{
+                showQuickJumper: true,
+                showLessItems: true,
+                itemRender: itemRender,
+           }}
               scroll={{x: 1125}}
               loading={this.state.loading}
+              rowClassName="text-center"
             />
           )}
           {this.state.tableSelect === 'admin' && (
@@ -416,9 +426,14 @@ class User extends React.Component {
               dataSource={boxes}
               columns={columnAdmin}
               rowKey="externalId"
-              pagination={{showQuickJumper: true}}
+              pagination={{
+                showQuickJumper: true,
+                showLessItems: true,
+                itemRender: itemRender,
+              }}
               scroll={{x: 1125}}
               loading={this.state.loading}
+              rowClassName="text-center"
             />
           )}
         </Col>

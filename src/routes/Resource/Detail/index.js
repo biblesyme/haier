@@ -20,6 +20,8 @@ import ResourceDetail from '@/components/ResourceDetail'
 const FormItem = Form.Item
 const {Option} = Select
 
+import styles from './styles.sass'
+
 const formItemLayout4 = {
   labelCol: {
     xs: { span: 6 },
@@ -79,11 +81,12 @@ export default class C extends React.Component {
           {...this.props}
           footer={
             <div className="text-center">
-              <Button onClick={this.props.onCancel} >返回</Button>
+              <Button onClick={this.props.onCancel} type="primary">返回</Button>
             </div>
           }
           closable={false}
-          width={800}
+          width={616}
+          className={styles['my-modal']}
           >
             <ResourceDetail resource={resource} projects={this.props.projects} resources={this.props.resources}/>
         </Modal>

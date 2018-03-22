@@ -20,6 +20,8 @@ import ResourceDetail from '@/components/ResourceDetail'
 const FormItem = Form.Item
 const {Option} = Select
 
+import styles from './styles.sass'
+
 const formItemLayout4 = {
   labelCol: {span:4, style: {width: '70px'}},
   wrapperCol: {span:16, style: {width: '290px'}},
@@ -193,6 +195,7 @@ export default class C extends React.Component {
           footer={footer}
           closable={false}
           width={616}
+          className={styles['my-modal']}
           >
             <Row>
               <Col span={4} style={{width: '70px'}}>审批状态:</Col>
@@ -203,6 +206,17 @@ export default class C extends React.Component {
                 }
               </Col>
             </Row>
+
+            {(resource.state === 'denied' && this.state.status === 'success') && (
+              <div>
+                <Row style={{marginTop: '20px'}}>
+                  <Col span={4} style={{width: '70px'}}>驳回理由: </Col>
+                  <Col span={12}>
+                    {resource.deniedMessages}
+                  </Col>
+                </Row>
+              </div>
+            )}
 
             <Row style={{marginTop: '20px'}}>
               <Col span={4} style={{width: '70px'}}>申请时间:</Col>
@@ -216,14 +230,21 @@ export default class C extends React.Component {
               </Col>
             </Row>
 
+
+            {((resource.state === 'confirmed' || resource.state === 'passed')  && this.state.status === 'success') && (
+              <div style={{marginTop: 40}}>
+                <ResourceDetail resource={this.state.resource}
+                                approval={true}
+                                projects={this.props.projects}
+                                clusterId={this.state.clusterId}
+                                onChange={(clusterId) => this.setState({clusterId})}
+                                approval={resource}
+                />
+              </div>
+            )}
+
             {(resource.state === 'denied' && this.state.status === 'success') && (
-              <div>
-                <Row style={{marginTop: '20px', marginBottom: '40px'}}>
-                  <Col span={4} style={{width: '70px'}}>驳回理由: </Col>
-                  <Col span={12}>
-                    {resource.deniedMessages}
-                  </Col>
-                </Row>
+              <div style={{marginTop: '40px'}}>
                 <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}
@@ -241,7 +262,11 @@ export default class C extends React.Component {
                                 onChange={(clusterId) => this.setState({clusterId})}
                                 approval={resource}
                 />
-                <br/>
+              </div>
+            )}
+
+            {((resource.state === 'pending' || resource.state === 'confirmed')  && this.state.status === 'success') && (
+              <div style={{marginTop: 20}}>
                 <FormItem
                   label="驳回理由"
                   {...formItemLayout4}
@@ -256,17 +281,6 @@ export default class C extends React.Component {
                   )}
                 </FormItem>
 
-              </div>
-            )}
-            {((resource.state === 'confirmed' || resource.state === 'passed')  && this.state.status === 'success') && (
-              <div style={{marginTop: 40}}>
-                <ResourceDetail resource={this.state.resource}
-                                approval={true}
-                                projects={this.props.projects}
-                                clusterId={this.state.clusterId}
-                                onChange={(clusterId) => this.setState({clusterId})}
-                                approval={resource}
-                />
               </div>
             )}
         </Modal>

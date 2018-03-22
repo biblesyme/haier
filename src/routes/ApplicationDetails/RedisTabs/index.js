@@ -4,6 +4,7 @@ import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import {clusterTypeEnum} from 'utils/enum'
 import MyProgress from '@/components/MyProgress'
+import prefixZero from 'utils/prefixZero'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -101,13 +102,30 @@ export default class C extends React.Component {
         <Row style={{marginTop: '40px'}}>
           <Col>
             <Tabs type="card">
-              {items.map((item, index) => {
+              {items.sort((a, b) => {
+                      if (a.data.clusterType > b.data.clusterType) return 1
+                      if (a.data.clusterType < b.data.clusterType) return -1
+                      return 0}).map((item, index) => {
                 const {data={}} = item
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
                 const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
                 const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
+
+                const oneCount = items.filter(m => m.resourceType === 'redis' && m.data.clusterType === 'one').length
+                const masterCount = items.filter(m => m.resourceType === 'redis' && m.data.clusterType === 'masterSlave').length
+                let tabIndex = index
+                if (data.clusterType === 'one') {
+                  tabIndex = prefixZero(index + 1)
+                }
+                if (data.clusterType === 'masterSlave') {
+                  tabIndex = prefixZero(index - oneCount + 1)
+                }
+                if (data.clusterType === 'shared') {
+                  tabIndex = prefixZero(index - oneCount - masterCount + 1)
+                }
+
                 return (
-                  <TabPane key={item.id} tab={`Redis - ${clusterTypeEnum(data.clusterType)}-${index + 1}`}>
+                  <TabPane key={item.id} tab={`Redis - ${clusterTypeEnum(data.clusterType)}-${tabIndex}`}>
                     <div>
                       <span style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</span>
                       <span style={{width: 150}} className="inline">模式: {clusterTypeEnum(data.clusterType)}</span>

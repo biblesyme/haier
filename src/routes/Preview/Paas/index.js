@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Divider } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 
@@ -75,33 +75,42 @@ export default class C extends React.Component {
     const {item={}} = this.props
     return (
       <main>
-        <label htmlFor="">资源所在地：</label>
-          {locationFilter.name}
-        <div style={{padding: '10px'}}></div>
-        <label htmlFor="">已选集群：</label>
-          {clusterFilter.name}
-        <div style={{padding: '10px'}}></div>
-          <section className={styles["card-form"]}>
-            <div className={styles["card-header"]}>
-              应用资源配置
-            </div>
-            <Form className={styles["card-body"]}>
-              <FormItem
-                {...formItemLayout3}
-                label="CPU内核数"
-                hasFeedback
-              >
-               {item.cpu / 1000}
-              </FormItem>
-              <FormItem
-                {...formItemLayout3}
-                label="内存"
-                hasFeedback
-              >
-               {`${parseInt(item.memory) /1024 /1024}G`}
-              </FormItem>
-            </Form>
-          </section>
+        <div >
+          <Row>
+            <Col span={7} style={{width: 300}}>
+             <span className="label">资源类型: </span>
+             <span style={{fontSize: '16px', marginLeft: '10px'}}>容器</span>
+           </Col>
+            <Col span={7} style={{width: 300, marginLeft: 145}}>
+             <span className="label">资源所在地: </span>
+             <span style={{fontSize: '16px', marginLeft: '10px'}}>{locationFilter.name}</span>
+           </Col>
+          </Row>
+          <Row>
+            <Col span={7} style={{width: 300}}>
+             <div className="label" style={{marginBottom: '30px'}}>应用资源配置: </div>
+             <Card title={'配置资源'} className={styles['my-card']}>
+               <Form className={styles["card-body"]}>
+                 <FormItem
+                   {...formItemLayout3}
+                   label="CPU内核数"
+                   hasFeedback
+                 >
+                  {item.cpu/1000}
+                 </FormItem>
+                 <Divider style={{margin: '0px 0px'}}></Divider>
+                 <FormItem
+                   {...formItemLayout3}
+                   label="内存"
+                   hasFeedback
+                 >
+                  {`${parseInt(item.memory) / 1024 /1024 || ''}G`}
+                 </FormItem>
+               </Form>
+             </Card>
+            </Col>
+          </Row>
+        </div>
       </main>
     )
   }

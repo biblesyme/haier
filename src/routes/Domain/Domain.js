@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Pagination, Icon, Modal, Button, Form, Input, Table, message } from 'antd';
+import { Card, Pagination, Icon, Modal, Button, Form, Input, Table, message, Row, Col } from 'antd';
 import New from './New'
 import Item from './Item'
 
@@ -102,16 +102,22 @@ class AreaManage extends React.Component {
     return (
       <div>
         <section className="page-section">
-          <div className="text-right mg-b10"><Button type="primary" onClick={this.showModal('visibleAdd')}>新建领域</Button></div>
+          <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 30}}>
+            <h3>领域列表</h3>
+            <Button type="primary" onClick={this.showModal('visibleAdd')} icon="plus">新建领域</Button>
+          </div>
           {items}
-          <Pagination className="text-center"
-                      current={this.state.page}
-                      total={activeDomian.length}
-                      onChange={page => this.setState({page})}
-                      style={{marginTop: '20px'}}
-                      showQuickJumper
-                      pageSize={12}
-          />
+          <Row type="flex" justify="end">
+            <Col>
+              <Pagination current={this.state.page}
+                          total={activeDomian.length}
+                          onChange={page => this.setState({page})}
+                          style={{marginTop: '20px'}}
+                          showQuickJumper
+                          pageSize={12}
+              />
+            </Col>
+          </Row>
         </section>
 
         <Modal
