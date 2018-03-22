@@ -31,7 +31,7 @@ import styles from './style.sass'
 
 
 const formItemLayout = {
-  labelCol: { span: 4},
+  labelCol: { span: 4, style: {width: '93px'}},
   wrapperCol: {span: 12},
   style: {
     marginBottom: '10px'

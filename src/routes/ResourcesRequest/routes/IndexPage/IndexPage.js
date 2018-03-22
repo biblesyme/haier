@@ -120,11 +120,7 @@ class Approval extends React.Component {
           return <span></span>
         }
       },
-      sorter: (a, b) => {
-        const _a = projects.filter(p => p.id === a.projectId)[0] || {}
-        const _b = projects.filter(p => p.id === b.projectId)[0] || {}
-        return _a.name - _b.name
-      },
+      sorter: (a, b) => a.projectId - b.projectId
     }, {
       title: '部门',
       render: (record) => {
@@ -300,7 +296,7 @@ class Approval extends React.Component {
     return (
       <main>
         <h3>审批列表</h3>
-        <Row type="flex" justify="space-between" className={styles.tableListForm}>
+        <Row type="flex" justify="end" className={styles.tableListForm}>
           <Col>
             {this.props.App.role === 'admin' && (
               <Select style={{width: '161px'}}

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
+import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card, Divider } from 'antd';
 import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import { withRouter } from 'react-router'
-import {deployModeEnum} from 'utils/enum'
+import {deployModeEnum, clusterTypeEnum} from 'utils/enum'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -151,94 +151,77 @@ export default class C extends React.Component {
     return (
       <main>
         {resource.resourceType === 'containerHost' && (
-          <div className="text-center">
-            <label htmlFor="">资源所在地：</label>
-              {locationFilter.name}
-              {approval.state === 'passed' && (
-                <label style={{marginLeft: '20px'}}>集群：{clusterFilter.name}</label>
-              )}
-            <div style={{padding: '10px'}}></div>
-            {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') && (
-              <div>
-                <label htmlFor="" style={{marginLeft: '20px'}}>集群：</label>
-                  <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '200px'}}>
-                    {this.state.clusters.map(c => <Option key={c.id}><Icon type="cluster" style={{color: '#27ae60'}}/> {c.name}</Option>)}
-                  </Select>
-                <div style={{padding: '10px'}}></div>
-              </div>
-            )}
-              <section className={styles["card-form"]}>
-                <div className={styles["card-header"]}>
-                  资源配置
+          <div className={styles["my-card"]}>
+            <Card title={<span>应用配置资源</span>}>
+              <Form className={styles["card-body"]}>
+                <div className={styles["title-panel"]}>
+                  容器 - {data.cpu/1000}核 - {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
                 </div>
-                <Form className={styles["card-body"]}>
-                  <FormItem
-                    {...formItemLayout3}
-                    label="CPU内核数"
-                    hasFeedback
-                  >
-                   {data.cpu / 1000}
-                  </FormItem>
-                  <FormItem
-                    {...formItemLayout3}
-                    label="内存"
-                    hasFeedback
-                  >
-                   {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
-                  </FormItem>
-                </Form>
-              </section>
-              {this.props.approval && (
-                <section className={styles["card-form"]}>
-                  <div className={styles["card-header"]}>
-                    集群信息
-                  </div>
-                  <Form className={styles["card-body"]}>
-                    <FormItem
-                      {...formItemLayout3}
-                      label="可用CPU"
-                      hasFeedback
-                    >
-                     {`${request.cpu - used.cpu}`}
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout3}
-                      label="可用内存"
-                      hasFeedback
-                    >
-                     {`${request.memory - used.memory}`}
-                    </FormItem>
-                  </Form>
-                </section>
-              )}
+                <Row className={styles["body-panel"]}>
+                  <Col span={12} style={{width: 157}}>地点: &nbsp;{locationFilter.name}</Col>
+                  <Col span={12} style={{width: 157}}>
+                    集群: &nbsp;
+                    {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') ?
+                      (
+                        <Select value={this.state.clusterId} onChange={clusterId => this.onClusterChange(clusterId)} style={{width: '110px'}}>
+                          {this.state.clusters.map(c => <Option key={c.id}>{c.name}</Option>)}
+                        </Select>
+                      ) : clusterFilter.name}
+                  </Col>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>
+                    CPU内核数: &nbsp;
+                    {data.cpu / 1000}
+                  </Col>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>
+                    内存: &nbsp;
+                    {`${parseInt(data.memory) / 1024 /1024 /1024 || ''}G`}
+                  </Col>
+                  {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') && (
+                    <Col span={12} style={{marginTop: '12px', width: 157}}>
+                      可用CPU: &nbsp;
+                      {`${request.cpu - used.cpu}`}
+                    </Col>
+                  )}
+                  {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') && (
+                    <Col span={12} style={{marginTop: '12px', width: 157}}>
+                      可用内存: &nbsp;
+                      {`${request.memory - used.memory}`}
+                    </Col>
+                  )}
+                </Row>
+              </Form>
+            </Card>
           </div>
         )}
         {resource.resourceType === 'mysql' && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="MySQL" style={{marginBottom: '16px', width: '270px'}}>
+          <div className={styles["my-card"]}>
+            <Card title={<span><Icon type="mysql" style={{marginRight: 10}}/>MySQL</span>}>
               <Form className={styles["card-body"]}>
-                <Row gutter={24}>
-                  <Col span={12} push={1}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
-                  <Col span={12} push={1}>模式: &nbsp;{deployModeEnum(data.deployMode)}</Col>
+                <div className={styles["title-panel"]}>
+                  MySQL - {deployModeEnum(data.deployMode)}
+                </div>
+                <Row className={styles["body-panel"]}>
+                  <Col span={12} style={{width: 157}}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} style={{width: 157}}>模式: &nbsp;{deployModeEnum(data.deployMode)}</Col>
                   {data.deployMode === 1 && (
-                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                    <Col span={12} style={{marginTop: '12px', width: 157}}>
                       主从: &nbsp;
                       {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
                     </Col>
                   )}
                   {data.deployMode === 2 && (
-                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                    <Col span={12} style={{marginTop: '12px', width: 157}}>
                       mycat数量: &nbsp;
                       {data.mycatClusterManagerNodeCount}
                     </Col>
                   )}
                   {data.deployMode === 2 && (
-                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                    <Col span={12} style={{marginTop: '12px', width: 157}}>
                       mysql数量: &nbsp;
                       {data.mycatClusterDataNodeCount}
                     </Col>
                   )}
-                  <Col span={12} push={1} style={{marginTop: '10px'}}>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>
                     备份: &nbsp;
                     {data.backup === 'true' ? '是' : '否'}
                   </Col>
@@ -248,23 +231,26 @@ export default class C extends React.Component {
           </div>
         )}
         {resource.resourceType === 'redis' && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="Redis" style={{width: '270px', marginBottom: '20px'}}>
+          <div className={styles["my-card"]}>
+            <Card title={<span><Icon type="redis" style={{marginRight: 10}}/>Redis</span>}>
               <Form className={styles["card-body"]}>
-                <Row gutter={24}>
-                  <Col span={12} push={1}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
-                  <Col span={12} push={1}>
+                <div className={styles["title-panel"]}>
+                  Redis - {clusterTypeEnum(data.clusterType)}
+                </div>
+                <Row className={styles["body-panel"]}>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>
                     类型: &nbsp;
                     {data.clusterType === 'one' && '单例'}
                     {data.clusterType === 'masterSlave' && '主从'}
                     {data.clusterType === 'shared' && '分片'}
                   </Col>
-                  <Col span={12} push={1} style={{marginTop: '10px'}}>
+                  <Col span={12} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                     内存: &nbsp;
                     {`${data.memorySize}M`}
                   </Col>
                   {data.clusterType === 'shared' && (
-                    <Col span={12} push={1} style={{marginTop: '10px'}}>
+                    <Col span={12} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                       分片数量: &nbsp;
                       {data.sharedCount}
                     </Col>
@@ -276,16 +262,19 @@ export default class C extends React.Component {
           </div>
         )}
         {resource.resourceType === 'rocketMQTopic' && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="RocketMQ" style={{marginBottom: '16px', width: '270px'}}>
+          <div className={styles["my-card"]}>
+            <Card title={<span><Icon type="rocket" style={{marginRight: 10}}/>RocketMQ</span>}>
               <Form className={styles["card-body"]}>
-                <Row gutter={24}>
-                  <Col span={12} push={1}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
-                  <Col span={12} push={1}>
+                <div className={styles["title-panel"]}>
+                  RocketMQ - {data.clusterType === 'standalone' ? '单机' : '集群'}
+                </div>
+                <Row className={styles["body-panel"]}>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>
                     类型: &nbsp;
                     {data.clusterType === 'standalone' ? '单机' : '集群'}
                   </Col>
-                  <Col span={24} push={1} style={{marginTop: '10px'}}>
+                  <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                     主题名称: &nbsp;
                     {`${data.topicName}`}
                   </Col>
@@ -295,17 +284,20 @@ export default class C extends React.Component {
           </div>
         )}
         {resource.resourceType === 'rabbitMQProducer' && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="RabbitMQ-生产者" style={{marginBottom: '16px', width: '270px'}}>
+          <div className={styles["my-card"]}>
+            <Card title={<span><Icon type="RabbitMQ" style={{marginRight: 10}}/>RabbitMQ-生产者</span>}>
               <Form className={styles["card-body"]}>
-                <Row gutter={24}>
-                  <Col span={12} push={2}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
-                  <Col span={12} push={2}>消息吞吐: &nbsp;{data.maxIO}</Col>
-                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                <div className={styles["title-panel"]}>
+                  RabbitMQ-生产者
+                </div>
+                <Row className={styles["body-panel"]}>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
+                  <Col span={12} style={{marginTop: '12px', width: 157}}>消息吞吐: &nbsp;{data.maxIO}</Col>
+                  <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                     Exchange名称: &nbsp;
                     {`${data.exchangeName}`}
                   </Col>
-                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                  <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                     Exchange类型: &nbsp;
                     {data.exchangeType === 'fanout' && '广播'}
                     {data.exchangeType === 'topic' && '主题'}
@@ -317,27 +309,30 @@ export default class C extends React.Component {
           </div>
         )}
         {resource.resourceType === 'rabbitMQConsumer' && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Card title="RabbitMQ-消费者" style={{marginBottom: '16px', width: '270px'}}>
+          <div className={styles["my-card"]}>
+            <Card title={<span><Icon type="RabbitMQ" style={{marginRight: 10}}/>RabbitMQ-消费者</span>}>
               <Form className={styles["card-body"]}>
-                <Row gutter={24}>
-                  <Col span={24} push={2}>应用: &nbsp;{projectSelect.name}</Col>
-                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                <div className={styles["title-panel"]}>
+                  RabbitMQ-消费者
+                </div>
+                <Row className={styles["body-panel"]}>
+                  <Col span={24} style={{marginTop: '12px', width: 157}}>应用: &nbsp;{projectSelect.name}</Col>
+                  <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                     Exchange名称: &nbsp;
                     {`${data.exchangeName}`}
                   </Col>
-                  <Col span={24} push={2} style={{marginTop: '10px'}}>
+                  <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                     队列名: &nbsp;
                     {data.queueName}
                   </Col>
                   {exchangeType === 'topic' && (
-                    <Col span={24} push={2} style={{marginTop: '10px'}}>
+                    <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                       主题名: &nbsp;
                       {data.topicName}
                     </Col>
                   )}
                   {exchangeType === 'direct' && (
-                    <Col span={24} push={2} style={{marginTop: '10px'}}>
+                    <Col span={24} style={{marginTop: '12px', width: 157}} style={{marginTop: '10px'}}>
                       直连名: &nbsp;
                       {data.RouteKey}
                     </Col>

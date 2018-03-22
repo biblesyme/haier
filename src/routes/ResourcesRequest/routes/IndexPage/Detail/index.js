@@ -21,16 +21,8 @@ const FormItem = Form.Item
 const {Option} = Select
 
 const formItemLayout4 = {
-  labelCol: {
-    xs: { span: 6 },
-    sm: { span: 6 },
-    pull: 0,
-  },
-  wrapperCol: {
-    xs: { span: 12 },
-    sm: { span: 12 },
-    push: 0
-  },
+  labelCol: {span:4, style: {width: '70px'}},
+  wrapperCol: {span:16, style: {width: '290px'}},
   style: {
     marginBottom: '10px'
   }
@@ -164,27 +156,27 @@ export default class C extends React.Component {
     const footer = (
       <div>
         {(resource.state === 'pending') && (
-          <div className="text-center">
-            <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
-            <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
-            <Button onClick={this.pass}>同意</Button>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <Button onClick={this.props.onCancel} style={{width: '83px', background: '#a6a6a6', color: '#fff'}}>取消</Button>
+            <Button onClick={this.deny} style={{width: '83px', background: '#f8a03c', color: '#fff'}}>驳回</Button>
+            <Button onClick={this.pass} style={{width: '83px', color: '#fff'}} type="primary">同意</Button>
           </div>
         )}
         {(resource.state === 'confirmed' && this.props.App.role === 'admin') && (
-          <div className="text-center">
-            <Button onClick={this.props.onCancel} style={{marginRight: '16px'}}>取消</Button>
-            <Button style={{marginRight: '16px'}} onClick={this.deny}>驳回</Button>
-            <Button onClick={this.pass}>同意</Button>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <Button onClick={this.props.onCancel} style={{width: '83px', background: '#a6a6a6', color: '#fff'}}>取消</Button>
+            <Button onClick={this.deny} style={{width: '83px', background: '#f8a03c', color: '#fff'}}>驳回</Button>
+            <Button onClick={this.pass} style={{width: '83px', color: '#fff'}} type="primary">同意</Button>
           </div>
         )}
         {(resource.state === 'confirmed' && this.props.App.role !== 'admin') && (
           <div className="text-center">
-            <Button onClick={this.props.onCancel} >返回</Button>
+            <Button type="primary" onClick={this.props.onCancel} style={{width: 83}}>关闭</Button>
           </div>
         )}
         {(resource.state === 'passed' || resource.state === 'denied') && (
           <div className="text-center">
-            <Button onClick={this.props.onCancel} >返回</Button>
+            <Button type="primary" onClick={this.props.onCancel} style={{width: 83}}>关闭</Button>
           </div>
         )}
       </div>
@@ -200,10 +192,10 @@ export default class C extends React.Component {
           {...this.props}
           footer={footer}
           closable={false}
-          width={800}
+          width={616}
           >
             <Row>
-              <Col span={12} push={9}>审批状态:</Col>
+              <Col span={4} style={{width: '70px'}}>审批状态:</Col>
               <Col span={12}>
                 {role === 'admin' ?
                   <Tag color={adminState[resource.state]}>{adminMap[resource.state]}</Tag>
@@ -213,12 +205,12 @@ export default class C extends React.Component {
             </Row>
 
             <Row style={{marginTop: '20px'}}>
-              <Col span={12} push={9}>申请时间:</Col>
+              <Col span={4} style={{width: '70px'}}>申请时间:</Col>
               <Col span={12}>{new Date(resource.requestTimestamp * 1000).toLocaleString()}</Col>
             </Row>
 
-            <Row style={{marginTop: '20px', marginBottom: '30px'}}>
-              <Col span={12} push={9}>所属应用:</Col>
+            <Row style={{marginTop: '20px'}}>
+              <Col span={4} style={{width: '70px'}}>所属应用:</Col>
               <Col span={12}>
                 {projectSelector.name}
               </Col>
@@ -226,8 +218,8 @@ export default class C extends React.Component {
 
             {(resource.state === 'denied' && this.state.status === 'success') && (
               <div>
-                <Row style={{marginTop: '20px', marginBottom: '30px'}}>
-                  <Col span={12} push={9}>驳回理由: </Col>
+                <Row style={{marginTop: '20px', marginBottom: '40px'}}>
+                  <Col span={4} style={{width: '70px'}}>驳回理由: </Col>
                   <Col span={12}>
                     {resource.deniedMessages}
                   </Col>
@@ -242,7 +234,7 @@ export default class C extends React.Component {
             )}
 
             {(resource.state === 'pending'  && this.state.status === 'success') && (
-              <div>
+              <div style={{marginTop: 40}}>
                 <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}
@@ -267,7 +259,7 @@ export default class C extends React.Component {
               </div>
             )}
             {((resource.state === 'confirmed' || resource.state === 'passed')  && this.state.status === 'success') && (
-              <div>
+              <div style={{marginTop: 40}}>
                 <ResourceDetail resource={this.state.resource}
                                 approval={true}
                                 projects={this.props.projects}

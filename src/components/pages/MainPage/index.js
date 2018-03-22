@@ -129,7 +129,7 @@ export default class MainPage extends React.Component {
                     </Link>
                   </Menu.Item>
                 )}
-                {['admin', 'manager', 'domainAdmin'].includes(role) && (
+                {['manager'].includes(role) && (
                   <Menu.Item key="6">
                     <Link to="/resourcesRequest/permissionsRequest">
                       <Icon type="SubmitReview"></Icon>

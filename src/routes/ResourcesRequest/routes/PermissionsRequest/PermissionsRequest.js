@@ -103,7 +103,8 @@ class MySubmit extends React.Component {
         } else {
           return <span></span>
         }
-      }
+      },
+      sorter: (a, b) => a.projectId - b.projectId
     }, {
       title: '描述',
       render: (record) => {
@@ -148,8 +149,9 @@ class MySubmit extends React.Component {
       }
     },];
     return (
-      <main className="page-section">
-        <Row type="flex" justify="space-between" className={styles.tableListForm}>
+      <main>
+        <h3>申请列表</h3>
+        <Row type="flex" justify="end" className={styles.tableListForm}>
           <Col>
             <Select style={{width: '200px'}}
                     value={this.state.Selected}
@@ -173,8 +175,9 @@ class MySubmit extends React.Component {
               onChange: (currentPage) => this.setState({currentPage}),
               itemRender: itemRender,
             }}
-            scroll={{x: 1300}}
+            scroll={{x: 1125}}
             loading={this.state.loading}
+            rowClassName="text-center"
           />
         </Col>
       </Row>

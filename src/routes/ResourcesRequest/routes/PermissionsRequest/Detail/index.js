@@ -109,10 +109,10 @@ export default class C extends React.Component {
             </div>
           }
           closable={false}
-          width={800}
+          width={616}
           >
             <Row>
-              <Col span={12} push={9}>审批状态:</Col>
+              <Col span={4} style={{width: '70px'}}>审批状态:</Col>
               <Col span={12}>
                 {role === 'admin' ?
                   <Tag color={adminState[resource.state]}>{adminMap[resource.state]}</Tag>
@@ -121,19 +121,19 @@ export default class C extends React.Component {
               </Col>
             </Row>
             <Row style={{marginTop: '20px'}}>
-              <Col span={12} push={9}>申请时间:</Col>
+              <Col span={4} style={{width: '70px'}}>申请时间:</Col>
               <Col span={12}>{new Date(resource.requestTimestamp * 1000).toLocaleString()}</Col>
             </Row>
 
             <Row style={{marginTop: '20px', marginBottom: '30px'}}>
-              <Col span={12} push={9}>所属应用:</Col>
+              <Col span={4} style={{width: '70px'}}>所属应用:</Col>
               <Col span={12}>
                 {projectSelector.name}
               </Col>
             </Row>
             {(resource.state === 'denied' && this.state.status === 'success') && (
               <Row style={{marginTop: '20px', marginBottom: '30px'}}>
-                <Col span={12} push={9}>驳回理由: </Col>
+                <Col span={4} style={{width: '70px'}}>驳回理由: </Col>
                 <Col span={12}>
                   {resource.deniedMessages}
                 </Col>
