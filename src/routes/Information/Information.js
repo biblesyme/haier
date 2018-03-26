@@ -84,7 +84,11 @@ class Information extends React.Component {
       title: '应用名称',
       dataIndex: 'name',
       className: 'text-center',
-      sorter: (a, b) => a.name - b.name,
+      sorter: (a, b) => {
+        if (a.name > b.name) return 1
+        if (a.name < b.name) return -1
+        return 0
+      },
     }, {
       title: '项目经理',
       className: 'text-center',
@@ -158,7 +162,9 @@ class Information extends React.Component {
       const {filter} = this.state
       if (filter) {
         const reg = new RegExp(filter, 'i')
-        const fieldsToFilter = [a.name || ''].join()
+        const domainFilter = domains.filter(d => d.id === a.domainId)[0] || ''
+        const domainName = domainFilter.name
+        const fieldsToFilter = [a.name || '', domainName || ''].join()
         return reg.test(fieldsToFilter)
       }
       if (this.state.domainSelect !== 'all') {
@@ -166,7 +172,7 @@ class Information extends React.Component {
       }
       return true
     })
-    console.log(this.state.domainSelect)
+
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -178,7 +184,7 @@ class Information extends React.Component {
             </Row>
             <Row type="flex" justify="space-between" className={styles.tableListForm}>
               <Col>
-                <Select style={{ width: 200 }}
+                <Select style={{ width: 161 }}
                         value={this.state.domainSelect}
                         onChange={domainSelect => this.setState({domainSelect})}
                 >

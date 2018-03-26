@@ -11,6 +11,7 @@ import styles from './styles.sass'
 
 const FormItem = Form.Item
 const {Search} = Input
+const {Option} = Select
 
 const formItemLayout = {
   labelCol: {
@@ -160,12 +161,17 @@ class ApplicationCenter extends React.Component {
 
     const boxes = projects.filter(a => {
       const {filter} = this.state
-      if (!filter) {
-        return true
+      if (filter) {
+        const reg = new RegExp(filter, 'i')
+        const domainFilter = domains.filter(d => d.id === a.domainId)[0] || ''
+        const domainName = domainFilter.name
+        const fieldsToFilter = [a.name || '', domainName || ''].join()
+        return reg.test(fieldsToFilter)
       }
-      const reg = new RegExp(filter, 'i')
-      const fieldsToFilter = [a.name || '', a.externalId || ''].join()
-      return reg.test(fieldsToFilter)
+      if (this.state.domainSelect !== 'all') {
+        return a.domainId === this.state.domainSelect
+      }
+      return true
     })
 
     return (
@@ -179,14 +185,13 @@ class ApplicationCenter extends React.Component {
         </Row>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
-            {/* <Select style={{ width: 200 }}
+            <Select style={{ width: 161 }}
                     value={this.state.domainSelect}
                     onChange={domainSelect => this.setState({domainSelect})}
             >
-              <Option key="all">全部</Option>
-              <Option key="PSI">PSI</Option>
-              <Option key="众创汇">众创汇</Option>
-            </Select> */}
+              <Option key='all'>全部</Option>
+              {domains.map(d => <Option key={d.id}>{d.name}</Option>)}
+            </Select>
           </Col>
           <Col>
             <Search
@@ -206,7 +211,7 @@ class ApplicationCenter extends React.Component {
                  showLessItems: true,
                  itemRender: itemRender,
                }}
-               rowClassName="text-center" 
+               rowClassName="text-center"
         />
       </div>
 
