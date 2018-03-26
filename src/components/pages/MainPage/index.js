@@ -104,7 +104,7 @@ export default class MainPage extends React.Component {
               </Menu.ItemGroup>
             )}
 
-            {['admin', 'domainAdmin', 'manager'].includes(role) && (
+            {['admin', 'domainAdmin', 'manager','internal'].includes(role) && (
               <Menu.ItemGroup title="审批管理">
                 {['admin', 'domainAdmin'].includes(role) && (
                   <Menu.Item key="5">
@@ -129,7 +129,7 @@ export default class MainPage extends React.Component {
                     </Link>
                   </Menu.Item>
                 )}
-                {['manager'].includes(role) && (
+                {['manager','internal'].includes(role) && (
                   <Menu.Item key="6">
                     <Link to="/resourcesRequest/permissionsRequest">
                       <Icon type="SubmitReview"></Icon>

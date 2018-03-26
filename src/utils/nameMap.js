@@ -24,8 +24,8 @@ export default {
   passed: '已通过',
 
   // Account
-  internal: '内部员工',
-  external: '外部员工',
+  internal: '项目经理',
+  external: '开发者',
   manager: '项目经理',
   developer: '项目成员',
   domainAdmin: '团队长',
