@@ -141,14 +141,12 @@ class Application extends React.Component {
 
     const boxes = projects.filter(a => {
       const {filter} = this.state
-      if (filter) {
-        const reg = new RegExp(filter, 'i')
-        const domainFilter = domains.filter(d => d.id === a.domainId)[0] || ''
-        const domainName = domainFilter.name
-        const fieldsToFilter = [a.name || '', domainName || ''].join()
-        return reg.test(fieldsToFilter)
+      if (!filter) {
+        return true
       }
-      return true
+      const reg = new RegExp(filter, 'i')
+      const fieldsToFilter = [a.name || ''].join()
+      return reg.test(fieldsToFilter)
     })
 
     const itemRender = (current, type, originalElement) => {
