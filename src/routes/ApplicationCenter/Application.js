@@ -168,9 +168,6 @@ class ApplicationCenter extends React.Component {
         const fieldsToFilter = [a.name || '', domainName || ''].join()
         return reg.test(fieldsToFilter)
       }
-      if (this.state.domainSelect !== 'all') {
-        return a.domainId === this.state.domainSelect
-      }
       return true
     })
 
@@ -185,13 +182,13 @@ class ApplicationCenter extends React.Component {
         </Row>
         <Row type="flex" justify="space-between" className={styles.tableListForm}>
           <Col>
-            <Select style={{ width: 161 }}
+            {/* <Select style={{ width: 161 }}
                     value={this.state.domainSelect}
                     onChange={domainSelect => this.setState({domainSelect})}
             >
               <Option key='all'>全部</Option>
               {domains.map(d => <Option key={d.id}>{d.name}</Option>)}
-            </Select>
+            </Select> */}
           </Col>
           <Col>
             <Search
