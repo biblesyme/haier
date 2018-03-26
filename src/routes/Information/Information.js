@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, Row, Col, Progress, Divider, Input, Table, Tag, Icon, Badge, Button} from 'antd'
+import {Card, Row, Col, Progress, Divider, Input, Table, Tag, Icon, Badge, Button, Select} from 'antd'
 import { Circle, Line } from 'rc-progress';
 import MyProgress from '@/components/MyProgress'
 import { connect } from 'utils/ecos'
@@ -14,6 +14,7 @@ import styles from './styles.sass'
 const CardGrid = Card.Grid
 const {Search} = Input
 const stateHeight = '168px'
+const {Option} = Select
 
 class Information extends React.Component {
   state = {
@@ -155,13 +156,17 @@ class Information extends React.Component {
 
     const boxes = projects.filter(a => {
       const {filter} = this.state
-      if (!filter) {
-        return true
+      if (filter) {
+        const reg = new RegExp(filter, 'i')
+        const fieldsToFilter = [a.name || ''].join()
+        return reg.test(fieldsToFilter)
       }
-      const reg = new RegExp(filter, 'i')
-      const fieldsToFilter = [a.name || ''].join()
-      return reg.test(fieldsToFilter)
+      if (this.state.domainSelect !== 'all') {
+        return a.domainId === this.state.domainSelect
+      }
+      return true
     })
+    console.log(this.state.domainSelect)
     return (
       <div className="page-wrap">
         <section className="page-section">
@@ -173,14 +178,13 @@ class Information extends React.Component {
             </Row>
             <Row type="flex" justify="space-between" className={styles.tableListForm}>
               <Col>
-                {/* <Select style={{ width: 200 }}
+                <Select style={{ width: 200 }}
                         value={this.state.domainSelect}
                         onChange={domainSelect => this.setState({domainSelect})}
                 >
-                  <Option key="all">全部</Option>
-                  <Option key="PSI">PSI</Option>
-                  <Option key="众创汇">众创汇</Option>
-                </Select> */}
+                  <Option key='all'>全部</Option>
+                  {domains.map(d => <Option key={d.id}>{d.name}</Option>)}
+                </Select>
               </Col>
               <Col>
                 <Search
