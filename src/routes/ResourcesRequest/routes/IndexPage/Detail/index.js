@@ -51,6 +51,7 @@ export default class C extends React.Component {
     resource: {},
     status: '',
     clusterId: '',
+    clusters: [],
   }
 
   componentWillMount() {
@@ -68,6 +69,19 @@ export default class C extends React.Component {
               data: JSON.parse(resource.data),
             }
           }
+          this.props.dispatch({
+            type: 'App/followCluster',
+            payload: {
+              data: {
+                id: resource.locationId,
+              },
+              successCB: (res) => {
+                this.setState({
+                  clusters: res.data.data || [],
+                })
+              },
+            }
+          })
           this.setState({resource, status: 'success'})
         }
       },
@@ -118,11 +132,14 @@ export default class C extends React.Component {
   }
 
   pass = () => {
+    const {clusters=[]} = this.state
+    const clusterFilter = clusters.filter(c => c.id === this.state.clusterId)[0] || {}
     let payload = {
       data: {
         ...this.props.resource,
         externalId: this.props.App.user.externalId,
         clusterId: this.state.clusterId,
+        clusterName: clusterFilter.name,
       },
       action: 'pass',
       successCB: () => {
