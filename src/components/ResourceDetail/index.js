@@ -213,7 +213,7 @@ export default class C extends React.Component {
                   {data.deployMode === '1' && (
                     <Col span={12} style={{marginTop: '12px', width: 157}}>
                       主从: &nbsp;
-                      {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
+                      {data.masterSlaveOption === '0' ? '一主一从' : '一主两从'}
                     </Col>
                   )}
                   {data.deployMode === '2' && (

@@ -211,8 +211,8 @@ export default class C extends React.Component {
                         hasFeedback
                       >
                        <Radio.Group value={this.state.mysql.masterSlaveOption} onChange={(e => this.onMysqlChange(e.target.value, 'masterSlaveOption'))}>
-                          <Radio.Button value={0}>一主一从</Radio.Button>
-                          <Radio.Button value={1}>一主两从</Radio.Button>
+                          <Radio.Button value='0'>一主一从</Radio.Button>
+                          <Radio.Button value='0'>一主两从</Radio.Button>
                         </Radio.Group>
                       </FormItem>
                     )}

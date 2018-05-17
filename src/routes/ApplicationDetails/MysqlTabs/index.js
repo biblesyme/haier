@@ -130,7 +130,7 @@ export default class C extends React.Component {
                       {data.deployMode === '1' && (
                         <div style={{width: 150}} className="inline">
                           主从: &nbsp;
-                          {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
+                          {data.masterSlaveOption === '0' ? '一主一从' : '一主两从'}
                         </div>
                       )}
                       {data.deployMode === '2' && (

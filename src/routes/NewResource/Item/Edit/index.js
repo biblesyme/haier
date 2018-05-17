@@ -131,7 +131,7 @@ export default class C extends React.Component {
       data = {
         ...data,
         deployMode: data.deployMode,
-        masterSlaveOption: parseInt(data.masterSlaveOption),
+        masterSlaveOption: data.masterSlaveOption,
         mycatClusterManagerNodeCount: parseInt(this.state.mysql.mycatClusterManagerNodeCount),
         mycatClusterDataNodeCount: parseInt(this.state.mysql.mycatClusterDataNodeCount),
       }

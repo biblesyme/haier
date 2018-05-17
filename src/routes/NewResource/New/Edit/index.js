@@ -52,7 +52,7 @@ export default class C extends React.Component {
     middlewareSelect: 'mysql',
     mysql: {
       deployMode: '0',
-      masterSlaveOption: 0,
+      masterSlaveOption: '0',
       mycatClusterManagerNodeCount: 0,
       mycatClusterDataNodeCount: 0,
       backup: 'false',
@@ -209,8 +209,8 @@ export default class C extends React.Component {
                             hasFeedback
                           >
                            <Radio.Group value={mysql.masterSlaveOption} onChange={e => this.setState({mysql: {...mysql, masterSlaveOption: e.target.value}})}>
-                              <Radio.Button value={0}>一主一从</Radio.Button>
-                              <Radio.Button value={1}>一主两从</Radio.Button>
+                              <Radio.Button value='0'>一主一从</Radio.Button>
+                              <Radio.Button value='1'>一主两从</Radio.Button>
                             </Radio.Group>
                           </FormItem>
                         )}

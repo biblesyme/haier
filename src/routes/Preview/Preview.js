@@ -103,7 +103,7 @@ class Preview extends React.Component {
           data: JSON.stringify({
             ...r,
             deployMode: r.deployMode,
-            masterSlaveOption: parseInt(r.masterSlaveOption),
+            masterSlaveOption: r.masterSlaveOption,
             mycatClusterManagerNodeCount: parseInt(r.mycatClusterManagerNodeCount),
             mycatClusterDataNodeCount: parseInt(r.mycatClusterDataNodeCount),
           })

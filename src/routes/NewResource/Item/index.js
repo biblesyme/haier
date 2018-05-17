@@ -230,7 +230,7 @@ export default class C extends React.Component {
                     label="主从"
                     hasFeedback
                   >
-                   {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
+                   {data.masterSlaveOption === '0' ? '一主一从' : '一主两从'}
                   </FormItem>
                 )}
 
