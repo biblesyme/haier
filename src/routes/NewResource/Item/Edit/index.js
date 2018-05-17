@@ -65,14 +65,14 @@ export default class C extends React.Component {
     redis: {
       memorySize: '100',
       clusterType: 'one',
-      sharedCount: '0',
+      sharedCount: 0,
     },
     rocketMQTopic: {
       clusterType: 'standalone',
       topicName: '',
     },
     rabbitMQProducer: {
-      maxIO: '100',
+      maxIO: 100,
       exchangeName: '',
       exchangeType: 'fanout',
     },
@@ -139,7 +139,7 @@ export default class C extends React.Component {
     if (this.state.middlewareSelect === 'redis') {
       data = {
         ...this.state.redis,
-        sharedCount: parseInt(this.state.mysql.sharedCount),
+        sharedCount: parseInt(this.state.redis.sharedCount),
       }
     }
     if (this.state.middlewareSelect === 'rabbitMQProducer') {

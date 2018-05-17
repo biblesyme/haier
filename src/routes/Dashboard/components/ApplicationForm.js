@@ -207,7 +207,7 @@ class ApplicationForm extends React.Component {
         ...defaultMiddlewareMapping,
         memorySize: '100',
         clusterType: 'one',
-        sharedCount: '0',
+        sharedCount: 0,
       }
     }
     if (value === 'rocketMQTopic') {

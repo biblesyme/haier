@@ -62,7 +62,7 @@ export default class C extends React.Component {
     redis: {
       memorySize: '100',
       clusterType: 'one',
-      sharedCount: '0',
+      sharedCount: 0,
       resourceType: 'redis',
     },
     rocketMQTopic: {
@@ -71,7 +71,7 @@ export default class C extends React.Component {
       resourceType: 'rocketMQTopic',
     },
     rabbitMQProducer: {
-      maxIO: '100',
+      maxIO: 100,
       exchangeName: '',
       exchangeType: 'fanout',
       resourceType: 'rabbitMQProducer',
