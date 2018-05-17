@@ -210,19 +210,19 @@ export default class C extends React.Component {
                 <Row className={styles["body-panel"]}>
                   <Col span={12} style={{width: 157}}>地点: &nbsp;{machineRoomFilter.roomName}</Col>
                   <Col span={12} style={{width: 157}}>模式: &nbsp;{deployModeEnum(data.deployMode)}</Col>
-                  {data.deployMode === 1 && (
+                  {data.deployMode === '1' && (
                     <Col span={12} style={{marginTop: '12px', width: 157}}>
                       主从: &nbsp;
                       {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
                     </Col>
                   )}
-                  {data.deployMode === 2 && (
+                  {data.deployMode === '2' && (
                     <Col span={12} style={{marginTop: '12px', width: 157}}>
                       mycat数量: &nbsp;
                       {data.mycatClusterManagerNodeCount}
                     </Col>
                   )}
-                  {data.deployMode === 2 && (
+                  {data.deployMode === '2' && (
                     <Col span={12} style={{marginTop: '12px', width: 157}}>
                       mysql数量: &nbsp;
                       {data.mycatClusterDataNodeCount}

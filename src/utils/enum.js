@@ -1,8 +1,8 @@
 export function deployModeEnum(key)  {
   const deployMode = {
-    0: '单机',
-    1: '主从',
-    2: '集群',
+    '0': '单机',
+    '1': '主从',
+    '2': '集群',
   }
   return deployMode[key]
 }

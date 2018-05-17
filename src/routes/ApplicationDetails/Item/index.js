@@ -244,17 +244,17 @@ export default class C extends React.Component {
                  {deployModeEnum(data.deployMode)}
                 </FormItem>
 
-                {data.deployMode === 1 && (
+                {data.deployMode === '1' && (
                   <FormItem
                     {...formItemLayout4}
                     label="主从"
                     hasFeedback
                   >
-                   {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
+                   {data.masterSlaveOption === '0' ? '一主一从' : '一主两从'}
                   </FormItem>
                 )}
 
-                {data.deployMode === 2 && (
+                {data.deployMode === '2' && (
                   <div>
                     <FormItem
                       {...formInputLayout}

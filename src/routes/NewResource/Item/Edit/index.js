@@ -130,7 +130,7 @@ export default class C extends React.Component {
     if (resource.resourceType === 'mysql') {
       data = {
         ...data,
-        deployMode: parseInt(data.deployMode),
+        deployMode: data.deployMode,
         masterSlaveOption: parseInt(data.masterSlaveOption),
         mycatClusterManagerNodeCount: parseInt(this.state.mysql.mycatClusterManagerNodeCount),
         mycatClusterDataNodeCount: parseInt(this.state.mysql.mycatClusterDataNodeCount),
@@ -264,7 +264,7 @@ export default class C extends React.Component {
                          </Radio.Group>
                         </FormItem>
 
-                        {mysql.deployMode === 1 && (
+                        {mysql.deployMode === '1' && (
                           <FormItem
                             {...formItemLayout4}
                             label="主从"
@@ -277,7 +277,7 @@ export default class C extends React.Component {
                           </FormItem>
                         )}
 
-                        {mysql.deployMode === 2 && (
+                        {mysql.deployMode === '2' && (
                           <div>
                             <FormItem
                               {...formInputLayout}

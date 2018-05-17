@@ -110,16 +110,16 @@ export default class C extends React.Component {
                 const locationFilter = this.state.locations.filter(l => l.id === data.locationId)[0] || {}
                 const clusterFilter = this.state.clusters.filter(c => c.id === data.clusterId)[0] || {}
                 const machineRoomFilter = this.state.machineRooms.filter(m => m.id === data.machineRoomId)[0] || {}
-                const oneCount = items.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 0).length
-                const masterCount = items.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 1).length
+                const oneCount = items.filter(m => m.resourceType === 'mysql' && m.data.deployMode === '0').length
+                const masterCount = items.filter(m => m.resourceType === 'mysql' && m.data.deployMode === '1').length
                 let tabIndex = index
-                if (data.deployMode === 0) {
+                if (data.deployMode === '0') {
                   tabIndex = prefixZero(index + 1)
                 }
-                if (data.deployMode === 1) {
+                if (data.deployMode === '1') {
                   tabIndex = prefixZero(index - oneCount + 1)
                 }
-                if (data.deployMode === 2) {
+                if (data.deployMode === '2') {
                   tabIndex = prefixZero(index - oneCount - masterCount + 1)
                 }
                 return (
@@ -127,19 +127,19 @@ export default class C extends React.Component {
                     <div>
                       <div style={{width: 150}} className="inline">地点: {machineRoomFilter.roomName}</div>
                       <div style={{width: 150}} className="inline">模式: {deployModeEnum(data.deployMode)}</div>
-                      {data.deployMode === 1 && (
+                      {data.deployMode === '1' && (
                         <div style={{width: 150}} className="inline">
                           主从: &nbsp;
                           {data.masterSlaveOption === 0 ? '一主一从' : '一主两从'}
                         </div>
                       )}
-                      {data.deployMode === 2 && (
+                      {data.deployMode === '2' && (
                         <div style={{width: 150}} className="inline">
                           mycat数量: &nbsp;
                           {data.mycatClusterManagerNodeCount}
                         </div>
                       )}
-                      {data.deployMode === 2 && (
+                      {data.deployMode === '2' && (
                         <div style={{width: 150}} className="inline">
                           mysql数量: &nbsp;
                           {data.mycatClusterDataNodeCount}

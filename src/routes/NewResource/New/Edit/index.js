@@ -51,7 +51,7 @@ export default class C extends React.Component {
   state = {
     middlewareSelect: 'mysql',
     mysql: {
-      deployMode: 0,
+      deployMode: '0',
       masterSlaveOption: 0,
       mycatClusterManagerNodeCount: 0,
       mycatClusterDataNodeCount: 0,
@@ -196,13 +196,13 @@ export default class C extends React.Component {
                           hasFeedback
                         >
                          <Radio.Group value={mysql.deployMode} onChange={e => this.setState({mysql: {...mysql, deployMode: e.target.value}})}>
-                           <Radio.Button value={0}>单机</Radio.Button>
-                           <Radio.Button value={1}>主从</Radio.Button>
-                           <Radio.Button value={2}>集群</Radio.Button>
+                           <Radio.Button value="0">单机</Radio.Button>
+                           <Radio.Button value="1">主从</Radio.Button>
+                           <Radio.Button value="2">集群</Radio.Button>
                          </Radio.Group>
                         </FormItem>
 
-                        {mysql.deployMode === 1 && (
+                        {mysql.deployMode === '1' && (
                           <FormItem
                             {...formItemLayout4}
                             label="主从"
@@ -215,7 +215,7 @@ export default class C extends React.Component {
                           </FormItem>
                         )}
 
-                        {mysql.deployMode === 2 && (
+                        {mysql.deployMode === '2' && (
                           <div>
                             <FormItem
                               {...formInputLayout}

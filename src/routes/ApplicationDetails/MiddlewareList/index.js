@@ -97,13 +97,13 @@ export default class C extends React.Component {
         const {data={}} = record
         const oneCount = middlewareMappings.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 0).length
         const masterCount = middlewareMappings.filter(m => m.resourceType === 'mysql' && m.data.deployMode === 1).length
-        if (data.deployMode === 0) {
+        if (data.deployMode === '0') {
           return <span>MySQL - {deployModeEnum(data.deployMode)}-{prefixZero(index + 1)}</span>
         }
-        if (data.deployMode === 1) {
+        if (data.deployMode === '1') {
           return <span>MySQL - {deployModeEnum(data.deployMode)}-{prefixZero(index - oneCount + 1)}</span>
         }
-        if (data.deployMode === 2) {
+        if (data.deployMode === '2') {
           return <span>MySQL - {deployModeEnum(data.deployMode)}-{prefixZero(index - oneCount - masterCount + 1)}</span>
         }
       }

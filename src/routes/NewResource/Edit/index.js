@@ -198,13 +198,13 @@ export default class C extends React.Component {
                       hasFeedback
                     >
                      <Radio.Group value={this.state.mysql.deployMode} onChange={(e) => this.onMysqlChange(e.target.value, 'deployMode')}>
-                        <Radio.Button value={0}>单机</Radio.Button>
-                        <Radio.Button value={1}>主从</Radio.Button>
-                        <Radio.Button value={2}>集群</Radio.Button>
+                        <Radio.Button value='0'>单机</Radio.Button>
+                        <Radio.Button value='1'>主从</Radio.Button>
+                        <Radio.Button value='2'>集群</Radio.Button>
                       </Radio.Group>
                     </FormItem>
 
-                    {this.state.mysql.deployMode === 1 && (
+                    {this.state.mysql.deployMode === '1' && (
                       <FormItem
                         {...formItemLayout4}
                         label="主从"
@@ -217,7 +217,7 @@ export default class C extends React.Component {
                       </FormItem>
                     )}
 
-                    {this.state.mysql.deployMode === 2 && (
+                    {this.state.mysql.deployMode === '2' && (
                       <div>
                         <FormItem
                           {...formInputLayout}

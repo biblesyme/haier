@@ -102,7 +102,7 @@ class Preview extends React.Component {
           type: 'resource',
           data: JSON.stringify({
             ...r,
-            deployMode: parseInt(r.deployMode),
+            deployMode: r.deployMode,
             masterSlaveOption: parseInt(r.masterSlaveOption),
             mycatClusterManagerNodeCount: parseInt(r.mycatClusterManagerNodeCount),
             mycatClusterDataNodeCount: parseInt(r.mycatClusterDataNodeCount),

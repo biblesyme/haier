@@ -157,9 +157,9 @@ class Approval extends React.Component {
           return <span>{`容器-${data.cpu / 1000}核-${data.memory / 1024 / 1024 / 1024}G`}</span>
         }
         if (selector.resourceType === 'mysql') {
-          if (data.deployMode === 0) return <span>{`MySQL-单机`}</span>
-          if (data.deployMode === 1) return <span>{`MySQL-主从`}</span>
-          if (data.deployMode === 2) return <span>{`MySQL-集群`}</span>
+          if (data.deployMode === '0') return <span>{`MySQL-单机`}</span>
+          if (data.deployMode === '1') return <span>{`MySQL-主从`}</span>
+          if (data.deployMode === '2') return <span>{`MySQL-集群`}</span>
         }
         if (selector.resourceType === 'redis') {
           if (data.clusterType === 'one') return <span>{`Redis-${data.memorySize}M-单例`}</span>
@@ -249,9 +249,9 @@ class Approval extends React.Component {
           return <span>{`容器-${data.cpu / 1000}核-${data.memory / 1024 / 1024 / 1024}G`}</span>
         }
         if (selector.resourceType === 'mysql') {
-          if (data.deployMode === 0) return <span>{`MySQL-单机`}</span>
-          if (data.deployMode === 1) return <span>{`MySQL-主从`}</span>
-          if (data.deployMode === 2) return <span>{`MySQL-集群`}</span>
+          if (data.deployMode === '0') return <span>{`MySQL-单机`}</span>
+          if (data.deployMode === '1') return <span>{`MySQL-主从`}</span>
+          if (data.deployMode === '2') return <span>{`MySQL-集群`}</span>
         }
         if (selector.resourceType === 'redis') {
           if (data.clusterType === 'one') return <span>{`Redis-${data.memorySize}M-单例`}</span>
