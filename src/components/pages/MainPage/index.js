@@ -72,7 +72,8 @@ export default class MainPage extends React.Component {
     const {user= {}, role} = this.props.App
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider style={{color: 'white'}} width="215"
+        <Sider width="215"
+               className={styles["page-sider"]}
         >
           <div style={{height: '50px', padding: '18px 35px 18px 36px'}} >
            <span>海尔产品整合PORTAL</span>
