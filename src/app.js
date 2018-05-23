@@ -7,6 +7,7 @@ import 'moment/locale/zh-cn';
 import Spinner from './components/Spinner'
 import {getCookieItem, b64DecodeUnicode, removeItem} from 'utils/cookies'
 import apiStore from 'utils/apiStore'
+import unauth from 'utils/unauth'
 
 import './antd.less'
 import styles from './app.sass'
@@ -50,7 +51,8 @@ class App extends React.Component {
               type: 'findUser',
               payload: {
                 id: user.id,
-                successCB: () => this.props.selfDispatch({ type: 'setState', payload: {login: true}})
+                successCB: () => this.props.selfDispatch({ type: 'setState', payload: {login: true}}),
+                failCB: (e) => unauth(e),
             }})
           }
         }

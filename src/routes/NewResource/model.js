@@ -2,6 +2,7 @@ import { delay } from 'redux-saga'
 import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
 import apiStore from 'utils/apiStore'
 import axios from 'axios'
+import unauth from 'utils/unauth'
 
 export default {
   state: {
@@ -29,6 +30,7 @@ export default {
         if(successCB){yield call(successCB,afterLink)}
       }
       catch(e){
+        unauth(e)
         if(failCB){yield call(failCB, e)}
       }
     },
@@ -52,6 +54,7 @@ export default {
         if(successCB){yield call(successCB,fomatResources)}
       }
       catch(e){
+        unauth(e)
         if(failCB){yield call(failCB, e)}
       }
     },
@@ -75,6 +78,7 @@ export default {
         }
       }
       catch(e){
+        unauth(e)
         yield put({type:'setState',payload: {
             findProjectStatus: LOAD_STATUS.FAIL,
           }
@@ -104,6 +108,7 @@ export default {
         }
       }
       catch(e){
+        unauth(e)
         yield put({type:'setState',payload: {
             findResourceStatus: LOAD_STATUS.FAIL,
           }
@@ -119,7 +124,7 @@ export default {
         let projectInfo = yield call([axios, axios.get], `/v1/query/projects/${scode}`)
         yield put({type: 'setState', payload: {projectInfo: projectInfo.data.data}})
       } catch (e) {
-
+        unauth(e)
       }
     },
   }

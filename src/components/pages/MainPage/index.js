@@ -5,6 +5,7 @@ import {getCookieItem, b64DecodeUnicode, setCookieItem} from 'utils/cookies'
 import nameMap from 'utils/nameMap'
 import { Menu, Icon, Button, Select, Avatar, Badge, Layout, Divider } from 'antd';
 import config from './config'
+import unauth from 'utils/unauth'
 
 const SubMenu = Menu.SubMenu;
 const {Option} = Select
@@ -39,7 +40,8 @@ export default class MainPage extends React.Component {
       type: 'App/findApproval',
       payload: {
         account: user,
-        successCB: () => this.setState({findApproval: 'success'})
+        successCB: () => this.setState({findApproval: 'success'}),
+        failCB: (e) => unauth(e),
       }
     })
   }
@@ -63,7 +65,8 @@ export default class MainPage extends React.Component {
         type: 'App/findApproval',
         payload: {
           account: user,
-          successCB: () => this.setState({findApproval: 'success'})
+          successCB: () => this.setState({findApproval: 'success'}),
+          failCB: (e) => unauth(e),
         }
       })
     }

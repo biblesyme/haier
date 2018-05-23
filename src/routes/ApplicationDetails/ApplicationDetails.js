@@ -10,6 +10,7 @@ import RocketMQTabs from './RocketMQTabs'
 import RabitMQTabs from './RabitMQTabs'
 import MiddlewareList from './MiddlewareList'
 import moment from 'moment'
+import unauth from 'utils/unauth'
 
 const FormItem = Form.Item
 const CardGrid = Card.Grid
@@ -47,6 +48,7 @@ class ApplicationDetail extends React.Component {
         data: record,
         link: 'self',
         successCB: (resource) => this.props.selfDispatch({type: 'findProjectInfo', payload: {scode: resource.scode}}),
+        failCB: (e) => unauth(e),
       },
     })
     this.props.selfDispatch({

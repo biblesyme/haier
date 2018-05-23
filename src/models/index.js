@@ -3,6 +3,7 @@ import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
 import apiStore from 'utils/apiStore'
 import axios from 'axios'
 // import stateKeyGenerator from 'utils/stateKeyGenerator'
+import unauth from 'utils/unauth'
 
 export default {
 	state: {
@@ -46,6 +47,7 @@ export default {
 						loadSchemaStatus: LOAD_STATUS.FAIL,
 					}
 				})
+				unauth(e)
 				if(failCB){yield call(failCB, e)}
 			}
 		},
@@ -59,6 +61,7 @@ export default {
 				if(successCB){yield call(successCB)}
 			}
 			catch(e){
+				unauth(e)
 				yield put({type:'setState',payload: {
 						findAccountStatus: LOAD_STATUS.FAIL,
 					}
@@ -75,6 +78,7 @@ export default {
 				}
 			}
 			catch(e){
+				unauth(e)
 				if(failCB){yield call(failCB, e)}
 			}
 		},
@@ -88,6 +92,7 @@ export default {
 				}
 			}
 			catch(e){
+				unauth(e)
 				if(failCB){yield call(failCB, e)}
 			}
 		},
@@ -99,6 +104,7 @@ export default {
 				if(successCB){yield call(successCB,afterLink)}
 			}
 			catch(e){
+				unauth(e)
 				if(failCB){yield call(failCB, e)}
 			}
 		},
@@ -110,7 +116,7 @@ export default {
 				if (successCB) {yield call(successCB, location)}
 			}
 			catch(e) {
-
+				unauth(e)
 			}
 		},
 		*followCluster({payload={}}, {call, put}){
@@ -120,7 +126,7 @@ export default {
 				if (successCB) {yield call(successCB, cluster)}
 			}
 			catch(e) {
-
+				unauth(e)
 			}
 		},
 		*findMachineRoom({payload={}}, {call, put}) {
@@ -137,7 +143,7 @@ export default {
 				let clusterDetail = yield call([axios, axios.get], `/v1/query/paas/clusterInfo/${data.id}`)
 				if (successCB) {yield call(successCB, clusterDetail)}
 			} catch (e) {
-
+				unauth(e)
 			}
 		},
 		*doSelfAction({payload={}}, {call, put}){
@@ -162,6 +168,7 @@ export default {
 				if(successCB){yield call(successCB)}
 			}
 			catch(e){
+				unauth(e)
 			}
 		},
 		*findProject({payload={}},{call, put}){
@@ -186,6 +193,7 @@ export default {
 				}
 			}
 			catch(e){
+				unauth(e)
 				yield put({type:'setState',payload: {
 						findProjectStatus: LOAD_STATUS.FAIL,
 						errorMessage: e.message()
@@ -216,6 +224,7 @@ export default {
 				}
 			}
 			catch(e){
+				unauth(e)
 				yield put({type:'setState',payload: {
 						findResourceStatus: LOAD_STATUS.FAIL,
 					}
@@ -235,6 +244,7 @@ export default {
 				}
 				if (callback){yield call(callback)}
 			} catch(e) {
+				unauth(e)
 				if(failCB){
 					yield call(failCB)
 				}
@@ -251,6 +261,7 @@ export default {
 				}
 			}
 			catch(e){
+				unauth(e)
 				if(callback){
 					yield call(callback)
 				}

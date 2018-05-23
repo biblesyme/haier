@@ -7,6 +7,7 @@ import nameMap from 'utils/nameMap'
 import getState from 'utils/getState'
 import replace from 'utils/replace'
 import RcTable from 'rc-table'
+import unauth from 'utils/unauth'
 
 const {Search} = Input
 const RadioButton = Radio.Button
@@ -42,11 +43,13 @@ class User extends React.Component {
                 link: 'projectparticipants',
                 successCB: (record) => {
                   this.setState({projectparticipants: [...this.state.projectparticipants, {id: a.id, record: record.content}]})
-                }
+                },
+                failCB: (e) => unauth(e),
               }
             })
           })
-        }
+        },
+        failCB: (e) => unauth(e),
       }
     })
     this.props.selfDispatch({type: 'findProject'})
@@ -63,7 +66,8 @@ class User extends React.Component {
         this.props.selfDispatch({'type': 'findAccount'})
         message.success('账号停用成功')
       },
-      failCB: () => {
+      failCB: (e) => {
+        unauth(e)
         message.error('账号停用失败')
       }
     }
@@ -81,6 +85,7 @@ class User extends React.Component {
         message.success('账号启用成功')
       },
       failCB: () => {
+        unauth(e)
         message.error('账号启用失败')
       }
     }
@@ -107,11 +112,15 @@ class User extends React.Component {
                   this.setState({
                     projectparticipants: nextAry
                   })
-                }
+                },
+                failCB: (e) => unauth(e),
               }
             })
           },
-          failCB: () => message.error('取消关联失败'),
+          failCB: (e) => {
+            unauth(e)
+            message.error('取消关联失败')
+          },
         }})
     }
     if (belong.state === 'forbidden') {
@@ -133,11 +142,15 @@ class User extends React.Component {
                   this.setState({
                     projectparticipants: nextAry
                   })
-                }
+                },
+                failCB: (e) => unauth(e),
               }
             })
           },
-          failCB: () => message.error('启用关联失败'),
+          failCB: (e) => {
+            unauth(e)
+            message.error('启用关联失败')
+          },
         }})
     }
   }

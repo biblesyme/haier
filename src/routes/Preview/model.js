@@ -1,6 +1,7 @@
 import { delay } from 'redux-saga'
 import LOAD_STATUS from 'utils/LOAD_STATUS_ENUMS'
 import apiStore from 'utils/apiStore'
+import unauth from 'utils/unauth'
 
 export default {
   state: {
@@ -41,6 +42,7 @@ export default {
         }
       }
       catch(e){
+        unauth(e)
         yield put({type:'setState',payload: {
             findProjectStatus: LOAD_STATUS.FAIL,
             errorMessage: e.message()
@@ -71,6 +73,7 @@ export default {
         }
       }
       catch(e){
+        unauth(e)
         yield put({type:'setState',payload: {
             findResourceStatus: LOAD_STATUS.FAIL,
           }

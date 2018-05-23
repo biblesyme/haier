@@ -14,6 +14,7 @@ import {
 } from 'antd'
 import { connect } from 'utils/ecos'
 import nameMap from 'utils/nameMap'
+import unauth from 'utils/unauth'
 
 const FormItem = Form.Item
 
@@ -67,7 +68,8 @@ export default class C extends React.Component {
       link: 'projectParticipants',
       successCB: (particpants) => {
         this.setState({particpants: particpants.content.filter(p => p.stat !== 'removed')})
-      }
+      },
+      failCB: (e) => unauth(e),
     }
     this.props.dispatch({'type': 'App/followLink', payload})
   }
@@ -92,7 +94,10 @@ export default class C extends React.Component {
           participantType: this.state.participantType,
         },
         action: 'addMember',
-        failCB: () => message.error('项目成员新增失败'),
+        failCB: (e) => {
+          unauth(e)
+          message.error('项目成员新增失败')
+        },
         successCB: () => {
           this.update()
           message.success('项目成员新增成功')
@@ -114,7 +119,10 @@ export default class C extends React.Component {
         ...this.props.resource,
       },
       action: 'removeMember',
-      failCB: () => message.error('项目成员删除失败'),
+      failCB: (e) => {
+        unauth(e)
+        message.error('项目成员删除失败')
+      },
       successCB: () => {
         this.update()
         message.success('项目成员删除成功')

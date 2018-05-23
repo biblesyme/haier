@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, Card } from 'antd';
 import { connect } from 'utils/ecos'
+import unauth from 'utils/unauth'
 
 const CheckboxGroup = Checkbox.Group;
 const SubMenu = Menu.SubMenu;
@@ -33,6 +34,7 @@ export default class C extends React.Component {
           this.setState({machineRooms: res.data.data, machineRoomId: res.data.data[0].id})
           this.props.onChange({...this.props.item, machineRoomId: res.data.data[0].id})
         },
+        failCB: (e) => unauth(e),
       }
     })
   }

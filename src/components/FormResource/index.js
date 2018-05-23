@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Button, Select, Radio, Form, Input, Row, Col, Checkbox, InputNumber, Divider } from 'antd';
 import { connect } from 'utils/ecos'
+import unauth from 'utils/unauth'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -56,9 +57,11 @@ export default class C extends React.Component {
                   // clusterName: res.data.data[0].name
                 })
               },
+              failCB: (e) => unauth(e),
             }
           })
-        }
+        },
+        failCB: (e) => unauth(e),
       }
     })
     this.setState({
@@ -144,6 +147,7 @@ export default class C extends React.Component {
           this.setState({clusters: res.data.data, clusterName: res.data.data[0].name, clusterId: res.data.data[0].id})
           this.onChange(res.data.data[0].id, 'clusterId')
         },
+        failCB: (e) => unauth(e),
       }
     })
     this.onChange(value, 'locationId')

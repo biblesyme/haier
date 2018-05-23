@@ -4,6 +4,7 @@ import nameMap from 'utils/nameMap'
 import { connect } from 'utils/ecos'
 import { withRouter } from 'react-router'
 import {deployModeEnum, clusterTypeEnum} from 'utils/enum'
+import unauth from 'utils/unauth'
 
 const SubMenu = Menu.SubMenu;
 const Option = Select.Option;
@@ -67,12 +68,12 @@ export default class C extends React.Component {
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
-    console.log(resource)
     if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
         payload: {
           successCB: (res) => this.setState({locations: res.data.data || []}),
+          failCB: (e) => unauth(e),
         }
       })
       this.props.dispatch({
@@ -88,6 +89,7 @@ export default class C extends React.Component {
             })
             this.props.onChange(res.data.data[0].id)
           },
+          failCB: (e) => unauth(e),
         }
       })
       this.props.dispatch({
@@ -97,6 +99,7 @@ export default class C extends React.Component {
             id: data.clusterId,
           },
           successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+          failCB: (e) => unauth(e),
         }
       })
     } else {
@@ -106,6 +109,7 @@ export default class C extends React.Component {
           successCB: (res) => {
             this.setState({machineRooms: res.data.data})
           },
+          failCB: (e) => unauth(e),
         }
       })
     }
@@ -125,6 +129,7 @@ export default class C extends React.Component {
           id: clusterId,
         },
         successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+        failCB: (e) => unauth(e),
       }
     })
   }
