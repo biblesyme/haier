@@ -246,7 +246,7 @@ export default {
 			} catch(e) {
 				unauth(e)
 				if(failCB){
-					yield call(failCB)
+					yield call(failCB, e)
 				}
 				if (callback){yield call(callback)}
 			}
