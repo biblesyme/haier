@@ -235,20 +235,18 @@ export default {
 			}
 		},
 		*findApproval({payload={}},{call, put}){
-			let {successCB, account, failCB, callback} = payload
+			let {successCB, account, failCB} = payload
 			try{
 				let approval = yield call([account,account.followLink], 'approvals')
 				yield put({type:'setState',payload: {approvals: approval.content}})
 				if(successCB){
-					yield call(successCB)
+					yield call(successCB, approval.content)
 				}
-				if (callback){yield call(callback)}
 			} catch(e) {
 				unauth(e)
 				if(failCB){
 					yield call(failCB, e)
 				}
-				if (callback){yield call(callback)}
 			}
 		},
 		*findDomain({payload={}},{call, put}){

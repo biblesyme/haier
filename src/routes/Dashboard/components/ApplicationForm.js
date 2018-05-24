@@ -205,7 +205,7 @@ class ApplicationForm extends React.Component {
     if (value === 'redis') {
       defaultMiddlewareMapping = {
         ...defaultMiddlewareMapping,
-        memorySize: '100',
+        memorySize: 100,
         clusterType: 'one',
         sharedCount: 0,
       }

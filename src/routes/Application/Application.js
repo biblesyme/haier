@@ -139,7 +139,7 @@ class Application extends React.Component {
       }
     }];
 
-    const boxes = projects.filter(a => {
+    const boxes = projects.filter(p => p.state !== 'pending').filter(a => {
       const {filter} = this.state
       if (!filter) {
         return true

@@ -41,7 +41,11 @@ class Approval extends React.Component {
     this.props.dispatch({
       type: 'App/findApproval',
       payload: {
-        callback: () => this.setState({loading: false}),
+        successCB: (res) => {
+          res.map(r => r.importLink('resource', {data: {...r}}))
+          this.setState({loading: false})
+        },
+        failCB: (err) => this.setState({loading: false}),
         account: this.props.App.user,
       }
     })
@@ -70,7 +74,19 @@ class Approval extends React.Component {
     } else {
       roleFilter = approvals
     }
-    const boxes = roleFilter.filter(d => {
+    let boxFormatter = roleFilter.map(r => {
+      if (r.resource && r.resource.data) {
+        return r = {
+          ...r,
+          resource: {
+            ...r.resource,
+            data: JSON.parse(r.resource.data),
+          }
+        }
+      }
+      return r
+    })
+    const boxes = boxFormatter.filter(d => {
       const {filter} = this.state
       if (!filter || filter === 'all') {
         return true
@@ -151,7 +167,7 @@ class Approval extends React.Component {
     }, {
       title: '描述',
       render: (record) => {
-        let selector = resources.filter(r => r.id === record.resourceId)[0] || {}
+        let selector = record.resource || {}
         const {data={}} = selector
         if (selector.resourceType === 'containerHost') {
           return <span>{`容器-${data.cpu / 1000}核-${data.memory / 1024 / 1024 / 1024}G`}</span>
@@ -243,7 +259,7 @@ class Approval extends React.Component {
     }, {
       title: '描述',
       render: (record) => {
-        let selector = resources.filter(r => r.id === record.resourceId)[0] || {}
+        let selector = record.resource || {}
         const {data={}} = selector
         if (selector.resourceType === 'containerHost') {
           return <span>{`容器-${data.cpu / 1000}核-${data.memory / 1024 / 1024 / 1024}G`}</span>

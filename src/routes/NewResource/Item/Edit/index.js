@@ -63,7 +63,7 @@ export default class C extends React.Component {
       backup: 'false',
     },
     redis: {
-      memorySize: '100',
+      memorySize: 100,
       clusterType: 'one',
       sharedCount: 0,
     },

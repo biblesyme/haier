@@ -60,7 +60,7 @@ export default class C extends React.Component {
       resourceType: 'mysql',
     },
     redis: {
-      memorySize: '100',
+      memorySize: 100,
       clusterType: 'one',
       sharedCount: 0,
       resourceType: 'redis',

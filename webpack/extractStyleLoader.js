@@ -14,12 +14,12 @@ function extractAntDLoader(){
             test: /\.less$/,
             use: extractAntDPlugin.extract({
                 fallback: "style-loader",
-                // {
-                //   loader: ?" // creates style nodes from JS strings
-                //       , options: {
-                //         sourceMap: process.env.NODE_ENV === 'production'? true : false,
-                //       }
-                //   },
+                {
+                  loader: "style-loader?" // creates style nodes from JS strings
+                      , options: {
+                        sourceMap: process.env.NODE_ENV === 'production'? true : false,
+                      }
+                  },
                 use: [{
                       loader: "css-loader?!postcss-loader",
                       options:{
@@ -74,7 +74,7 @@ function extractSassLoader(){
         //     , options: {
         //       sourceMap: process.env.NODE_ENV === 'production'? true : false,
         //     }
-        // }, 
+        // },
         {
             loader: "css-loader?!postcss-loader",
             options:{
@@ -131,7 +131,7 @@ function extractCssLoader(){
           //     , options: {
           //       sourceMap: process.env.NODE_ENV === 'production'? true : false,
           //     }
-          // }, 
+          // },
           {
               loader: "css-loader?!postcss-loader",
               options:{
