@@ -4,8 +4,9 @@ PROJECT=paasadmin
 PREFIX=reg.haier.net/$(PROJECT)
 APP=paasadmin
 
-build: 
+build:
 	npm run build
+	cp -r static dist/
 
 package: build
 	cp -r dist package/
