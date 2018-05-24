@@ -9,34 +9,6 @@ var extractStylePlugin = new ExtractTextPlugin({
   filename: '[name]-[hash]-style.css'
 });
 function extractAntDLoader(){
-  if(process.env.NODE_ENV === 'production'){
-    return {
-            test: /\.less$/,
-            use: extractAntDPlugin.extract({
-                fallback: "style-loader",
-                {
-                  loader: "style-loader?" // creates style nodes from JS strings
-                      , options: {
-                        sourceMap: process.env.NODE_ENV === 'production'? true : false,
-                      }
-                  },
-                use: [{
-                      loader: "css-loader?!postcss-loader",
-                      options:{
-                        localIdentName: '[path]_[name]_[local]_[hash:base64:5]',
-                        importLoaders: 2,
-                        "sourceMap": process.env.NODE_ENV === 'production'? true : false,
-                      }
-                  }, {
-                      loader: "less-loader", // compiles Sass to CSS
-                      options: {
-                        paths:[nodeModules,'./src/components'],
-                        "sourceMap": process.env.NODE_ENV === 'production'? true : false,
-                      }
-                  }]
-            })
-          }
-  }else{
     return {
             test: /\.less$/,
             use: [{
@@ -59,7 +31,6 @@ function extractAntDLoader(){
                 }
             }]
           };
-  }
 }
 
 function extractSassLoader(){
