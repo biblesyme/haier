@@ -73,6 +73,15 @@ class ApplicationDetail extends React.Component {
     this.props.dispatch({type: 'App/findResource'})
     this.props.dispatch({type: 'App/findDomain'})
     this.props.dispatch({type: 'App/setState', payload: {list: false}})
+    if (this.props.App.role === 'domainAdmin') {
+      this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['9']}})
+    }
+    if (this.props.App.role === 'admin') {
+      this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['2']}})
+    }
+    if (this.props.App.role === 'manager') {
+      this.props.dispatch({type:'App/setState',payload: {selectedKeys: ['3']}})
+    }
   }
   render(){
     const {record={}} = this.props.location

@@ -84,4 +84,4 @@ class NewApplication extends React.Component {
 }
 
 Object.defineProperty(NewApplication, "name", { value: "NewApplication" });
-export default connect(require('./model'))(NewApplication)
+export default connect(require('./model'), ['App'])(NewApplication)

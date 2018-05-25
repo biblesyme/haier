@@ -197,4 +197,5 @@ class MySubmit extends React.Component {
   }
 }
 
+Object.defineProperty(MySubmit, "name", { value: "MySubmit" });
 export default connect(require('./model'),['App'])(MySubmit)

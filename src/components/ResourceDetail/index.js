@@ -68,6 +68,7 @@ export default class C extends React.Component {
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
+    console.log(data)
     if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
@@ -88,20 +89,32 @@ export default class C extends React.Component {
               clusterId: res.data.data[0].id,
             })
             this.props.onChange(res.data.data[0].id)
+            this.props.dispatch({
+              type: 'App/followClusterDetail',
+              payload: {
+                data: {
+                  id: res.data.data[0].id,
+                },
+                successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+                failCB: (e) => unauth(e),
+              }
+            })
           },
           failCB: (e) => unauth(e),
         }
       })
-      this.props.dispatch({
-        type: 'App/followClusterDetail',
-        payload: {
-          data: {
-            id: data.clusterId,
-          },
-          successCB: (res) => this.setState({clusterInfo: res.data || {}}),
-          failCB: (e) => unauth(e),
-        }
-      })
+      if (data.clusterId) {
+        this.props.dispatch({
+          type: 'App/followClusterDetail',
+          payload: {
+            data: {
+              id: data.clusterId,
+            },
+            successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+            failCB: (e) => unauth(e),
+          }
+        })
+      }
     } else {
       this.props.dispatch({
         type: 'App/findMachineRoom',

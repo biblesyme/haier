@@ -43,7 +43,7 @@ export default class C extends React.Component {
       type: 'App/findLocation',
       payload: {
         successCB: (res) => {
-          this.setState({locations: res.data.data, locationId: res.data.data[0].id}),
+          this.setState({locations: res.data.data, locationId: res.data.data[0].id})
           this.props.dispatch({
             type: 'App/followCluster',
             payload: {

@@ -75,18 +75,17 @@ class MainPage extends React.Component {
       })
     }
     this.props.dispatch({type: 'App/findLocation'})
-
     if (user.hasOwnProperty('roles') && !localStorage.getItem('role')) {
       document.cookie = `currentRole=${user.roles[0]};`
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
-      if (this.props.history.action === 'push') {
+      if (this.props.history.action === 'POP' && this.props.location.pathname === '/') {
         this.roleIndex(user.roles[0])
       }
     } else {
       const role = localStorage.getItem('role')
       document.cookie = `currentRole=${role};`
       this.props.dispatch({type:'App/setState',payload: {role: role}})
-      if (this.props.history.action === 'push') {
+      if (this.props.history.action === 'POP' && this.props.location.pathname === '/') {
         this.roleIndex(role)
       }
     }
@@ -217,4 +216,5 @@ class MainPage extends React.Component {
   }
 }
 
+Object.defineProperty(MainPage, "name", { value: "MainPage" });
 export default withRouter(connect(null, ['App'])(MainPage))

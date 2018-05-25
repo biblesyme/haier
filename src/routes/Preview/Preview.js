@@ -83,6 +83,8 @@ class Preview extends React.Component {
     const resoures = [...form.middlewareMappings, form.paas]
     const record = resoures.map(r => {
       if (r.resourceType === 'containerHost') {
+        delete r.clusterId
+        delete r.clusterName
         return apiStore.createRecord({
           data: JSON.stringify({
             ...r,
