@@ -41,21 +41,32 @@ class ApplicationDetail extends React.Component {
     list: false,
   }
   componentWillMount() {
-    const {record={}} = this.props.location
+    const {params} = this.props.match
+    const {id} = params
     this.props.selfDispatch({
-      type: 'followProjectLink',
+      type: 'findProject',
       payload: {
-        data: record,
-        link: 'self',
-        successCB: (resource) => this.props.selfDispatch({type: 'findProjectInfo', payload: {scode: resource.scode}}),
-        failCB: (e) => unauth(e),
-      },
-    })
-    this.props.selfDispatch({
-      type: 'followResourceLink',
-      payload: {
-        data: record,
-        link: 'resources',
+        data: {
+          id,
+        },
+        successCB: (record) => {
+          this.props.selfDispatch({
+            type: 'followProjectLink',
+            payload: {
+              data: record,
+              link: 'self',
+              successCB: (resource) => this.props.selfDispatch({type: 'findProjectInfo', payload: {scode: resource.scode}}),
+              failCB: (e) => unauth(e),
+            },
+          })
+          this.props.selfDispatch({
+            type: 'followResourceLink',
+            payload: {
+              data: record,
+              link: 'resources',
+            },
+          })
+        }
       },
     })
     this.props.dispatch({type: 'App/findProject'})

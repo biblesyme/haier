@@ -29,7 +29,7 @@ class App extends React.Component {
 
   componentWillMount() {
     if(process.env.NODE_ENV !== 'production'){
-      document.cookie = `csid=BBC00DDC5DB228954EC8EFFB6234F627;`
+      document.cookie = `csid=996E74D8762B36492BFFC8A8C0B8B793;`
     }
     this.props.selfDispatch({
       type: 'setState',

@@ -8,6 +8,7 @@ export default {
     project: {},
     resources: [],
     projectInfo: {},
+    fomatProject: {},
   },
   reducers: {
     setState(state,{payload}){
@@ -61,6 +62,33 @@ export default {
         yield put({type: 'setState', payload: {projectInfo: projectInfo.data.data}})
       } catch (e) {
         unauth(e)
+      }
+    },
+    *findProject({payload={}},{call, put}){
+      let {data, successCB, failCB} = payload
+      try{
+        let project = yield call([apiStore,apiStore.find], 'project', data.id, {forceReload: true})
+        console.log(project, 'project')
+        let fomatResources = project.resources.map(r => {
+          if (r.hasOwnProperty('data')) {
+            return {
+              ...r,
+              data: JSON.parse(r.data),
+            }
+          } else {
+            return r
+          }
+        })
+        let fomatProject = {
+          ...project,
+          resources: fomatResources,
+        }
+        yield put({type:'setState',payload: {fomatProject: fomatProject}})
+        if(successCB){yield call(successCB,fomatProject)}
+      }
+      catch(e){
+        unauth(e)
+        if(failCB){yield call(failCB, e)}
       }
     },
   }

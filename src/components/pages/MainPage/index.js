@@ -74,18 +74,22 @@ class MainPage extends React.Component {
         }
       })
     }
+    this.props.dispatch({type: 'App/findLocation'})
 
     if (user.hasOwnProperty('roles') && !localStorage.getItem('role')) {
       document.cookie = `currentRole=${user.roles[0]};`
       this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
-      this.roleIndex(user.roles[0])
+      if (this.props.history.action === 'push') {
+        this.roleIndex(user.roles[0])
+      }
     } else {
       const role = localStorage.getItem('role')
       document.cookie = `currentRole=${role};`
       this.props.dispatch({type:'App/setState',payload: {role: role}})
-      this.roleIndex(role)
+      if (this.props.history.action === 'push') {
+        this.roleIndex(role)
+      }
     }
-    this.props.dispatch({type: 'App/findLocation'})
   }
   render() {
     const {user= {}, role} = this.props.App
