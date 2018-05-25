@@ -6,6 +6,7 @@ import nameMap from 'utils/nameMap'
 import { Menu, Icon, Button, Select, Avatar, Badge, Layout, Divider } from 'antd';
 import config from './config'
 import unauth from 'utils/unauth'
+import { withRouter } from 'react-router'
 
 const SubMenu = Menu.SubMenu;
 const {Option} = Select
@@ -13,8 +14,8 @@ const {Header, Content, Footer, Sider} = Layout
 
 import styles from './style.sass'
 
-@connect(null,['App'])
-export default class MainPage extends React.Component {
+// @connect(null,['App'])
+class MainPage extends React.Component {
   state = {
     collapsed: false,
     findApproval: 'init',
@@ -29,37 +30,40 @@ export default class MainPage extends React.Component {
     this.props.dispatch({type:'App/setState',payload: {selectedKeys: [key]}})
   }
 
+  roleIndex = (role) => {
+    if (role === 'admin') {
+      this.props.history.push('/information')
+    } else if (role === 'domainAdmin') {
+      this.props.history.push('/applicationCenter')
+    } else {
+      this.props.history.push('/')
+    }
+  }
+
   roleChange = (role) => {
     const {user= {},} = this.props.App
     setCookieItem('currentRole', role, null, '/')
     localStorage.setItem('role', role)
     this.props.dispatch({
       type:'App/setState',
-      payload: {role, list: false}})
+      payload: {role, list: false},
+    })
     this.props.dispatch({
       type: 'App/findApproval',
       payload: {
         account: user,
-        successCB: () => this.setState({findApproval: 'success'}),
+        successCB: () => {
+          this.setState({findApproval: 'success'})
+        },
         failCB: (e) => unauth(e),
       }
     })
+    this.roleIndex(role)
   }
 
   componentWillMount(){
     this.props.init();
     const {user= {},} = this.props.App
-    // document.cookie = `csid=9DC093072EEA274D6DE99B6E32C8CBF7;`
-    if (user.hasOwnProperty('roles') && !localStorage.getItem('role')) {
-      document.cookie = `currentRole=${user.roles[0]};`
-      this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
-    } else {
-      const role = localStorage.getItem('role')
-      document.cookie = `currentRole=${role};`
-      this.props.dispatch({type:'App/setState',payload: {role: role}})
-    }
-    this.props.dispatch({type: 'App/findLocation'})
-
     if (user.roles.includes('admin') || user.roles.includes('domainAdmin')) {
       this.props.dispatch({
         type: 'App/findApproval',
@@ -70,6 +74,18 @@ export default class MainPage extends React.Component {
         }
       })
     }
+
+    if (user.hasOwnProperty('roles') && !localStorage.getItem('role')) {
+      document.cookie = `currentRole=${user.roles[0]};`
+      this.props.dispatch({type:'App/setState',payload: {role: user.roles[0]}})
+      this.roleIndex(user.roles[0])
+    } else {
+      const role = localStorage.getItem('role')
+      document.cookie = `currentRole=${role};`
+      this.props.dispatch({type:'App/setState',payload: {role: role}})
+      this.roleIndex(role)
+    }
+    this.props.dispatch({type: 'App/findLocation'})
   }
   render() {
     const {user= {}, role} = this.props.App
@@ -196,3 +212,5 @@ export default class MainPage extends React.Component {
     );
   }
 }
+
+export default withRouter(connect(null, ['App'])(MainPage))
