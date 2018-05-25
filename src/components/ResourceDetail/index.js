@@ -68,7 +68,6 @@ export default class C extends React.Component {
   componentWillMount() {
     const {resource={}} = this.props
     const {data={}} = resource
-    console.log(data)
     if (resource.resourceType === 'containerHost') {
       this.props.dispatch({
         type: 'App/findLocation',
@@ -95,7 +94,18 @@ export default class C extends React.Component {
                 data: {
                   id: res.data.data[0].id,
                 },
-                successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+                successCB: (res) => {
+                  this.setState({clusterInfo: res.data || {}})
+                  const {resource={}} = this.props
+                  const {data={}} = resource
+                  const {used={}} = res.data
+                  const {request={}} = res.data
+                  if ((request.cpu - used.cpu < data.cpu) || (request.memory - used.memory < data.memory)) {
+                    this.props.onCompare(true)
+                  } else {
+                    this.props.onCompare(false)
+                  }
+                },
                 failCB: (e) => unauth(e),
               }
             })
@@ -110,7 +120,9 @@ export default class C extends React.Component {
             data: {
               id: data.clusterId,
             },
-            successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+            successCB: (res) => {
+              this.setState({clusterInfo: res.data || {}})
+            },
             failCB: (e) => unauth(e),
           }
         })
@@ -133,6 +145,8 @@ export default class C extends React.Component {
   }
 
   onClusterChange = (clusterId) => {
+    const {resource={}} = this.props
+    const {data={}} = resource
     this.setState({clusterId})
     this.props.onChange(clusterId)
     this.props.dispatch({
@@ -141,7 +155,15 @@ export default class C extends React.Component {
         data: {
           id: clusterId,
         },
-        successCB: (res) => this.setState({clusterInfo: res.data || {}}),
+        successCB: (res) => {
+          this.setState({clusterInfo: res.data || {}})
+          const {used={}} = res.data
+          const {request={}} = res.data
+          console.log(used, 'ssafds')
+          if ((request.cpu - used.cpu < data.cpu) || (request.memory - used.memory < data.memory)) {
+            console.log('poi')
+          }
+        },
         failCB: (e) => unauth(e),
       }
     })
@@ -204,13 +226,13 @@ export default class C extends React.Component {
                   {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') && (
                     <Col span={12} style={{marginTop: '12px', width: 157}}>
                       可用CPU: &nbsp;
-                      {`${request.cpu - used.cpu}`}
+                      {`${(request.cpu - used.cpu) / 1000}`}
                     </Col>
                   )}
                   {(this.props.approval && this.props.App.role === 'admin' && approval.state === 'confirmed') && (
                     <Col span={12} style={{marginTop: '12px', width: 157}}>
                       可用内存: &nbsp;
-                      {`${request.memory - used.memory}`}
+                      {`${(request.memory - used.memory) / 1024 / 1024 / 1024 || ''}G`}
                     </Col>
                   )}
                 </Row>

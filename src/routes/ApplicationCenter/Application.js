@@ -207,6 +207,7 @@ class ApplicationCenter extends React.Component {
                  itemRender: itemRender,
                }}
                rowClassName="text-center"
+               scroll={{x: 1125}}
         />
       </div>
 

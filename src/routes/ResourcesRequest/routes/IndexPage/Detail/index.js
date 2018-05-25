@@ -52,6 +52,7 @@ export default class C extends React.Component {
     status: '',
     clusterId: '',
     clusters: [],
+    isPassDisabled: false,
   }
 
   componentWillMount() {
@@ -185,7 +186,11 @@ export default class C extends React.Component {
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <Button onClick={this.props.onCancel} style={{width: '83px', background: '#a6a6a6', color: '#fff'}}>取消</Button>
             <Button onClick={this.deny} style={{width: '83px', background: '#f8a03c', color: '#fff'}}>驳回</Button>
-            <Button onClick={this.pass} style={{width: '83px', color: '#fff'}} type="primary">同意</Button>
+            <Button onClick={this.pass}
+                    style={{width: '83px', color: '#fff'}}
+                    type="primary"
+                    disabled={this.state.isPassDisabled}
+            >同意</Button>
           </div>
         )}
         {(resource.state === 'confirmed' && this.props.App.role !== 'admin') && (
@@ -256,6 +261,7 @@ export default class C extends React.Component {
                                 clusterId={this.state.clusterId}
                                 onChange={(clusterId) => this.setState({clusterId})}
                                 approval={resource}
+                                onCompare={(isPassDisabled) => this.setState({isPassDisabled})}
                 />
               </div>
             )}
