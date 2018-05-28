@@ -57,7 +57,7 @@ class Item extends React.Component {
         >
 
           <h4 className="pull-left">团队长：</h4>
-          <div className="inline-block pd-l10" style={{height: '130px'}}>
+          <div className="inline-block pd-l10" style={{width: '252px', height: '130px', overflowY: 'auto'}}>
             {domainAdmins.length > 0 && domainAdmins}
           </div>
           {domainAdmins.length > 0 && (
